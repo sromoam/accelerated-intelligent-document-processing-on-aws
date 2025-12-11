@@ -28,7 +28,8 @@ from model_versions import get_model_revision
 def train(
     data_dir, model_dir, script_dir, output_dir, max_epochs, accumulate_grad_batches, 
     devices, base_model, lr, lr_warmup_steps, dropout_rate, b1, b2, weight_decay,
-    print_every_n_steps, patience, fast_dev_run, precision, distributed_strategy
+    print_every_n_steps, patience, fast_dev_run, precision, distributed_strategy, num_workers,
+    batch_size, enable_batching, num_sanity_val_steps, max_steps
 ):
     shutil.copytree(script_dir, os.path.join(model_dir, "code"), dirs_exist_ok=True)
     tb_logger = TensorBoardLogger(
@@ -46,8 +47,8 @@ def train(
         # Production deployments should use pinned revisions from model_versions.py
         print(f"Loading processor for {base_model} without revision pinning (not in managed list)")
         processor = AutoProcessor.from_pretrained(base_model, apply_ocr=False)
-    train_ds = ClassificationDataset(processor, data_dir, split="training")
-    val_ds = ClassificationDataset(processor, data_dir, split="validation")
+    train_ds = ClassificationDataset(processor, data_dir, split="training", enable_batching=enable_batching)
+    val_ds = ClassificationDataset(processor, data_dir, split="validation", enable_batching=enable_batching)
 
     assert train_ds.prompt.strip() == val_ds.prompt.strip(), ( # nosec B101
         "Prompts do not match in training and validation dataset!\nTraining Prompt: {0}\nValidation Prompt: {1}".format(
@@ -55,14 +56,29 @@ def train(
         )
     )
     # nosemgrep: trailofbits.python.automatic-memory-pinning.automatic-memory-pinning - pin_memory is a performance optimization; default behavior is safe and functional
-    train_dl = DataLoader(
-        train_ds, batch_size=1, num_workers=4,
-        collate_fn=lambda x: x[0], shuffle=True
-    )
-    val_dl = DataLoader(
-        val_ds, batch_size=1, num_workers=4, 
-        collate_fn=lambda x: x[0], shuffle=True
-    )
+    if enable_batching:
+        # Use custom collate for batching - handles metadata alongside tensors
+        from utils import collate_batch_with_metadata
+        train_dl = DataLoader(
+            train_ds, batch_size=batch_size, num_workers=num_workers,
+            collate_fn=collate_batch_with_metadata,
+            shuffle=True
+        )
+        val_dl = DataLoader(
+            val_ds, batch_size=batch_size, num_workers=num_workers,
+            collate_fn=collate_batch_with_metadata,
+            shuffle=False  # Don't shuffle validation
+        )
+    else:
+        # Original implementation - batch_size=1 with custom collate
+        train_dl = DataLoader(
+            train_ds, batch_size=1, num_workers=num_workers,
+            collate_fn=lambda x: x[0], shuffle=True
+        )
+        val_dl = DataLoader(
+            val_ds, batch_size=1, num_workers=num_workers, 
+            collate_fn=lambda x: x[0], shuffle=True
+        )
 
     max_steps = (
         (max_epochs * len(train_ds)) // accumulate_grad_batches // devices
@@ -85,23 +101,35 @@ def train(
         monitor="val_weighted_avg_f1", mode="max", patience=patience,
     ))
 
+    # Use CPU for local training if strategy is auto (MPS has float64 issues with UDOP)
+    # For SageMaker/GPU training, use "gpu" accelerator
+    if distributed_strategy == "auto":
+        accelerator = "cpu"
+        print("Using CPU accelerator for local training (MPS has compatibility issues with UDOP)")
+    else:
+        accelerator = "gpu"
+    
     trainer = pl.Trainer(
         max_epochs=max_epochs,
+        max_steps=max_steps if max_steps else -1,  # -1 means no limit
         log_every_n_steps=1,
-        accelerator="gpu",
+        accelerator=accelerator,
         fast_dev_run=fast_dev_run,
         devices=devices,
         callbacks=callbacks,
         accumulate_grad_batches=accumulate_grad_batches,
         logger=tb_logger,
         precision=precision,
-        strategy=distributed_strategy
+        strategy=distributed_strategy,
+        num_sanity_val_steps=num_sanity_val_steps
     )
     trainer.fit(model, train_dataloaders=train_dl, val_dataloaders=val_dl)
     metrics = trainer.callback_metrics
     final_metrics = {k: v.item() for k, v in metrics.items()}
 
-    metrics_filename = os.path.join(output_dir, "data/training_metrics.json")
+    metrics_dir = os.path.join(output_dir, "data")
+    os.makedirs(metrics_dir, exist_ok=True)
+    metrics_filename = os.path.join(metrics_dir, "training_metrics.json")
     with open(metrics_filename, "w") as f:
         json.dump(final_metrics, f)
 
@@ -143,6 +171,11 @@ if __name__ == "__main__":
     parser.add_argument("--patience", type=int, default=30)
     parser.add_argument("--fast_dev_run", type=int, default=None)
     parser.add_argument("--print_every_n_steps", type=int, default=100)
+    parser.add_argument("--num_workers", type=int, default=4)
+    parser.add_argument("--batch_size", type=int, default=1, help="Batch size (requires enable_batching=True for batch_size > 1)")
+    parser.add_argument("--enable_batching", action="store_true", help="Enable batching support with padding")
+    parser.add_argument("--num_sanity_val_steps", type=int, default=0, help="Number of validation sanity check steps before training (default: 0 for faster startup)")
+    parser.add_argument("--max_steps", type=int, default=None, help="Maximum number of training steps (overrides max_epochs if set)")
 
     args = parser.parse_args()
     train(
@@ -150,5 +183,6 @@ if __name__ == "__main__":
         args.max_epochs, args.accumulate_grad_batches, args.devices, 
         args.base_model, args.lr, args.lr_warmup_steps, args.dropout_rate, 
         args.b1, args.b2, args.weight_decay, args.print_every_n_steps, 
-        args.patience, args.fast_dev_run, args.precision, args.distributed_strategy
+        args.patience, args.fast_dev_run, args.precision, args.distributed_strategy, args.num_workers,
+        args.batch_size, args.enable_batching, args.num_sanity_val_steps, args.max_steps
     )

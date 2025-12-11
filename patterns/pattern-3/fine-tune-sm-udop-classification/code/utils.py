@@ -14,6 +14,28 @@ from torch.nn import CrossEntropyLoss
 from torch.utils.data import Dataset
 
 
+def collate_batch_with_metadata(batch):
+    """
+    Custom collate function that handles batching while preserving metadata.
+    Stacks tensors and collects non-tensor metadata.
+    """
+    # Separate tensor keys from metadata keys
+    tensor_keys = ['input_ids', 'attention_mask', 'bbox', 'pixel_values', 'labels']
+    metadata_keys = ['text_label', 'prompt', 'evaluator', 'task']
+    
+    collated = {}
+    
+    # Stack tensors
+    for key in tensor_keys:
+        collated[key] = torch.stack([item[key] for item in batch])
+    
+    # Collect metadata as lists
+    for key in metadata_keys:
+        collated[key] = [item[key] for item in batch]
+    
+    return collated
+
+
 def get_words_in_order(doc):
     """
         Helper method to get words from textract document in order 
@@ -40,13 +62,13 @@ def get_boxes_from_textract(textract, model_norm_dim=1000):
     for word in words:
         boxes.append(word.bbox.as_denormalized_numpy())
         texts.append(word.text)
-    boxes = np.array(boxes)
+    boxes = np.array(boxes, dtype=np.float32)
     boxes[:, 2] += boxes[:, 0]
     boxes[:, 3] += boxes[:, 1]
     boxes[:, [1, 3]] /= doc.pages[0].height
     boxes[:, [0, 2]] /= doc.pages[0].width
     boxes *= model_norm_dim
-    return {'boxes': np.array(boxes), 'words': texts}
+    return {'boxes': boxes.astype(np.float32), 'words': texts}
 
 
 class InferenceHelper():
@@ -73,13 +95,13 @@ class InferenceHelper():
         textract = get_boxes_from_textract(textract)
 
         prompt_words = prompt.split(" ")
-        prompt_boxes = np.array([[0, 0, 0, 0] for _ in prompt_words])
+        prompt_boxes = np.array([[0, 0, 0, 0] for _ in prompt_words], dtype=np.float32)
 
         encoding = processor(
             images=image,
             text=prompt_words + textract['words'], 
             boxes=prompt_boxes if textract['boxes'] is None \
-                else np.concatenate([prompt_boxes, textract['boxes']]),
+                else np.concatenate([prompt_boxes, textract['boxes']]).astype(np.float32),
             truncation=True,
             max_length=1024,
             return_tensors="pt",
@@ -124,10 +146,12 @@ class DocClassificationEvaluator:
 
 
 class ClassificationDataset(Dataset):
-    def __init__(self, processor, data_dir, split="training"):
+    def __init__(self, processor, data_dir, split="training", enable_batching=False, max_length=1024):
         self.processor = processor
         self.data_dir = data_dir + '/' + split
         self.evaluator = DocClassificationEvaluator(processor=self.processor)
+        self.enable_batching = enable_batching
+        self.max_length = max_length
         with open(self.data_dir + '/metadata.json', 'r') as jfile:
             metadata = json.load(jfile)
         self.prompt = "Document Classification on {}.".format(
@@ -138,13 +162,13 @@ class ClassificationDataset(Dataset):
     def prepare_input(self, image, textract, label):
         textract = get_boxes_from_textract(textract)
         prompt_words = self.prompt.split(" ")
-        prompt_boxes = np.array([[0, 0, 0, 0] for _ in prompt_words])
+        prompt_boxes = np.array([[0, 0, 0, 0] for _ in prompt_words], dtype=np.float32)
         return {
             "prompt": self.prompt,
             "text_target": label,
             "boxes": prompt_boxes if textract['boxes'] is None else np.concatenate(
                 [prompt_boxes, textract['boxes']]
-                ),
+                ).astype(np.float32),
             "text":  prompt_words + textract['words'],
             "image": np.stack([np.array(image) for _ in range(3)], axis=-1),
             "return_tensors": "pt",
@@ -159,25 +183,69 @@ class ClassificationDataset(Dataset):
             self._load_data('textract', idx),
             self._load_data('labels', idx),
         )
-        # https://github.com/huggingface/transformers/blob/main/src/transformers/models/udop/processing_udop.py#L86
-        # https://github.com/huggingface/transformers/blob/main/src/transformers/models/udop/processing_udop.py#L55
-        encoding = self.processor(
-            images=batch["image"], text=batch["text"], boxes=batch["boxes"],
-            truncation=True, max_length=1024, return_tensors=batch['return_tensors']
-        )
-        target_encodings = self.processor(
-            images=batch["image"], boxes=batch["boxes"],
-            text_target=batch["text_target"], return_tensors=batch['return_tensors']
-        )
-        encoding["labels"] = target_encodings['input_ids']
-        return {
-            "model_inputs": encoding,
-            "encoded_label": target_encodings['input_ids'],
-            "prompt": batch["prompt"],
-            "text_label": batch["text_target"],
-            "evaluator": self.evaluator,
-            "task": "document_classification",
-        }
+        
+        if self.enable_batching:
+            # Pad to max_length and squeeze batch dimension for batching support
+            # This allows PyTorch's default collate to stack samples
+            encoding = self.processor(
+                images=batch["image"], 
+                text=batch["text"], 
+                boxes=batch["boxes"],
+                padding='max_length',
+                truncation=True, 
+                max_length=self.max_length, 
+                return_tensors='pt'
+            )
+            
+            # Encode target with padding using text_target parameter
+            labels = self.processor.tokenizer(
+                text_target=batch["text_target"],
+                padding='max_length',
+                truncation=True,
+                max_length=128,
+                return_tensors='pt'
+            )
+            
+            # Squeeze batch dimension added by processor
+            input_ids = encoding['input_ids'].squeeze(0)
+            attention_mask = encoding['attention_mask'].squeeze(0)
+            bbox = encoding['bbox'].squeeze(0)
+            pixel_values = encoding['pixel_values'].squeeze(0)
+            labels_ids = labels['input_ids'].squeeze(0)
+            
+            # Replace padding token id with -100 for loss calculation
+            labels_ids[labels_ids == self.processor.tokenizer.pad_token_id] = -100
+            
+            return {
+                'input_ids': input_ids,
+                'attention_mask': attention_mask,
+                'bbox': bbox,
+                'pixel_values': pixel_values,
+                'labels': labels_ids,
+                'text_label': batch["text_target"],
+                'prompt': batch["prompt"],
+                'evaluator': self.evaluator,
+                'task': "document_classification",
+            }
+        else:
+            # Original implementation - no batching support
+            encoding = self.processor(
+                images=batch["image"], text=batch["text"], boxes=batch["boxes"],
+                truncation=True, max_length=self.max_length, return_tensors=batch['return_tensors']
+            )
+            target_encodings = self.processor(
+                images=batch["image"], boxes=batch["boxes"],
+                text_target=batch["text_target"], return_tensors=batch['return_tensors']
+            )
+            encoding["labels"] = target_encodings['input_ids']
+            return {
+                "model_inputs": encoding,
+                "encoded_label": target_encodings['input_ids'],
+                "prompt": batch["prompt"],
+                "text_label": batch["text_target"],
+                "evaluator": self.evaluator,
+                "task": "document_classification",
+            }
 
     def _load_data(self, datatype, idx):
         if datatype == 'textract':

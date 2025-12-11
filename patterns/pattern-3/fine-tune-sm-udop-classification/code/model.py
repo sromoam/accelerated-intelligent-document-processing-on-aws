@@ -61,20 +61,59 @@ class UDOPModel(pl.LightningModule):
         self.log("lr_times_1m", self.scheduler.get_lr()[0] * 1000000, prog_bar=True)
 
         try:
-            model_output = self.model.forward(**batch['model_inputs'])
-            lss = batch['evaluator'].compute_loss(batch, model_output)
+            # Handle both old format (model_inputs dict) and new format (direct keys)
+            if 'model_inputs' in batch:
+                # Old format - batch_size=1 with custom collate
+                model_inputs = batch['model_inputs']
+            else:
+                # New format - batched with padding
+                model_inputs = {
+                    'input_ids': batch['input_ids'],
+                    'attention_mask': batch['attention_mask'],
+                    'bbox': batch['bbox'],
+                    'pixel_values': batch['pixel_values'],
+                    'labels': batch['labels']
+                }
+            
+            model_output = self.model.forward(**model_inputs)
+            lss = model_output.loss
             self.log(f"{subset}_loss", lss, sync_dist=True, prog_bar=True)
         except torch.cuda.OutOfMemoryError as e:
             print(str(e))
-            for k, v in batch['model_inputs'].items():
+            for k, v in model_inputs.items():
                 print(f"{k}, of shape {v.shape}")
             lss = torch.tensor(0)
 
-        self.tasks.setdefault(batch['task'], batch['evaluator'])
+        # Handle evaluator - could be single instance or batch
+        evaluator = batch['evaluator'] if not isinstance(batch['evaluator'], list) else batch['evaluator'][0]
+        task = batch['task'] if not isinstance(batch['task'], list) else batch['task'][0]
+        
+        self.tasks.setdefault(task, evaluator)
+        
+        # Handle text_label - could be string or list of strings
+        text_labels = batch['text_label']
+        if not isinstance(text_labels, list):
+            text_labels = [text_labels]
+        
+        # Decode model output - handle batched predictions
+        batch_size = model_inputs['input_ids'].shape[0] if len(model_inputs['input_ids'].shape) > 1 else 1
+        
+        if batch_size > 1:
+            # Batched mode - decode each sample
+            decoded_list = []
+            for i in range(batch_size):
+                # Create single-sample output dict for decoding
+                single_output = {"logits": model_output.logits[i:i+1]}
+                decoded_list.append(evaluator.decode_model_output(single_output))
+            decoded = decoded_list
+        else:
+            # Single sample mode
+            decoded = [evaluator.decode_model_output(model_output)]
+        
         step_outputs = {
-            "model_output": batch['evaluator'].decode_model_output(model_output),
-            "targets": batch['text_label'],
-            "task": batch['task']
+            "model_output": decoded,
+            "targets": text_labels,
+            "task": task
         }
         return step_outputs, lss
 
@@ -90,27 +129,46 @@ class UDOPModel(pl.LightningModule):
 
     def on_train_epoch_end(self):
         d = {t: {
-            'predictions': [o['model_output'] for o in self.training_step_outputs if o['task'] == t],
-            'targets': [o['targets'] for o in self.training_step_outputs if o['task'] == t]
+            'predictions': [],
+            'targets': []
         } for t in self.tasks.keys()}
+        
+        # Flatten predictions and targets (handle both single items and lists)
+        for o in self.training_step_outputs:
+            if o['task'] in d:
+                preds = o['model_output'] if isinstance(o['model_output'], list) else [o['model_output']]
+                targs = o['targets'] if isinstance(o['targets'], list) else [o['targets']]
+                d[o['task']]['predictions'].extend(preds)
+                d[o['task']]['targets'].extend(targs)
+        
         for k, v in d.items():
-            evaluator = self.tasks[k]
-            metrics = evaluator.compute_metrics(v['predictions'], v['targets'])
-            for k_, v_ in metrics.items():
-                self.log(f"train_{k_}", v_, sync_dist=True, prog_bar=True)
+            if len(v['predictions']) > 0:
+                evaluator = self.tasks[k]
+                metrics = evaluator.compute_metrics(v['predictions'], v['targets'])
+                for k_, v_ in metrics.items():
+                    self.log(f"train_{k_}", v_, sync_dist=True, prog_bar=True)
         self.training_step_outputs.clear()
 
     def on_validation_epoch_end(self):
-        # need to make sure we have elements in the list before we evaluate
         d = {t: {
-            'predictions': [o['model_output'] for o in self.validation_step_outputs if o['task'] == t], 
-            'targets': [o['targets'] for o in self.validation_step_outputs if o['task'] == t]
+            'predictions': [],
+            'targets': []
         } for t in self.tasks.keys()}
+        
+        # Flatten predictions and targets (handle both single items and lists)
+        for o in self.validation_step_outputs:
+            if o['task'] in d:
+                preds = o['model_output'] if isinstance(o['model_output'], list) else [o['model_output']]
+                targs = o['targets'] if isinstance(o['targets'], list) else [o['targets']]
+                d[o['task']]['predictions'].extend(preds)
+                d[o['task']]['targets'].extend(targs)
+        
         for k, v in d.items():
-            evaluator = self.tasks[k]
-            metrics = evaluator.compute_metrics(v['predictions'], v['targets'])
-            for k_, v_ in metrics.items():
-                self.log(f"val_{k_}", v_, sync_dist=True, prog_bar=True)
+            if len(v['predictions']) > 0:
+                evaluator = self.tasks[k]
+                metrics = evaluator.compute_metrics(v['predictions'], v['targets'])
+                for k_, v_ in metrics.items():
+                    self.log(f"val_{k_}", v_, sync_dist=True, prog_bar=True)
         self.validation_step_outputs.clear()
 
     def configure_optimizers(self):

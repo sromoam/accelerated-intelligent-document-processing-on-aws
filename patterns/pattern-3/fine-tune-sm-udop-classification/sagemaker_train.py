@@ -92,7 +92,9 @@ def create_sagemaker_role(role_name, bucket, data_bucket):
         raise e
 
 def create_training_job(role, bucket, job_name, max_epochs, base_model, 
-                       bucket_prefix="", data_bucket="", data_bucket_prefix=""):
+                       bucket_prefix="", data_bucket="", data_bucket_prefix="",
+                       instance_type="ml.g5.12xlarge", batch_size=1, enable_batching=False,
+                       num_workers=4, fast_dev_run=None, max_steps=None):
     """
     Create and run a SageMaker training job
     """
@@ -122,20 +124,33 @@ def create_training_job(role, bucket, job_name, max_epochs, base_model,
         container_local_output_path=output_dir + '/tensorboard'
     )
     
+    # Build hyperparameters dict
+    hyperparameters = {
+        "max_epochs": max_epochs,
+        "base_model": base_model,
+        "output_dir": output_dir,
+        "batch_size": batch_size,
+        "num_workers": num_workers,
+    }
+    
+    # Add optional parameters
+    if enable_batching:
+        hyperparameters["enable_batching"] = ""  # Flag parameter
+    if fast_dev_run is not None:
+        hyperparameters["fast_dev_run"] = fast_dev_run
+    if max_steps is not None:
+        hyperparameters["max_steps"] = max_steps
+    
     estimator = PyTorch(
         entry_point="train.py",
         source_dir="./code",
         role=role,
         framework_version="2.4.0",
         py_version="py311",
-        instance_type="ml.g5.12xlarge",
+        instance_type=instance_type,
         instance_count=1,
         output_path=get_s3_path(bucket, bucket_prefix, "models/"),
-        hyperparameters={
-            "max_epochs": max_epochs,
-            "base_model": base_model,
-            "output_dir": output_dir
-        },
+        hyperparameters=hyperparameters,
         code_location=get_s3_path(bucket, bucket_prefix, "scripts/training/"),
         sagemaker_session=sagemaker_session,
         tensorboard_output_config=tensorboard_output_config,
@@ -187,9 +202,36 @@ if __name__ == "__main__":
         "--data-bucket-prefix", type=str, default="",
         help="Prefix for paths in the data S3 bucket. Defaults to the value of bucket-prefix"
     )
+    parser.add_argument(
+        "--instance-type", type=str, default="ml.g5.12xlarge",
+        help="SageMaker instance type (e.g., ml.g4dn.xlarge, ml.g4dn.12xlarge, ml.g5.12xlarge)"
+    )
+    parser.add_argument(
+        "--batch-size", type=int, default=1,
+        help="Batch size for training (requires --enable-batching for batch_size > 1)"
+    )
+    parser.add_argument(
+        "--enable-batching", action="store_true",
+        help="Enable batching support with padding"
+    )
+    parser.add_argument(
+        "--num-workers", type=int, default=4,
+        help="Number of data loading workers"
+    )
+    parser.add_argument(
+        "--fast-dev-run", type=int, default=None,
+        help="Run only N batches for quick testing"
+    )
+    parser.add_argument(
+        "--max-steps", type=int, default=None,
+        help="Maximum number of training steps"
+    )
+    
     args = parser.parse_args()
     create_training_job(
         args.role, args.bucket, args.job_name,
         args.max_epochs, args.base_model, args.bucket_prefix,
-        args.data_bucket, args.data_bucket_prefix
+        args.data_bucket, args.data_bucket_prefix,
+        args.instance_type, args.batch_size, args.enable_batching,
+        args.num_workers, args.fast_dev_run, args.max_steps
     )
