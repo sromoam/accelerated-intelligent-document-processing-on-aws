@@ -1,0 +1,212 @@
+{
+  "endpoint_name": "udop-vanilla-1765563118",
+  "timestamp": "2025-12-12T12:27:16.050214",
+  "tests": {
+    "sequential": {
+      "concurrency": 1,
+      "total_requests": 25,
+      "successful": 25,
+      "failed": 0,
+      "success_rate": 100.0,
+      "total_time": 10.201947212219238,
+      "throughput": 2.4505125815644884,
+      "latency": {
+        "mean": 0.4079058361053467,
+        "median": 0.341048002243042,
+        "std": 0.2021825065113279,
+        "min": 0.2502589225769043,
+        "max": 1.2848381996154785,
+        "p50": 0.341048002243042,
+        "p95": 0.5964743614196776,
+        "p99": 1.1224085998535143
+      },
+      "accuracy": {
+        "overall_accuracy": 0.76,
+        "correct": 19,
+        "total": 25,
+        "per_class_accuracy": {
+          "memo": 0.6666666666666666,
+          "advertisement": 0.5,
+          "invoice": 1.0,
+          "scientific report": 0.5,
+          "questionnaire": 0.0,
+          "scientific publication": 1.0,
+          "budget": 1.0,
+          "presentation": 0.5,
+          "specification": 1.0,
+          "letter": 1.0,
+          "file folder": 1.0,
+          "handwritten": 1.0,
+          "resume": 1.0,
+          "email": 1.0,
+          "news article": 1.0
+        }
+      }
+    },
+    "concurrent_5": {
+      "concurrency": 5,
+      "total_requests": 25,
+      "successful": 25,
+      "failed": 0,
+      "success_rate": 100.0,
+      "total_time": 6.636062860488892,
+      "throughput": 3.7672940304483795,
+      "latency": {
+        "mean": 1.201033353805542,
+        "median": 1.2351927757263184,
+        "std": 0.26391125350262773,
+        "min": 0.40405797958374023,
+        "max": 1.65549898147583,
+        "p50": 1.2351927757263184,
+        "p95": 1.5878953456878657,
+        "p99": 1.6468775177001953
+      },
+      "accuracy": {
+        "overall_accuracy": 0.76,
+        "correct": 19,
+        "total": 25,
+        "per_class_accuracy": {
+          "memo": 0.6666666666666666,
+          "invoice": 1.0,
+          "advertisement": 0.5,
+          "scientific report": 0.5,
+          "questionnaire": 0.0,
+          "scientific publication": 1.0,
+          "budget": 1.0,
+          "presentation": 0.5,
+          "specification": 1.0,
+          "letter": 1.0,
+          "file folder": 1.0,
+          "handwritten": 1.0,
+          "resume": 1.0,
+          "email": 1.0,
+          "news article": 1.0
+        }
+      }
+    },
+    "concurrent_10": {
+      "concurrency": 10,
+      "total_requests": 25,
+      "successful": 25,
+      "failed": 0,
+      "success_rate": 100.0,
+      "total_time": 6.338273048400879,
+      "throughput": 3.9442920507041586,
+      "latency": {
+        "mean": 2.0490577316284178,
+        "median": 2.3677680492401123,
+        "std": 0.6855405804083569,
+        "min": 0.39504408836364746,
+        "max": 2.6307499408721924,
+        "p50": 2.3677680492401123,
+        "p95": 2.6215590476989745,
+        "p99": 2.629050779342651
+      },
+      "accuracy": {
+        "overall_accuracy": 0.76,
+        "correct": 19,
+        "total": 25,
+        "per_class_accuracy": {
+          "memo": 0.6666666666666666,
+          "advertisement": 0.5,
+          "scientific report": 0.5,
+          "invoice": 1.0,
+          "questionnaire": 0.0,
+          "scientific publication": 1.0,
+          "budget": 1.0,
+          "presentation": 0.5,
+          "specification": 1.0,
+          "letter": 1.0,
+          "file folder": 1.0,
+          "handwritten": 1.0,
+          "resume": 1.0,
+          "email": 1.0,
+          "news article": 1.0
+        }
+      }
+    },
+    "concurrent_20": {
+      "concurrency": 20,
+      "total_requests": 25,
+      "successful": 25,
+      "failed": 0,
+      "success_rate": 100.0,
+      "total_time": 6.251140832901001,
+      "throughput": 3.999270000192607,
+      "latency": {
+        "mean": 3.126326141357422,
+        "median": 3.3015170097351074,
+        "std": 1.4615401080948032,
+        "min": 0.3499889373779297,
+        "max": 4.96965765953064,
+        "p50": 3.3015170097351074,
+        "p95": 4.872654962539673,
+        "p99": 4.947690782546997
+      },
+      "accuracy": {
+        "overall_accuracy": 0.76,
+        "correct": 19,
+        "total": 25,
+        "per_class_accuracy": {
+          "memo": 0.6666666666666666,
+          "advertisement": 0.5,
+          "scientific report": 0.5,
+          "scientific publication": 1.0,
+          "invoice": 1.0,
+          "questionnaire": 0.0,
+          "presentation": 0.5,
+          "letter": 1.0,
+          "budget": 1.0,
+          "file folder": 1.0,
+          "handwritten": 1.0,
+          "specification": 1.0,
+          "resume": 1.0,
+          "email": 1.0,
+          "news article": 1.0
+        }
+      }
+    },
+    "throughput": {
+      "concurrency": 20,
+      "total_requests": 1000,
+      "successful": 1000,
+      "failed": 0,
+      "success_rate": 100.0,
+      "total_time": 292.69932103157043,
+      "throughput": 3.416475297843757,
+      "latency": {
+        "mean": 5.803802325487137,
+        "median": 5.847264289855957,
+        "std": 0.6208829211429242,
+        "min": 0.2920708656311035,
+        "max": 7.655733108520508,
+        "p50": 5.847264289855957,
+        "p95": 6.532031917572021,
+        "p99": 7.072487547397613
+      },
+      "accuracy": {
+        "overall_accuracy": 0.861,
+        "correct": 861,
+        "total": 1000,
+        "per_class_accuracy": {
+          "budget": 0.9047619047619048,
+          "form": 0.796875,
+          "handwritten": 0.9027777777777778,
+          "file folder": 0.9411764705882353,
+          "advertisement": 0.765625,
+          "memo": 0.7580645161290323,
+          "scientific publication": 0.9642857142857143,
+          "news article": 0.75,
+          "scientific report": 0.9019607843137255,
+          "questionnaire": 0.7301587301587301,
+          "letter": 0.8823529411764706,
+          "resume": 0.9436619718309859,
+          "specification": 0.90625,
+          "invoice": 0.8714285714285714,
+          "email": 1.0,
+          "presentation": 0.75
+        }
+      }
+    }
+  }
+}
