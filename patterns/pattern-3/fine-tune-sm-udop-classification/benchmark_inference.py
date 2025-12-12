@@ -34,6 +34,10 @@ class InferenceBenchmark:
         """Invoke endpoint and measure latency"""
         start_time = time.time()
         
+        # Use correct prompt for trained model
+        if payload.get('prompt') is None:
+            payload['prompt'] = "Document Classification on RVLCDIP."
+        
         try:
             response = self.runtime.invoke_endpoint(
                 EndpointName=self.endpoint_name,

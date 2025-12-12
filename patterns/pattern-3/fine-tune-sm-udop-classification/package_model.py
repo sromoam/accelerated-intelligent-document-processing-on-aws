@@ -52,8 +52,9 @@ def package_model(checkpoint_path, output_path="model.tar.gz", use_optimized=Fal
                 print(f"    Copied {src}")
         
         # Create validation_prompt.json
+        # Use the correct prompt from training
         print("  Creating validation_prompt.json...")
-        prompt_data = {"validation_prompt": "What is the document type?"}
+        prompt_data = {"validation_prompt": "Document Classification on RVLCDIP."}
         with open(tmpdir / "validation_prompt.json", "w") as f:
             json.dump(prompt_data, f)
         
