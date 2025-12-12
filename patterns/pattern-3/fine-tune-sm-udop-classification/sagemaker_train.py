@@ -135,7 +135,7 @@ def create_training_job(role, bucket, job_name, max_epochs, base_model,
     
     # Add optional parameters
     if enable_batching:
-        hyperparameters["enable_batching"] = ""  # Flag parameter
+        hyperparameters["enable_batching"] = "true"  # Pass as string for SageMaker
     if fast_dev_run is not None:
         hyperparameters["fast_dev_run"] = fast_dev_run
     if max_steps is not None:

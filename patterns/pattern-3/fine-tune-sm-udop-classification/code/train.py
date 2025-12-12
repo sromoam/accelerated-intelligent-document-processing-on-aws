@@ -173,7 +173,7 @@ if __name__ == "__main__":
     parser.add_argument("--print_every_n_steps", type=int, default=100)
     parser.add_argument("--num_workers", type=int, default=4)
     parser.add_argument("--batch_size", type=int, default=1, help="Batch size (requires enable_batching=True for batch_size > 1)")
-    parser.add_argument("--enable_batching", action="store_true", help="Enable batching support with padding")
+    parser.add_argument("--enable_batching", type=lambda x: x.lower() == 'true', default=False, help="Enable batching support with padding")
     parser.add_argument("--num_sanity_val_steps", type=int, default=0, help="Number of validation sanity check steps before training (default: 0 for faster startup)")
     parser.add_argument("--max_steps", type=int, default=None, help="Maximum number of training steps (overrides max_epochs if set)")
 
