@@ -152,21 +152,21 @@ class UDOPModel(pl.LightningModule):
         self.log("memory_usage_gb", after_mem/1e9, prog_bar=False)
         self.log("lr_times_1m", self.scheduler.get_lr()[0] * 1000000, prog_bar=True)
 
+        # Handle both old format (model_inputs dict) and new format (direct keys)
+        if 'model_inputs' in batch:
+            # Old format - batch_size=1 with custom collate
+            model_inputs = batch['model_inputs']
+        else:
+            # New format - batched with padding
+            model_inputs = {
+                'input_ids': batch['input_ids'],
+                'attention_mask': batch['attention_mask'],
+                'bbox': batch['bbox'],
+                'pixel_values': batch['pixel_values'],
+                'labels': batch['labels']
+            }
+        
         try:
-            # Handle both old format (model_inputs dict) and new format (direct keys)
-            if 'model_inputs' in batch:
-                # Old format - batch_size=1 with custom collate
-                model_inputs = batch['model_inputs']
-            else:
-                # New format - batched with padding
-                model_inputs = {
-                    'input_ids': batch['input_ids'],
-                    'attention_mask': batch['attention_mask'],
-                    'bbox': batch['bbox'],
-                    'pixel_values': batch['pixel_values'],
-                    'labels': batch['labels']
-                }
-            
             model_output = self.model.forward(**model_inputs)
             lss = model_output.loss
             self.log(f"{subset}_loss", lss, sync_dist=True, prog_bar=True)
@@ -175,7 +175,8 @@ class UDOPModel(pl.LightningModule):
             print(str(e))
             for k, v in model_inputs.items():
                 print(f"{k}, of shape {v.shape}")
-            lss = torch.tensor(0)
+            # Return early with zero loss - can't decode without model output
+            return {"model_output": [], "targets": [], "task": "unknown"}, torch.tensor(0)
 
         # Handle evaluator - could be single instance (non-batched) or list (batched)
         evaluator = batch['evaluator'] if not isinstance(batch['evaluator'], list) else batch['evaluator'][0]

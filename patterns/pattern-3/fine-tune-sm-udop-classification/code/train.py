@@ -139,44 +139,9 @@ def train(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--data_dir", type=str,
-        default=os.environ.get("SM_INPUT_DIR", "/opt/ml/input") + "/data"
-    )
-    parser.add_argument(
-        "--model_dir", type=str,
-        default=os.environ.get("SM_MODEL_DIR", "/opt/ml/model")
-    )
-    parser.add_argument(
-        "--script_dir", type=str,
-        default=os.environ.get("SM_SCRIPT_DIR", "/opt/ml/code")
-    )
-    parser.add_argument(
-        "--output_dir", type=str,
-        default=os.environ.get("SM_OUTPUT_DIR", "/opt/ml/output")
-    )
-    parser.add_argument("--base_model", type=str, default="microsoft/udop-large")
-    parser.add_argument("--lr", type=float, default=5e-4)
-    parser.add_argument("--b1", type=float, default=0.9)
-    parser.add_argument("--b2", type=float, default=0.999)
-    parser.add_argument("--weight_decay", type=float, default=1e-4)
-    parser.add_argument("--lr_warmup_steps", type=int, default=60)
-    parser.add_argument("--max_epochs", type=int, default=3)
-    parser.add_argument("--accumulate_grad_batches", type=int, default=10)
-    parser.add_argument("--devices", type=int, default=torch.cuda.device_count())
-    parser.add_argument("--dropout_rate", type=float, default=0.2)
-    parser.add_argument("--precision", type=str, default="bf16-true")
-    parser.add_argument("--distributed_strategy", type=str, default="ddp_find_unused_parameters_true")
-    parser.add_argument("--patience", type=int, default=30)
-    parser.add_argument("--fast_dev_run", type=int, default=None)
-    parser.add_argument("--print_every_n_steps", type=int, default=100)
-    parser.add_argument("--num_workers", type=int, default=4)
-    parser.add_argument("--batch_size", type=int, default=1, help="Batch size (requires enable_batching=True for batch_size > 1)")
-    parser.add_argument("--enable_batching", type=lambda x: x.lower() == 'true', default=False, help="Enable batching support with padding")
-    parser.add_argument("--num_sanity_val_steps", type=int, default=0, help="Number of validation sanity check steps before training (default: 0 for faster startup)")
-    parser.add_argument("--max_steps", type=int, default=None, help="Maximum number of training steps (overrides max_epochs if set)")
-
+    from training_args import get_all_training_args_parser
+    
+    parser = get_all_training_args_parser()
     args = parser.parse_args()
     train(
         args.data_dir, args.model_dir, args.script_dir, args.output_dir, 

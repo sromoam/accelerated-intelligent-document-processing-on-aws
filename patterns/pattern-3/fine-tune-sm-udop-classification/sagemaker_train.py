@@ -91,10 +91,9 @@ def create_sagemaker_role(role_name, bucket, data_bucket):
             return response['Role']['Arn']
         raise e
 
-def create_training_job(role, bucket, job_name, max_epochs, base_model, 
-                       bucket_prefix="", data_bucket="", data_bucket_prefix="",
-                       instance_type="ml.g5.12xlarge", batch_size=1, enable_batching=False,
-                       num_workers=4, fast_dev_run=None, max_steps=None):
+def create_training_job(role, bucket, job_name, bucket_prefix="", data_bucket="", 
+                       data_bucket_prefix="", instance_type="ml.g5.12xlarge", 
+                       hyperparameters=None):
     """
     Create and run a SageMaker training job
     """
@@ -124,22 +123,17 @@ def create_training_job(role, bucket, job_name, max_epochs, base_model,
         container_local_output_path=output_dir + '/tensorboard'
     )
     
-    # Build hyperparameters dict
-    hyperparameters = {
-        "max_epochs": max_epochs,
-        "base_model": base_model,
-        "output_dir": output_dir,
-        "batch_size": batch_size,
-        "num_workers": num_workers,
-    }
+    # Add output_dir to hyperparameters (SageMaker-specific)
+    if hyperparameters is None:
+        hyperparameters = {}
+    hyperparameters["output_dir"] = output_dir
     
-    # Add optional parameters
-    if enable_batching:
-        hyperparameters["enable_batching"] = "true"  # Pass as string for SageMaker
-    if fast_dev_run is not None:
-        hyperparameters["fast_dev_run"] = fast_dev_run
-    if max_steps is not None:
-        hyperparameters["max_steps"] = max_steps
+    # Convert boolean enable_batching to string for SageMaker
+    if "enable_batching" in hyperparameters and hyperparameters["enable_batching"]:
+        hyperparameters["enable_batching"] = "true"
+    elif "enable_batching" in hyperparameters:
+        # Remove if False (don't pass the flag)
+        del hyperparameters["enable_batching"]
     
     estimator = PyTorch(
         entry_point="train.py",
@@ -169,69 +163,113 @@ def create_training_job(role, bucket, job_name, max_epochs, base_model,
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--role", type=str, required=False, default="",
-        help="Role ARN for creating the job. If not provided, a least privilege role will be created."
+    # Import hyperparameter parser from training_args
+    import sys
+    import os
+    code_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'code')
+    sys.path.insert(0, code_dir)
+    from training_args import get_hyperparameter_args_parser
+    
+    # Create parser with SageMaker-specific args + all hyperparameters
+    parser = argparse.ArgumentParser(
+        description='Launch UDOP training job on SageMaker',
+        parents=[get_hyperparameter_args_parser()],
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument(
-        "--bucket", type=str, required=True,
-        help="S3 bucket name to save the training results"
+    
+    # SageMaker-specific arguments
+    sagemaker_group = parser.add_argument_group(
+        'SageMaker Configuration',
+        'Arguments specific to SageMaker job configuration'
     )
-    parser.add_argument(
-        "--bucket-prefix", type=str, default="",
-        help="Prefix for paths in the output S3 bucket"
+    
+    sagemaker_group.add_argument(
+        "--role",
+        type=str,
+        required=False,
+        default="",
+        help="IAM Role ARN for SageMaker. If not provided, a role will be created automatically."
     )
-    parser.add_argument(
-        "--job-name", type=str, required=True,
-        help="Training job name"
+    
+    sagemaker_group.add_argument(
+        "--bucket",
+        type=str,
+        required=True,
+        help="S3 bucket name for training outputs (models, logs, tensorboard)"
     )
-    parser.add_argument(
-        "--max-epochs", type=int, default=3,
-        help="Max epoch for training"
+    
+    sagemaker_group.add_argument(
+        "--bucket-prefix",
+        type=str,
+        default="",
+        help="Prefix for all outputs in the S3 bucket (e.g., 'experiments/run1')"
     )
-    parser.add_argument(
-        "--base-model", type=str, default="microsoft/udop-large",
-        help="Base model name"
+    
+    sagemaker_group.add_argument(
+        "--job-name",
+        type=str,
+        required=True,
+        help="Unique name for the SageMaker training job"
     )
-    parser.add_argument(
-        "--data-bucket", type=str, default="",
-        help="Name of the S3 bucket, which has the training data. Default to the value of `bucket` arg"
+    
+    sagemaker_group.add_argument(
+        "--data-bucket",
+        type=str,
+        default="",
+        help="S3 bucket containing training data (defaults to --bucket if not specified)"
     )
-    parser.add_argument(
-        "--data-bucket-prefix", type=str, default="",
-        help="Prefix for paths in the data S3 bucket. Defaults to the value of bucket-prefix"
+    
+    sagemaker_group.add_argument(
+        "--data-bucket-prefix",
+        type=str,
+        default="",
+        help="Prefix for training data in S3 (defaults to --bucket-prefix if not specified)"
     )
-    parser.add_argument(
-        "--instance-type", type=str, default="ml.g5.12xlarge",
+    
+    sagemaker_group.add_argument(
+        "--instance-type",
+        type=str,
+        default="ml.g5.12xlarge",
         help="SageMaker instance type (e.g., ml.g4dn.xlarge, ml.g4dn.12xlarge, ml.g5.12xlarge)"
-    )
-    parser.add_argument(
-        "--batch-size", type=int, default=1,
-        help="Batch size for training (requires --enable-batching for batch_size > 1)"
-    )
-    parser.add_argument(
-        "--enable-batching", action="store_true",
-        help="Enable batching support with padding"
-    )
-    parser.add_argument(
-        "--num-workers", type=int, default=4,
-        help="Number of data loading workers"
-    )
-    parser.add_argument(
-        "--fast-dev-run", type=int, default=None,
-        help="Run only N batches for quick testing"
-    )
-    parser.add_argument(
-        "--max-steps", type=int, default=None,
-        help="Maximum number of training steps"
     )
     
     args = parser.parse_args()
+    
+    # Build hyperparameters dict from all training args
+    hyperparameters = {
+        "max_epochs": args.max_epochs,
+        "base_model": args.base_model,
+        "lr": args.lr,
+        "b1": args.b1,
+        "b2": args.b2,
+        "weight_decay": args.weight_decay,
+        "lr_warmup_steps": args.lr_warmup_steps,
+        "dropout_rate": args.dropout_rate,
+        "accumulate_grad_batches": args.accumulate_grad_batches,
+        "patience": args.patience,
+        "precision": args.precision,
+        "distributed_strategy": args.distributed_strategy,
+        "print_every_n_steps": args.print_every_n_steps,
+        "batch_size": args.batch_size,
+        "num_workers": args.num_workers,
+        "num_sanity_val_steps": args.num_sanity_val_steps,
+    }
+    
+    # Add optional parameters
+    if args.enable_batching:
+        hyperparameters["enable_batching"] = True
+    if args.fast_dev_run is not None:
+        hyperparameters["fast_dev_run"] = args.fast_dev_run
+    if args.max_steps is not None:
+        hyperparameters["max_steps"] = args.max_steps
+    
     create_training_job(
-        args.role, args.bucket, args.job_name,
-        args.max_epochs, args.base_model, args.bucket_prefix,
-        args.data_bucket, args.data_bucket_prefix,
-        args.instance_type, args.batch_size, args.enable_batching,
-        args.num_workers, args.fast_dev_run, args.max_steps
+        role=args.role,
+        bucket=args.bucket,
+        job_name=args.job_name,
+        bucket_prefix=args.bucket_prefix,
+        data_bucket=args.data_bucket,
+        data_bucket_prefix=args.data_bucket_prefix,
+        instance_type=args.instance_type,
+        hyperparameters=hyperparameters
     )
