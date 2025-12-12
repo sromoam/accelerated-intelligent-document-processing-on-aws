@@ -187,6 +187,20 @@ def get_data_args_parser():
         help="Number of data loading workers (default: 4, use 0 for debugging)"
     )
     
+    data_group.add_argument(
+        "--max_train_samples",
+        type=int,
+        default=None,
+        help="Truncate training dataset to N samples (for faster testing, default: None = use all)"
+    )
+    
+    data_group.add_argument(
+        "--max_val_samples",
+        type=int,
+        default=None,
+        help="Truncate validation dataset to N samples (for faster testing, default: None = use all)"
+    )
+    
     return parser
 
 
@@ -248,6 +262,13 @@ def get_logging_args_parser():
         type=int,
         default=100,
         help="Log metrics every N training steps (default: 100)"
+    )
+    
+    logging_group.add_argument(
+        "--verbose",
+        type=lambda x: x.lower() == 'true',
+        default=True,
+        help="Enable verbose logging and progress bars (default: true)"
     )
     
     return parser

@@ -121,6 +121,15 @@ class DocClassificationEvaluator:
     def decode_model_output(self, model_output, skip_special_tokens=True):
         logits = model_output["logits"]
         predicted_ids = torch.argmax(logits, dim=-1)
+        
+        # Find EOS token (id=1) and truncate there
+        # This prevents decoding padding positions
+        eos_token_id = 1
+        for i, token_id in enumerate(predicted_ids[0]):
+            if token_id == eos_token_id:
+                predicted_ids = predicted_ids[:, :i+1]
+                break
+        
         string = self.processor.batch_decode(
             predicted_ids, skip_special_tokens=skip_special_tokens
         )[0]
@@ -146,7 +155,7 @@ class DocClassificationEvaluator:
 
 
 class ClassificationDataset(Dataset):
-    def __init__(self, processor, data_dir, split="training", enable_batching=False, max_length=1024):
+    def __init__(self, processor, data_dir, split="training", enable_batching=False, max_length=1024, max_samples=None):
         self.processor = processor
         self.data_dir = data_dir + '/' + split
         self.evaluator = DocClassificationEvaluator(processor=self.processor)
@@ -157,7 +166,9 @@ class ClassificationDataset(Dataset):
         self.prompt = "Document Classification on {}.".format(
             metadata.get('name', 'ClassificationDataset')
         )
-        self._size = int(metadata['size'])
+        full_size = int(metadata['size'])
+        # Truncate dataset if max_samples is specified
+        self._size = min(full_size, max_samples) if max_samples else full_size
 
     def prepare_input(self, image, textract, label):
         textract = get_boxes_from_textract(textract)
