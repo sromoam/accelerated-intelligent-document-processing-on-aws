@@ -107,6 +107,9 @@ class UDOPModel(pl.LightningModule):
         self.training_step_outputs = []
         self.validation_step_outputs = []
         self.tasks = {}  # Maps task names to evaluators
+        
+        # Explicitly set model to train mode (HuggingFace models load in eval mode)
+        self.model.train()
 
     def predict_step(self, batch, batch_idx, dataloader_idx=0):
         """
@@ -167,6 +170,13 @@ class UDOPModel(pl.LightningModule):
             }
         
         try:
+            # Debug: Check labels on first batch
+            if batch_idx == 0 and subset == 'train':
+                print(f"\n[DEBUG] First batch labels shape: {model_inputs['labels'].shape}")
+                print(f"[DEBUG] First batch labels (first 20 tokens): {model_inputs['labels'][0, :20]}")
+                print(f"[DEBUG] Number of -100 (padding): {(model_inputs['labels'] == -100).sum().item()}")
+                print(f"[DEBUG] Number of valid tokens: {(model_inputs['labels'] != -100).sum().item()}")
+            
             model_output = self.model.forward(**model_inputs)
             lss = model_output.loss
             self.log(f"{subset}_loss", lss, sync_dist=True, prog_bar=True)
@@ -209,8 +219,20 @@ class UDOPModel(pl.LightningModule):
             "targets": text_labels,
             "task": task
         }
+        
+        # Debug: Print first few predictions vs targets
+        if batch_idx < 3 and subset == 'train':
+            print(f"\n[DEBUG] Step {batch_idx}:")
+            print(f"  Predictions: {decoded[:3]}")
+            print(f"  Targets: {text_labels[:3]}")
+            print(f"  Loss: {lss.item():.4f}")
+        
         return step_outputs, lss
 
+    def on_train_epoch_start(self):
+        """Ensure model is in train mode at the start of each training epoch."""
+        self.model.train()
+    
     def training_step(self, batch, batch_idx):
         """
         Execute a single training step.
@@ -222,6 +244,8 @@ class UDOPModel(pl.LightningModule):
         Returns:
             Loss tensor for backpropagation
         """
+        # Ensure model is in train mode (critical for HuggingFace models)
+        self.model.train()
         step_outputs, lss = self.generic_step(batch, batch_idx, subset='train')
         self.training_step_outputs.append(step_outputs)
         return lss
@@ -237,6 +261,8 @@ class UDOPModel(pl.LightningModule):
         Returns:
             Loss tensor for logging
         """
+        # Set model to eval mode for validation
+        self.model.eval()
         step_outputs, lss = self.generic_step(batch, batch_idx, subset='val')
         self.validation_step_outputs.append(step_outputs)
         return lss
