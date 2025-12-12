@@ -220,12 +220,12 @@ class UDOPModel(pl.LightningModule):
             "task": task
         }
         
-        # Debug: Print first few predictions vs targets
+        # Debug: Print first few predictions vs targets (with flush)
         if batch_idx < 3 and subset == 'train':
-            print(f"\n[DEBUG] Step {batch_idx}:")
-            print(f"  Predictions: {decoded[:3]}")
-            print(f"  Targets: {text_labels[:3]}")
-            print(f"  Loss: {lss.item():.4f}")
+            print(f"\n[DEBUG] Step {batch_idx}:", flush=True)
+            print(f"  Predictions: {decoded[:3]}", flush=True)
+            print(f"  Targets: {text_labels[:3]}", flush=True)
+            print(f"  Loss: {lss.item():.4f}", flush=True)
         
         return step_outputs, lss
 
@@ -296,6 +296,11 @@ class UDOPModel(pl.LightningModule):
                 metrics = evaluator.compute_metrics(v['predictions'], v['targets'])
                 for k_, v_ in metrics.items():
                     self.log(f"train_{k_}", v_, sync_dist=True, prog_bar=True)
+                
+                # Print summary for SageMaker metric parsing
+                print(f"\n[EPOCH {self.current_epoch}] Training Metrics:", flush=True)
+                print(f"  train_macro_avg_f1: {metrics.get('macro_avg_f1', 0.0):.4f}", flush=True)
+                print(f"  train_weighted_avg_f1: {metrics.get('weighted_avg_f1', 0.0):.4f}", flush=True)
         
         self.training_step_outputs.clear()
 
@@ -328,6 +333,16 @@ class UDOPModel(pl.LightningModule):
                 metrics = evaluator.compute_metrics(v['predictions'], v['targets'])
                 for k_, v_ in metrics.items():
                     self.log(f"val_{k_}", v_, sync_dist=True, prog_bar=True)
+                
+                # Print summary for SageMaker metric parsing
+                print(f"\n[EPOCH {self.current_epoch}] Validation Metrics:", flush=True)
+                print(f"  val_macro_avg_f1: {metrics.get('macro_avg_f1', 0.0):.4f}", flush=True)
+                print(f"  val_weighted_avg_f1: {metrics.get('weighted_avg_f1', 0.0):.4f}", flush=True)
+                
+                # Print per-class metrics for monitoring
+                for class_name in ['letter', 'form', 'email', 'invoice', 'memo']:
+                    if f'{class_name}_f1_score' in metrics:
+                        print(f"  val_{class_name}_f1: {metrics[f'{class_name}_f1_score']:.4f}", flush=True)
         
         self.validation_step_outputs.clear()
 

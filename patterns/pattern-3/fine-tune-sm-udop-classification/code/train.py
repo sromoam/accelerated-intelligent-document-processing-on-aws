@@ -140,13 +140,20 @@ def train(
     log_timing("Callbacks configured")
     
     log_timing("Creating Trainer...")
-    # Use CPU for local training if strategy is auto (MPS has float64 issues with UDOP)
-    # For SageMaker/GPU training, use "gpu" accelerator
+    # Determine accelerator based on strategy and available hardware
     if distributed_strategy == "auto":
-        accelerator = "cpu"
-        print("Using CPU accelerator for local training (MPS has compatibility issues with UDOP)")
+        # Auto mode: Use GPU if available, otherwise CPU
+        if torch.cuda.is_available():
+            accelerator = "auto"
+            distributed_strategy = "auto"  # Let Lightning choose best strategy
+            print("Using GPU with auto strategy")
+        else:
+            accelerator = "cpu"
+            print("Using CPU accelerator (no GPU available or MPS compatibility issues)")
     else:
+        # Explicit strategy provided - use GPU
         accelerator = "gpu"
+        print(f"Using GPU with strategy: {distributed_strategy}")
     
     trainer = pl.Trainer(
         max_epochs=max_epochs,

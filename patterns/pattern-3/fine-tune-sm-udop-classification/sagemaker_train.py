@@ -135,6 +135,25 @@ def create_training_job(role, bucket, job_name, bucket_prefix="", data_bucket=""
         # Remove if False (don't pass the flag)
         del hyperparameters["enable_batching"]
     
+    # Define metric patterns for SageMaker console visualization
+    metric_definitions = [
+        # Epoch-level metrics (clean format)
+        {'Name': 'train:macro_avg_f1', 'Regex': 'train_macro_avg_f1: ([0-9\\.]+)'},
+        {'Name': 'train:weighted_avg_f1', 'Regex': 'train_weighted_avg_f1: ([0-9\\.]+)'},
+        {'Name': 'val:macro_avg_f1', 'Regex': 'val_macro_avg_f1: ([0-9\\.]+)'},
+        {'Name': 'val:weighted_avg_f1', 'Regex': 'val_weighted_avg_f1: ([0-9\\.]+)'},
+        # Per-class F1 scores
+        {'Name': 'val:letter_f1', 'Regex': 'val_letter_f1: ([0-9\\.]+)'},
+        {'Name': 'val:form_f1', 'Regex': 'val_form_f1: ([0-9\\.]+)'},
+        {'Name': 'val:email_f1', 'Regex': 'val_email_f1: ([0-9\\.]+)'},
+        {'Name': 'val:invoice_f1', 'Regex': 'val_invoice_f1: ([0-9\\.]+)'},
+        {'Name': 'val:memo_f1', 'Regex': 'val_memo_f1: ([0-9\\.]+)'},
+        # Step-level metrics (from progress bar)
+        {'Name': 'step:train_loss', 'Regex': 'train_loss=([0-9\\.]+)'},
+        {'Name': 'step:val_loss', 'Regex': 'val_loss=([0-9\\.]+)'},
+        {'Name': 'step:learning_rate', 'Regex': 'lr_times_1m=([0-9\\.]+)'},
+    ]
+    
     estimator = PyTorch(
         entry_point="train.py",
         source_dir="./code",
@@ -148,6 +167,7 @@ def create_training_job(role, bucket, job_name, bucket_prefix="", data_bucket=""
         code_location=get_s3_path(bucket, bucket_prefix, "scripts/training/"),
         sagemaker_session=sagemaker_session,
         tensorboard_output_config=tensorboard_output_config,
+        metric_definitions=metric_definitions,
         environment={"FI_EFA_FORK_SAFE": "1"}
     )
     
