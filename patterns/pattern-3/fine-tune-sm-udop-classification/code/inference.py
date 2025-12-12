@@ -10,7 +10,7 @@ import numpy as np
 import lightning.pytorch as pl
 
 from PIL import Image
-from transformers import AutoProcessor
+from transformers import AutoProcessor, UdopForConditionalGeneration
 
 from model import UDOPModel
 from utils import InferenceHelper
@@ -34,25 +34,61 @@ def model_fn(model_dir):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     logger.info(f"Using device: {device}")
     model_id = os.getenv("BASE_MODEL", "microsoft/udop-large")
-    model = UDOPModel.load_from_checkpoint(
-        checkpoint_path=os.path.join(model_dir, "best_model.ckpt"),
-        model_id=model_id
-    )
+    
+    # Check if checkpoint exists, otherwise use vanilla weights
+    checkpoint_path = os.path.join(model_dir, "best_model.ckpt")
+    
+    if os.path.exists(checkpoint_path):
+        logger.info(f"Loading fine-tuned model from checkpoint: {checkpoint_path}")
+        model = UDOPModel.load_from_checkpoint(
+            checkpoint_path=checkpoint_path,
+            model_id=model_id
+        )
+    else:
+        logger.info("===== USING VANILLA MODEL (NO CHECKPOINT) =====")
+        logger.info(f"Loading vanilla model: {model_id}")
+        # Load vanilla model directly
+        revision = get_model_revision(model_id) if model_id in ["microsoft/udop-large"] else None
+        if revision:
+            logger.info(f"Using pinned revision: {revision}")
+            logger.info("Downloading model from HuggingFace (may take 2-3 minutes)...")
+            vanilla_model = UdopForConditionalGeneration.from_pretrained(
+                model_id, revision=revision
+            )
+        else:
+            logger.info("Downloading model from HuggingFace (may take 2-3 minutes)...")
+            vanilla_model = UdopForConditionalGeneration.from_pretrained(model_id)
+        
+        logger.info("===== VANILLA MODEL LOADED SUCCESSFULLY =====")
+        
+        # Wrap in UDOPModel for consistency
+        model = type('VanillaWrapper', (), {
+            'model': vanilla_model,
+            'to': lambda self, device: vanilla_model.to(device),
+            'eval': lambda self: vanilla_model.eval()
+        })()
+    
     model.to(device) 
     model.eval()
-    # Load processor with pinned revision for security (addresses B615 finding)
+    
+    # Load processor with pinned revision for security
     revision = get_model_revision(model_id) if model_id in ["microsoft/udop-large"] else None
     if revision:
         logger.info(f"Loading processor for {model_id} with pinned revision: {revision}")
         processor = AutoProcessor.from_pretrained(model_id, revision=revision, apply_ocr=False)
     else:
-        # nosec B615 - Sample training/inference code for demonstration purposes
-        # This fallback path is only for custom models during development/testing
-        # Production deployments should use pinned revisions from model_versions.py
-        logger.info(f"Loading processor for {model_id} without revision pinning (not in managed list)")
+        logger.info(f"Loading processor for {model_id} without revision pinning")
         processor = AutoProcessor.from_pretrained(model_id, apply_ocr=False)
-    with open(os.path.join(model_dir, "validation_prompt.json"), 'r') as f:
-        validation_prompt = json.load(f)['validation_prompt']
+    
+    # Load validation prompt if available, otherwise use default
+    prompt_path = os.path.join(model_dir, "validation_prompt.json")
+    if os.path.exists(prompt_path):
+        with open(prompt_path, 'r') as f:
+            validation_prompt = json.load(f)['validation_prompt']
+    else:
+        validation_prompt = "Document Classification."
+        logger.info(f"No validation_prompt.json found, using default: {validation_prompt}")
+    
     logger.info("===== Model successfully loaded. =====")
     return {
         "model": model,

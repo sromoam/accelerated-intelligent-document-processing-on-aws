@@ -271,6 +271,13 @@ def get_logging_args_parser():
         help="Enable verbose logging and progress bars (default: true)"
     )
     
+    logging_group.add_argument(
+        "--debug_mode",
+        type=lambda x: x.lower() == 'true',
+        default=False,
+        help="Enable debug logging (predictions, labels, shapes) (default: false)"
+    )
+    
     return parser
 
 

@@ -57,7 +57,7 @@ class UDOPModel(pl.LightningModule):
     def __init__(
         self, model_id, lr=5e-5, weight_decay=1e-5, b1=0.9, b2=0.999, 
         lr_warmup_steps=20, max_steps=5000, dropout_rate=0.2,
-        print_every_n_steps=100
+        print_every_n_steps=100, debug_mode=False
     ):
         """
         Initialize the UDOP model wrapper.
@@ -72,6 +72,7 @@ class UDOPModel(pl.LightningModule):
             max_steps: Maximum number of training steps for LR schedule (default: 5000)
             dropout_rate: Dropout rate for model regularization (default: 0.2)
             print_every_n_steps: Logging frequency (default: 100)
+            debug_mode: Enable debug logging of predictions and labels (default: False)
         
         Note:
             For security, models in the managed list (model_versions.py) are loaded
@@ -86,6 +87,7 @@ class UDOPModel(pl.LightningModule):
         self.lr_warmup_steps = lr_warmup_steps
         self.max_steps = max_steps
         self.print_every_n_steps = print_every_n_steps
+        self.debug_mode = debug_mode
         
         # Load model with pinned revision for security (addresses B615 finding)
         revision = get_model_revision(model_id) if model_id in ["microsoft/udop-large"] else None
@@ -170,16 +172,20 @@ class UDOPModel(pl.LightningModule):
             }
         
         try:
-            # Debug: Check labels on first batch
-            if batch_idx == 0 and subset == 'train':
-                print(f"\n[DEBUG] First batch labels shape: {model_inputs['labels'].shape}")
-                print(f"[DEBUG] First batch labels (first 20 tokens): {model_inputs['labels'][0, :20]}")
-                print(f"[DEBUG] Number of -100 (padding): {(model_inputs['labels'] == -100).sum().item()}")
-                print(f"[DEBUG] Number of valid tokens: {(model_inputs['labels'] != -100).sum().item()}")
+            # Debug: Check labels on first batch (only if debug_mode enabled)
+            if self.debug_mode and batch_idx == 0 and subset == 'train':
+                print(f"\n[DEBUG] First batch labels shape: {model_inputs['labels'].shape}", flush=True)
+                print(f"[DEBUG] First batch labels (first 20 tokens): {model_inputs['labels'][0, :20]}", flush=True)
+                print(f"[DEBUG] Number of -100 (padding): {(model_inputs['labels'] == -100).sum().item()}", flush=True)
+                print(f"[DEBUG] Number of valid tokens: {(model_inputs['labels'] != -100).sum().item()}", flush=True)
             
             model_output = self.model.forward(**model_inputs)
             lss = model_output.loss
             self.log(f"{subset}_loss", lss, sync_dist=True, prog_bar=True)
+            
+            # Log loss for SageMaker metric parsing (every N steps)
+            if batch_idx % self.print_every_n_steps == 0:
+                print(f"[STEP {self.global_step}] {subset}_loss: {lss.item():.4f}", flush=True)
         except torch.cuda.OutOfMemoryError as e:
             # Handle OOM gracefully - print diagnostics and return zero loss
             print(str(e))
@@ -220,8 +226,8 @@ class UDOPModel(pl.LightningModule):
             "task": task
         }
         
-        # Debug: Print first few predictions vs targets (with flush)
-        if batch_idx < 3 and subset == 'train':
+        # Debug: Print first few predictions vs targets (only if debug_mode enabled)
+        if self.debug_mode and batch_idx < 3 and subset == 'train':
             print(f"\n[DEBUG] Step {batch_idx}:", flush=True)
             print(f"  Predictions: {decoded[:3]}", flush=True)
             print(f"  Targets: {text_labels[:3]}", flush=True)
@@ -299,6 +305,17 @@ class UDOPModel(pl.LightningModule):
                 
                 # Print summary for SageMaker metric parsing
                 print(f"\n[EPOCH {self.current_epoch}] Training Metrics:", flush=True)
+                
+                # Get average training loss from logged metrics
+                train_loss = self.trainer.callback_metrics.get('train_loss', 0.0)
+                if isinstance(train_loss, torch.Tensor):
+                    train_loss = train_loss.item()
+                print(f"  train_loss: {train_loss:.4f}", flush=True)
+                
+                # Log current learning rate
+                current_lr = self.scheduler.get_last_lr()[0]
+                print(f"  learning_rate: {current_lr:.6f}", flush=True)
+                
                 print(f"  train_macro_avg_f1: {metrics.get('macro_avg_f1', 0.0):.4f}", flush=True)
                 print(f"  train_weighted_avg_f1: {metrics.get('weighted_avg_f1', 0.0):.4f}", flush=True)
         
@@ -336,6 +353,13 @@ class UDOPModel(pl.LightningModule):
                 
                 # Print summary for SageMaker metric parsing
                 print(f"\n[EPOCH {self.current_epoch}] Validation Metrics:", flush=True)
+                
+                # Get average validation loss from logged metrics
+                val_loss = self.trainer.callback_metrics.get('val_loss', 0.0)
+                if isinstance(val_loss, torch.Tensor):
+                    val_loss = val_loss.item()
+                print(f"  val_loss: {val_loss:.4f}", flush=True)
+                
                 print(f"  val_macro_avg_f1: {metrics.get('macro_avg_f1', 0.0):.4f}", flush=True)
                 print(f"  val_weighted_avg_f1: {metrics.get('weighted_avg_f1', 0.0):.4f}", flush=True)
                 

@@ -40,7 +40,7 @@ def train(
     devices, base_model, lr, lr_warmup_steps, dropout_rate, b1, b2, weight_decay,
     print_every_n_steps, patience, fast_dev_run, precision, distributed_strategy, num_workers,
     batch_size, enable_batching, num_sanity_val_steps, max_steps, max_train_samples, max_val_samples,
-    verbose
+    verbose, debug_mode
 ):
     import time
     start_time = time.time()
@@ -122,7 +122,8 @@ def train(
         lr=lr, lr_warmup_steps=lr_warmup_steps,
         dropout_rate=dropout_rate, max_steps=max_steps,
         b1=b1, b2=b2, weight_decay=weight_decay,
-        print_every_n_steps=print_every_n_steps
+        print_every_n_steps=print_every_n_steps,
+        debug_mode=debug_mode
     )
 
     log_timing("Model created")
@@ -206,5 +207,5 @@ if __name__ == "__main__":
         args.b1, args.b2, args.weight_decay, args.print_every_n_steps, 
         args.patience, args.fast_dev_run, args.precision, args.distributed_strategy, args.num_workers,
         args.batch_size, args.enable_batching, args.num_sanity_val_steps, args.max_steps,
-        args.max_train_samples, args.max_val_samples, args.verbose
+        args.max_train_samples, args.max_val_samples, args.verbose, args.debug_mode
     )
