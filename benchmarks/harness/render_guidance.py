@@ -19,13 +19,20 @@ benchmarks/results/guidance/<ID>.json, its values fill the table; otherwise ever
       "region": "us-west-2",
       "source": "benchmarks/results/v0.6.15/<suite>/summary.json",
       "verdict": "Use iterative extraction above about 400 rows.",
-      "cells": {"<dataset key>|<value>|<metric key>": {"mean": 0.812, "se": 0.006}}
+      "cells": {"<dataset key>|<value>|<metric key>": {"mean": 0.812, "se": 0.006}},
+      "usage": {"<dataset key>|<value>": [{"bedrock/<model id>|inputTokens": 41250, ...}]}
     }
 
 A cell is either a string, printed as is, or a mean and standard error over the runs,
 printed as "0.81 ± 0.01" (two standard errors). For each dataset kind, the ablation's
 `plot` metric (or its first metric) is drawn as a dot-and-whisker SVG under
 images/benchmark-guidance/ whenever at least one of its cells has a mean.
+
+`usage` is optional: each run's Bedrock and Textract usage per document. The renderer
+prices it with config_library/pricing.yaml and adds a "Cost per 1,000 documents"
+column to every table. When every plotted point has a cost, the plot puts cost on the
+x-axis, and when the plotted metric is an accuracy, it draws the marginal cost of
+error from the cheapest value to each more accurate one (marginal-cost-of-error.md).
 
 Usage:
     python3 benchmarks/harness/render_guidance.py           # rewrite the pages
@@ -38,16 +45,40 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
+import statistics
 import sys
+from functools import cache
 from pathlib import Path
 from typing import Any
 
 import yaml
-from guidance_plots import MAX_LABELLED, draw_plot, draw_scatter, fmt
+from guidance_plots import (
+    ERROR_RATE_METRICS,
+    MAX_LABELLED,
+    draw_plot,
+    draw_scatter,
+    fmt,
+    marginal_cost_of_error,
+    money,
+)
 
 REPO = Path(__file__).resolve().parents[2]
 REGISTRY = REPO / "benchmarks" / "matrices" / "guidance_ablations.yaml"
 RESULTS = REPO / "benchmarks" / "results" / "guidance"
+PRICING = REPO / "config_library" / "pricing.yaml"
+COST = "cost_per_1000_docs"
+MCOE_PAGE = "marginal-cost-of-error.md"
+COST_NOTE = (
+    "*Costs are computed from `config_library/pricing.yaml` at the time this page was "
+    "generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS "
+    "charges are not included.*"
+)
+MCOE_CAPTION = (
+    " Lines run from the cheapest value to each other value, labelled with the "
+    "marginal cost of error: the extra cost per error prevented "
+    f"([Marginal Cost of Error]({MCOE_PAGE}))."
+)
 PAGES = REPO / "docs" / "benchmark-guidance"
 #: Generated regions of a page. ABLATIONS is required; the others are optional.
 REGIONS = ("FAQ", "ABLATIONS")
@@ -88,12 +119,82 @@ def load_results(ablation_id: str) -> dict[str, Any] | None:
         return json.load(f)
 
 
-def cell_text(cell: Cell | None) -> str:
+@cache
+def load_pricing() -> dict[str, dict[str, float]]:
+    """Unit prices from config_library/pricing.yaml, by `service/id` and unit."""
+    with PRICING.open(encoding="utf-8") as f:
+        entries = yaml.safe_load(f)["pricing"]
+    return {
+        e["name"]: {u["name"]: float(u["price"]) for u in e.get("units") or []}
+        for e in entries
+    }
+
+
+def unit_price(name: str, unit: str) -> float | None:
+    """The price of one unit, falling back from a `:1m` model ID to its base ID."""
+    prices = load_pricing()
+    for key in (name, name.removesuffix(":1m")):
+        if unit in prices.get(key, {}):
+            return prices[key][unit]
+    return None
+
+
+def mean_se(values: list[float]) -> dict[str, float]:
+    m = statistics.fmean(values)
+    se = statistics.stdev(values) / math.sqrt(len(values)) if len(values) > 1 else 0.0
+    return {"mean": round(m, 6), "se": round(se, 6)}
+
+
+def price_usage(
+    usage: dict[str, list[dict[str, float]]],
+) -> tuple[dict[str, dict[str, float]], dict[str, set[str]]]:
+    """Cost per 1,000 documents for each `dataset|value`, and its unpriced usage.
+
+    Each run's usage is priced on its own, so the standard error is across runs.
+    Usage with no price counts as $0 and is returned so the page can say so.
+    """
+    costs: dict[str, dict[str, float]] = {}
+    unpriced: dict[str, set[str]] = {}
+    for key, runs in usage.items():
+        per_run = []
+        for run in runs:
+            total = 0.0
+            for name, amount in run.items():
+                service_id, _, unit = name.rpartition("|")
+                price = unit_price(service_id, unit)
+                if price is None:
+                    if amount:
+                        unpriced.setdefault(key, set()).add(name)
+                    continue
+                total += amount * price
+            per_run.append(total * 1000)
+        if per_run:
+            costs[key] = mean_se(per_run)
+    return costs, unpriced
+
+
+def cell_text(cell: Cell | None, metric: str = "") -> str:
     if cell is None:
         return EMPTY
     if isinstance(cell, str):
         return cell
+    if metric == COST:
+        return f"{money(cell['mean'])} ± {money(2 * cell.get('se', 0))}"
     return f"{fmt(cell['mean'])} ± {fmt(2 * cell.get('se', 0))}"
+
+
+def lower_first(text: str) -> str:
+    """Lower-case the first letter only, so "Cost ... (USD)" keeps its acronym."""
+    return text[:1].lower() + text[1:]
+
+
+def with_cost(cols: list[str]) -> list[str]:
+    """Add the cost column after the last tokens column, or at the end."""
+    if COST in cols:
+        return cols
+    last = max((i for i, m in enumerate(cols) if m.endswith("_tokens")), default=-1)
+    at = last + 1 if last >= 0 else len(cols)
+    return [*cols[:at], COST, *cols[at:]]
 
 
 def dataset_anchor(key: str, datasets: dict[str, Any]) -> str:
@@ -125,7 +226,18 @@ def render_ablation(
     datasets: dict[str, Any] = reg["datasets"]
     metrics: dict[str, Any] = reg["metrics"]
     presets = PRESETS if ab["page"] != "index" else "#how-we-run-a-benchmark"
-    cells: dict[str, Cell] = (results or {}).get("cells", {})
+    cells: dict[str, Cell] = dict((results or {}).get("cells", {}))
+    usage = (results or {}).get("usage") or {}
+    costs, unpriced = price_usage(usage)
+    for key, names in unpriced.items():
+        for name in sorted(names):
+            print(
+                f"warning: {ab['id']} {key}: no price for {name} in "
+                f"{PRICING.relative_to(REPO)}; counted as $0",
+                file=sys.stderr,
+            )
+    cells.update({f"{key}|{COST}": cell for key, cell in costs.items()})
+    shows_cost = False
     out = Rendered()
     answer = results["verdict"] if results else "Not yet measured."
     details_link = f"[Details: {ab['id']}](#{slugify(details_heading(ab))})"
@@ -176,8 +288,10 @@ def render_ablation(
         cols = [m for m in ab["metrics"] if kind in metrics[m]["kinds"]]
         if not cols:
             continue
-        kind_sets = [k for k in ab["datasets"] if datasets[k]["kind"] == kind]
         plot_metric = ab.get("plot") if ab.get("plot") in cols else cols[0]
+        if usage and kind in metrics[COST]["kinds"]:
+            cols = with_cost(cols)
+        kind_sets = [k for k in ab["datasets"] if datasets[k]["kind"] == kind]
         panels = []
         for ds_key in kind_sets:
             rows = []
@@ -188,13 +302,31 @@ def render_ablation(
                 (datasets[ds_key].get("short", datasets[ds_key]["name"]), rows)
             )
         panels = [(name, rows) for name, rows in panels if any(p for _, p in rows)]
-        x_metric = ab.get("plot_x") or (
-            "total_tokens"
-            if "total_tokens" in cols
-            else next(
-                (m for m in cols if m.endswith("_tokens") and m != plot_metric), None
+        measured = [
+            f"{ds_key}|{value}"
+            for ds_key in kind_sets
+            for value in ab["values"]
+            if isinstance(cells.get(f"{ds_key}|{value}|{plot_metric}"), dict)
+        ]
+        use_cost = (
+            plot_metric != COST
+            and bool(measured)
+            and all(isinstance(cells.get(f"{k}|{COST}"), dict) for k in measured)
+        )
+        x_metric = (
+            (COST if use_cost else None)
+            or ab.get("plot_x")
+            or (
+                "total_tokens"
+                if "total_tokens" in cols
+                else next(
+                    (m for m in cols if m.endswith("_tokens") and m != plot_metric),
+                    None,
+                )
             )
         )
+        show_mcoe = x_metric == COST and plot_metric in ERROR_RATE_METRICS
+        mcoe: dict[str, tuple[str, dict[str, float | None]]] = {}
         scatter = []
         if x_metric and not plot_metric.endswith("_tokens"):
             for ds_key in kind_sets:
@@ -208,21 +340,31 @@ def render_ablation(
                     scatter.append(
                         (datasets[ds_key].get("short", datasets[ds_key]["name"]), pts)
                     )
+                    if show_mcoe:
+                        mcoe[ds_key] = marginal_cost_of_error(pts)
         if panels:
             name = f"{ab['id']}-{kind}.svg"
             metric_name = metrics[plot_metric]["name"]
             if scatter and x_metric:
                 x_name = metrics[x_metric]["name"]
                 out.plots[name] = draw_scatter(
-                    x_name, metric_name, scatter, ab.get("runs", 0)
+                    x_name,
+                    metric_name,
+                    scatter,
+                    ab.get("runs", 0),
+                    x_money=x_metric == COST,
+                    mcoe=show_mcoe,
                 )
-                alt = f"{metric_name} against {x_name.lower()} for each {ab['changes']}"
-                caption = f"*{metric_name} against {x_name.lower()}. {SCATTER_CAPTION}"
+                x_lower = lower_first(x_name)
+                alt = f"{metric_name} against {x_lower} for each {ab['changes']}"
+                caption = f"*{metric_name} against {x_lower}. {SCATTER_CAPTION}"
                 if max(len(pts) for _, pts in scatter) > MAX_LABELLED:
                     caption += (
                         " Labels mark the default and the values no other value "
                         "beats on both axes; hover a point for the rest."
                     )
+                if any(gains for _, gains in mcoe.values()):
+                    caption += MCOE_CAPTION
                 caption += "*"
             else:
                 out.plots[name] = draw_plot(metric_name, panels, ab.get("runs", 0))
@@ -245,14 +387,44 @@ def render_ablation(
             else:
                 headline = plot_md
         header = ["Dataset", ab["changes"]] + [metrics[m]["name"] for m in cols]
+        refs = {ref for ref, _ in mcoe.values()}
+        if mcoe:
+            header.append(
+                f"MCoE vs {next(iter(refs))}" if len(refs) == 1 else "MCoE vs cheapest"
+            )
         d.append("| " + " | ".join(header) + " |")
         d.append("|" + "---|" * len(header))
         for ds_key in kind_sets:
+            ref, gains = mcoe.get(ds_key, ("", {}))
             for value in ab["values"]:
                 row = [datasets[ds_key].get("short", datasets[ds_key]["name"]), value]
-                row += [cell_text(cells.get(f"{ds_key}|{value}|{m}")) for m in cols]
+                row += [cell_text(cells.get(f"{ds_key}|{value}|{m}"), m) for m in cols]
+                if mcoe:
+                    row.append(
+                        EMPTY
+                        if value not in gains
+                        else "no measurable gain"
+                        if gains[value] is None
+                        else money(gains[value] or 0.0)
+                    )
                 d.append("| " + " | ".join(row) + " |")
         d.append("")
+        if COST in cols and any(
+            f"{k}|{v}" in costs for k in kind_sets for v in ab["values"]
+        ):
+            shows_cost = True
+            missing = sorted(
+                {
+                    name
+                    for k in kind_sets
+                    for v in ab["values"]
+                    for name in unpriced.get(f"{k}|{v}", ())
+                }
+            )
+            if missing:
+                d += ["Not priced: " + ", ".join(f"`{n}`" for n in missing) + ".", ""]
+    if shows_cost:
+        d += [COST_NOTE, ""]
     d.append("")
 
     # FAQ entry: the question, the answer, the headline plot, a link to details.

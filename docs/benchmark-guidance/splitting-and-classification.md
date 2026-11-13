@@ -45,9 +45,9 @@ find where a document starts.
 
 **Answer:** On DocSplit packets, detect sections first, page by page. It got the most sections exactly right (0.65, against 0.52 for the default) and kept the default's page accuracy (0.81) at the same tokens per page. Holistic classification grouped pages into documents best (grouping score 0.90) and used about 20% fewer tokens, but gave the wrong class to more pages (page accuracy 0.70): choose it when finding where each document starts matters more than its class. [Details: SC-01](#sc-01-help-me-choose-a-mechanism-for-packet-splitting)
 
-![Section accuracy against total tokens per page for each Granularity and strategy](../../images/benchmark-guidance/SC-01-packet.svg)
+![Section accuracy against cost per 1,000 documents (USD) for each Granularity and strategy](../../images/benchmark-guidance/SC-01-packet.svg)
 
-*Section accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [DocSplit](datasets.md#docsplit-poly-seq-20-packets).
+*Section accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labelled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [DocSplit](datasets.md#docsplit-poly-seq-20-packets).
 
 ### Do I need page images in the classification prompt?
 
@@ -57,9 +57,9 @@ find where a document starts.
 
 **Answer:** Claude Haiku 5.5 or Claude Sonnet 5 for packets. On DocSplit both got 0.71 of sections exactly right, against 0.51 for the default, Amazon Nova 2 Lite, and classified more pages correctly (0.86 and 0.89, against 0.82). They used about three times the classification tokens (about 8,800 per page, against 2,850) and about 37% more total tokens. Amazon Nova Pro scored below the default. [Details: SC-03](#sc-03-which-classification-model-should-i-use)
 
-![Section accuracy against total tokens per page for each Classification model](../../images/benchmark-guidance/SC-03-packet.svg)
+![Section accuracy against cost per 1,000 documents (USD) for each Classification model](../../images/benchmark-guidance/SC-03-packet.svg)
 
-*Section accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [DocSplit](datasets.md#docsplit-poly-seq-20-packets).
+*Section accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labelled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [DocSplit](datasets.md#docsplit-poly-seq-20-packets).
 
 ### How long a packet can holistic classification handle?
 
@@ -125,20 +125,22 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets); [Synthetic file holding two statements](datasets.md#synthetic-file-holding-two-statements); [Same-class documents back to back (to be built)](datasets.md#same-class-documents-back-to-back-to-be-built) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | Granularity and strategy | Page accuracy | Section accuracy | Grouping score | Boundary accuracy | Label accuracy | Classification tokens per page | Total tokens per page |
-|---|---|---|---|---|---|---|---|---|
-| DocSplit | Page by page, one call (default) | 0.82 ± 0.02 | 0.52 ± 0.02 | 0.66 ± 0.02 | — | — | 2,859 ± 16 | 14,822 ± 58 |
-| DocSplit | Holistic, one call | 0.7 ± 0.03 | 0.55 ± 0.05 | 0.9 ± 0.01 | — | — | 1,133 ± 0.65 | 11,857 ± 96 |
-| DocSplit | Detect sections first (page by page), then classify | 0.81 ± 0.02 | 0.65 ± 0.01 | 0.8 ± 0.01 | — | — | 2,821 ± 28 | 14,408 ± 116 |
-| DocSplit | Detect sections first (holistic), then classify | 0.76 ± 0.02 | 0.55 ± 0.04 | 0.9 ± 0.01 | — | — | 1,741 ± 26 | 12,350 ± 42 |
-| Two statements in one file | Page by page, one call (default) | — | — | — | — | — | — | — |
-| Two statements in one file | Holistic, one call | — | — | — | — | — | — | — |
-| Two statements in one file | Detect sections first (page by page), then classify | — | — | — | — | — | — | — |
-| Two statements in one file | Detect sections first (holistic), then classify | — | — | — | — | — | — | — |
-| Same-class packets | Page by page, one call (default) | — | — | — | — | — | — | — |
-| Same-class packets | Holistic, one call | — | — | — | — | — | — | — |
-| Same-class packets | Detect sections first (page by page), then classify | — | — | — | — | — | — | — |
-| Same-class packets | Detect sections first (holistic), then classify | — | — | — | — | — | — | — |
+| Dataset | Granularity and strategy | Page accuracy | Section accuracy | Grouping score | Boundary accuracy | Label accuracy | Classification tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | MCoE vs Holistic, one call |
+|---|---|---|---|---|---|---|---|---|---|---|
+| DocSplit | Page by page, one call (default) | 0.82 ± 0.02 | 0.52 ± 0.02 | 0.66 ± 0.02 | — | — | 2,859 ± 16 | 14,822 ± 58 | $493 ± $3.36 | — |
+| DocSplit | Holistic, one call | 0.7 ± 0.03 | 0.55 ± 0.05 | 0.9 ± 0.01 | — | — | 1,133 ± 0.65 | 11,857 ± 96 | $454 ± $1.05 | — |
+| DocSplit | Detect sections first (page by page), then classify | 0.81 ± 0.02 | 0.65 ± 0.01 | 0.8 ± 0.01 | — | — | 2,821 ± 28 | 14,408 ± 116 | $483 ± $1.99 | $0.28 |
+| DocSplit | Detect sections first (holistic), then classify | 0.76 ± 0.02 | 0.55 ± 0.04 | 0.9 ± 0.01 | — | — | 1,741 ± 26 | 12,350 ± 42 | $460 ± $3.64 | — |
+| Two statements in one file | Page by page, one call (default) | — | — | — | — | — | — | — | — | — |
+| Two statements in one file | Holistic, one call | — | — | — | — | — | — | — | — | — |
+| Two statements in one file | Detect sections first (page by page), then classify | — | — | — | — | — | — | — | — | — |
+| Two statements in one file | Detect sections first (holistic), then classify | — | — | — | — | — | — | — | — | — |
+| Same-class packets | Page by page, one call (default) | — | — | — | — | — | — | — | — | — |
+| Same-class packets | Holistic, one call | — | — | — | — | — | — | — | — | — |
+| Same-class packets | Detect sections first (page by page), then classify | — | — | — | — | — | — | — | — | — |
+| Same-class packets | Detect sections first (holistic), then classify | — | — | — | — | — | — | — | — | — |
+
+*Costs are computed from `config_library/pricing.yaml` at the time this page was generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS charges are not included.*
 
 
 #### SC-02: Do I need page images in the classification prompt?
@@ -172,12 +174,14 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | Classification model | Page accuracy | Section accuracy | Grouping score | Boundary accuracy | Label accuracy | Classification tokens per page | Total tokens per page | Median seconds per document |
-|---|---|---|---|---|---|---|---|---|---|
-| DocSplit | Amazon Nova 2 Lite (default) | 0.82 ± 0.01 | 0.51 ± 0.02 | 0.65 ± 0.02 | — | — | 2,850 ± 15 | 14,865 ± 38 | 114 ± 11 |
-| DocSplit | Amazon Nova Pro | 0.76 ± 0 | 0.48 ± 0 | 0.6 ± 0.02 | — | — | 4,357 ± 9.85 | 16,630 ± 60 | 112 ± 8.2 |
-| DocSplit | Claude Haiku 5.5 | 0.86 ± 0.01 | 0.71 ± 0.03 | 0.8 ± 0.02 | — | — | 8,987 ± 21 | 20,667 ± 124 | 144 ± 15 |
-| DocSplit | Claude Sonnet 5 | 0.89 ± 0 | 0.71 ± 0.02 | 0.79 ± 0.02 | — | — | 8,671 ± 15 | 20,274 ± 67 | 120 ± 37 |
+| Dataset | Classification model | Page accuracy | Section accuracy | Grouping score | Boundary accuracy | Label accuracy | Classification tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs Claude Haiku 5.5 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| DocSplit | Amazon Nova 2 Lite (default) | 0.82 ± 0.01 | 0.51 ± 0.02 | 0.65 ± 0.02 | — | — | 2,850 ± 15 | 14,865 ± 38 | $493 ± $2.47 | 114 ± 11 | — |
+| DocSplit | Amazon Nova Pro | 0.76 ± 0 | 0.48 ± 0 | 0.6 ± 0.02 | — | — | 4,357 ± 9.85 | 16,630 ± 60 | $513 ± $0.68 | 112 ± 8.2 | — |
+| DocSplit | Claude Haiku 5.5 | 0.86 ± 0.01 | 0.71 ± 0.03 | 0.8 ± 0.02 | — | — | 8,987 ± 21 | 20,667 ± 124 | $487 ± $3.96 | 144 ± 15 | — |
+| DocSplit | Claude Sonnet 5 | 0.89 ± 0 | 0.71 ± 0.02 | 0.79 ± 0.02 | — | — | 8,671 ± 15 | 20,274 ± 67 | $727 ± $11.0 | 120 ± 37 | no measurable gain |
+
+*Costs are computed from `config_library/pricing.yaml` at the time this page was generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS charges are not included.*
 
 
 #### SC-04: How long a packet can holistic classification handle?

@@ -46,13 +46,17 @@ which adds scan noise to real invoices.
 
 **Answer:** Use Claude Haiku 5.5 or Claude Sonnet 5 when people review by confidence. On RealKIE invoices they separated right values from wrong ones (AUROC 0.81 and 0.83) at about the same scoring tokens per page as the default, Amazon Nova Lite, which scored 0.42: no better than a coin flip. [Details: CF-02](#cf-02-which-scoring-model-should-i-use)
 
-![AUROC against scoring tokens per page for each Scoring model](../../images/benchmark-guidance/CF-02-fields.svg)
+![AUROC against cost per 1,000 documents (USD) for each Scoring model](../../images/benchmark-guidance/CF-02-fields.svg)
 
-*AUROC against scoring tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices).
+*AUROC against cost per 1,000 documents (USD). Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices).
 
 ### Separate scoring pass or integrated into extraction?
 
-**Answer:** Not yet measured. [Details: CF-03](#cf-03-separate-scoring-pass-or-integrated-into-extraction)
+**Answer:** Turn confidence off unless people review by confidence. On RealKIE invoices scoring was about two thirds of the tokens per page (13,200 of 20,300), did not change extraction accuracy, and with the default scoring model did not separate right values from wrong ones (AUROC 0.42; see CF-02). Integrated scored the same as separate here because in single-pass extraction the accelerator scores a class with list fields, such as invoice line items, in a separate pass even when integrated is selected. [Details: CF-03](#cf-03-separate-scoring-pass-or-integrated-into-extraction)
+
+![Weighted accuracy against cost per 1,000 documents (USD) for each Confidence mode](../../images/benchmark-guidance/CF-03-fields.svg)
+
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labelled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices).
 
 ### What confidence threshold should I set?
 
@@ -122,21 +126,25 @@ which adds scan noise to real invoices.
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | Scoring model | AUROC | Calibration error | Values below threshold | Errors below threshold | Scoring tokens per page |
-|---|---|---|---|---|---|---|
-| ConfBench | Amazon Nova Lite (default) | — | — | — | — | — |
-| ConfBench | Amazon Nova 2 Lite | — | — | — | — | — |
-| ConfBench | Claude Haiku 5.5 | — | — | — | — | — |
-| ConfBench | Claude Sonnet 5 | — | — | — | — | — |
-| RealKIE | Amazon Nova Lite (default) | 0.42 ± 0.07 | 0.17 ± 0.02 | — | — | 14,079 ± 166 |
-| RealKIE | Amazon Nova 2 Lite | 0.61 ± 0.13 | 0.18 ± 0.05 | — | — | 5,290 ± 331 |
-| RealKIE | Claude Haiku 5.5 | 0.81 ± 0.07 | 0.1 ± 0.03 | — | — | 13,193 ± 1,006 |
-| RealKIE | Claude Sonnet 5 | 0.83 ± 0.03 | 0.09 ± 0.05 | — | — | 12,025 ± 93 |
+| Dataset | Scoring model | AUROC | Calibration error | Values below threshold | Errors below threshold | Scoring tokens per page | Cost per 1,000 documents (USD) |
+|---|---|---|---|---|---|---|---|
+| ConfBench | Amazon Nova Lite (default) | — | — | — | — | — | — |
+| ConfBench | Amazon Nova 2 Lite | — | — | — | — | — | — |
+| ConfBench | Claude Haiku 5.5 | — | — | — | — | — | — |
+| ConfBench | Claude Sonnet 5 | — | — | — | — | — | — |
+| RealKIE | Amazon Nova Lite (default) | 0.42 ± 0.07 | 0.17 ± 0.02 | — | — | 14,079 ± 166 | $139 ± $4.13 |
+| RealKIE | Amazon Nova 2 Lite | 0.61 ± 0.13 | 0.18 ± 0.05 | — | — | 5,290 ± 331 | $141 ± $1.81 |
+| RealKIE | Claude Haiku 5.5 | 0.81 ± 0.07 | 0.1 ± 0.03 | — | — | 13,193 ± 1,006 | $138 ± $2.19 |
+| RealKIE | Claude Sonnet 5 | 0.83 ± 0.03 | 0.09 ± 0.05 | — | — | 12,025 ± 93 | $206 ± $48.9 |
+
+*Costs are computed from `config_library/pricing.yaml` at the time this page was generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS charges are not included.*
 
 
 #### CF-03: Separate scoring pass or integrated into extraction?
 
-**Answer:** Not yet measured.
+**Answer:** Turn confidence off unless people review by confidence. On RealKIE invoices scoring was about two thirds of the tokens per page (13,200 of 20,300), did not change extraction accuracy, and with the default scoring model did not separate right values from wrong ones (AUROC 0.42; see CF-02). Integrated scored the same as separate here because in single-pass extraction the accelerator scores a class with list fields, such as invoice line items, in a separate pass even when integrated is selected.
+
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-202145, RealKIE-FCC-Verified-20261113-202146, RealKIE-FCC-Verified-20261113-202147, RealKIE-FCC-Verified-20261113-202440, RealKIE-FCC-Verified-20261113-202454, RealKIE-FCC-Verified-20261113-202607, RealKIE-FCC-Verified-20261113-202740, RealKIE-FCC-Verified-20261113-202800, RealKIE-FCC-Verified-20261113-202905, Fake-W2-Tax-Forms-20261113-203253, Fake-W2-Tax-Forms-20261113-203254, Fake-W2-Tax-Forms-20261113-203255, Fake-W2-Tax-Forms-20261113-203428, Fake-W2-Tax-Forms-20261113-203420, Fake-W2-Tax-Forms-20261113-203440, Fake-W2-Tax-Forms-20261113-203545, Fake-W2-Tax-Forms-20261113-203554, Fake-W2-Tax-Forms-20261113-203604`.*
 
 | | |
 |---|---|
@@ -145,20 +153,22 @@ which adds scan noise to real invoices.
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Synthetic statement, 800 rows (17 pages)](datasets.md#synthetic-statement-800-rows-17-pages) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | Confidence mode | Weighted accuracy | AUROC | Scoring tokens per page | Median seconds per document |
-|---|---|---|---|---|---|
-| ConfBench | Separate (default) | — | — | — | — |
-| ConfBench | Integrated | — | — | — | — |
-| ConfBench | Off | — | — | — | — |
-| RealKIE | Separate (default) | — | — | — | — |
-| RealKIE | Integrated | — | — | — | — |
-| RealKIE | Off | — | — | — | — |
+| Dataset | Confidence mode | Weighted accuracy | AUROC | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs Off |
+|---|---|---|---|---|---|---|---|
+| ConfBench | Separate (default) | — | — | — | — | — | — |
+| ConfBench | Integrated | — | — | — | — | — | — |
+| ConfBench | Off | — | — | — | — | — | — |
+| RealKIE | Separate (default) | 0.81 ± 0.07 | 0.42 ± 0.02 | 13,240 ± 1,063 | $136 ± $1.54 | 36 ± 4.47 | no measurable gain |
+| RealKIE | Integrated | 0.81 ± 0.06 | 0.41 ± 0.04 | 13,206 ± 600 | $135 ± $0.48 | 32 ± 3.84 | no measurable gain |
+| RealKIE | Off | 0.8 ± 0.06 | — | — | $134 ± $0.28 | 23 ± 0.76 | — |
 
-| Dataset | Confidence mode | Completeness | AUROC | Scoring tokens per page | Median seconds per document |
-|---|---|---|---|---|---|
-| Statement, 800 rows | Separate (default) | — | — | — | — |
-| Statement, 800 rows | Integrated | — | — | — | — |
-| Statement, 800 rows | Off | — | — | — | — |
+| Dataset | Confidence mode | Completeness | AUROC | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
+|---|---|---|---|---|---|---|
+| Statement, 800 rows | Separate (default) | — | — | — | — | — |
+| Statement, 800 rows | Integrated | — | — | — | — | — |
+| Statement, 800 rows | Off | — | — | — | — | — |
+
+*Costs are computed from `config_library/pricing.yaml` at the time this page was generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS charges are not included.*
 
 
 #### CF-04: What confidence threshold should I set?

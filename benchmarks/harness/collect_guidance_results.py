@@ -40,6 +40,15 @@ Metrics (cell keys `dataset|value|metric`, each a mean and standard error):
 A metric is written only when the runs report it (confidence metrics need confidence
 on; page accuracy needs page-level class ground truth).
 
+The file also keeps each run's billed usage per document scored, so the renderer can
+price it with config_library/pricing.yaml:
+
+    "usage": {"<dataset key>|<value>": [
+        {"bedrock/us.anthropic.claude-sonnet-5|inputTokens": 41250.5,
+         "textract/analyze_document-Tables|pages": 2.1, ...},
+        ...one entry per run
+    ]}
+
 Usage:
     AWS_PROFILE=... python3 benchmarks/harness/collect_guidance_results.py \\
         manifest.json --results-dir /tmp/ex01/results
@@ -68,6 +77,9 @@ STEP_METRICS = {
     "extraction_tokens": ("Extraction",),
     "scoring_tokens": ("Assessment",),
 }
+#: Cost-breakdown services kept as usage, and units that carry no price of their own.
+PRICED_SERVICES = ("bedrock/", "textract/")
+UNPRICED_UNITS = ("requests", "totalTokens")
 
 
 def mean_se(values: list[float]) -> dict[str, float]:
@@ -86,6 +98,30 @@ def step_tokens(result: dict[str, Any], steps: tuple[str, ...] | None) -> int:
             if key.startswith("bedrock/") and key.endswith("_totalTokens"):
                 total += int(item["value"])
     return total
+
+
+def run_usage(result: dict[str, Any]) -> dict[str, float]:
+    """Bedrock and Textract usage per document scored, summed over every step.
+
+    Cost-breakdown keys look like `bedrock/<model id>_<unit>`; the result's keys look
+    like `bedrock/<model id>|<unit>`.
+    """
+    docs = int(result.get("completedFiles") or 0) or (
+        int(result.get("filesCount") or 0) - int(result.get("failedFiles") or 0)
+    )
+    if docs <= 0:
+        return {}
+    totals: dict[str, float] = {}
+    for items in (result.get("costBreakdown") or {}).values():
+        for key, item in items.items():
+            if not key.startswith(PRICED_SERVICES):
+                continue
+            service_id, _, unit = key.rpartition("_")
+            if not service_id or unit in UNPRICED_UNITS:
+                continue
+            name = f"{service_id}|{unit}"
+            totals[name] = totals.get(name, 0.0) + float(item.get("value") or 0)
+    return {k: round(v / docs, 4) for k, v in sorted(totals.items())}
 
 
 def run_metrics(result: dict[str, Any]) -> dict[str, float]:
@@ -150,6 +186,7 @@ def main() -> int:
     man = json.loads(args.manifest.read_text(encoding="utf-8"))
     table = tracking_table(man["stack"], man["region"])
     cells: dict[str, dict[str, float]] = {}
+    usage: dict[str, list[dict[str, float]]] = {}
     run_ids: list[str] = []
     failed_total = 0
     for ds_key, values in man["runs"].items():
@@ -158,6 +195,7 @@ def main() -> int:
             tokens: dict[str, list[float]] = {k: [] for k in [*STEP_METRICS, "total"]}
             medians: list[float] = []
             per_run: dict[str, list[float]] = {}
+            runs_usage: list[dict[str, float]] = []
             for run_id in ids:
                 path = args.results_dir / f"{run_id}-result.json"
                 result = json.loads(path.read_text(encoding="utf-8"))
@@ -179,6 +217,7 @@ def main() -> int:
                 for metric, step in STEP_METRICS.items():
                     tokens[metric].append(step_tokens(result, step) / n_pages)
                 tokens["total"].append(step_tokens(result, None) / n_pages)
+                runs_usage.append(run_usage(result))
                 for metric, v in run_metrics(result).items():
                     per_run.setdefault(metric, []).append(v)
                 secs = workflow_seconds(table, run_id, list(scores))
@@ -198,6 +237,8 @@ def main() -> int:
             for metric, vals in per_run.items():
                 if len(vals) == len(ids):
                     cells[cell + metric] = mean_se(vals)
+            if runs_usage and all(runs_usage):
+                usage[f"{ds_key}|{value}"] = runs_usage
 
     out = {
         "release": man["release"],
@@ -212,6 +253,7 @@ def main() -> int:
         ),
         "verdict": man["verdict"],
         "cells": cells,
+        "usage": usage,
     }
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / f"{man['ablation']}.json"

@@ -2,9 +2,11 @@
 
 render_guidance.py calls one of two functions for each ablation that has measured cells:
 
-- draw_scatter() when the ablation reports tokens: accuracy against tokens per page, a
-  panel per dataset and a point per value, with lines spanning two standard errors
-  either side on both axes. Up and to the left is better.
+- draw_scatter() when the ablation reports cost or tokens: accuracy against cost per
+  1,000 documents (or tokens per page), a panel per dataset and a point per value, with
+  lines spanning two standard errors either side on both axes. Up and to the left is
+  better. When x is cost and y is an accuracy, thin lines run from the cheapest value
+  to each more accurate one, labelled with the marginal cost of error.
 - draw_plot() otherwise: one metric, a panel per dataset, a row per value, a dot at the
   mean and a line spanning two standard errors either side.
 
@@ -16,6 +18,18 @@ from __future__ import annotations
 
 import math
 from html import escape
+
+#: Metrics where 1 - y is a share of errors, so the marginal cost of error applies.
+ERROR_RATE_METRICS = frozenset(
+    {
+        "weighted_accuracy",
+        "all_fields_right",
+        "page_accuracy",
+        "section_accuracy",
+        "completeness",
+        "cell_accuracy",
+    }
+)
 
 WIDTH = 720
 LABEL_W = 260
@@ -55,6 +69,11 @@ STYLE = """
   .axislabel { font-size: 11px; fill: var(--ink-2); }
   .note { font-size: 11px; fill: var(--muted); font-style: italic; }
   .num { font-size: 11px; font-weight: 700; fill: var(--ink); }
+  .halo { paint-order: stroke; stroke: var(--ring); stroke-width: 3px;
+          stroke-linejoin: round; }
+  .mcoe { stroke: var(--muted); stroke-width: 1; fill: none; }
+  .mcoe.noise { stroke-dasharray: 4 3; }
+  .mcoelabel { font-size: 11px; fill: var(--ink-2); }
 """
 
 
@@ -83,6 +102,39 @@ def fmt(v: float) -> str:
     if abs(v) >= 10:
         return f"{v:.0f}"
     return f"{v:.2f}".rstrip("0").rstrip(".") if v != 0 else "0"
+
+
+def money(v: float) -> str:
+    """US dollars: $X.XX under $10, $X.X under $100, else $X,XXX."""
+    a = abs(v)
+    text = f"{a:.2f}" if a < 10 else f"{a:.1f}" if a < 100 else f"{a:,.0f}"
+    return ("-" if v < 0 else "") + "$" + text
+
+
+def marginal_cost_of_error(
+    points: list[tuple[str, dict[str, float], dict[str, float]]],
+) -> tuple[str, dict[str, float | None]]:
+    """Return the cheapest value and the marginal cost of error of each other value.
+
+    points: [(value, cost per 1,000 documents, accuracy), ...], each {"mean", "se"}.
+    The reference is the cheapest value (ties: the less accurate one). For each value
+    more accurate than it, the result is the extra cost per document divided by the
+    drop in error rate, in US dollars, or None when the gain is within two standard
+    errors of the difference. Values no more accurate than the reference are left out.
+    """
+    ref, rx, ry = min(points, key=lambda p: (p[1]["mean"], p[2]["mean"]))
+    out: dict[str, float | None] = {}
+    for value, x, y in points:
+        gain = y["mean"] - ry["mean"]
+        if value == ref or gain <= 0:
+            continue
+        noise = 2 * math.hypot(ry.get("se", 0), y.get("se", 0))
+        out[value] = (x["mean"] - rx["mean"]) / 1000 / gain if gain > noise else None
+    return ref, out
+
+
+def mcoe_text(cost: float | None) -> str:
+    return "no measurable gain" if cost is None else f"{money(cost)} per error"
 
 
 def wrap(text: str) -> list[str]:
@@ -197,10 +249,21 @@ SC_BOTTOM = 44
 MAX_LABELLED = 4
 
 
-def _span(values: list[float], start_at_zero: bool) -> list[float]:
+def _span(values: list[float], start_at_zero: bool, count: int = 4) -> list[float]:
+    """Return ticks covering the values.
+
+    With start_at_zero (a cost or a count), the axis starts at zero when the values
+    come within half their maximum of it. Otherwise zero would squeeze them into a
+    corner, so the axis spans the values, but at least 15% of the largest, so small
+    differences do not fill the whole width.
+    """
     lo, hi = min(values), max(values)
+    zero = start_at_zero and lo <= hi / 2
+    if start_at_zero and not zero and hi - lo < 0.15 * hi:
+        grow = (0.15 * hi - (hi - lo)) / 2
+        lo, hi = max(0.0, lo - grow), hi + grow
     pad = (hi - lo) * 0.12 or abs(hi) * 0.05 or 1.0
-    return nice_ticks(0.0 if start_at_zero else lo - pad, hi + pad, 4)
+    return nice_ticks(0.0 if zero else lo - pad, hi + pad, count)
 
 
 def _compact(v: float, axis_max: float) -> str:
@@ -208,6 +271,12 @@ def _compact(v: float, axis_max: float) -> str:
     if axis_max >= 10_000:
         return f"{v / 1000:,.{0 if v % 1000 == 0 else 1}f}K" if v else "0"
     return f"{v:,.0f}"
+
+
+def _money_ticks(ticks: list[float]) -> list[str]:
+    """Whole dollars, or cents when a tick falls between them."""
+    whole = all(abs(t - round(t)) < 1e-9 for t in ticks)
+    return [f"${t:,.0f}" if whole else f"${t:,.2f}" for t in ticks]
 
 
 def _frontier(points: list[tuple[str, dict[str, float], dict[str, float]]]) -> set[str]:
@@ -225,10 +294,60 @@ def _frontier(points: list[tuple[str, dict[str, float], dict[str, float]]]) -> s
     return keep
 
 
+Rect = tuple[float, float, float, float]
+
+
+def _rect(lx: float, ly: float, w: float, anchor: str) -> Rect:
+    """The box a one-line label at (lx, ly) with this anchor covers."""
+    left = lx if anchor == "start" else lx - w if anchor == "end" else lx - w / 2
+    return (left, ly - 11, left + w, ly + 3)
+
+
+def _clear(r: Rect, bounds: Rect, blocked: list[Rect]) -> bool:
+    x0, y0, x1, y1 = bounds
+    if r[0] < x0 or r[2] > x1 or r[1] < y0 or r[3] > y1:
+        return False
+    return not any(
+        r[0] < o[2] and o[0] < r[2] and r[1] < o[3] and o[1] < r[3] for o in blocked
+    )
+
+
+def _place_on_lines(
+    lines: list[tuple[str, float, float, float, float]],
+    bounds: Rect,
+    blocked: list[Rect],
+) -> list[tuple[str, float, float]]:
+    """Place a label on each line, near its middle, clear of everything in blocked.
+
+    Labels sit on the line (their halo hides it) and move along it, then just above
+    or below it, until clear. A label with no clear spot is left out of the result,
+    and the caller lists it in the chart's key instead.
+    """
+    taken = list(blocked)
+    out = []
+    for text, ax, ay, bx, by in lines:
+        w = len(text) * CHAR_W * 0.92
+        for t in (0.5, 0.42, 0.58, 0.34, 0.66, 0.26, 0.74, 0.18, 0.82):
+            mx, my = ax + t * (bx - ax), ay + t * (by - ay)
+            spot = next(
+                (
+                    (mx, my + dy)
+                    for dy in (4, -7, 15)
+                    if _clear(_rect(mx, my + dy, w, "middle"), bounds, taken)
+                ),
+                None,
+            )
+            if spot:
+                taken.append(_rect(spot[0], spot[1], w, "middle"))
+                out.append((text, spot[0], spot[1]))
+                break
+    return out
+
+
 def _place_labels(
     points: list[tuple[str, float, float]],
-    bounds: tuple[float, float, float, float],
-    obstacles: list[tuple[float, float, float, float]],
+    bounds: Rect,
+    obstacles: list[Rect],
 ) -> list[tuple[str, float, float, str, tuple[float, float] | None]]:
     """Place one label per point without overlaps.
 
@@ -237,22 +356,12 @@ def _place_labels(
     the lowest clear spot on the right with a leader line back to its point.
     Returns (text, x, y, anchor, leader start or None).
     """
-    x0, y0, x1, y1 = bounds
-    dots = obstacles
-    taken: list[tuple[float, float, float, float]] = []
+    taken: list[Rect] = []
     out = []
+    rect = _rect
 
-    def rect(lx: float, ly: float, w: float, anchor: str) -> tuple[float, ...]:
-        left = lx if anchor == "start" else lx - w if anchor == "end" else lx - w / 2
-        return (left, ly - 11, left + w, ly + 3)
-
-    def clear(r: tuple[float, ...]) -> bool:
-        if r[0] < x0 or r[2] > x1 or r[1] < y0 or r[3] > y1:
-            return False
-        return not any(
-            r[0] < o[2] and o[0] < r[2] and r[1] < o[3] and o[1] < r[3]
-            for o in taken + dots
-        )
+    def clear(r: Rect) -> bool:
+        return _clear(r, bounds, taken + obstacles)
 
     for text, cx, cy in sorted(points, key=lambda p: (p[2], p[1])):
         w = len(text) * CHAR_W
@@ -300,24 +409,32 @@ def draw_scatter(
     y_name: str,
     panels: list[tuple[str, list[tuple[str, dict[str, float], dict[str, float]]]]],
     runs: int,
+    *,
+    x_money: bool = False,
+    mcoe: bool = False,
 ) -> str:
-    """Return an SVG document plotting y (accuracy) against x (tokens per page).
+    """Return an SVG document plotting y (accuracy) against x (cost or tokens).
 
     panels: [(dataset name, [(value label, x {"mean", "se"}, y {"mean", "se"}), ...])]
+    x_money: x is cost per 1,000 documents in US dollars (otherwise tokens per page).
+    mcoe: draw marginal-cost-of-error lines from each panel's cheapest value.
     """
-    xs = [
-        p[1]["mean"] + s * 2 * p[1].get("se", 0)
-        for _, r in panels
-        for p in r
-        for s in (-1, 1)
-    ]
-    xt = _span(xs, start_at_zero=True)
+
+    def x_text(v: float) -> str:
+        return money(v) if x_money else _compact(v, 10_000)
+
+    def x_exact(v: float) -> str:
+        return money(v) if x_money else fmt(v)
 
     body: list[str] = []
+    desc_parts: list[str] = []
     top = TOP
     for ds_name, points in panels:
-        # Each dataset gets its own vertical range: scores on different datasets are
-        # not compared with each other, and a shared range squeezes the high ones.
+        # Each dataset gets its own ranges: results on different datasets are not
+        # compared with each other, and a shared range squeezes the small ones.
+        xs = [p[1]["mean"] + s * 2 * p[1].get("se", 0) for p in points for s in (-1, 1)]
+        xt = _span(xs, start_at_zero=True, count=5)
+        x_ticks = _money_ticks(xt) if x_money else [_compact(t, xt[-1]) for t in xt]
         ys = [p[2]["mean"] + s * 2 * p[2].get("se", 0) for p in points for s in (-1, 1)]
         yt = _span(ys, start_at_zero=False)
         # A score that cannot pass 1.0 gets an axis that stops at 1.0.
@@ -333,7 +450,7 @@ def draw_scatter(
         )
         y0, y1 = top + PANEL_TITLE_H, top + PANEL_TITLE_H + SC_PLOT_H
 
-        def px(v: float) -> float:
+        def px(v: float, xt: list[float] = xt) -> float:
             return SC_LEFT + (v - xt[0]) / (xt[-1] - xt[0]) * (SC_RIGHT - SC_LEFT)
 
         def py(v: float, y0: float = y0, y1: float = y1, yt: list[float] = yt) -> float:
@@ -346,10 +463,10 @@ def draw_scatter(
                 f'<text class="tick" x="{SC_LEFT - 8}" y="{py(t) + 4:.1f}" '
                 f'text-anchor="end">{t:.{y_dec}f}</text>'
             )
-        for t in xt:
+        for t, text in zip(xt, x_ticks):
             body.append(
                 f'<text class="tick" x="{px(t):.1f}" y="{y1 + 16}" '
-                f'text-anchor="middle">{_compact(t, xt[-1])}</text>'
+                f'text-anchor="middle">{text}</text>'
             )
         body.append(
             f'<line class="axis" x1="{SC_LEFT}" x2="{SC_RIGHT}" y1="{y1}" y2="{y1}"/>'
@@ -358,13 +475,34 @@ def draw_scatter(
             f'y="{y1 + 34}" text-anchor="middle">{escape(x_name)}</text>'
             f'<text class="axislabel" transform="translate(12 {(y0 + y1) / 2:.1f}) '
             f'rotate(-90)" text-anchor="middle">{escape(y_name)}</text>'
-            f'<text class="note" x="{SC_LEFT + 8}" y="{y0 + 14}">'
+            f'<text class="note halo" x="{SC_LEFT + 8}" y="{y0 + 14}">'
             "Better: up and to the left</text>"
         )
 
         def label(value: str, x: dict[str, float], y: dict[str, float]) -> str:
             y_text = f"{y['mean']:.{max(2, y_dec)}f}"
-            return f"{value}: {y_text}, {_compact(x['mean'], 10_000)}"
+            return f"{value}: {y_text}, {x_text(x['mean'])}"
+
+        centre = {v: (px(x["mean"]), py(y["mean"])) for v, x, y in points}
+
+        # Marginal cost of error: a thin line from the cheapest value to each value
+        # that scores higher, under the dots. Solid when the gain is measurable.
+        lines: list[tuple[str, float, float, float, float]] = []
+        ref, gains = marginal_cost_of_error(points) if mcoe else ("", {})
+        for value, cost in gains.items():
+            (ax, ay), (bx, by) = centre[ref], centre[value]
+            text = mcoe_text(cost)
+            lines.append((text, ax, ay, bx, by))
+            body.append(
+                f"<g><title>{escape(value)} against {escape(ref)}: {text}</title>"
+                f'<line class="mcoe{"" if cost is not None else " noise"}" '
+                f'x1="{ax:.1f}" y1="{ay:.1f}" x2="{bx:.1f}" y2="{by:.1f}"/></g>'
+            )
+        if gains:
+            desc_parts.append(
+                f"{ds_name}, marginal cost of error against {ref}: "
+                + ", ".join(f"{v} {mcoe_text(c)}" for v, c in gains.items())
+            )
 
         # Few points: label each one next to its dot. Otherwise only the default and
         # the frontier. If a label cannot sit cleanly beside its dot, number every
@@ -374,11 +512,10 @@ def draw_scatter(
             if len(points) <= MAX_LABELLED
             else _frontier(points) | {v for v, _, _ in points if "(default)" in v}
         )
-        screen, obstacles, centres = [], [], []
+        screen, obstacles = [], []
         for value, x, y in points:
-            cx, cy = px(x["mean"]), py(y["mean"])
+            cx, cy = centre[value]
             dx, dy = 2 * x.get("se", 0), 2 * y.get("se", 0)
-            centres.append((cx, cy))
             obstacles.append((cx - 7, cy - 7, cx + 7, cy + 7))
             obstacles.append((px(x["mean"] - dx), cy - 1, px(x["mean"] + dx), cy + 1))
             obstacles.append((cx - 1, py(y["mean"] + dy), cx + 1, py(y["mean"] - dy)))
@@ -386,40 +523,80 @@ def draw_scatter(
                 screen.append((label(value, x, y), cx, cy))
             body.append(
                 f"<g><title>{escape(value)}: {escape(y_name)} {fmt(y['mean'])} ± "
-                f"{fmt(dy)}, {escape(x_name)} {fmt(x['mean'])} ± {fmt(dx)}</title>"
+                f"{fmt(dy)}, {escape(x_name)} {x_exact(x['mean'])} ± "
+                f"{x_exact(dx)}</title>"
                 f'<line class="xwhisker" x1="{px(x["mean"] - dx):.1f}" '
                 f'x2="{px(x["mean"] + dx):.1f}" y1="{cy:.1f}" y2="{cy:.1f}"/>'
                 f'<line class="xwhisker" x1="{cx:.1f}" x2="{cx:.1f}" '
                 f'y1="{py(y["mean"] - dy):.1f}" y2="{py(y["mean"] + dy):.1f}"/>'
                 f'<circle class="dot" cx="{cx:.1f}" cy="{cy:.1f}" r="5"/></g>'
             )
-        placed = _place_labels(
-            screen, (SC_LEFT + 2, y0 + 20, SC_RIGHT, y1 - 2), obstacles
-        )
+        # Point labels and dot numbers also keep off the cost-of-error lines.
+        on_line = [
+            (ax + t * (bx - ax) - 1, ay + t * (by - ay) - 1)
+            for _, ax, ay, bx, by in lines
+            for n in [max(2, int(math.hypot(bx - ax, by - ay) / 6))]
+            for t in (i / n for i in range(1, n))
+        ]
+        line_boxes = [(lx, ly, lx + 2, ly + 2) for lx, ly in on_line]
+        bounds = (SC_LEFT + 2, y0 + 20, SC_RIGHT, y1 - 2)
+        placed = _place_labels(screen, bounds, obstacles + line_boxes)
+        blocked = obstacles + [
+            _rect(lx, ly, len(text) * CHAR_W, anchor)
+            for text, lx, ly, anchor, _ in placed
+        ]
+        on_lines = _place_on_lines(lines, bounds, blocked)
         key_h = 0
-        if any(leader for *_, leader in placed):
-            for i, ((value, x, y), (cx, cy)) in enumerate(zip(points, centres), 1):
+        if any(leader for *_, leader in placed) or len(on_lines) < len(lines):
+            # Number the dots and list each value, with its marginal cost of error,
+            # in a key under the chart.
+            numbers = _place_labels(
+                [(str(i), cx, cy) for i, (cx, cy) in enumerate(centre.values(), 1)],
+                (SC_LEFT + 2, y0, SC_RIGHT, y1 - 2),
+                obstacles + line_boxes,
+            )
+            for text, lx, ly, anchor, leader in numbers:
+                if leader:
+                    body.append(
+                        f'<line class="axis" x1="{leader[0]:.1f}" y1="{leader[1]:.1f}" '
+                        f'x2="{lx:.1f}" y2="{ly - 4:.1f}"/>'
+                    )
                 body.append(
-                    f'<text class="num" x="{cx + 7:.1f}" y="{cy - 7:.1f}">{i}</text>'
+                    f'<text class="num halo" x="{lx:.1f}" y="{ly:.1f}" '
+                    f'text-anchor="{anchor}">{text}</text>'
                 )
+            for i, (value, x, y) in enumerate(points, 1):
+                entry = label(value, x, y)
+                if value in gains:
+                    entry += f"; {mcoe_text(gains[value])}"
                 body.append(
                     f'<text class="label" x="{SC_LEFT}" y="{y1 + 58 + (i - 1) * 16}">'
-                    f'<tspan class="num">{i}</tspan>  {escape(label(value, x, y))}</text>'
+                    f'<tspan class="num">{i}</tspan>  {escape(entry)}</text>'
                 )
             key_h = 12 + 16 * len(points)
         else:
             for text, lx, ly, anchor, _ in placed:
                 body.append(
-                    f'<text class="label" x="{lx:.1f}" y="{ly:.1f}" '
+                    f'<text class="label halo" x="{lx:.1f}" y="{ly:.1f}" '
                     f'text-anchor="{anchor}">{escape(text)}</text>'
+                )
+            for text, lx, ly in on_lines:
+                body.append(
+                    f'<text class="mcoelabel halo" x="{lx:.1f}" y="{ly:.1f}" '
+                    f'text-anchor="middle">{escape(text)}</text>'
                 )
         top = y1 + SC_BOTTOM + key_h + PANEL_GAP
     height = top - PANEL_GAP
 
     desc = "; ".join(
-        f"{ds}: "
-        + ", ".join(f"{v} {fmt(y['mean'])} at {fmt(x['mean'])}" for v, x, y in r)
-        for ds, r in panels
+        [
+            f"{ds}: "
+            + ", ".join(
+                f"{v} {fmt(y['mean'])} at {x_exact(x['mean'])}" for v, x, y in r
+            )
+            for ds, r in panels
+        ]
+        + desc_parts
     )
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" class="viz" width="{WIDTH}" '

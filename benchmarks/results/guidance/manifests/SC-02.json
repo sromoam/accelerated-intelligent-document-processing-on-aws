@@ -1,0 +1,20 @@
+{
+  "ablation": "SC-02",
+  "verdict": "Measured; see the table.",
+  "runs": {
+    "docsplit": {
+      "Text and images (default)": [
+        "DocSplit-Poly-Seq-20261113-204126",
+        "DocSplit-Poly-Seq-20261113-204125",
+        "DocSplit-Poly-Seq-20261113-204127"
+      ]
+    }
+  },
+  "max_failed": {
+    "docsplit": 1
+  },
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026"
+}

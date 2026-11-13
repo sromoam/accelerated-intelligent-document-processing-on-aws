@@ -61,21 +61,25 @@ Poor scans and handwriting give it less to read, and long tables need a mode bui
 
 **Answer:** Not for invoices or forms. On RealKIE invoices both modes scored 0.80; on W-2 forms iterative scored 0.97 against 0.95, a difference within the noise. Iterative used about the same total tokens per page on invoices and 3.4 times as many on W-2s. Use single pass unless your documents have long lists. [Details: EX-01](#ex-01-when-is-agentic-iterative-extraction-worth-it)
 
-![Weighted accuracy against total tokens per page for each Extraction mode](../../images/benchmark-guidance/EX-01-fields.svg)
+![Weighted accuracy against cost per 1,000 documents (USD) for each Extraction mode](../../images/benchmark-guidance/EX-01-fields.svg)
 
-*Weighted accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [RealKIE, short](datasets.md#realkie-fcc-verified-short-invoices-24-invoices-1-or-2-pages), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields).
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labelled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [RealKIE, short](datasets.md#realkie-fcc-verified-short-invoices-24-invoices-1-or-2-pages), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields).
 
 ### Which extraction model should I use?
 
-**Answer:** Not yet measured. [Details: EX-02](#ex-02-which-extraction-model-should-i-use)
+**Answer:** On W-2 forms, Claude Opus 5, Claude Opus 5.5, OpenAI GPT-6 Astra and xAI Grok 4.6 were nearly perfect (0.999), 0.04 above the default, Claude Sonnet 5 (0.96), and Claude Haiku 5.5 scored 0.98; the Amazon Nova models scored 0.06 to 0.16 below the default. On RealKIE invoices no model scored measurably different from the default (0.74 to 0.84). Each model family counts tokens differently, so compare models on cost rather than tokens. xAI Grok 4.6 took about three times as long per document. [Details: EX-02](#ex-02-which-extraction-model-should-i-use)
+
+![Weighted accuracy against cost per 1,000 documents (USD) for each Extraction model](../../images/benchmark-guidance/EX-02-fields.svg)
+
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better. Labels mark the default and the values no other value beats on both axes; hover a point for the rest. Lines run from the cheapest value to each other value, labelled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields).
 
 ### Does more reasoning effort improve extraction?
 
 **Answer:** A little, for few tokens. High effort raised accuracy from 0.79 to 0.83 on RealKIE invoices and from 0.95 to 0.97 on W-2 forms, for 2 to 5% more total tokens per page and a few seconds per document. Both gains are near the edge of the noise on 20 documents, so confirm on your own test set before you change the default. [Details: EX-03](#ex-03-does-more-reasoning-effort-improve-extraction)
 
-![Weighted accuracy against total tokens per page for each `extraction.reasoning_effort`](../../images/benchmark-guidance/EX-03-fields.svg)
+![Weighted accuracy against cost per 1,000 documents (USD) for each `extraction.reasoning_effort`](../../images/benchmark-guidance/EX-03-fields.svg)
 
-*Weighted accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields).
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labelled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields).
 
 ### How much do field descriptions matter?
 
@@ -157,34 +161,38 @@ the rows.
 | **Datasets** | [Synthetic statement, 100 rows (3 pages)](datasets.md#synthetic-statement-100-rows-3-pages); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages); [Synthetic statement, 800 rows (17 pages)](datasets.md#synthetic-statement-800-rows-17-pages); [Synthetic statement, 1,600 rows (33 pages)](datasets.md#synthetic-statement-1600-rows-33-pages); [Synthetic statement, 3,200 rows (66 pages)](datasets.md#synthetic-statement-3200-rows-66-pages); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [RealKIE-FCC-Verified, short invoices (24 invoices, 1 or 2 pages)](datasets.md#realkie-fcc-verified-short-invoices-24-invoices-1-or-2-pages); [RealKIE-FCC-Verified, long invoices (19 invoices, 8 to 33 pages)](datasets.md#realkie-fcc-verified-long-invoices-19-invoices-8-to-33-pages); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | Extraction mode | Completeness | Cell accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
-|---|---|---|---|---|---|---|
-| Statement, 100 rows | Single pass, Simple (default) | — | — | — | — | — |
-| Statement, 100 rows | Iterative, Advanced | — | — | — | — | — |
-| Statement, 400 rows | Single pass, Simple (default) | — | — | — | — | — |
-| Statement, 400 rows | Iterative, Advanced | — | — | — | — | — |
-| Statement, 800 rows | Single pass, Simple (default) | — | — | — | — | — |
-| Statement, 800 rows | Iterative, Advanced | — | — | — | — | — |
-| Statement, 1,600 rows | Single pass, Simple (default) | — | — | — | — | — |
-| Statement, 1,600 rows | Iterative, Advanced | — | — | — | — | — |
-| Statement, 3,200 rows | Single pass, Simple (default) | — | — | — | — | — |
-| Statement, 3,200 rows | Iterative, Advanced | — | — | — | — | — |
+| Dataset | Extraction mode | Completeness | Cell accuracy | Extraction tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
+|---|---|---|---|---|---|---|---|
+| Statement, 100 rows | Single pass, Simple (default) | — | — | — | — | — | — |
+| Statement, 100 rows | Iterative, Advanced | — | — | — | — | — | — |
+| Statement, 400 rows | Single pass, Simple (default) | — | — | — | — | — | — |
+| Statement, 400 rows | Iterative, Advanced | — | — | — | — | — | — |
+| Statement, 800 rows | Single pass, Simple (default) | — | — | — | — | — | — |
+| Statement, 800 rows | Iterative, Advanced | — | — | — | — | — | — |
+| Statement, 1,600 rows | Single pass, Simple (default) | — | — | — | — | — | — |
+| Statement, 1,600 rows | Iterative, Advanced | — | — | — | — | — | — |
+| Statement, 3,200 rows | Single pass, Simple (default) | — | — | — | — | — | — |
+| Statement, 3,200 rows | Iterative, Advanced | — | — | — | — | — | — |
 
-| Dataset | Extraction mode | Weighted accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
-|---|---|---|---|---|---|
-| RealKIE | Single pass, Simple (default) | 0.8 ± 0.06 | 7,042 ± 14 | 20,208 ± 339 | 58 ± 37 |
-| RealKIE | Iterative, Advanced | 0.8 ± 0.08 | 15,368 ± 597 | 20,843 ± 516 | 65 ± 29 |
-| RealKIE, short | Single pass, Simple (default) | 0.82 ± 0.06 | 8,593 ± 29 | 19,612 ± 253 | 22 ± 0.65 |
-| RealKIE, short | Iterative, Advanced | 0.82 ± 0.06 | 34,802 ± 2,925 | 41,424 ± 2,846 | 28 ± 1.63 |
-| RealKIE, long | Single pass, Simple (default) | — | — | — | — |
-| RealKIE, long | Iterative, Advanced | — | — | — | — |
-| Fake-W2 | Single pass, Simple (default) | 0.95 ± 0.02 | 6,876 ± 2.3 | 15,192 ± 2.09 | 38 ± 1.14 |
-| Fake-W2 | Iterative, Advanced | 0.97 ± 0.01 | 46,661 ± 84 | 51,789 ± 84 | 30 ± 0.46 |
+| Dataset | Extraction mode | Weighted accuracy | Extraction tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs cheapest |
+|---|---|---|---|---|---|---|---|
+| RealKIE | Single pass, Simple (default) | 0.8 ± 0.06 | 7,042 ± 14 | 20,208 ± 339 | $138 ± $7.04 | 58 ± 37 | no measurable gain |
+| RealKIE | Iterative, Advanced | 0.8 ± 0.08 | 15,368 ± 597 | 20,843 ± 516 | $127 ± $41.7 | 65 ± 29 | — |
+| RealKIE, short | Single pass, Simple (default) | 0.82 ± 0.06 | 8,593 ± 29 | 19,612 ± 253 | $53.2 ± $0.45 | 22 ± 0.65 | — |
+| RealKIE, short | Iterative, Advanced | 0.82 ± 0.06 | 34,802 ± 2,925 | 41,424 ± 2,846 | $61.7 ± $18.2 | 28 ± 1.63 | — |
+| RealKIE, long | Single pass, Simple (default) | — | — | — | — | — | — |
+| RealKIE, long | Iterative, Advanced | — | — | — | — | — | — |
+| Fake-W2 | Single pass, Simple (default) | 0.95 ± 0.02 | 6,876 ± 2.3 | 15,192 ± 2.09 | $33.2 ± $0.55 | 38 ± 1.14 | — |
+| Fake-W2 | Iterative, Advanced | 0.97 ± 0.01 | 46,661 ± 84 | 51,789 ± 84 | $47.4 ± $14.0 | 30 ± 0.46 | no measurable gain |
+
+*Costs are computed from `config_library/pricing.yaml` at the time this page was generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS charges are not included.*
 
 
 #### EX-02: Which extraction model should I use?
 
-**Answer:** Not yet measured.
+**Answer:** On W-2 forms, Claude Opus 5, Claude Opus 5.5, OpenAI GPT-6 Astra and xAI Grok 4.6 were nearly perfect (0.999), 0.04 above the default, Claude Sonnet 5 (0.96), and Claude Haiku 5.5 scored 0.98; the Amazon Nova models scored 0.06 to 0.16 below the default. On RealKIE invoices no model scored measurably different from the default (0.74 to 0.84). Each model family counts tokens differently, so compare models on cost rather than tokens. xAI Grok 4.6 took about three times as long per document.
+
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-183955, RealKIE-FCC-Verified-20261113-183954, RealKIE-FCC-Verified-20261113-183956, RealKIE-FCC-Verified-20261113-184302, RealKIE-FCC-Verified-20261113-184254, RealKIE-FCC-Verified-20261113-184301, RealKIE-FCC-Verified-20261113-184609, RealKIE-FCC-Verified-20261113-184643, RealKIE-FCC-Verified-20261113-184918, RealKIE-FCC-Verified-20261113-190709, RealKIE-FCC-Verified-20261113-192401, RealKIE-FCC-Verified-20261113-192310, RealKIE-FCC-Verified-20261113-192341, RealKIE-FCC-Verified-20261113-192701, RealKIE-FCC-Verified-20261113-192729, RealKIE-FCC-Verified-20261113-192743, RealKIE-FCC-Verified-20261113-194402, RealKIE-FCC-Verified-20261113-194401, RealKIE-FCC-Verified-20261113-194404, RealKIE-FCC-Verified-20261113-195220, RealKIE-FCC-Verified-20261113-195217, RealKIE-FCC-Verified-20261113-195219, RealKIE-FCC-Verified-20261113-195617, RealKIE-FCC-Verified-20261113-195659, RealKIE-FCC-Verified-20261113-195740, RealKIE-FCC-Verified-20261113-195936, RealKIE-FCC-Verified-20261113-195957, RealKIE-FCC-Verified-20261113-200106, RealKIE-FCC-Verified-20261113-200235, RealKIE-FCC-Verified-20261113-200733, RealKIE-FCC-Verified-20261113-200820, RealKIE-FCC-Verified-20261113-200702, Fake-W2-Tax-Forms-20261113-201217, Fake-W2-Tax-Forms-20261113-201204, Fake-W2-Tax-Forms-20261113-201242, Fake-W2-Tax-Forms-20261113-201354, Fake-W2-Tax-Forms-20261113-201419, Fake-W2-Tax-Forms-20261113-201509, Fake-W2-Tax-Forms-20261113-201521, Fake-W2-Tax-Forms-20261113-201543, Fake-W2-Tax-Forms-20261113-201623, Fake-W2-Tax-Forms-20261113-201638, Fake-W2-Tax-Forms-20261113-201728, Fake-W2-Tax-Forms-20261113-201737, Fake-W2-Tax-Forms-20261113-201754, Fake-W2-Tax-Forms-20261113-201833, Fake-W2-Tax-Forms-20261113-201841, Fake-W2-Tax-Forms-20261113-201858, Fake-W2-Tax-Forms-20261113-201947, Fake-W2-Tax-Forms-20261113-202015, Fake-W2-Tax-Forms-20261113-202016, Fake-W2-Tax-Forms-20261113-202114, Fake-W2-Tax-Forms-20261113-202132, Fake-W2-Tax-Forms-20261113-202129, Fake-W2-Tax-Forms-20261113-202220, Fake-W2-Tax-Forms-20261113-202242, Fake-W2-Tax-Forms-20261113-202246, Fake-W2-Tax-Forms-20261113-202327, Fake-W2-Tax-Forms-20261113-202346, Fake-W2-Tax-Forms-20261113-202412, Fake-W2-Tax-Forms-20261113-202453, Fake-W2-Tax-Forms-20261113-202510, Fake-W2-Tax-Forms-20261113-202644, Fake-W2-Tax-Forms-20261113-202609, Fake-W2-Tax-Forms-20261113-202529`.*
 
 | | |
 |---|---|
@@ -193,44 +201,46 @@ the rows.
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | Extraction model | Weighted accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
-|---|---|---|---|---|---|
-| RealKIE | Claude Sonnet 5 (default) | — | — | — | — |
-| RealKIE | Amazon Nova Lite | — | — | — | — |
-| RealKIE | Amazon Nova Pro | — | — | — | — |
-| RealKIE | Amazon Nova 2 Lite | — | — | — | — |
-| RealKIE | Claude Haiku 5.5 | — | — | — | — |
-| RealKIE | Claude Sonnet 4.6 | — | — | — | — |
-| RealKIE | Claude Sonnet 5.5 | — | — | — | — |
-| RealKIE | Claude Opus 5 | — | — | — | — |
-| RealKIE | Claude Opus 5.5 | — | — | — | — |
-| RealKIE | OpenAI GPT-6 Astra | — | — | — | — |
-| RealKIE | xAI Grok 4.6 | — | — | — | — |
-| Fake-W2 | Claude Sonnet 5 (default) | — | — | — | — |
-| Fake-W2 | Amazon Nova Lite | — | — | — | — |
-| Fake-W2 | Amazon Nova Pro | — | — | — | — |
-| Fake-W2 | Amazon Nova 2 Lite | — | — | — | — |
-| Fake-W2 | Claude Haiku 5.5 | — | — | — | — |
-| Fake-W2 | Claude Sonnet 4.6 | — | — | — | — |
-| Fake-W2 | Claude Sonnet 5.5 | — | — | — | — |
-| Fake-W2 | Claude Opus 5 | — | — | — | — |
-| Fake-W2 | Claude Opus 5.5 | — | — | — | — |
-| Fake-W2 | OpenAI GPT-6 Astra | — | — | — | — |
-| Fake-W2 | xAI Grok 4.6 | — | — | — | — |
+| Dataset | Extraction model | Weighted accuracy | Extraction tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs Amazon Nova Lite |
+|---|---|---|---|---|---|---|---|
+| RealKIE | Claude Sonnet 5 (default) | 0.8 ± 0.06 | 7,041 ± 13 | 20,556 ± 1,144 | $141 ± $5.56 | 44 ± 3.91 | no measurable gain |
+| RealKIE | Amazon Nova Lite | 0.74 ± 0.07 | 3,710 ± 68 | 25,004 ± 5,956 | $65.9 ± $1.06 | 41 ± 1.28 | — |
+| RealKIE | Amazon Nova Pro | 0.78 ± 0.07 | 3,468 ± 28 | 14,516 ± 443 | $75.0 ± $0.44 | 41 ± 1.99 | no measurable gain |
+| RealKIE | Amazon Nova 2 Lite | 0.78 ± 0.09 | 1,862 ± 2.65 | 17,517 ± 1,681 | $71.6 ± $6.37 | 56 ± 16 | no measurable gain |
+| RealKIE | Claude Haiku 5.5 | 0.79 ± 0.08 | 7,345 ± 109 | 22,012 ± 1,166 | $69.6 ± $4.34 | 58 ± 28 | no measurable gain |
+| RealKIE | Claude Sonnet 4.6 | 0.8 ± 0.08 | 3,413 ± 0.71 | 18,579 ± 164 | $127 ± $4.43 | 57 ± 9.64 | no measurable gain |
+| RealKIE | Claude Sonnet 5.5 | 0.8 ± 0.07 | 6,991 ± 1.4 | 20,214 ± 751 | $133 ± $0.78 | 63 ± 4.58 | no measurable gain |
+| RealKIE | Claude Opus 5 | 0.81 ± 0.07 | 7,050 ± 69 | 21,389 ± 1,270 | $233 ± $6.71 | 61 ± 22 | no measurable gain |
+| RealKIE | Claude Opus 5.5 | 0.82 ± 0.07 | 7,046 ± 49 | 22,110 ± 1,257 | $197 ± $2.78 | 43 ± 12 | no measurable gain |
+| RealKIE | OpenAI GPT-6 Astra | 0.84 ± 0.07 | 9,884 ± 3 | 25,815 ± 16 | $332 ± $329 | 62 ± 24 | $2.48 |
+| RealKIE | xAI Grok 4.6 | 0.84 ± 0.07 | 3,713 ± 6.42 | 17,552 ± 823 | $89.7 ± $8.08 | 87 ± 41 | $0.24 |
+| Fake-W2 | Claude Sonnet 5 (default) | 0.96 ± 0.02 | 6,877 ± 2.89 | 15,195 ± 2.28 | $32.5 ± $0.52 | 29 ± 6.1 | $0.19 |
+| Fake-W2 | Amazon Nova Lite | 0.87 ± 0.03 | 6,682 ± 1.23 | 14,993 ± 6.52 | $15.8 ± $0.01 | 23 ± 0.9 | — |
+| Fake-W2 | Amazon Nova Pro | 0.9 ± 0.02 | 6,684 ± 1.91 | 15,005 ± 7.56 | $20.7 ± $0.04 | 24 ± 0.24 | no measurable gain |
+| Fake-W2 | Amazon Nova 2 Lite | 0.8 ± 0.04 | 4,643 ± 0.25 | 12,980 ± 2.25 | $17.7 ± $0.01 | 19 ± 0.17 | — |
+| Fake-W2 | Claude Haiku 5.5 | 0.98 ± 0.01 | 7,889 ± 31 | 16,210 ± 35 | $16.9 ± $0.03 | 24 ± 0.65 | $0.01 |
+| Fake-W2 | Claude Sonnet 4.6 | 0.95 ± 0.03 | 5,773 ± 0.2 | 14,091 ± 0.97 | $37.9 ± $0.99 | 23 ± 0.79 | $0.28 |
+| Fake-W2 | Claude Sonnet 5.5 | 0.92 ± 0.03 | 6,743 ± 4.47 | 15,067 ± 3.14 | $30.8 ± $0.80 | 21 ± 0.84 | $0.27 |
+| Fake-W2 | Claude Opus 5 | 1 ± 0 | 6,826 ± 7.99 | 15,140 ± 9.49 | $54.4 ± $4.32 | 25 ± 1.12 | $0.30 |
+| Fake-W2 | Claude Opus 5.5 | 1 ± 0 | 6,901 ± 11 | 15,214 ± 8.83 | $46.3 ± $1.21 | 25 ± 1.92 | $0.23 |
+| Fake-W2 | OpenAI GPT-6 Astra | 1 ± 0 | 4,958 ± 4.59 | 13,271 ± 5.37 | $75.4 ± $35.9 | 23 ± 0.38 | $0.46 |
+| Fake-W2 | xAI Grok 4.6 | 1 ± 0 | 6,027 ± 18 | 14,338 ± 20 | $30.1 ± $2.55 | 99 ± 24 | $0.11 |
 
-| Dataset | Extraction model | Completeness | Cell accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
-|---|---|---|---|---|---|---|
-| Statement, 400 rows | Claude Sonnet 5 (default) | — | — | — | — | — |
-| Statement, 400 rows | Amazon Nova Lite | — | — | — | — | — |
-| Statement, 400 rows | Amazon Nova Pro | — | — | — | — | — |
-| Statement, 400 rows | Amazon Nova 2 Lite | — | — | — | — | — |
-| Statement, 400 rows | Claude Haiku 5.5 | — | — | — | — | — |
-| Statement, 400 rows | Claude Sonnet 4.6 | — | — | — | — | — |
-| Statement, 400 rows | Claude Sonnet 5.5 | — | — | — | — | — |
-| Statement, 400 rows | Claude Opus 5 | — | — | — | — | — |
-| Statement, 400 rows | Claude Opus 5.5 | — | — | — | — | — |
-| Statement, 400 rows | OpenAI GPT-6 Astra | — | — | — | — | — |
-| Statement, 400 rows | xAI Grok 4.6 | — | — | — | — | — |
+| Dataset | Extraction model | Completeness | Cell accuracy | Extraction tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
+|---|---|---|---|---|---|---|---|
+| Statement, 400 rows | Claude Sonnet 5 (default) | — | — | — | — | — | — |
+| Statement, 400 rows | Amazon Nova Lite | — | — | — | — | — | — |
+| Statement, 400 rows | Amazon Nova Pro | — | — | — | — | — | — |
+| Statement, 400 rows | Amazon Nova 2 Lite | — | — | — | — | — | — |
+| Statement, 400 rows | Claude Haiku 5.5 | — | — | — | — | — | — |
+| Statement, 400 rows | Claude Sonnet 4.6 | — | — | — | — | — | — |
+| Statement, 400 rows | Claude Sonnet 5.5 | — | — | — | — | — | — |
+| Statement, 400 rows | Claude Opus 5 | — | — | — | — | — | — |
+| Statement, 400 rows | Claude Opus 5.5 | — | — | — | — | — | — |
+| Statement, 400 rows | OpenAI GPT-6 Astra | — | — | — | — | — | — |
+| Statement, 400 rows | xAI Grok 4.6 | — | — | — | — | — | — |
+
+*Costs are computed from `config_library/pricing.yaml` at the time this page was generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS charges are not included.*
 
 
 #### EX-03: Does more reasoning effort improve extraction?
@@ -246,20 +256,22 @@ the rows.
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | `extraction.reasoning_effort` | Weighted accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
-|---|---|---|---|---|---|
-| RealKIE | Low (default) | 0.79 ± 0.06 | 7,044 ± 4.43 | 20,562 ± 625 | 39 ± 3.15 |
-| RealKIE | Medium | 0.81 ± 0.07 | 7,135 ± 35 | 20,586 ± 702 | 37 ± 4.02 |
-| RealKIE | High | 0.83 ± 0.07 | 7,366 ± 39 | 20,883 ± 672 | 42 ± 6.27 |
-| Fake-W2 | Low (default) | 0.95 ± 0.02 | 6,879 ± 4.2 | 15,196 ± 3.7 | 25 ± 1.07 |
-| Fake-W2 | Medium | 0.97 ± 0.01 | 7,128 ± 63 | 15,444 ± 64 | 27 ± 0.5 |
-| Fake-W2 | High | 0.97 ± 0.01 | 7,585 ± 80 | 15,900 ± 80 | 33 ± 1.73 |
+| Dataset | `extraction.reasoning_effort` | Weighted accuracy | Extraction tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs Low (default) |
+|---|---|---|---|---|---|---|---|
+| RealKIE | Low (default) | 0.79 ± 0.06 | 7,044 ± 4.43 | 20,562 ± 625 | $136 ± $0.51 | 39 ± 3.15 | — |
+| RealKIE | Medium | 0.81 ± 0.07 | 7,135 ± 35 | 20,586 ± 702 | $141 ± $1.11 | 37 ± 4.02 | no measurable gain |
+| RealKIE | High | 0.83 ± 0.07 | 7,366 ± 39 | 20,883 ± 672 | $151 ± $2.22 | 42 ± 6.27 | no measurable gain |
+| Fake-W2 | Low (default) | 0.95 ± 0.02 | 6,879 ± 4.2 | 15,196 ± 3.7 | $32.6 ± $0.72 | 25 ± 1.07 | — |
+| Fake-W2 | Medium | 0.97 ± 0.01 | 7,128 ± 63 | 15,444 ± 64 | $35.4 ± $1.46 | 27 ± 0.5 | no measurable gain |
+| Fake-W2 | High | 0.97 ± 0.01 | 7,585 ± 80 | 15,900 ± 80 | $40.1 ± $1.03 | 33 ± 1.73 | no measurable gain |
 
-| Dataset | `extraction.reasoning_effort` | Completeness | Extraction tokens per page | Total tokens per page | Median seconds per document |
-|---|---|---|---|---|---|
-| Statement, 400 rows | Low (default) | — | — | — | — |
-| Statement, 400 rows | Medium | — | — | — | — |
-| Statement, 400 rows | High | — | — | — | — |
+| Dataset | `extraction.reasoning_effort` | Completeness | Extraction tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
+|---|---|---|---|---|---|---|
+| Statement, 400 rows | Low (default) | — | — | — | — | — |
+| Statement, 400 rows | Medium | — | — | — | — | — |
+| Statement, 400 rows | High | — | — | — | — | — |
+
+*Costs are computed from `config_library/pricing.yaml` at the time this page was generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS charges are not included.*
 
 
 #### EX-04: How much do field descriptions matter?
