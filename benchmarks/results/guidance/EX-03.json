@@ -1,0 +1,225 @@
+{
+  "release": "0.6.15.dev1",
+  "measured": "November 2026",
+  "region": "us-east-1",
+  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-182228, RealKIE-FCC-Verified-20261113-182227, RealKIE-FCC-Verified-20261113-182229, RealKIE-FCC-Verified-20261113-182526, RealKIE-FCC-Verified-20261113-182544, RealKIE-FCC-Verified-20261113-182545, RealKIE-FCC-Verified-20261113-182844, RealKIE-FCC-Verified-20261113-182910, RealKIE-FCC-Verified-20261113-182913, Fake-W2-Tax-Forms-20261113-183212, Fake-W2-Tax-Forms-20261113-183229, Fake-W2-Tax-Forms-20261113-183239, Fake-W2-Tax-Forms-20261113-183329, Fake-W2-Tax-Forms-20261113-183342, Fake-W2-Tax-Forms-20261113-183353, Fake-W2-Tax-Forms-20261113-183514, Fake-W2-Tax-Forms-20261113-183519, Fake-W2-Tax-Forms-20261113-183520",
+  "verdict": "A little, for few tokens. High effort raised accuracy from 0.79 to 0.83 on RealKIE invoices and from 0.95 to 0.97 on W-2 forms, for 2 to 5% more total tokens per page and a few seconds per document. Both gains are near the edge of the noise on 20 documents, so confirm on your own test set before you change the default.",
+  "cells": {
+    "realkie|Low (default)|weighted_accuracy": {
+      "mean": 0.791893,
+      "se": 0.031791
+    },
+    "realkie|Low (default)|extraction_tokens": {
+      "mean": 7043.592593,
+      "se": 2.217152
+    },
+    "realkie|Low (default)|scoring_tokens": {
+      "mean": 13518.460905,
+      "se": 313.488063
+    },
+    "realkie|Low (default)|total_tokens": {
+      "mean": 20562.053498,
+      "se": 312.72652
+    },
+    "realkie|Low (default)|median_seconds": {
+      "mean": 39.414947,
+      "se": 1.574581
+    },
+    "realkie|Low (default)|all_fields_right": {
+      "mean": 0.033333,
+      "se": 0.033333
+    },
+    "realkie|Low (default)|auroc": {
+      "mean": 0.406438,
+      "se": 0.024662
+    },
+    "realkie|Low (default)|calibration_error": {
+      "mean": 0.185305,
+      "se": 0.007686
+    },
+    "realkie|Low (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Medium|weighted_accuracy": {
+      "mean": 0.812483,
+      "se": 0.033546
+    },
+    "realkie|Medium|extraction_tokens": {
+      "mean": 7135.485597,
+      "se": 17.308105
+    },
+    "realkie|Medium|scoring_tokens": {
+      "mean": 13450.851852,
+      "se": 366.264888
+    },
+    "realkie|Medium|total_tokens": {
+      "mean": 20586.337449,
+      "se": 350.967894
+    },
+    "realkie|Medium|median_seconds": {
+      "mean": 36.781644,
+      "se": 2.009673
+    },
+    "realkie|Medium|all_fields_right": {
+      "mean": 0.05,
+      "se": 0.0
+    },
+    "realkie|Medium|auroc": {
+      "mean": 0.487001,
+      "se": 0.012008
+    },
+    "realkie|Medium|calibration_error": {
+      "mean": 0.17314,
+      "se": 0.013412
+    },
+    "realkie|Medium|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|High|weighted_accuracy": {
+      "mean": 0.832909,
+      "se": 0.032895
+    },
+    "realkie|High|extraction_tokens": {
+      "mean": 7365.670782,
+      "se": 19.488737
+    },
+    "realkie|High|scoring_tokens": {
+      "mean": 13517.27572,
+      "se": 320.414644
+    },
+    "realkie|High|total_tokens": {
+      "mean": 20882.946502,
+      "se": 335.959566
+    },
+    "realkie|High|median_seconds": {
+      "mean": 42.10184,
+      "se": 3.136011
+    },
+    "realkie|High|all_fields_right": {
+      "mean": 0.033333,
+      "se": 0.016667
+    },
+    "realkie|High|auroc": {
+      "mean": 0.499774,
+      "se": 0.010922
+    },
+    "realkie|High|calibration_error": {
+      "mean": 0.16919,
+      "se": 0.015381
+    },
+    "realkie|High|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Low (default)|weighted_accuracy": {
+      "mean": 0.950717,
+      "se": 0.009305
+    },
+    "fake_w2|Low (default)|extraction_tokens": {
+      "mean": 6878.633333,
+      "se": 2.097684
+    },
+    "fake_w2|Low (default)|scoring_tokens": {
+      "mean": 8317.266667,
+      "se": 1.188954
+    },
+    "fake_w2|Low (default)|total_tokens": {
+      "mean": 15195.9,
+      "se": 1.847521
+    },
+    "fake_w2|Low (default)|median_seconds": {
+      "mean": 25.036248,
+      "se": 0.536463
+    },
+    "fake_w2|Low (default)|all_fields_right": {
+      "mean": 0.116667,
+      "se": 0.033333
+    },
+    "fake_w2|Low (default)|auroc": {
+      "mean": 0.491513,
+      "se": 0.008856
+    },
+    "fake_w2|Low (default)|calibration_error": {
+      "mean": 0.051829,
+      "se": 0.003256
+    },
+    "fake_w2|Low (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Medium|weighted_accuracy": {
+      "mean": 0.968693,
+      "se": 0.004206
+    },
+    "fake_w2|Medium|extraction_tokens": {
+      "mean": 7128.4,
+      "se": 31.589911
+    },
+    "fake_w2|Medium|scoring_tokens": {
+      "mean": 8315.4,
+      "se": 0.453689
+    },
+    "fake_w2|Medium|total_tokens": {
+      "mean": 15443.8,
+      "se": 32.035033
+    },
+    "fake_w2|Medium|median_seconds": {
+      "mean": 27.048793,
+      "se": 0.250395
+    },
+    "fake_w2|Medium|all_fields_right": {
+      "mean": 0.166667,
+      "se": 0.016667
+    },
+    "fake_w2|Medium|auroc": {
+      "mean": 0.469695,
+      "se": 0.010383
+    },
+    "fake_w2|Medium|calibration_error": {
+      "mean": 0.033117,
+      "se": 0.001104
+    },
+    "fake_w2|Medium|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|High|weighted_accuracy": {
+      "mean": 0.970627,
+      "se": 0.003997
+    },
+    "fake_w2|High|extraction_tokens": {
+      "mean": 7584.65,
+      "se": 40.234811
+    },
+    "fake_w2|High|scoring_tokens": {
+      "mean": 8314.9,
+      "se": 1.589287
+    },
+    "fake_w2|High|total_tokens": {
+      "mean": 15899.55,
+      "se": 40.170584
+    },
+    "fake_w2|High|median_seconds": {
+      "mean": 33.057121,
+      "se": 0.86688
+    },
+    "fake_w2|High|all_fields_right": {
+      "mean": 0.15,
+      "se": 0.028868
+    },
+    "fake_w2|High|auroc": {
+      "mean": 0.463476,
+      "se": 0.000738
+    },
+    "fake_w2|High|calibration_error": {
+      "mean": 0.030216,
+      "se": 0.000807
+    },
+    "fake_w2|High|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    }
+  }
+}

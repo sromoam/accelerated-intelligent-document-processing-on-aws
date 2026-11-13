@@ -102,7 +102,11 @@ the rows.
 
 ### Does more reasoning effort improve extraction?
 
-**Answer:** Not yet measured. [Details: EX-03](#ex-03-does-more-reasoning-effort-improve-extraction)
+**Answer:** A little, for few tokens. High effort raised accuracy from 0.79 to 0.83 on RealKIE invoices and from 0.95 to 0.97 on W-2 forms, for 2 to 5% more total tokens per page and a few seconds per document. Both gains are near the edge of the noise on 20 documents, so confirm on your own test set before you change the default. [Details: EX-03](#ex-03-does-more-reasoning-effort-improve-extraction)
+
+![Weighted accuracy against total tokens per page for each `extraction.reasoning_effort`](../../images/benchmark-guidance/EX-03-fields.svg)
+
+*Weighted accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.*
 
 ### How much do field descriptions matter?
 
@@ -245,7 +249,9 @@ the rows.
 
 #### EX-03: Does more reasoning effort improve extraction?
 
-**Answer:** Not yet measured.
+**Answer:** A little, for few tokens. High effort raised accuracy from 0.79 to 0.83 on RealKIE invoices and from 0.95 to 0.97 on W-2 forms, for 2 to 5% more total tokens per page and a few seconds per document. Both gains are near the edge of the noise on 20 documents, so confirm on your own test set before you change the default.
+
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-182228, RealKIE-FCC-Verified-20261113-182227, RealKIE-FCC-Verified-20261113-182229, RealKIE-FCC-Verified-20261113-182526, RealKIE-FCC-Verified-20261113-182544, RealKIE-FCC-Verified-20261113-182545, RealKIE-FCC-Verified-20261113-182844, RealKIE-FCC-Verified-20261113-182910, RealKIE-FCC-Verified-20261113-182913, Fake-W2-Tax-Forms-20261113-183212, Fake-W2-Tax-Forms-20261113-183229, Fake-W2-Tax-Forms-20261113-183239, Fake-W2-Tax-Forms-20261113-183329, Fake-W2-Tax-Forms-20261113-183342, Fake-W2-Tax-Forms-20261113-183353, Fake-W2-Tax-Forms-20261113-183514, Fake-W2-Tax-Forms-20261113-183519, Fake-W2-Tax-Forms-20261113-183520`.*
 
 | | |
 |---|---|
@@ -256,12 +262,12 @@ the rows.
 
 | Dataset | `extraction.reasoning_effort` | Weighted accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
 |---|---|---|---|---|---|
-| RealKIE | Low (default) | — | — | — | — |
-| RealKIE | Medium | — | — | — | — |
-| RealKIE | High | — | — | — | — |
-| Fake-W2 | Low (default) | — | — | — | — |
-| Fake-W2 | Medium | — | — | — | — |
-| Fake-W2 | High | — | — | — | — |
+| RealKIE | Low (default) | 0.79 ± 0.06 | 7,044 ± 4.43 | 20,562 ± 625 | 39 ± 3.15 |
+| RealKIE | Medium | 0.81 ± 0.07 | 7,135 ± 35 | 20,586 ± 702 | 37 ± 4.02 |
+| RealKIE | High | 0.83 ± 0.07 | 7,366 ± 39 | 20,883 ± 672 | 42 ± 6.27 |
+| Fake-W2 | Low (default) | 0.95 ± 0.02 | 6,879 ± 4.2 | 15,196 ± 3.7 | 25 ± 1.07 |
+| Fake-W2 | Medium | 0.97 ± 0.01 | 7,128 ± 63 | 15,444 ± 64 | 27 ± 0.5 |
+| Fake-W2 | High | 0.97 ± 0.01 | 7,585 ± 80 | 15,900 ± 80 | 33 ± 1.73 |
 
 | Dataset | `extraction.reasoning_effort` | Completeness | Extraction tokens per page | Total tokens per page | Median seconds per document |
 |---|---|---|---|---|---|

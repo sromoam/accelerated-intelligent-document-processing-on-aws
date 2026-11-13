@@ -1,0 +1,22 @@
+{
+  "ablation": "DG-06",
+  "verdict": "Measured; see the table.",
+  "runs": {
+    "realkie": {
+      "TABLES, LAYOUT, SIGNATURES (default)": [
+        "RealKIE-FCC-Verified-20261113-183155",
+        "RealKIE-FCC-Verified-20261113-183156",
+        "RealKIE-FCC-Verified-20261113-183157"
+      ],
+      "LAYOUT only": [
+        "RealKIE-FCC-Verified-20261113-183443",
+        "RealKIE-FCC-Verified-20261113-183516",
+        "RealKIE-FCC-Verified-20261113-183512"
+      ]
+    }
+  },
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026"
+}
