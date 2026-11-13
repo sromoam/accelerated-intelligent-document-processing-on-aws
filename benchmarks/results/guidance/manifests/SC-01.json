@@ -1,0 +1,35 @@
+{
+  "ablation": "SC-01",
+  "verdict": "On DocSplit packets, detect sections first, page by page. It got the most sections exactly right (0.65, against 0.52 for the default) and kept the default's page accuracy (0.81) at the same tokens per page. Holistic classification grouped pages into documents best (grouping score 0.90) and used about 20% fewer tokens, but gave the wrong class to more pages (page accuracy 0.70): choose it when finding where each document starts matters more than its class.",
+  "runs": {
+    "docsplit": {
+      "Page by page, one call (default)": [
+        "DocSplit-Poly-Seq-20261113-192327",
+        "DocSplit-Poly-Seq-20261113-192328",
+        "DocSplit-Poly-Seq-20261113-192329"
+      ],
+      "Holistic, one call": [
+        "DocSplit-Poly-Seq-20261113-192706",
+        "DocSplit-Poly-Seq-20261113-192708",
+        "DocSplit-Poly-Seq-20261113-192711"
+      ],
+      "Detect sections first (page by page), then classify": [
+        "DocSplit-Poly-Seq-20261113-194400",
+        "DocSplit-Poly-Seq-20261113-194401",
+        "DocSplit-Poly-Seq-20261113-194402"
+      ],
+      "Detect sections first (holistic), then classify": [
+        "DocSplit-Poly-Seq-20261113-195220",
+        "DocSplit-Poly-Seq-20261113-195216",
+        "DocSplit-Poly-Seq-20261113-195221"
+      ]
+    }
+  },
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026",
+  "max_failed": {
+    "docsplit": 1
+  }
+}

@@ -58,6 +58,8 @@ metrics:
   page_accuracy: {name: "Page accuracy", kinds: [packet, packet_fields]}
   boundary_accuracy: {name: "Boundary accuracy", kinds: [packet, packet_fields]}
   label_accuracy: {name: "Label accuracy", kinds: [packet, packet_fields]}
+  section_accuracy: {name: "Section accuracy", kinds: [packet, packet_fields]}
+  grouping_score: {name: "Grouping score", kinds: [packet, packet_fields]}
   over_splits: {name: "Over-splits", kinds: [packet, packet_fields]}
   merges: {name: "Merges", kinds: [packet, packet_fields]}
   auroc: {name: "AUROC", kinds: [list, fields, packet]}
@@ -174,7 +176,8 @@ ablations:
     set: [{"classification.strategy": "combined", "classification.combined.granularity": "page"}, {"classification.strategy": "combined", "classification.combined.granularity": "packet"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "page"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "packet"}]
     datasets: [docsplit, synth_two_docs, same_class_packets]
     runs: 3
-    metrics: [page_accuracy, boundary_accuracy, label_accuracy, over_splits, merges, classification_tokens]
+    metrics: [page_accuracy, section_accuracy, grouping_score, boundary_accuracy, label_accuracy, classification_tokens, total_tokens]
+    plot: section_accuracy
   - id: SC-02
     page: splitting-and-classification
     question: "Do I need page images in the classification prompt?"
@@ -193,7 +196,8 @@ ablations:
     holds: "Run at both granularities: page by page and holistic"
     datasets: [docsplit]
     runs: 3
-    metrics: [page_accuracy, boundary_accuracy, label_accuracy, classification_tokens, median_seconds]
+    metrics: [page_accuracy, section_accuracy, grouping_score, boundary_accuracy, label_accuracy, classification_tokens, total_tokens, median_seconds]
+    plot: section_accuracy
   - id: SC-04
     page: splitting-and-classification
     question: "How long a packet can holistic classification handle?"

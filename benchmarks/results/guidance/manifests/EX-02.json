@@ -19,7 +19,28 @@
         "RealKIE-FCC-Verified-20261113-184918"
       ],
       "Amazon Nova 2 Lite": [
-        "RealKIE-FCC-Verified-20261113-190709"
+        "RealKIE-FCC-Verified-20261113-190709",
+        "RealKIE-FCC-Verified-20261113-192401"
+      ],
+      "Claude Haiku 5.5": [
+        "RealKIE-FCC-Verified-20261113-192310",
+        "RealKIE-FCC-Verified-20261113-192341",
+        "RealKIE-FCC-Verified-20261113-192701"
+      ],
+      "Claude Sonnet 4.6": [
+        "RealKIE-FCC-Verified-20261113-192729",
+        "RealKIE-FCC-Verified-20261113-192743",
+        "RealKIE-FCC-Verified-20261113-194402"
+      ],
+      "Claude Sonnet 5.5": [
+        "RealKIE-FCC-Verified-20261113-194401",
+        "RealKIE-FCC-Verified-20261113-194404",
+        "RealKIE-FCC-Verified-20261113-195220"
+      ],
+      "Claude Opus 5": [
+        "RealKIE-FCC-Verified-20261113-195217",
+        "RealKIE-FCC-Verified-20261113-195219",
+        "RealKIE-FCC-Verified-20261113-195617"
       ]
     }
   },

@@ -34,6 +34,8 @@ Metrics (cell keys `dataset|value|metric`, each a mean and standard error):
     auroc               field-confidence AUROC, per run; SE across runs
     calibration_error   field-confidence ECE, per run; SE across runs
     page_accuracy       share of pages with the right class, per run; SE across runs
+    section_accuracy    share of sections with the right pages and class, per run
+    grouping_score      DocSplit packet score for grouping pages into documents
 
 A metric is written only when the runs report it (confidence metrics need confidence
 on; page accuracy needs page-level class ground truth).
@@ -58,12 +60,13 @@ import boto3
 
 REPO = Path(__file__).resolve().parents[2]
 OUT = REPO / "benchmarks" / "results" / "guidance"
-#: Test Studio cost-breakdown step names, by the registry's metric key.
+#: Test Studio cost-breakdown step names, by the registry's metric key. Detecting
+#: sections first meters its two calls as Splitting and SectionClassification.
 STEP_METRICS = {
-    "ocr_tokens": "OCR",
-    "classification_tokens": "Classification",
-    "extraction_tokens": "Extraction",
-    "scoring_tokens": "Assessment",
+    "ocr_tokens": ("OCR",),
+    "classification_tokens": ("Classification", "Splitting", "SectionClassification"),
+    "extraction_tokens": ("Extraction",),
+    "scoring_tokens": ("Assessment",),
 }
 
 
@@ -73,11 +76,11 @@ def mean_se(values: list[float]) -> dict[str, float]:
     return {"mean": round(m, 6), "se": round(se, 6)}
 
 
-def step_tokens(result: dict[str, Any], step: str | None) -> int:
-    """Bedrock tokens (input, output, cache reads and writes) for one step, or all."""
+def step_tokens(result: dict[str, Any], steps: tuple[str, ...] | None) -> int:
+    """Bedrock tokens (input, output, cache reads and writes) for some steps, or all."""
     total = 0
     for name, items in result.get("costBreakdown", {}).items():
-        if step and name != step:
+        if steps and name not in steps:
             continue
         for key, item in items.items():
             if key.startswith("bedrock/") and key.endswith("_totalTokens"):
@@ -99,6 +102,11 @@ def run_metrics(result: dict[str, Any]) -> dict[str, float]:
     split = result.get("splitClassificationMetrics") or {}
     if split.get("page_level_accuracy") is not None:
         out["page_accuracy"] = float(split["page_level_accuracy"])
+    if split.get("split_accuracy_without_order") is not None:
+        out["section_accuracy"] = float(split["split_accuracy_without_order"])
+    graded = ((result.get("gradedPacketMetrics") or {}).get("mean")) or {}
+    if graded.get("final_score") is not None:
+        out["grouping_score"] = float(graded["final_score"])
     return out
 
 

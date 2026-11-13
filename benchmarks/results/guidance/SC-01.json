@@ -1,0 +1,185 @@
+{
+  "release": "0.6.15.dev1",
+  "measured": "November 2026",
+  "region": "us-east-1",
+  "source": "Test Studio runs DocSplit-Poly-Seq-20261113-192327, DocSplit-Poly-Seq-20261113-192328, DocSplit-Poly-Seq-20261113-192329, DocSplit-Poly-Seq-20261113-192706, DocSplit-Poly-Seq-20261113-192708, DocSplit-Poly-Seq-20261113-192711, DocSplit-Poly-Seq-20261113-194400, DocSplit-Poly-Seq-20261113-194401, DocSplit-Poly-Seq-20261113-194402, DocSplit-Poly-Seq-20261113-195220, DocSplit-Poly-Seq-20261113-195216, DocSplit-Poly-Seq-20261113-195221 (4 failed documents left out of the scores)",
+  "verdict": "On DocSplit packets, detect sections first, page by page. It got the most sections exactly right (0.65, against 0.52 for the default) and kept the default's page accuracy (0.81) at the same tokens per page. Holistic classification grouped pages into documents best (grouping score 0.90) and used about 20% fewer tokens, but gave the wrong class to more pages (page accuracy 0.70): choose it when finding where each document starts matters more than its class.",
+  "cells": {
+    "docsplit|Page by page, one call (default)|weighted_accuracy": {
+      "mean": 0.314759,
+      "se": 0.034505
+    },
+    "docsplit|Page by page, one call (default)|classification_tokens": {
+      "mean": 2859.035294,
+      "se": 8.205679
+    },
+    "docsplit|Page by page, one call (default)|extraction_tokens": {
+      "mean": 7260.580646,
+      "se": 7.787948
+    },
+    "docsplit|Page by page, one call (default)|scoring_tokens": {
+      "mean": 4702.708281,
+      "se": 14.946997
+    },
+    "docsplit|Page by page, one call (default)|total_tokens": {
+      "mean": 14822.324221,
+      "se": 28.886133
+    },
+    "docsplit|Page by page, one call (default)|median_seconds": {
+      "mean": 137.330155,
+      "se": 5.088025
+    },
+    "docsplit|Page by page, one call (default)|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Page by page, one call (default)|calibration_error": {
+      "mean": 0.956347,
+      "se": 0.004306
+    },
+    "docsplit|Page by page, one call (default)|page_accuracy": {
+      "mean": 0.816117,
+      "se": 0.009104
+    },
+    "docsplit|Page by page, one call (default)|section_accuracy": {
+      "mean": 0.516558,
+      "se": 0.01167
+    },
+    "docsplit|Page by page, one call (default)|grouping_score": {
+      "mean": 0.657715,
+      "se": 0.008834
+    },
+    "docsplit|Holistic, one call|weighted_accuracy": {
+      "mean": 0.326614,
+      "se": 0.037601
+    },
+    "docsplit|Holistic, one call|classification_tokens": {
+      "mean": 1132.66443,
+      "se": 0.326494
+    },
+    "docsplit|Holistic, one call|extraction_tokens": {
+      "mean": 6526.379195,
+      "se": 7.692013
+    },
+    "docsplit|Holistic, one call|scoring_tokens": {
+      "mean": 4197.99217,
+      "se": 40.348299
+    },
+    "docsplit|Holistic, one call|total_tokens": {
+      "mean": 11857.035794,
+      "se": 48.093855
+    },
+    "docsplit|Holistic, one call|median_seconds": {
+      "mean": 155.417978,
+      "se": 4.475631
+    },
+    "docsplit|Holistic, one call|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Holistic, one call|calibration_error": {
+      "mean": 0.962293,
+      "se": 0.003634
+    },
+    "docsplit|Holistic, one call|page_accuracy": {
+      "mean": 0.695749,
+      "se": 0.017365
+    },
+    "docsplit|Holistic, one call|section_accuracy": {
+      "mean": 0.548148,
+      "se": 0.022529
+    },
+    "docsplit|Holistic, one call|grouping_score": {
+      "mean": 0.904113,
+      "se": 0.005003
+    },
+    "docsplit|Detect sections first (page by page), then classify|weighted_accuracy": {
+      "mean": 0.297629,
+      "se": 0.037993
+    },
+    "docsplit|Detect sections first (page by page), then classify|classification_tokens": {
+      "mean": 2820.951151,
+      "se": 14.141441
+    },
+    "docsplit|Detect sections first (page by page), then classify|extraction_tokens": {
+      "mean": 6953.707365,
+      "se": 9.880858
+    },
+    "docsplit|Detect sections first (page by page), then classify|scoring_tokens": {
+      "mean": 4633.535638,
+      "se": 43.058401
+    },
+    "docsplit|Detect sections first (page by page), then classify|total_tokens": {
+      "mean": 14408.194154,
+      "se": 57.884252
+    },
+    "docsplit|Detect sections first (page by page), then classify|median_seconds": {
+      "mean": 135.778208,
+      "se": 7.568354
+    },
+    "docsplit|Detect sections first (page by page), then classify|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Detect sections first (page by page), then classify|calibration_error": {
+      "mean": 0.963056,
+      "se": 0.002993
+    },
+    "docsplit|Detect sections first (page by page), then classify|page_accuracy": {
+      "mean": 0.812714,
+      "se": 0.010302
+    },
+    "docsplit|Detect sections first (page by page), then classify|section_accuracy": {
+      "mean": 0.652723,
+      "se": 0.007012
+    },
+    "docsplit|Detect sections first (page by page), then classify|grouping_score": {
+      "mean": 0.804378,
+      "se": 0.004515
+    },
+    "docsplit|Detect sections first (holistic), then classify|weighted_accuracy": {
+      "mean": 0.305782,
+      "se": 0.03027
+    },
+    "docsplit|Detect sections first (holistic), then classify|classification_tokens": {
+      "mean": 1741.410249,
+      "se": 13.101538
+    },
+    "docsplit|Detect sections first (holistic), then classify|extraction_tokens": {
+      "mean": 6495.551658,
+      "se": 5.464686
+    },
+    "docsplit|Detect sections first (holistic), then classify|scoring_tokens": {
+      "mean": 4112.982111,
+      "se": 8.57002
+    },
+    "docsplit|Detect sections first (holistic), then classify|total_tokens": {
+      "mean": 12349.944017,
+      "se": 21.052967
+    },
+    "docsplit|Detect sections first (holistic), then classify|median_seconds": {
+      "mean": 159.055463,
+      "se": 13.793637
+    },
+    "docsplit|Detect sections first (holistic), then classify|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Detect sections first (holistic), then classify|calibration_error": {
+      "mean": 0.959312,
+      "se": 0.005999
+    },
+    "docsplit|Detect sections first (holistic), then classify|page_accuracy": {
+      "mean": 0.755409,
+      "se": 0.009096
+    },
+    "docsplit|Detect sections first (holistic), then classify|section_accuracy": {
+      "mean": 0.546841,
+      "se": 0.022443
+    },
+    "docsplit|Detect sections first (holistic), then classify|grouping_score": {
+      "mean": 0.897914,
+      "se": 0.005276
+    }
+  }
+}
