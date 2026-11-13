@@ -1,7 +1,7 @@
 # Ablation registry for the "Benchmarks by Problem Set" pages (docs/benchmark-guidance/).
 #
 # Each ablation answers one customer question by changing ONE setting and leaving the rest
-# at the default configuration (docs/benchmark-guidance/index.md, "The default configuration").
+# as the dataset's configuration preset sets it (docs/benchmark-guidance/index.md, "How we run a benchmark").
 # benchmarks/harness/render_guidance.py renders every ablation into its page between the
 # `<!-- BEGIN GENERATED ABLATIONS -->` / `<!-- END GENERATED ABLATIONS -->` markers. When
 # a results file exists at benchmarks/results/guidance/<ID>.json, the renderer fills the
@@ -13,7 +13,7 @@
 #   question  the customer question, as a customer asks it
 #   changes   the one setting that varies
 #   values    its values; the default value is marked "(default)"
-#   holds     settings that differ from the defaults for every value
+#   holds     settings that differ from the preset for every value
 #   datasets  keys of `datasets` below
 #   runs      runs per document per value
 #   metrics   keys of `metrics` below, in column order
@@ -71,8 +71,8 @@ ablations:
   - id: TR-01
     page: index
     question: "How much do results vary between identical runs?"
-    changes: "Nothing: the default configuration, run 10 times"
-    values: ["Default configuration"]
+    changes: "Nothing: the preset, run 10 times"
+    values: ["Preset"]
     datasets: [realkie, docsplit, synth_400]
     runs: 10
     metrics: [weighted_accuracy, boundary_accuracy, completeness, total_tokens]
@@ -470,8 +470,8 @@ ablations:
   - id: TU-01
     page: token-use
     question: "Where do the tokens go?"
-    changes: "Nothing: the default configuration, measured step by step"
-    values: ["Default configuration"]
+    changes: "Nothing: the preset, measured step by step"
+    values: ["Preset"]
     datasets: [realkie, docsplit, synth_400]
     runs: 3
     metrics: [ocr_tokens, classification_tokens, extraction_tokens, scoring_tokens, total_tokens, cached_share]
@@ -495,7 +495,7 @@ ablations:
     page: token-use
     question: "What is the cheapest configuration that keeps accuracy?"
     changes: "Configuration"
-    values: ["Default configuration", "Holistic classification, text only", "Textract layout only", "Confidence off", "All three together"]
+    values: ["Preset", "Holistic classification, text only", "Textract layout only", "Confidence off", "All three together"]
     datasets: [realkie, docsplit, synth_400]
     runs: 3
     metrics: [weighted_accuracy, boundary_accuracy, completeness, total_tokens]

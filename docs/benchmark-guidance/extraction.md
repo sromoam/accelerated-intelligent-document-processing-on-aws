@@ -37,7 +37,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | Extraction mode |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [Synthetic statement, 100 rows (3 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
 | **Runs** | 3 per document, per value |
 
@@ -69,7 +69,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | Extraction model |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -120,7 +120,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | Extraction model |
-| **Everything else** | Run in both extraction modes; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Run in both extraction modes; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -150,7 +150,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | `extraction.reasoning_effort` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -177,7 +177,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | Field descriptions |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
 | **Runs** | 3 per document, per value |
 
@@ -198,7 +198,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | Few-shot examples |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
 | **Runs** | 3 per document, per value |
 
@@ -219,7 +219,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | Page images in the extraction prompt |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) |
 | **Runs** | 3 per document, per value |
 
@@ -240,7 +240,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | `extraction.agentic.table_parsing.enabled` |
-| **Everything else** | Iterative (Advanced) extraction; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Iterative (Advanced) extraction; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -261,7 +261,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | Pages per shard (`max_pages_per_shard`) |
-| **Everything else** | Iterative (Advanced) extraction; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Iterative (Advanced) extraction; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -284,7 +284,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | `extraction.agentic.table_parsing.lazy_images` |
-| **Everything else** | Iterative (Advanced) extraction; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Iterative (Advanced) extraction; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
 | **Runs** | 3 per document, per value |
 
@@ -308,7 +308,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | `extraction.validation` and `extraction.coercion` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
 | **Runs** | 3 per document, per value |
 
@@ -329,7 +329,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | `extraction.validation.fail_action` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
 | **Runs** | 3 per document, per value |
 
@@ -350,7 +350,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | `extraction.forced_tool.enabled` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -372,7 +372,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | Multi-instance sections |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
 | **Runs** | 3 per document, per value |
 
@@ -389,7 +389,7 @@ the rows.
 | | |
 |---|---|
 | **Changes** | Document format |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) |
 | **Runs** | 3 per document, per value |
 
@@ -407,7 +407,7 @@ Needs a dataset we haven't built yet: Packets with section and field ground trut
 | | |
 |---|---|
 | **Changes** | Granularity and strategy |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | Packets with section and field ground truth (to be built) |
 | **Runs** | 3 per document, per value |
 

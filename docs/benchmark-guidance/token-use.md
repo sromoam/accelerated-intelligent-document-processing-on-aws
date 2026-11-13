@@ -32,22 +32,22 @@ reuse runs from other pages.
 
 | | |
 |---|---|
-| **Changes** | Nothing: the default configuration, measured step by step |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Changes** | Nothing: the preset, measured step by step |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | Nothing: the default configuration, measured step by step | OCR tokens per page | Classification tokens per page | Extraction tokens per page | Scoring tokens per page | Total tokens per page | Share of input served from cache |
+| Dataset | Nothing: the preset, measured step by step | OCR tokens per page | Classification tokens per page | Extraction tokens per page | Scoring tokens per page | Total tokens per page | Share of input served from cache |
 |---|---|---|---|---|---|---|---|
-| RealKIE | Default configuration | — | — | — | — | — | — |
+| RealKIE | Preset | — | — | — | — | — | — |
 
-| Dataset | Nothing: the default configuration, measured step by step | OCR tokens per page | Classification tokens per page | Total tokens per page | Share of input served from cache |
+| Dataset | Nothing: the preset, measured step by step | OCR tokens per page | Classification tokens per page | Total tokens per page | Share of input served from cache |
 |---|---|---|---|---|---|
-| DocSplit | Default configuration | — | — | — | — |
+| DocSplit | Preset | — | — | — | — |
 
-| Dataset | Nothing: the default configuration, measured step by step | OCR tokens per page | Classification tokens per page | Extraction tokens per page | Scoring tokens per page | Total tokens per page | Share of input served from cache |
+| Dataset | Nothing: the preset, measured step by step | OCR tokens per page | Classification tokens per page | Extraction tokens per page | Scoring tokens per page | Total tokens per page | Share of input served from cache |
 |---|---|---|---|---|---|---|---|
-| Statement, 400 rows | Default configuration | — | — | — | — | — | — |
+| Statement, 400 rows | Preset | — | — | — | — | — | — |
 
 
 ### TU-02: How much does prompt caching save in extraction?
@@ -57,7 +57,7 @@ reuse runs from other pages.
 | | |
 |---|---|
 | **Changes** | `extraction.prompt_cache` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -84,7 +84,7 @@ reuse runs from other pages.
 | | |
 |---|---|
 | **Changes** | Page images |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 
@@ -110,13 +110,13 @@ reuse runs from other pages.
 | | |
 |---|---|
 | **Changes** | Configuration |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Configuration | Weighted accuracy | Total tokens per page |
 |---|---|---|---|
-| RealKIE | Default configuration | — | — |
+| RealKIE | Preset | — | — |
 | RealKIE | Holistic classification, text only | — | — |
 | RealKIE | Textract layout only | — | — |
 | RealKIE | Confidence off | — | — |
@@ -124,7 +124,7 @@ reuse runs from other pages.
 
 | Dataset | Configuration | Boundary accuracy | Total tokens per page |
 |---|---|---|---|
-| DocSplit | Default configuration | — | — |
+| DocSplit | Preset | — | — |
 | DocSplit | Holistic classification, text only | — | — |
 | DocSplit | Textract layout only | — | — |
 | DocSplit | Confidence off | — | — |
@@ -132,7 +132,7 @@ reuse runs from other pages.
 
 | Dataset | Configuration | Completeness | Total tokens per page |
 |---|---|---|---|
-| Statement, 400 rows | Default configuration | — | — |
+| Statement, 400 rows | Preset | — | — |
 | Statement, 400 rows | Holistic classification, text only | — | — |
 | Statement, 400 rows | Textract layout only | — | — |
 | Statement, 400 rows | Confidence off | — | — |
@@ -146,7 +146,7 @@ reuse runs from other pages.
 | | |
 |---|---|
 | **Changes** | Extraction model |
-| **Everything else** | Computed from the EX-02 runs; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Computed from the EX-02 runs; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | None: computed from the EX-02 runs |
 

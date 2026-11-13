@@ -38,7 +38,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | Granularity and strategy |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); Same-class documents back to back (to be built) |
 | **Runs** | 3 per document, per value |
 
@@ -65,7 +65,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | What the classification model reads |
-| **Everything else** | Run at both granularities: page by page and holistic; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Run at both granularities: page by page and holistic; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 
@@ -83,7 +83,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | Classification model |
-| **Everything else** | Run at both granularities: page by page and holistic; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Run at both granularities: page by page and holistic; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 
@@ -104,7 +104,7 @@ Needs a dataset we haven't built yet: Long packets, 30-60 pages (to be built).
 | | |
 |---|---|
 | **Changes** | Pages per holistic call (`window_pages`) |
-| **Everything else** | Holistic, one call; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Holistic, one call; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | Long packets, 30-60 pages (to be built); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 
@@ -127,7 +127,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | `contextPagesCount` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); Same-class documents back to back (to be built) |
 | **Runs** | 3 per document, per value |
 
@@ -148,7 +148,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | Few-shot examples |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 
@@ -166,7 +166,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | Class descriptions |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 
@@ -184,7 +184,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | Number of document classes in the configuration |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 
@@ -202,7 +202,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | Classification image size (long edge) |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 
@@ -220,7 +220,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | Section splitting |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 

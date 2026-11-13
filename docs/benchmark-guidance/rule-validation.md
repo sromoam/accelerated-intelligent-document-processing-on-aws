@@ -35,7 +35,7 @@ Needs a dataset we haven't built yet: Documents with expert rule verdicts (to be
 | | |
 |---|---|
 | **Changes** | Rule validation model |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | Documents with expert rule verdicts (to be built) |
 | **Runs** | 3 per document, per value |
 
@@ -55,7 +55,7 @@ Needs a dataset we haven't built yet: Documents with expert rule verdicts (to be
 | | |
 |---|---|
 | **Changes** | Rule engine (`x-aws-idp-validation-engine`) |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | Documents with expert rule verdicts (to be built) |
 | **Runs** | 3 per document, per value |
 
@@ -74,7 +74,7 @@ Needs a dataset we haven't built yet: Documents with expert rule verdicts (to be
 | | |
 |---|---|
 | **Changes** | Rule source |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | Documents with expert rule verdicts (to be built) |
 | **Runs** | 3 per document, per value |
 
@@ -94,7 +94,7 @@ Needs a dataset we haven't built yet: Documents with expert rule verdicts (to be
 | | |
 |---|---|
 | **Changes** | `max_chunk_size` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | Documents with expert rule verdicts (to be built) |
 | **Runs** | 3 per document, per value |
 

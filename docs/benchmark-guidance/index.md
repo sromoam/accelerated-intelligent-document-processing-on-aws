@@ -21,19 +21,21 @@ We answer these questions with benchmark datasets, one page per problem set:
 
 ## How we run a benchmark
 
-We change one setting, keep the rest of the configuration at its defaults, and run the same
-documents with each value of the setting. Each benchmark has an ID, such as `EX-01`, and a
-results table. A table reads *Not yet measured* until we run it.
+Each dataset has a configuration preset built for it. A benchmark starts from that preset,
+changes one setting, and runs the same documents with each value of the setting. Each
+benchmark has an ID, such as `EX-01`, and a results table. A table reads *Not yet
+measured* until we run it.
 
-## The default configuration
-
-| Step | Default |
+| Dataset | Preset |
 |---|---|
-| Digitization | Amazon Textract with tables, layout and signatures, at 300 DPI |
-| Splitting and classification | Page by page in one call, with page text and images, using Amazon Nova 2 Lite |
-| Extraction | Single pass, using Claude Sonnet 5 at low reasoning effort |
-| Confidence | Separate scoring pass with Amazon Nova Lite, threshold 0.8 |
-| Rule validation | Off |
+| Synthetic bank statements | `bank-statement-sample` |
+| RealKIE-FCC-Verified, ConfBench | `realkie-fcc-verified` |
+| OmniAI-OCR-Benchmark | `ocr-benchmark` |
+| Fake-W2-Tax-Forms | `fake-w2` |
+| DocSplit-Poly-Seq | `docsplit` |
+
+Defaults differ from preset to preset. To configure your own stack, start from the
+[preset](../../config_library/unified/README.md) closest to your documents.
 
 ## Why you can trust the results
 
@@ -70,22 +72,22 @@ results table. A table reads *Not yet measured* until we run it.
 
 | | |
 |---|---|
-| **Changes** | Nothing: the default configuration, run 10 times |
-| **Everything else** | The [defaults](#the-default-configuration) |
+| **Changes** | Nothing: the preset, run 10 times |
+| **Everything else** | As each dataset's [preset](#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 10 per document, per value |
 
-| Dataset | Nothing: the default configuration, run 10 times | Weighted accuracy | Total tokens per page |
+| Dataset | Nothing: the preset, run 10 times | Weighted accuracy | Total tokens per page |
 |---|---|---|---|
-| RealKIE | Default configuration | — | — |
+| RealKIE | Preset | — | — |
 
-| Dataset | Nothing: the default configuration, run 10 times | Boundary accuracy | Total tokens per page |
+| Dataset | Nothing: the preset, run 10 times | Boundary accuracy | Total tokens per page |
 |---|---|---|---|
-| DocSplit | Default configuration | — | — |
+| DocSplit | Preset | — | — |
 
-| Dataset | Nothing: the default configuration, run 10 times | Completeness | Total tokens per page |
+| Dataset | Nothing: the preset, run 10 times | Completeness | Total tokens per page |
 |---|---|---|---|
-| Statement, 400 rows | Default configuration | — | — |
+| Statement, 400 rows | Preset | — | — |
 
 
 ### TR-02: How long does a document take, and how many documents an hour?
@@ -95,7 +97,7 @@ results table. A table reads *Not yet measured* until we run it.
 | | |
 |---|---|
 | **Changes** | Documents submitted at once |
-| **Everything else** | The [defaults](#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 

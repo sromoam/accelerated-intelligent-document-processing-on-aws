@@ -34,7 +34,7 @@ catch.
 | | |
 |---|---|
 | **Changes** | Scoring model |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -58,7 +58,7 @@ catch.
 | | |
 |---|---|
 | **Changes** | Scoring model |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
 | **Runs** | 3 per document, per value |
 
@@ -81,7 +81,7 @@ catch.
 | | |
 |---|---|
 | **Changes** | Confidence mode |
-| **Everything else** | Run in both extraction modes; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Run in both extraction modes; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -108,7 +108,7 @@ catch.
 | | |
 |---|---|
 | **Changes** | Confidence threshold |
-| **Everything else** | Computed from the CF-02 runs, per scoring model; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | Computed from the CF-02 runs, per scoring model; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
 | **Runs** | None: computed from the CF-02 runs |
 
@@ -133,7 +133,7 @@ catch.
 | | |
 |---|---|
 | **Changes** | Classification model |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 
@@ -151,7 +151,7 @@ catch.
 | | |
 |---|---|
 | **Changes** | Page images in the scoring prompt |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
 | **Runs** | 3 per document, per value |
 
@@ -170,7 +170,7 @@ catch.
 | | |
 |---|---|
 | **Changes** | `extraction.confidence.list_batch_size` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 

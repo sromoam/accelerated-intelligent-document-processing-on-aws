@@ -41,7 +41,7 @@ RESULTS = REPO / "benchmarks" / "results" / "guidance"
 PAGES = REPO / "docs" / "benchmark-guidance"
 BEGIN = "<!-- BEGIN GENERATED ABLATIONS -->"
 END = "<!-- END GENERATED ABLATIONS -->"
-DEFAULTS = "index.md#the-default-configuration"
+PRESETS = "index.md#how-we-run-a-benchmark"
 EMPTY = "—"
 
 
@@ -68,7 +68,7 @@ def render_ablation(ab: dict[str, Any], reg: dict[str, Any]) -> str:
     datasets: dict[str, Any] = reg["datasets"]
     metrics: dict[str, Any] = reg["metrics"]
     page = ab["page"]
-    defaults = DEFAULTS if page != "index" else "#the-default-configuration"
+    presets = PRESETS if page != "index" else "#how-we-run-a-benchmark"
     results = load_results(ab["id"])
     cells: dict[str, str] = (results or {}).get("cells", {})
 
@@ -92,9 +92,9 @@ def render_ablation(ab: dict[str, Any], reg: dict[str, Any]) -> str:
 
     held = ab.get("holds")
     fixed_text = (
-        f"{held}; the rest at the [defaults]({defaults})"
+        f"{held}; the rest as each dataset's [preset]({presets}) sets it"
         if held
-        else f"The [defaults]({defaults})"
+        else f"As each dataset's [preset]({presets}) sets it"
     )
     if ab.get("derives"):
         runs_text = f"None: computed from the {ab['derives']} runs"

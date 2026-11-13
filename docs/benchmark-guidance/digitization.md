@@ -12,7 +12,8 @@ SPDX-License-Identifier: MIT-0
 - What resolution should pages be rendered at?
 - Which Textract features do I need?
 
-We score each OCR reader by the extraction accuracy it produces, because that is what
+We don't benchmark OCR on its own today. We measure its effect on the steps after it: each
+benchmark here scores the extraction accuracy an OCR reader produces, because that is what
 lands in your database. To compare readers on OCR alone, use public OCR benchmarks.
 [Digitization (OCR)](../idp-fundamentals/digitization.md) explains how the accelerator
 reads a page.
@@ -34,7 +35,7 @@ reads a page.
 | | |
 |---|---|
 | **Changes** | OCR reader |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -64,7 +65,7 @@ reads a page.
 | | |
 |---|---|
 | **Changes** | Model used for Bedrock vision OCR |
-| **Everything else** | OCR reader set to the Bedrock vision model; the rest at the [defaults](index.md#the-default-configuration) |
+| **Everything else** | OCR reader set to the Bedrock vision model; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -91,7 +92,7 @@ reads a page.
 | | |
 |---|---|
 | **Changes** | OCR reader |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) |
 | **Runs** | 3 per document, per value |
 
@@ -118,7 +119,7 @@ reads a page.
 | | |
 |---|---|
 | **Changes** | `ocr.image.dpi` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -145,7 +146,7 @@ reads a page.
 | | |
 |---|---|
 | **Changes** | `ocr.image.preprocessing` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
 | **Runs** | 3 per document, per value |
 
@@ -164,7 +165,7 @@ reads a page.
 | | |
 |---|---|
 | **Changes** | `ocr.features` |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
@@ -194,7 +195,7 @@ reads a page.
 | | |
 |---|---|
 | **Changes** | Scan quality |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) |
 | **Runs** | 3 per document, per value |
 
@@ -215,7 +216,7 @@ Needs a dataset we haven't built yet: Handwritten forms (to be built).
 | | |
 |---|---|
 | **Changes** | OCR reader |
-| **Everything else** | The [defaults](index.md#the-default-configuration) |
+| **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | Handwritten forms (to be built) |
 | **Runs** | 3 per document, per value |
 
