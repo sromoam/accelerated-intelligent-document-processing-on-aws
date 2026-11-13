@@ -66,6 +66,8 @@ Poor scans and handwriting give it less to read, and long tables need a mode bui
 | [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
 | [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
 | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
+| [RealKIE-FCC-Verified, long invoices (19 invoices, 8 to 33 pages)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
+| [RealKIE-FCC-Verified, short invoices (24 invoices, 1 or 2 pages)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
 | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) | `realkie-fcc-verified` |
 | [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) | `ocr-benchmark` |
 | [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) | `fake-w2` |
@@ -140,9 +142,9 @@ the rows.
 
 **Answer:** Not yet measured. [Details: EX-11](#ex-11-should-i-retry-failed-fields-with-a-stronger-model)
 
-### Does forced tool use make single-pass output more reliable?
+### Does structured output make single-pass extraction more accurate?
 
-**Answer:** Not yet measured. [Details: EX-12](#ex-12-does-forced-tool-use-make-single-pass-output-more-reliable)
+**Answer:** Not yet measured. [Details: EX-12](#ex-12-does-structured-output-make-single-pass-extraction-more-accurate)
 
 ### How should I extract sections that hold several records?
 
@@ -172,7 +174,7 @@ the rows.
 |---|---|
 | **Changes** | Extraction mode |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [Synthetic statement, 100 rows (3 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
+| **Datasets** | [Synthetic statement, 100 rows (3 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [RealKIE-FCC-Verified, short invoices (24 invoices, 1 or 2 pages)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [RealKIE-FCC-Verified, long invoices (19 invoices, 8 to 33 pages)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Extraction mode | Completeness | Cell accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
@@ -192,6 +194,10 @@ the rows.
 |---|---|---|---|---|---|
 | RealKIE | Single pass, Simple (default) | 0.8 ± 0.06 | 7,042 ± 14 | 20,208 ± 339 | 58 ± 37 |
 | RealKIE | Iterative, Advanced | 0.8 ± 0.08 | 15,368 ± 597 | 20,843 ± 516 | 65 ± 29 |
+| RealKIE, short | Single pass, Simple (default) | — | — | — | — |
+| RealKIE, short | Iterative, Advanced | — | — | — | — |
+| RealKIE, long | Single pass, Simple (default) | — | — | — | — |
+| RealKIE, long | Iterative, Advanced | — | — | — | — |
 | Fake-W2 | Single pass, Simple (default) | 0.95 ± 0.02 | 6,876 ± 2.3 | 15,192 ± 2.09 | 38 ± 1.14 |
 | Fake-W2 | Iterative, Advanced | 0.97 ± 0.01 | 46,661 ± 84 | 51,789 ± 84 | 30 ± 0.46 |
 
@@ -449,26 +455,28 @@ the rows.
 | RealKIE | reject | — | — | — |
 
 
-#### EX-12: Does forced tool use make single-pass output more reliable?
+#### EX-12: Does structured output make single-pass extraction more accurate?
 
 **Answer:** Not yet measured.
 
 | | |
 |---|---|
-| **Changes** | `extraction.forced_tool.enabled` |
+| **Changes** | Schema enforcement (`extraction.schema_enforcement.mode`) |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [RealKIE-FCC-Verified, long invoices (19 invoices, 8 to 33 pages)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | `extraction.forced_tool.enabled` | Weighted accuracy | Extraction tokens per page |
-|---|---|---|---|
-| RealKIE | Off (default) | — | — |
-| RealKIE | On | — | — |
-
-| Dataset | `extraction.forced_tool.enabled` | Completeness | Extraction tokens per page |
-|---|---|---|---|
-| Statement, 400 rows | Off (default) | — | — |
-| Statement, 400 rows | On | — | — |
+| Dataset | Schema enforcement (`extraction.schema_enforcement.mode`) | Weighted accuracy | Documents with every field right | Extraction tokens per page | Total tokens per page | Median seconds per document |
+|---|---|---|---|---|---|---|
+| RealKIE | Off: schema in the prompt (default) | — | — | — | — | — |
+| RealKIE | Structured output | — | — | — | — | — |
+| RealKIE | Forced tool | — | — | — | — | — |
+| Fake-W2 | Off: schema in the prompt (default) | — | — | — | — | — |
+| Fake-W2 | Structured output | — | — | — | — | — |
+| Fake-W2 | Forced tool | — | — | — | — | — |
+| RealKIE, long | Off: schema in the prompt (default) | — | — | — | — | — |
+| RealKIE, long | Structured output | — | — | — | — | — |
+| RealKIE, long | Forced tool | — | — | — | — | — |
 
 
 #### EX-13: How should I extract sections that hold several records?

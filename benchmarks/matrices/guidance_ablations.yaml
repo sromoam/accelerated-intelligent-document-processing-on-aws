@@ -38,6 +38,8 @@ datasets:
   synth_3200: {name: "Synthetic statement, 3,200 rows (66 pages)", short: "Statement, 3,200 rows", kind: list, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bank-statement-sample}
   synth_two_docs: {name: "Synthetic file holding two statements", short: "Two statements in one file", kind: packet, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bank-statement-sample}
   realkie: {name: "RealKIE-FCC-Verified (20 invoices)", short: "RealKIE", kind: fields, link: "../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified", preset: realkie-fcc-verified, testset: realkie-fcc-verified, docs: 20}
+  realkie_long: {name: "RealKIE-FCC-Verified, long invoices (19 invoices, 8 to 33 pages)", short: "RealKIE, long", kind: fields, link: "../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified", preset: realkie-fcc-verified, testset: realkie-fcc-long, docs: 19}
+  realkie_short: {name: "RealKIE-FCC-Verified, short invoices (24 invoices, 1 or 2 pages)", short: "RealKIE, short", kind: fields, link: "../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified", preset: realkie-fcc-verified, testset: realkie-fcc-short, docs: 24}
   confbench: {name: "ConfBench (RealKIE invoices with scan noise)", short: "ConfBench", kind: fields, link: "../extensions/confbench-testset.md", preset: realkie-fcc-verified}
   omniai: {name: "OmniAI-OCR-Benchmark, all 9 formats", short: "OmniAI", kind: fields, link: "../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark", preset: ocr-benchmark, testset: ocr-benchmark, docs: 20}
   fake_w2: {name: "Fake-W2-Tax-Forms (W-2 forms, 45 fields)", short: "Fake-W2", kind: fields, link: "../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms", preset: fake-w2, testset: fake-w2, docs: 20}
@@ -266,7 +268,7 @@ ablations:
     changes: "Extraction mode"
     values: ["Single pass, Simple (default)", "Iterative, Advanced"]
     set: [{"extraction.mode": "simple"}, {"extraction.mode": "advanced"}]
-    datasets: [synth_100, synth_400, synth_800, synth_1600, synth_3200, realkie, fake_w2]
+    datasets: [synth_100, synth_400, synth_800, synth_1600, synth_3200, realkie, realkie_short, realkie_long, fake_w2]
     runs: 3
     metrics: [completeness, cell_accuracy, weighted_accuracy, extraction_tokens, total_tokens, median_seconds]
   - id: EX-02
@@ -357,12 +359,13 @@ ablations:
     metrics: [weighted_accuracy, all_fields_right, extraction_tokens]
   - id: EX-12
     page: extraction
-    question: "Does forced tool use make single-pass output more reliable?"
-    changes: "`extraction.forced_tool.enabled`"
-    values: ["Off (default)", "On"]
-    datasets: [realkie, synth_400]
+    question: "Does structured output make single-pass extraction more accurate?"
+    changes: "Schema enforcement (`extraction.schema_enforcement.mode`)"
+    values: ["Off: schema in the prompt (default)", "Structured output", "Forced tool"]
+    set: [{"extraction.schema_enforcement.mode": "off"}, {"extraction.schema_enforcement.mode": "structured_output"}, {"extraction.schema_enforcement.mode": "forced_tool"}]
+    datasets: [realkie, fake_w2, realkie_long]
     runs: 3
-    metrics: [weighted_accuracy, completeness, extraction_tokens]
+    metrics: [weighted_accuracy, all_fields_right, extraction_tokens, total_tokens, median_seconds]
   - id: EX-13
     page: extraction
     question: "How should I extract sections that hold several records?"

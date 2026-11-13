@@ -39,6 +39,8 @@ measured* until we run it.
 | [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
 | [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
 | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
+| [RealKIE-FCC-Verified, long invoices (19 invoices, 8 to 33 pages)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
+| [RealKIE-FCC-Verified, short invoices (24 invoices, 1 or 2 pages)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
 | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) | `realkie-fcc-verified` |
 | [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) | `ocr-benchmark` |
 | [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) | `fake-w2` |
