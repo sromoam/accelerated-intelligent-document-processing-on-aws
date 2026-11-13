@@ -1,0 +1,22 @@
+{
+  "ablation": "EX-03",
+  "verdict": "Measured; see the table.",
+  "runs": {
+    "realkie": {
+      "Low (default)": [
+        "RealKIE-FCC-Verified-20261113-182228",
+        "RealKIE-FCC-Verified-20261113-182227",
+        "RealKIE-FCC-Verified-20261113-182229"
+      ],
+      "Medium": [
+        "RealKIE-FCC-Verified-20261113-182526",
+        "RealKIE-FCC-Verified-20261113-182544",
+        "RealKIE-FCC-Verified-20261113-182545"
+      ]
+    }
+  },
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026"
+}

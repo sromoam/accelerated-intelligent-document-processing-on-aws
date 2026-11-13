@@ -1,0 +1,153 @@
+{
+  "release": "0.6.15.dev1",
+  "measured": "November 2026",
+  "region": "us-east-1",
+  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-181724, RealKIE-FCC-Verified-20261113-181722, RealKIE-FCC-Verified-20261113-181723, RealKIE-FCC-Verified-20261113-182034, RealKIE-FCC-Verified-20261113-182041, RealKIE-FCC-Verified-20261113-182113, RealKIE-FCC-Verified-20261113-182352, RealKIE-FCC-Verified-20261113-182430, RealKIE-FCC-Verified-20261113-182432, RealKIE-FCC-Verified-20261113-182712, RealKIE-FCC-Verified-20261113-182736, RealKIE-FCC-Verified-20261113-182750",
+  "verdict": "Use Claude Haiku 5.5 or Claude Sonnet 5 when people review by confidence. On RealKIE invoices they separated right values from wrong ones (AUROC 0.81 and 0.83) at about the same scoring tokens per page as the default, Amazon Nova Lite, which scored 0.42: no better than a coin flip.",
+  "cells": {
+    "realkie|Amazon Nova Lite (default)|weighted_accuracy": {
+      "mean": 0.804683,
+      "se": 0.031404
+    },
+    "realkie|Amazon Nova Lite (default)|extraction_tokens": {
+      "mean": 7036.987654,
+      "se": 4.708713
+    },
+    "realkie|Amazon Nova Lite (default)|scoring_tokens": {
+      "mean": 14079.1893,
+      "se": 83.123207
+    },
+    "realkie|Amazon Nova Lite (default)|total_tokens": {
+      "mean": 21116.176955,
+      "se": 85.36732
+    },
+    "realkie|Amazon Nova Lite (default)|median_seconds": {
+      "mean": 51.743105,
+      "se": 5.700783
+    },
+    "realkie|Amazon Nova Lite (default)|all_fields_right": {
+      "mean": 0.05,
+      "se": 0.028868
+    },
+    "realkie|Amazon Nova Lite (default)|auroc": {
+      "mean": 0.416646,
+      "se": 0.037278
+    },
+    "realkie|Amazon Nova Lite (default)|calibration_error": {
+      "mean": 0.173968,
+      "se": 0.012008
+    },
+    "realkie|Amazon Nova Lite (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Amazon Nova 2 Lite|weighted_accuracy": {
+      "mean": 0.800431,
+      "se": 0.032102
+    },
+    "realkie|Amazon Nova 2 Lite|extraction_tokens": {
+      "mean": 7037.061728,
+      "se": 7.186377
+    },
+    "realkie|Amazon Nova 2 Lite|scoring_tokens": {
+      "mean": 5290.078189,
+      "se": 165.677266
+    },
+    "realkie|Amazon Nova 2 Lite|total_tokens": {
+      "mean": 12327.139918,
+      "se": 165.593162
+    },
+    "realkie|Amazon Nova 2 Lite|median_seconds": {
+      "mean": 32.406119,
+      "se": 1.048286
+    },
+    "realkie|Amazon Nova 2 Lite|all_fields_right": {
+      "mean": 0.05,
+      "se": 0.028868
+    },
+    "realkie|Amazon Nova 2 Lite|auroc": {
+      "mean": 0.613446,
+      "se": 0.063959
+    },
+    "realkie|Amazon Nova 2 Lite|calibration_error": {
+      "mean": 0.182772,
+      "se": 0.025267
+    },
+    "realkie|Amazon Nova 2 Lite|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Claude Haiku 5.5|weighted_accuracy": {
+      "mean": 0.813035,
+      "se": 0.03344
+    },
+    "realkie|Claude Haiku 5.5|extraction_tokens": {
+      "mean": 7029.45679,
+      "se": 5.049916
+    },
+    "realkie|Claude Haiku 5.5|scoring_tokens": {
+      "mean": 13193.378601,
+      "se": 502.996782
+    },
+    "realkie|Claude Haiku 5.5|total_tokens": {
+      "mean": 20222.835391,
+      "se": 499.950807
+    },
+    "realkie|Claude Haiku 5.5|median_seconds": {
+      "mean": 38.505521,
+      "se": 0.652145
+    },
+    "realkie|Claude Haiku 5.5|all_fields_right": {
+      "mean": 0.083333,
+      "se": 0.016667
+    },
+    "realkie|Claude Haiku 5.5|auroc": {
+      "mean": 0.811653,
+      "se": 0.034208
+    },
+    "realkie|Claude Haiku 5.5|calibration_error": {
+      "mean": 0.102683,
+      "se": 0.013536
+    },
+    "realkie|Claude Haiku 5.5|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Claude Sonnet 5|weighted_accuracy": {
+      "mean": 0.792428,
+      "se": 0.032187
+    },
+    "realkie|Claude Sonnet 5|extraction_tokens": {
+      "mean": 7029.329218,
+      "se": 2.174947
+    },
+    "realkie|Claude Sonnet 5|scoring_tokens": {
+      "mean": 12024.576132,
+      "se": 46.290264
+    },
+    "realkie|Claude Sonnet 5|total_tokens": {
+      "mean": 19053.90535,
+      "se": 48.360672
+    },
+    "realkie|Claude Sonnet 5|median_seconds": {
+      "mean": 37.22216,
+      "se": 2.168578
+    },
+    "realkie|Claude Sonnet 5|all_fields_right": {
+      "mean": 0.083333,
+      "se": 0.033333
+    },
+    "realkie|Claude Sonnet 5|auroc": {
+      "mean": 0.832136,
+      "se": 0.015343
+    },
+    "realkie|Claude Sonnet 5|calibration_error": {
+      "mean": 0.093225,
+      "se": 0.022815
+    },
+    "realkie|Claude Sonnet 5|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    }
+  }
+}

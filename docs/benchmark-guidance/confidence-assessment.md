@@ -67,7 +67,11 @@ which adds scan noise to real invoices.
 
 ### Which scoring model should I use?
 
-**Answer:** Not yet measured. [Details: CF-02](#cf-02-which-scoring-model-should-i-use)
+**Answer:** Use Claude Haiku 5.5 or Claude Sonnet 5 when people review by confidence. On RealKIE invoices they separated right values from wrong ones (AUROC 0.81 and 0.83) at about the same scoring tokens per page as the default, Amazon Nova Lite, which scored 0.42: no better than a coin flip. [Details: CF-02](#cf-02-which-scoring-model-should-i-use)
+
+![AUROC against scoring tokens per page for each Scoring model](../../images/benchmark-guidance/CF-02-fields.svg)
+
+*AUROC against scoring tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.*
 
 ### Separate scoring pass or integrated into extraction?
 
@@ -121,7 +125,9 @@ which adds scan noise to real invoices.
 
 #### CF-02: Which scoring model should I use?
 
-**Answer:** Not yet measured.
+**Answer:** Use Claude Haiku 5.5 or Claude Sonnet 5 when people review by confidence. On RealKIE invoices they separated right values from wrong ones (AUROC 0.81 and 0.83) at about the same scoring tokens per page as the default, Amazon Nova Lite, which scored 0.42: no better than a coin flip.
+
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-181724, RealKIE-FCC-Verified-20261113-181722, RealKIE-FCC-Verified-20261113-181723, RealKIE-FCC-Verified-20261113-182034, RealKIE-FCC-Verified-20261113-182041, RealKIE-FCC-Verified-20261113-182113, RealKIE-FCC-Verified-20261113-182352, RealKIE-FCC-Verified-20261113-182430, RealKIE-FCC-Verified-20261113-182432, RealKIE-FCC-Verified-20261113-182712, RealKIE-FCC-Verified-20261113-182736, RealKIE-FCC-Verified-20261113-182750`.*
 
 | | |
 |---|---|
@@ -136,10 +142,10 @@ which adds scan noise to real invoices.
 | ConfBench | Amazon Nova 2 Lite | — | — | — | — | — |
 | ConfBench | Claude Haiku 5.5 | — | — | — | — | — |
 | ConfBench | Claude Sonnet 5 | — | — | — | — | — |
-| RealKIE | Amazon Nova Lite (default) | — | — | — | — | — |
-| RealKIE | Amazon Nova 2 Lite | — | — | — | — | — |
-| RealKIE | Claude Haiku 5.5 | — | — | — | — | — |
-| RealKIE | Claude Sonnet 5 | — | — | — | — | — |
+| RealKIE | Amazon Nova Lite (default) | 0.42 ± 0.07 | 0.17 ± 0.02 | — | — | 14,079 ± 166 |
+| RealKIE | Amazon Nova 2 Lite | 0.61 ± 0.13 | 0.18 ± 0.05 | — | — | 5,290 ± 331 |
+| RealKIE | Claude Haiku 5.5 | 0.81 ± 0.07 | 0.1 ± 0.03 | — | — | 13,193 ± 1,006 |
+| RealKIE | Claude Sonnet 5 | 0.83 ± 0.03 | 0.09 ± 0.05 | — | — | 12,025 ± 93 |
 
 
 #### CF-03: Separate scoring pass or integrated into extraction?
