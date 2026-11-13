@@ -127,6 +127,25 @@ if [ -d "$PROJECT_ROOT/docs/idp-fundamentals" ]; then
     echo "   ✅ Linked $fundamentals_count IDP fundamentals docs"
 fi
 
+# Step 1f: Symlink the docs/benchmark-guidance/ folder (measured configuration
+# guidance, one page per problem set) into src/content/docs/benchmark-guidance/.
+if [ -d "$PROJECT_ROOT/docs/benchmark-guidance" ]; then
+    echo ""
+    echo "🔗 Creating symlinks for benchmark guidance docs..."
+    mkdir -p "$CONTENT_DOCS/benchmark-guidance"
+    guidance_count=0
+    for md_file in "$PROJECT_ROOT"/docs/benchmark-guidance/*.md; do
+        [ -e "$md_file" ] || continue
+        filename=$(basename "$md_file")
+        target="$CONTENT_DOCS/benchmark-guidance/$filename"
+        # Path: docs-site/src/content/docs/benchmark-guidance/ → 5 levels up
+        [ -L "$target" ] && rm "$target"
+        ln -s "../../../../../docs/benchmark-guidance/$filename" "$target"
+        guidance_count=$((guidance_count + 1))
+    done
+    echo "   ✅ Linked $guidance_count benchmark guidance docs"
+fi
+
 # Step 2: Symlink images/ into src/content/images/ (for ../images/ relative paths in docs)
 # Path: docs-site/src/content/ → 3 levels up to project root
 echo ""

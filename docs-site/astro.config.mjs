@@ -66,6 +66,24 @@ export default defineConfig({
           ],
         },
         {
+          // Measured configuration guidance, one page per problem set. Each page
+          // answers customer questions with an ablation table that the benchmark
+          // scripts fill in. Will replace benchmarking/studies.
+          label: "Benchmarks by Problem Set",
+          items: [
+            { label: "How We Benchmark Configurations", slug: "benchmark-guidance" },
+            { label: "Digitization (OCR)", slug: "benchmark-guidance/digitization" },
+            {
+              label: "Splitting and Section Classification",
+              slug: "benchmark-guidance/splitting-and-classification",
+            },
+            { label: "Key Information Extraction", slug: "benchmark-guidance/extraction" },
+            { label: "Confidence Assessment", slug: "benchmark-guidance/confidence-assessment" },
+            { label: "Rule Validation", slug: "benchmark-guidance/rule-validation" },
+            { label: "Token Use and Cost", slug: "benchmark-guidance/token-use" },
+          ],
+        },
+        {
           label: "Core",
           items: [
             { label: "Architecture", slug: "architecture" },
