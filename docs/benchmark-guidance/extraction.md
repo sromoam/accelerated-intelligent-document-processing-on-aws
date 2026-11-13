@@ -63,7 +63,7 @@ Poor scans and handwriting give it less to read, and long tables need a mode bui
 
 ![Weighted accuracy against cost per 1,000 documents (USD) for each Extraction mode](../../images/benchmark-guidance/EX-01-fields.svg)
 
-*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [RealKIE, short](datasets.md#realkie-fcc-verified-short-invoices-24-invoices-1-or-2-pages), [RealKIE, long](datasets.md#realkie-fcc-verified-long-invoices-19-invoices-8-to-33-pages), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: varies (the setting under test) · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N: RealKIE — 20 documents × 3 runs; RealKIE, short — 24 documents × 3 runs; RealKIE, long — 18–19 documents × 3 runs, 1 failed document per run left out; Fake-W2 — 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each more accurate one, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [RealKIE, short](datasets.md#realkie-fcc-verified-short-invoices-24-invoices-1-or-2-pages), [RealKIE, long](datasets.md#realkie-fcc-verified-long-invoices-19-invoices-8-to-33-pages), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: varies (the setting under test) · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N: RealKIE — 20 documents × 3 runs; RealKIE, short — 24 documents × 3 runs; RealKIE, long — 18–19 documents × 3 runs, 1 failed document per run left out; Fake-W2 — 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### Which extraction model should I use?
 
@@ -71,7 +71,7 @@ Poor scans and handwriting give it less to read, and long tables need a mode bui
 
 ![Weighted accuracy against cost per 1,000 documents (USD) for each Extraction model](../../images/benchmark-guidance/EX-02-fields.svg)
 
-*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Labels mark the default and the values no other value beats on both axes; hover a point for the rest. Lines run from the cheapest value to each other value, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: varies (the setting under test) · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N: RealKIE — 20 documents × 2–3 runs; Fake-W2 — 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Color and shape mark the model family, and each family has its own chart on the same axes, with the other families' values as gray dots. Lines run from the cheapest value to each more accurate one, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: varies (the setting under test) · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N: RealKIE — 20 documents × 2–3 runs; Fake-W2 — 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### Does more reasoning effort improve extraction?
 
@@ -79,7 +79,7 @@ Poor scans and handwriting give it less to read, and long tables need a mode bui
 
 ![Weighted accuracy against cost per 1,000 documents (USD) for each `extraction.reasoning_effort`](../../images/benchmark-guidance/EX-03-fields.svg)
 
-*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each more accurate one, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### How much do field descriptions matter?
 
@@ -119,7 +119,7 @@ Poor scans and handwriting give it less to read, and long tables need a mode bui
 
 ![Weighted accuracy against cost per 1,000 documents (USD) for each Schema enforcement (`extraction.schema_enforcement.mode`)](../../images/benchmark-guidance/EX-12-fields.svg)
 
-*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields), [RealKIE, long](datasets.md#realkie-fcc-verified-long-invoices-19-invoices-8-to-33-pages). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N: RealKIE — 20 documents × 3 runs; Fake-W2 — 20 documents × 3 runs; RealKIE, long — 19 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each more accurate one, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields), [RealKIE, long](datasets.md#realkie-fcc-verified-long-invoices-19-invoices-8-to-33-pages). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N: RealKIE — 20 documents × 3 runs; Fake-W2 — 20 documents × 3 runs; RealKIE, long — 19 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### How should I extract sections that hold several records?
 
@@ -220,19 +220,19 @@ the rows.
 | RealKIE | Claude Sonnet 5.5 | 0.8 ± 0.07 | 6,991 ± 1.4 | 20,214 ± 751 | $134 | 63 ± 4.58 | no measurable gain |
 | RealKIE | Claude Opus 5 | 0.81 ± 0.07 | 7,050 ± 69 | 21,389 ± 1,270 | $235 | 61 ± 22 | no measurable gain |
 | RealKIE | Claude Opus 5.5 | 0.82 ± 0.07 | 7,046 ± 49 | 22,110 ± 1,257 | $198 | 43 ± 12 | no measurable gain |
-| RealKIE | OpenAI GPT-6 Astra | 0.84 ± 0.07 | 9,884 ± 3 | 25,815 ± 16 | $661 | 62 ± 24 | $5.53 |
-| RealKIE | xAI Grok 4.6 | 0.84 ± 0.07 | 3,713 ± 6.42 | 17,552 ± 823 | $97.1 | 87 ± 41 | $0.31 |
-| Fake-W2 | Claude Sonnet 5 (default) | 0.96 ± 0.02 | 6,877 ± 2.89 | 15,195 ± 2.28 | $33.0 | 29 ± 6.1 | $0.19 |
+| RealKIE | OpenAI GPT-6 Astra | 0.84 ± 0.07 | 9,884 ± 3 | 25,815 ± 16 | $661 | 62 ± 24 | $5.53 per error prevented |
+| RealKIE | xAI Grok 4.6 | 0.84 ± 0.07 | 3,713 ± 6.42 | 17,552 ± 823 | $97.1 | 87 ± 41 | $0.31 per error prevented |
+| Fake-W2 | Claude Sonnet 5 (default) | 0.96 ± 0.02 | 6,877 ± 2.89 | 15,195 ± 2.28 | $33.0 | 29 ± 6.1 | $0.19 per error prevented |
 | Fake-W2 | Amazon Nova Lite | 0.87 ± 0.03 | 6,682 ± 1.23 | 14,993 ± 6.52 | $15.8 | 23 ± 0.9 | — |
 | Fake-W2 | Amazon Nova Pro | 0.9 ± 0.02 | 6,684 ± 1.91 | 15,005 ± 7.56 | $20.7 | 24 ± 0.24 | no measurable gain |
 | Fake-W2 | Amazon Nova 2 Lite | 0.8 ± 0.04 | 4,643 ± 0.25 | 12,980 ± 2.25 | $17.7 | 19 ± 0.17 | — |
-| Fake-W2 | Claude Haiku 5.5 | 0.98 ± 0.01 | 7,889 ± 31 | 16,210 ± 35 | $16.9 | 24 ± 0.65 | $0.01 |
-| Fake-W2 | Claude Sonnet 4.6 | 0.95 ± 0.03 | 5,773 ± 0.2 | 14,091 ± 0.97 | $38.9 | 23 ± 0.79 | $0.29 |
-| Fake-W2 | Claude Sonnet 5.5 | 0.92 ± 0.03 | 6,743 ± 4.47 | 15,067 ± 3.14 | $31.6 | 21 ± 0.84 | $0.29 |
-| Fake-W2 | Claude Opus 5 | 1 ± 0 | 6,826 ± 7.99 | 15,140 ± 9.49 | $58.7 | 25 ± 1.12 | $0.33 |
-| Fake-W2 | Claude Opus 5.5 | 1 ± 0 | 6,901 ± 11 | 15,214 ± 8.83 | $45.6 | 25 ± 1.92 | $0.23 |
-| Fake-W2 | OpenAI GPT-6 Astra | 1 ± 0 | 4,958 ± 4.59 | 13,271 ± 5.37 | $111 | 23 ± 0.38 | $0.74 |
-| Fake-W2 | xAI Grok 4.6 | 1 ± 0 | 6,027 ± 18 | 14,338 ± 20 | $29.3 | 99 ± 24 | $0.10 |
+| Fake-W2 | Claude Haiku 5.5 | 0.98 ± 0.01 | 7,889 ± 31 | 16,210 ± 35 | $16.9 | 24 ± 0.65 | $0.01 per error prevented |
+| Fake-W2 | Claude Sonnet 4.6 | 0.95 ± 0.03 | 5,773 ± 0.2 | 14,091 ± 0.97 | $38.9 | 23 ± 0.79 | $0.29 per error prevented |
+| Fake-W2 | Claude Sonnet 5.5 | 0.92 ± 0.03 | 6,743 ± 4.47 | 15,067 ± 3.14 | $31.6 | 21 ± 0.84 | $0.29 per error prevented |
+| Fake-W2 | Claude Opus 5 | 1 ± 0 | 6,826 ± 7.99 | 15,140 ± 9.49 | $58.7 | 25 ± 1.12 | $0.33 per error prevented |
+| Fake-W2 | Claude Opus 5.5 | 1 ± 0 | 6,901 ± 11 | 15,214 ± 8.83 | $45.6 | 25 ± 1.92 | $0.23 per error prevented |
+| Fake-W2 | OpenAI GPT-6 Astra | 1 ± 0 | 4,958 ± 4.59 | 13,271 ± 5.37 | $111 | 23 ± 0.38 | $0.74 per error prevented |
+| Fake-W2 | xAI Grok 4.6 | 1 ± 0 | 6,027 ± 18 | 14,338 ± 20 | $29.3 | 99 ± 24 | $0.10 per error prevented |
 
 | Dataset | Extraction model | Completeness | Cell accuracy | Extraction tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
 |---|---|---|---|---|---|---|---|

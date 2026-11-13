@@ -37,6 +37,14 @@
       "mean": 0.129521,
       "se": 0.024083
     },
+    "realkie|300 (default)|errors_caught_30": {
+      "mean": 0.185175,
+      "se": 0.003488
+    },
+    "realkie|300 (default)|errors_caught_30_random": {
+      "mean": 0.298979,
+      "se": 0.000281
+    },
     "realkie|300 (default)|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -81,6 +89,14 @@
       "mean": 0.17435,
       "se": 0.004908
     },
+    "realkie|200|errors_caught_30": {
+      "mean": 0.402661,
+      "se": 0.021743
+    },
+    "realkie|200|errors_caught_30_random": {
+      "mean": 0.299571,
+      "se": 9.4e-05
+    },
     "realkie|200|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -124,6 +140,14 @@
     "realkie|150|calibration_error": {
       "mean": 0.148516,
       "se": 0.005677
+    },
+    "realkie|150|errors_caught_30": {
+      "mean": 0.40131,
+      "se": 0.049701
+    },
+    "realkie|150|errors_caught_30_random": {
+      "mean": 0.299373,
+      "se": 0.000398
     },
     "realkie|150|page_accuracy": {
       "mean": 1.0,

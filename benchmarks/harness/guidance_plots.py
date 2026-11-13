@@ -6,11 +6,16 @@ render_guidance.py calls one of two functions for each ablation that has measure
   1,000 documents (or tokens per page), a panel per dataset and a point per value, with
   a soft band behind each dot spanning two standard errors either side. Up and to the
   left is better. When x is cost and y is an accuracy, thin lines run from the cheapest
-  value to each more accurate one, labelled with the marginal cost of error.
+  value to each more accurate one, labelled with the marginal cost of error. Two or
+  more y metrics are drawn as charts side by side; a metric with a baseline (random
+  review, for errors caught) gets it as a dashed line. When the values are models,
+  each point takes its family's color and shape, and each family can get its own
+  chart on shared axes with the other families' points in gray behind it.
 - draw_plot() otherwise: one metric, a panel per dataset, a row per value, a dot at the
   mean and a band spanning two standard errors either side.
 
-Each panel carries a subtitle naming the model in force at every step, so a chart on
+Each panel carries a subtitle naming the model in force at every step, in the
+secondary ink so it reads as part of the chart rather than as a footnote, so a chart on
 its own says which models produced it, and a chart that shows cost carries the price
 list it was computed from.
 
@@ -21,7 +26,9 @@ Each SVG is static (no script), follows the light or dark color scheme, and carr
 from __future__ import annotations
 
 import math
+import textwrap
 from html import escape
+from typing import Any
 
 #: Metrics where 1 - y is a share of errors, so the marginal cost of error applies.
 ERROR_RATE_METRICS = frozenset(
@@ -55,18 +62,21 @@ BAND = 5
 
 STYLE = """
   .viz { --series: #2a78d6; --ring: #ffffff; --ink: #0b0b0b; --ink-2: #52514e;
-         --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7; }
+         --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7;
+         --fam-nova: #2a78d6; --fam-claude: #eb6834; --fam-other: #1baf7a; }
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) .viz, svg.viz:root { --series: #3987e5;
       --ring: #17181c; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
-      --grid: #2c2c2a; --axis: #383835; }
+      --grid: #2c2c2a; --axis: #383835;
+      --fam-nova: #3987e5; --fam-claude: #d95926; --fam-other: #199e70; }
   }
   :root[data-theme="dark"] .viz { --series: #3987e5; --ring: #17181c; --ink: #f0efec;
-    --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835; }
+    --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835;
+    --fam-nova: #3987e5; --fam-claude: #d95926; --fam-other: #199e70; }
   .viz { max-width: 100%; height: auto; }
   text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
   .panel { font-size: 13px; font-weight: 600; fill: var(--ink); }
-  .sub { font-size: 11px; fill: var(--muted); }
+  .sub { font-size: 11px; fill: var(--ink-2); }
   .label { font-size: 12px; fill: var(--ink-2); }
   .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
   .none { font-size: 12px; fill: var(--muted); }
@@ -83,6 +93,14 @@ STYLE = """
   .mcoe { stroke: var(--muted); stroke-width: 1; fill: none; }
   .mcoe.noise { stroke-dasharray: 4 3; }
   .mcoelabel { font-size: 11px; fill: var(--ink-2); }
+  .viz .ptitle { font-size: 12px; font-weight: 600; fill: var(--ink-2); }
+  .viz .keyhead { font-size: 11px; fill: var(--muted); font-style: italic; }
+  .viz .fam-nova { fill: var(--fam-nova); }
+  .viz .fam-claude { fill: var(--fam-claude); }
+  .viz .fam-other { fill: var(--fam-other); }
+  .viz .ctx { fill: var(--muted); opacity: 0.55; }
+  .viz .baseline { stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 6 4; }
+  .viz .baselinelabel { font-size: 11px; fill: var(--ink-2); }
 """
 
 
@@ -102,6 +120,13 @@ def nice_ticks(lo: float, hi: float, count: int = 5) -> list[float]:
     if ticks[-1] < hi:
         ticks.append(round(ticks[-1] + step, 10))
     return ticks
+
+
+def tick_decimals(ticks: list[float]) -> int:
+    """The fewest decimals that print every tick exactly (0.25 needs two, not one)."""
+    return next(
+        (d for d in range(5) if all(abs(round(t, d) - t) < 1e-9 for t in ticks)), 4
+    )
 
 
 def fmt(v: float) -> str:
@@ -143,7 +168,9 @@ def marginal_cost_of_error(
 
 
 def mcoe_text(cost: float | None) -> str:
-    return "no measurable gain" if cost is None else f"{money(cost)} per error"
+    return (
+        "no measurable gain" if cost is None else f"{money(cost)} per error prevented"
+    )
 
 
 def wrap(text: str) -> list[str]:
@@ -228,8 +255,7 @@ def draw_plot(
     ticks = nice_ticks(lo - pad, hi + pad)
     d0, d1 = ticks[0], ticks[-1]
 
-    step = ticks[1] - ticks[0] if len(ticks) > 1 else 1.0
-    decimals = max(0, -math.floor(math.log10(step) + 1e-9))
+    decimals = tick_decimals(ticks)
 
     def tick_text(t: float) -> str:
         return f"{t:,.{decimals}f}"
@@ -484,22 +510,287 @@ def _place_labels(
     return out
 
 
-def draw_scatter(
+#: Model families, in their fixed color order. A value whose label names none of them is
+#: in "other". Each family has a color (STYLE) and a marker shape, so a reader who
+#: cannot tell the colors apart still can tell the families apart.
+FAMILIES = (("nova", "Amazon Nova"), ("claude", "Claude"))
+FAMILY_ORDER = ("nova", "claude", "other")
+SHAPES = {"nova": "circle", "claude": "square", "other": "diamond"}
+#: Space between two panels side by side, and the title line above each one.
+COL_GAP = 16
+PANEL_HEAD_H = 24
+KEY_LINE_H = 16
+CONTEXT_R = 3.5
+
+#: A scatter point: (value, x {"mean", "se"}, {metric key: y {"mean", "se"}}).
+Point = tuple[str, dict[str, float], dict[str, dict[str, float]]]
+#: A dataset's points: (title, models line, points, {metric key: (baseline y, name)}).
+Group = tuple[str, str, list[Point], dict[str, tuple[float, str]]]
+#: A plotted metric: (key, name, short name for an axis or a key entry).
+YMetric = tuple[str, str, str]
+
+
+def family(value: str) -> str:
+    """The model family a value's label names, or "other"."""
+    for key, name in FAMILIES:
+        if name in value:
+            return key
+    return "other"
+
+
+def family_title(fam: str, values: list[str]) -> str:
+    """A family's name; for "other", the vendors its values name ("OpenAI and xAI")."""
+    for key, name in FAMILIES:
+        if key == fam:
+            return name
+    vendors: list[str] = []
+    for value in values:
+        words = value.split(" · ")[-1].split()
+        if words and words[0] not in vendors:
+            vendors.append(words[0])
+    return " and ".join(vendors) or "Other models"
+
+
+def marker(shape: str, cx: float, cy: float, r: float, cls: str) -> str:
+    """A dot, square or diamond centred on (cx, cy) with about the same area."""
+    if shape == "square":
+        s = r * 0.9
+        return (
+            f'<rect class="{cls}" x="{cx - s:.1f}" y="{cy - s:.1f}" '
+            f'width="{2 * s:.1f}" height="{2 * s:.1f}" rx="1.5"/>'
+        )
+    if shape == "diamond":
+        d = r * 1.25
+        return (
+            f'<path class="{cls}" d="M{cx:.1f} {cy - d:.1f}L{cx + d:.1f} {cy:.1f}'
+            f'L{cx:.1f} {cy + d:.1f}L{cx - d:.1f} {cy:.1f}Z"/>'
+        )
+    return f'<circle class="{cls}" cx="{cx:.1f}" cy="{cy:.1f}" r="{r}"/>'
+
+
+def _y_ticks(ys: list[float], means: list[float]) -> tuple[list[float], int]:
+    """Ticks covering ys, stopping at 1.0 when no mean passes it (a score cannot)."""
+    yt = _span(ys, allow_negative=min(ys) < 0)
+    if max(means) <= 1.0:
+        yt = [t for t in yt if t <= 1.0 + 1e-9]
+        if yt[-1] < 1.0 and max(ys) > yt[-1]:
+            yt.append(1.0)
+    return yt, tick_decimals(yt)
+
+
+def _scatter_panel(
+    *,
+    width: float,
+    head: str,
+    xt: list[float],
+    x_ticks: list[str],
+    yt: list[float],
     x_name: str,
     y_name: str,
-    panels: list[tuple[str, str, list[tuple[str, dict[str, float], dict[str, float]]]]],
+    y_label: str,
+    own: list[tuple[str, dict[str, float], dict[str, float], str]],
+    context: list[tuple[str, dict[str, float], dict[str, float]]],
+    lines: list[tuple[str, str, str, bool]],
+    labelled: set[str],
+    label_of: Any,
+    x_exact: Any,
+    baseline: tuple[float, str] | None,
+    note: bool,
+    numbers: dict[str, int] | None,
+    colored: bool,
+) -> tuple[str, bool]:
+    """One scatter panel in its own coordinates; return the SVG and whether it is clean.
+
+    own: the panel's points (value, x, y, family); context: other families' points,
+    drawn as small gray dots; lines: (text, from value, to value, measurable) for the
+    marginal cost of error. Clean means every label found a spot by its dot and every
+    line label a spot on its line; numbers, when given, replace the labels.
+    """
+    left, right = SC_LEFT, width - 24
+    y0 = PANEL_HEAD_H if head else 0
+    y1 = y0 + SC_PLOT_H
+
+    def px(v: float) -> float:
+        return left + (v - xt[0]) / (xt[-1] - xt[0]) * (right - left)
+
+    def py(v: float) -> float:
+        return y1 - (v - yt[0]) / (yt[-1] - yt[0]) * (y1 - y0)
+
+    y_dec = tick_decimals(yt)
+    body: list[str] = [head]
+    for t in yt:
+        body.append(
+            f'<line class="grid" x1="{left}" x2="{right}" '
+            f'y1="{py(t):.1f}" y2="{py(t):.1f}"/>'
+            f'<text class="tick" x="{left - 8}" y="{py(t) + 4:.1f}" '
+            f'text-anchor="end">{t:.{y_dec}f}</text>'
+        )
+    for t, text in zip(xt, x_ticks):
+        body.append(
+            f'<text class="tick" x="{px(t):.1f}" y="{y1 + 16}" '
+            f'text-anchor="middle">{text}</text>'
+        )
+    body.append(
+        f'<line class="axis" x1="{left}" x2="{right}" y1="{y1}" y2="{y1}"/>'
+        f'<line class="axis" x1="{left}" x2="{left}" y1="{y0}" y2="{y1}"/>'
+        f'<text class="axislabel" x="{(left + right) / 2:.1f}" '
+        f'y="{y1 + 34}" text-anchor="middle">{escape(x_name)}</text>'
+        f'<text class="axislabel" transform="translate(12 {(y0 + y1) / 2:.1f}) '
+        f'rotate(-90)" text-anchor="middle">{escape(y_label)}</text>'
+    )
+    obstacles: list[Rect] = []
+    if note:
+        obstacles.append((left + 6, y0 + 2, left + 6 + NOTE_W, y0 + 18))
+    tail: list[str] = []
+    if baseline is not None:
+        value, name = baseline
+        by = py(value)
+        w = len(name) * CHAR_W * 0.92
+        body.append(
+            f"<g><title>{escape(name)}: {fmt(value)}</title>"
+            f'<line class="baseline" x1="{left}" x2="{right}" '
+            f'y1="{by:.1f}" y2="{by:.1f}"/></g>'
+        )
+        obstacles.append(_rect(right - 4, by - 4, w, "end"))
+        tail.append(
+            f'<text class="baselinelabel halo" x="{right - 4:.1f}" y="{by - 4:.1f}" '
+            f'text-anchor="end">{escape(name)}</text>'
+        )
+    centre = {v: (px(x["mean"]), py(y["mean"])) for v, x, y, _ in own}
+    centre.update({v: (px(x["mean"]), py(y["mean"])) for v, x, y in context})
+
+    # Bands first, so the dots and the cost-of-error lines sit on top.
+    for value, _, y, fam in own:
+        cx, cy = centre[value]
+        dy = 2 * y.get("se", 0)
+        band_top, band_bottom = py(y["mean"] + dy), py(y["mean"] - dy)
+        obstacles.append((cx - 7, cy - 7, cx + 7, cy + 7))
+        obstacles.append((cx - BAND, band_top, cx + BAND, band_bottom))
+        if band_bottom > band_top:
+            cls = f"band fam-{fam}" if colored else "band"
+            body.append(
+                f'<rect class="{cls}" x="{cx - BAND:.1f}" y="{band_top:.1f}" '
+                f'width="{2 * BAND}" height="{band_bottom - band_top:.1f}" '
+                f'rx="{BAND}"/>'
+            )
+    for value, x, y in context:
+        cx, cy = centre[value]
+        obstacles.append((cx - 5, cy - 5, cx + 5, cy + 5))
+        body.append(
+            f"<g><title>{escape(value)}: {escape(y_name)} {fmt(y['mean'])}, "
+            f"{escape(x_name)} {x_exact(x['mean'])}</title>"
+            + marker(SHAPES[family(value)], cx, cy, CONTEXT_R, "ctx")
+            + "</g>"
+        )
+    segments: list[tuple[str, float, float, float, float]] = []
+    for text, ref, value, measurable in lines:
+        (ax, ay), (bx, by) = centre[ref], centre[value]
+        segments.append((text, ax, ay, bx, by))
+        body.append(
+            f"<g><title>{escape(value)} against {escape(ref)}: {text}</title>"
+            f'<line class="mcoe{"" if measurable else " noise"}" '
+            f'x1="{ax:.1f}" y1="{ay:.1f}" x2="{bx:.1f}" y2="{by:.1f}"/></g>'
+        )
+    for value, x, y, fam in own:
+        cx, cy = centre[value]
+        cls = f"dot fam-{fam}" if colored else "dot"
+        body.append(
+            f"<g><title>{escape(value)}: {escape(y_name)} {fmt(y['mean'])} ± "
+            f"{fmt(2 * y.get('se', 0))}, {escape(x_name)} {x_exact(x['mean'])}</title>"
+            + marker(SHAPES[fam] if colored else "circle", cx, cy, 5, cls)
+            + "</g>"
+        )
+    if note:
+        # Drawn after the lines and dots, so its halo keeps them off the words.
+        body.append(
+            f'<text class="note halo" x="{left + 8}" y="{y0 + 14}">'
+            "Better: up and to the left</text>"
+        )
+    # Point labels and dot numbers also keep off the cost-of-error lines.
+    line_boxes = [
+        (
+            ax + t * (bx - ax) - 1,
+            ay + t * (by - ay) - 1,
+            ax + t * (bx - ax) + 1,
+            ay + t * (by - ay) + 1,
+        )
+        for _, ax, ay, bx, by in segments
+        for n in [max(2, int(math.hypot(bx - ax, by - ay) / 6))]
+        for t in (i / n for i in range(1, n))
+    ]
+    bounds = (left + 2, y0 + 20, right, y1 - 2)
+    screen = [
+        (label_of(value, x, y), *centre[value])
+        for value, x, y, _ in own
+        if value in labelled
+    ]
+    placed = _place_labels(screen, bounds, obstacles + line_boxes)
+    blocked = obstacles + [
+        _rect(lx, ly, len(text) * CHAR_W, anchor) for text, lx, ly, anchor, _ in placed
+    ]
+    on_lines = _place_on_lines(segments, bounds, blocked)
+    clean = not any(leader for *_, leader in placed) and len(on_lines) == len(segments)
+    if numbers is not None:
+        marks = _place_labels(
+            [(str(numbers[v]), *centre[v]) for v, _, _, _ in own],
+            (left + 2, y0, right, y1 - 2),
+            obstacles + line_boxes,
+        )
+        for text, lx, ly, anchor, leader in marks:
+            if leader:
+                body.append(
+                    f'<line class="axis" x1="{leader[0]:.1f}" y1="{leader[1]:.1f}" '
+                    f'x2="{lx:.1f}" y2="{ly - 4:.1f}"/>'
+                )
+            body.append(
+                f'<text class="num halo" x="{lx:.1f}" y="{ly:.1f}" '
+                f'text-anchor="{anchor}">{text}</text>'
+            )
+    else:
+        for text, lx, ly, anchor, _ in placed:
+            body.append(
+                f'<text class="label halo" x="{lx:.1f}" y="{ly:.1f}" '
+                f'text-anchor="{anchor}">{escape(text)}</text>'
+            )
+        for text, lx, ly in on_lines:
+            body.append(
+                f'<text class="mcoelabel halo" x="{lx:.1f}" y="{ly:.1f}" '
+                f'text-anchor="middle">{escape(text)}</text>'
+            )
+    return "".join(body + tail), clean
+
+
+def lower_name(name: str) -> str:
+    """Lower-case a metric name mid-sentence, leaving an acronym such as AUROC alone."""
+    return name if name[:2].isupper() else name[:1].lower() + name[1:]
+
+
+def draw_scatter(
+    x_name: str,
+    ys: list[YMetric],
+    groups: list[Group],
     runs: int,
     *,
     x_money: bool = False,
-    mcoe: bool = False,
+    mcoe: frozenset[str] | set[str] = frozenset(),
     prices: str = "",
+    families: bool = False,
 ) -> str:
-    """Return an SVG document plotting y (accuracy) against x (cost or tokens).
+    """Return an SVG document plotting each y metric against x (cost or tokens).
 
-    panels: [(dataset name, models line, [(value, x {"mean", "se"}, y {...}), ...])]
+    ys: the metrics on the y-axis, one chart each, side by side.
+    groups: one per dataset, [(dataset name, models line, points, baselines)]; a
+        baseline is drawn as a dashed line across that metric's chart.
     x_money: x is cost per 1,000 documents in US dollars (otherwise tokens per page).
-    mcoe: draw marginal-cost-of-error lines from each panel's cheapest value.
+    mcoe: the y metrics that get marginal-cost-of-error lines from the cheapest value.
     prices: a price-list note for a chart that shows cost, or "" for one that does not.
+    families: color and shape each point by model family, and when a dataset has
+        more than one family, give each family its own chart on the same axes, with
+        the other families' points as gray context dots.
+
+    Every chart sits in its own <g transform>, so the SVG keeps one <style> and one
+    root that the docs site can inline. A dataset whose labels cannot all sit by
+    their dots has its dots numbered, with a key under its charts.
     """
 
     def x_text(v: float) -> str:
@@ -508,203 +799,211 @@ def draw_scatter(
     def x_exact(v: float) -> str:
         return money(v) if x_money else fmt(v)
 
+    names = {k: name for k, name, _ in ys}
+    shorts = {k: short for k, _, short in ys}
     body: list[str] = []
     desc_parts: list[str] = []
     top = TOP
-    for ds_name, models, points in panels:
-        # Each dataset gets its own ranges: results on different datasets are not
-        # compared with each other, and a shared range squeezes the small ones.
-        xt = _span(
-            [p[1]["mean"] for p in points],
-            min_span=0.20,
-            pad=0.15,
-            count=5,
-            allow_negative=False,
-        )
-        x_ticks = _money_ticks(xt) if x_money else [_compact(t, xt[-1]) for t in xt]
-        ys = [p[2]["mean"] + s * 2 * p[2].get("se", 0) for p in points for s in (-1, 1)]
-        yt = _span(ys)
-        # A score that cannot pass 1.0 gets an axis that stops at 1.0.
-        if max(p[2]["mean"] for p in points) <= 1.0:
-            yt = [t for t in yt if t <= 1.0 + 1e-9]
-            if yt[-1] < 1.0 and max(ys) > yt[-1]:
-                yt.append(1.0)
-        y_step = yt[1] - yt[0] if len(yt) > 1 else 1.0
-        y_dec = max(0, -math.floor(math.log10(y_step) + 1e-9))
-
+    for ds_name, models, points, baselines in groups:
         body.append(
             f'<text class="panel" x="0" y="{top + 18}">{escape(ds_name)}</text>'
         )
         sub, sub_h = subtitle_svg(wrap_subtitle(models), top + 18)
         body.append(sub)
-        y0 = top + PANEL_TITLE_H + sub_h
-        y1 = y0 + SC_PLOT_H
-
-        def px(v: float, xt: list[float] = xt) -> float:
-            return SC_LEFT + (v - xt[0]) / (xt[-1] - xt[0]) * (SC_RIGHT - SC_LEFT)
-
-        def py(v: float, y0: float = y0, y1: float = y1, yt: list[float] = yt) -> float:
-            return y1 - (v - yt[0]) / (yt[-1] - yt[0]) * (y1 - y0)
-
-        for t in yt:
-            body.append(
-                f'<line class="grid" x1="{SC_LEFT}" x2="{SC_RIGHT}" '
-                f'y1="{py(t):.1f}" y2="{py(t):.1f}"/>'
-                f'<text class="tick" x="{SC_LEFT - 8}" y="{py(t) + 4:.1f}" '
-                f'text-anchor="end">{t:.{y_dec}f}</text>'
+        start = top + PANEL_TITLE_H + sub_h
+        present = [f for f in FAMILY_ORDER if any(family(v) == f for v, _, _ in points)]
+        split_families = families and len(present) > 1
+        specs = [
+            (key, fam)
+            for key, _, _ in ys
+            for fam in (present if split_families else [None])
+            if any(
+                key in yy and (fam is None or family(v) == fam) for v, _, yy in points
             )
-        for t, text in zip(xt, x_ticks):
-            body.append(
-                f'<text class="tick" x="{px(t):.1f}" y="{y1 + 16}" '
-                f'text-anchor="middle">{text}</text>'
-            )
-        body.append(
-            f'<line class="axis" x1="{SC_LEFT}" x2="{SC_RIGHT}" y1="{y1}" y2="{y1}"/>'
-            f'<line class="axis" x1="{SC_LEFT}" x2="{SC_LEFT}" y1="{y0}" y2="{y1}"/>'
-            f'<text class="axislabel" x="{(SC_LEFT + SC_RIGHT) / 2:.1f}" '
-            f'y="{y1 + 34}" text-anchor="middle">{escape(x_name)}</text>'
-            f'<text class="axislabel" transform="translate(12 {(y0 + y1) / 2:.1f}) '
-            f'rotate(-90)" text-anchor="middle">{escape(y_name)}</text>'
-        )
-        # Drawn after the lines and dots, so its halo keeps them off the words.
-        note = (
-            f'<text class="note halo" x="{SC_LEFT + 8}" y="{y0 + 14}">'
-            "Better: up and to the left</text>"
-        )
-
-        def label(value: str, x: dict[str, float], y: dict[str, float]) -> str:
-            y_text = f"{y['mean']:.{max(2, y_dec)}f}"
-            return f"{value}: {y_text}, {x_text(x['mean'])}"
-
-        centre = {v: (px(x["mean"]), py(y["mean"])) for v, x, y in points}
-
-        # The bands go down first, so the dots and the cost-of-error lines sit on top.
-        # "Better: up and to the left" is already drawn, so nothing may land on it.
-        obstacles = [(SC_LEFT + 6, y0 + 2, SC_LEFT + 6 + NOTE_W, y0 + 18)]
-        for value, _, y in points:
-            cx, cy = centre[value]
-            dy = 2 * y.get("se", 0)
-            band_top, band_bottom = py(y["mean"] + dy), py(y["mean"] - dy)
-            obstacles.append((cx - 7, cy - 7, cx + 7, cy + 7))
-            obstacles.append((cx - BAND, band_top, cx + BAND, band_bottom))
-            if band_bottom > band_top:
-                body.append(
-                    f'<rect class="band" x="{cx - BAND:.1f}" y="{band_top:.1f}" '
-                    f'width="{2 * BAND}" height="{band_bottom - band_top:.1f}" '
-                    f'rx="{BAND}"/>'
-                )
-
-        # Marginal cost of error: a thin line from the cheapest value to each value
-        # that scores higher, under the dots. Solid when the gain is measurable.
-        lines: list[tuple[str, float, float, float, float]] = []
-        ref, gains = marginal_cost_of_error(points) if mcoe else ("", {})
-        for value, cost in gains.items():
-            (ax, ay), (bx, by) = centre[ref], centre[value]
-            text = mcoe_text(cost)
-            lines.append((text, ax, ay, bx, by))
-            body.append(
-                f"<g><title>{escape(value)} against {escape(ref)}: {text}</title>"
-                f'<line class="mcoe{"" if cost is not None else " noise"}" '
-                f'x1="{ax:.1f}" y1="{ay:.1f}" x2="{bx:.1f}" y2="{by:.1f}"/></g>'
-            )
-        if gains:
-            desc_parts.append(
-                f"{ds_name}, marginal cost of error against {ref}: "
-                + ", ".join(f"{v} {mcoe_text(c)}" for v, c in gains.items())
-            )
-
-        # Few points: label each one next to its dot. Otherwise only the default and
-        # the frontier. If a label cannot sit cleanly beside its dot, number every
-        # dot instead and list the names and values in a key under the chart.
-        labelled = (
-            {v for v, _, _ in points}
-            if len(points) <= MAX_LABELLED
-            else _frontier(points) | {v for v, _, _ in points if "(default)" in v}
-        )
-        screen = []
-        for value, x, y in points:
-            cx, cy = centre[value]
-            dy = 2 * y.get("se", 0)
-            if value in labelled:
-                screen.append((label(value, x, y), cx, cy))
-            body.append(
-                f"<g><title>{escape(value)}: {escape(y_name)} {fmt(y['mean'])} ± "
-                f"{fmt(dy)}, {escape(x_name)} {x_exact(x['mean'])}</title>"
-                f'<circle class="dot" cx="{cx:.1f}" cy="{cy:.1f}" r="5"/></g>'
-            )
-        body.append(note)
-        # Point labels and dot numbers also keep off the cost-of-error lines.
-        on_line = [
-            (ax + t * (bx - ax) - 1, ay + t * (by - ay) - 1)
-            for _, ax, ay, bx, by in lines
-            for n in [max(2, int(math.hypot(bx - ax, by - ay) / 6))]
-            for t in (i / n for i in range(1, n))
         ]
-        line_boxes = [(lx, ly, lx + 2, ly + 2) for lx, ly in on_line]
-        bounds = (SC_LEFT + 2, y0 + 20, SC_RIGHT, y1 - 2)
-        placed = _place_labels(screen, bounds, obstacles + line_boxes)
-        blocked = obstacles + [
-            _rect(lx, ly, len(text) * CHAR_W, anchor)
-            for text, lx, ly, anchor, _ in placed
-        ]
-        on_lines = _place_on_lines(lines, bounds, blocked)
-        key_h = 0
-        if any(leader for *_, leader in placed) or len(on_lines) < len(lines):
-            # Number the dots and list each value, with its marginal cost of error,
-            # in a key under the chart.
-            numbers = _place_labels(
-                [(str(i), cx, cy) for i, (cx, cy) in enumerate(centre.values(), 1)],
-                (SC_LEFT + 2, y0, SC_RIGHT, y1 - 2),
-                obstacles + line_boxes,
-            )
-            for text, lx, ly, anchor, leader in numbers:
-                if leader:
-                    body.append(
-                        f'<line class="axis" x1="{leader[0]:.1f}" y1="{leader[1]:.1f}" '
-                        f'x2="{lx:.1f}" y2="{ly - 4:.1f}"/>'
+        cols = 1 if len(specs) == 1 else 2
+        width = WIDTH if cols == 1 else (WIDTH - COL_GAP) / 2
+        panel_h = (PANEL_HEAD_H if len(specs) > 1 else 0) + SC_PLOT_H + SC_BOTTOM
+        # Each dataset gets its own ranges: results on different datasets are not
+        # compared with each other, and a shared range squeezes the small ones. Its
+        # charts share the x range, and the charts of one metric share the y range.
+        xt = _span(
+            [p[1]["mean"] for p in points],
+            min_span=0.20,
+            pad=0.15,
+            count=5 if cols == 1 else 4,
+            allow_negative=False,
+        )
+        x_ticks = _money_ticks(xt) if x_money else [_compact(t, xt[-1]) for t in xt]
+        y_axes: dict[str, tuple[list[float], int]] = {}
+        gains_by: dict[str, tuple[str, dict[str, float | None]]] = {}
+        for key, _, _ in ys:
+            pts = [(v, x, yy[key]) for v, x, yy in points if key in yy]
+            if not pts:
+                continue
+            vals = [
+                y["mean"] + s * 2 * y.get("se", 0) for *_, y in pts for s in (-1, 1)
+            ]
+            if key in baselines:
+                vals.append(baselines[key][0])
+            y_axes[key] = _y_ticks(vals, [y["mean"] for *_, y in pts])
+            if key in mcoe:
+                gains_by[key] = marginal_cost_of_error(pts)
+                ref, gains = gains_by[key]
+                if gains:
+                    desc_parts.append(
+                        f"{ds_name}, marginal cost of error against {ref}: "
+                        + ", ".join(f"{v} {mcoe_text(c)}" for v, c in gains.items())
                     )
-                body.append(
-                    f'<text class="num halo" x="{lx:.1f}" y="{ly:.1f}" '
-                    f'text-anchor="{anchor}">{text}</text>'
+        numbers = {v: i for i, (v, _, _) in enumerate(points, 1)}
+
+        def render(numbered: bool) -> tuple[list[str], bool]:
+            out: list[str] = []
+            clean = True
+            for i, (key, fam) in enumerate(specs):
+                yt, y_dec = y_axes[key]
+                pts = [(v, x, yy[key]) for v, x, yy in points if key in yy]
+                own = [
+                    (v, x, y, family(v)) for v, x, y in pts if fam in (None, family(v))
+                ]
+                context = [(v, x, y) for v, x, y in pts if fam not in (None, family(v))]
+                ref, gains = gains_by.get(key, ("", {}))
+                own_values = {v for v, *_ in own}
+                lines = [
+                    (mcoe_text(c), ref, v, c is not None)
+                    for v, c in gains.items()
+                    if v in own_values
+                ]
+                labelled = (
+                    own_values
+                    if len(own) <= MAX_LABELLED
+                    else (_frontier(pts) | {v for v, *_ in pts if "(default)" in v})
+                    & own_values
                 )
-            for i, (value, x, y) in enumerate(points, 1):
-                entry = label(value, x, y)
-                if value in gains:
-                    entry += f"; {mcoe_text(gains[value])}"
-                body.append(
-                    f'<text class="label" x="{SC_LEFT}" y="{y1 + 58 + (i - 1) * 16}">'
-                    f'<tspan class="num">{i}</tspan>  {escape(entry)}</text>'
+
+                def label_of(
+                    value: str, x: dict[str, float], y: dict[str, float], d: int = y_dec
+                ) -> str:
+                    return f"{value}: {y['mean']:.{max(2, d)}f}, {x_text(x['mean'])}"
+
+                head = ""
+                if len(specs) > 1:
+                    parts = [names[key]] if len(ys) > 1 else []
+                    glyph = ""
+                    if fam is not None:
+                        parts.append(family_title(fam, [v for v, *_ in own]))
+                        glyph = marker(SHAPES[fam], 6, 9, 5, f"dot fam-{fam}")
+                    head = glyph + (
+                        f'<text class="ptitle" x="{16 if glyph else 0}" y="13">'
+                        f"{escape(' · '.join(parts))}</text>"
+                    )
+                svg, ok = _scatter_panel(
+                    width=width,
+                    head=head,
+                    xt=xt,
+                    x_ticks=x_ticks,
+                    yt=yt,
+                    x_name=x_name,
+                    y_name=names[key],
+                    y_label=names[key] if len(ys) == 1 else shorts[key],
+                    own=own,
+                    context=context,
+                    lines=lines,
+                    labelled=labelled,
+                    label_of=label_of,
+                    x_exact=x_exact,
+                    baseline=baselines.get(key),
+                    note=i == 0,
+                    numbers=numbers if numbered else None,
+                    colored=families,
                 )
-            key_h = 12 + 16 * len(points)
-        else:
-            for text, lx, ly, anchor, _ in placed:
-                body.append(
-                    f'<text class="label halo" x="{lx:.1f}" y="{ly:.1f}" '
-                    f'text-anchor="{anchor}">{escape(text)}</text>'
+                clean = clean and ok
+                ox = (i % cols) * (width + COL_GAP)
+                oy = start + (i // cols) * panel_h
+                out.append(f'<g transform="translate({ox:.1f} {oy:.1f})">{svg}</g>')
+            return out, clean
+
+        panels_svg, clean = render(numbered=False)
+        if not clean:
+            panels_svg, _ = render(numbered=True)
+        body += panels_svg
+        bottom = start + math.ceil(len(specs) / cols) * panel_h
+        key_h = 0
+        if not clean:
+            # Number the dots and list each value, with its marginal cost of error,
+            # in a key under the charts: a header saying what each line holds, then
+            # one line per value.
+            y_part = ", ".join(
+                (shorts if len(y_axes) > 1 else names)[k] for k in y_axes
+            )
+            ref_names = {gains_by[k][0] for k in gains_by if gains_by[k][1]}
+            head = f"Key. Each line: value: {y_part}, {lower_name(x_name)}"
+            if ref_names:
+                head += (
+                    " · extra cost per error prevented, against the cheapest value, "
+                    + " and ".join(sorted(ref_names))
                 )
-            for text, lx, ly in on_lines:
+            head_lines = textwrap.wrap(
+                head + ".", int((WIDTH - SC_LEFT) / SUB_CHAR_W) - 2
+            )
+            for j, line in enumerate(head_lines):
                 body.append(
-                    f'<text class="mcoelabel halo" x="{lx:.1f}" y="{ly:.1f}" '
-                    f'text-anchor="middle">{escape(text)}</text>'
+                    f'<text class="keyhead" x="{SC_LEFT}" '
+                    f'y="{bottom + 14 + j * SUB_LINE_H}">{escape(line)}</text>'
                 )
-        top = y1 + SC_BOTTOM + key_h + PANEL_GAP
+            first = bottom + 14 + (len(head_lines) - 1) * SUB_LINE_H
+            for value, x, yy in points:
+                ys_text = ", ".join(
+                    (f"{shorts[k]} " if len(y_axes) > 1 else "")
+                    + f"{yy[k]['mean']:.{max(2, y_axes[k][1])}f}"
+                    for k in y_axes
+                    if k in yy
+                )
+                entry = f"{value}: {ys_text}, {x_text(x['mean'])}"
+                for k, (_, gains) in gains_by.items():
+                    if value in gains:
+                        prefix = f"{shorts[k]}: " if len(gains_by) > 1 else ""
+                        entry += f" · {prefix}{mcoe_text(gains[value])}"
+                n = numbers[value]
+                body.append(
+                    f'<text class="label" x="{SC_LEFT}" '
+                    f'y="{first + n * KEY_LINE_H}">'
+                    f'<tspan class="num">{n}</tspan>  {escape(entry)}</text>'
+                )
+            key_h = (
+                12 + KEY_LINE_H * (len(points) + 1) + SUB_LINE_H * (len(head_lines) - 1)
+            )
+        for key, (value, name) in baselines.items():
+            if key in y_axes:
+                desc_parts.append(f"{ds_name}, {names[key]}, {name}: {fmt(value)}")
+        top = bottom + key_h + PANEL_GAP
     height = top - PANEL_GAP + (PRICES_H if prices else 0)
     body.append(prices_svg(prices, height - 5))
 
     desc = "; ".join(
         [
             f"{ds}: "
-            + ", ".join(
-                f"{v} {fmt(y['mean'])} at {x_exact(x['mean'])}" for v, x, y in rows
+            + "; ".join(
+                (f"{names[k]}: " if len(ys) > 1 else "")
+                + ", ".join(
+                    f"{v} {fmt(yy[k]['mean'])} at {x_exact(x['mean'])}"
+                    for v, x, yy in rows
+                    if k in yy
+                )
+                for k, _, _ in ys
+                if any(k in yy for _, _, yy in rows)
             )
-            for ds, _, rows in panels
+            for ds, _, rows, _ in groups
         ]
         + desc_parts
+    )
+    y_title = " and ".join(
+        n if i == 0 else lower_name(n) for i, (_, n, _) in enumerate(ys)
     )
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" class="viz" width="{WIDTH}" '
         f'height="{height}" viewBox="0 0 {WIDTH} {height}" role="img">'
-        f"<title>{escape(y_name)} against {escape(x_name)}, mean of {runs} runs "
+        f"<title>{escape(y_title)} against {escape(x_name)}, mean of {runs} runs "
         f"with two standard errors either side</title><desc>{escape(desc)}</desc>"
         f"<style>{STYLE}</style>" + "".join(body) + "</svg>\n"
     )

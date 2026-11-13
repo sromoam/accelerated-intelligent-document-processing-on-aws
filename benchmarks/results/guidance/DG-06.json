@@ -37,6 +37,14 @@
       "mean": 0.17528,
       "se": 0.012481
     },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|errors_caught_30": {
+      "mean": 0.145253,
+      "se": 0.003316
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|errors_caught_30_random": {
+      "mean": 0.299079,
+      "se": 0.000195
+    },
     "realkie|TABLES, LAYOUT, SIGNATURES (default)|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -80,6 +88,14 @@
     "realkie|LAYOUT only|calibration_error": {
       "mean": 0.208944,
       "se": 0.007505
+    },
+    "realkie|LAYOUT only|errors_caught_30": {
+      "mean": 0.17602,
+      "se": 0.0107
+    },
+    "realkie|LAYOUT only|errors_caught_30_random": {
+      "mean": 0.299323,
+      "se": 0.000292
     },
     "realkie|LAYOUT only|page_accuracy": {
       "mean": 1.0,
@@ -125,6 +141,14 @@
       "mean": 0.159752,
       "se": 0.020108
     },
+    "realkie|TABLES only|errors_caught_30": {
+      "mean": 0.126712,
+      "se": 0.024898
+    },
+    "realkie|TABLES only|errors_caught_30_random": {
+      "mean": 0.298955,
+      "se": 0.000379
+    },
     "realkie|TABLES only|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -168,6 +192,14 @@
     "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|calibration_error": {
       "mean": 0.202764,
       "se": 0.022982
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|errors_caught_30": {
+      "mean": 0.2313,
+      "se": 0.020648
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|errors_caught_30_random": {
+      "mean": 0.299128,
+      "se": 0.000562
     },
     "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|page_accuracy": {
       "mean": 1.0,
@@ -213,6 +245,14 @@
       "mean": 0.052327,
       "se": 0.003093
     },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|errors_caught_30": {
+      "mean": 0.161332,
+      "se": 0.006062
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|errors_caught_30_random": {
+      "mean": 0.29963,
+      "se": 0.0
+    },
     "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -256,6 +296,14 @@
     "fake_w2|LAYOUT only|calibration_error": {
       "mean": 0.029468,
       "se": 0.004943
+    },
+    "fake_w2|LAYOUT only|errors_caught_30": {
+      "mean": 0.11948,
+      "se": 0.038144
+    },
+    "fake_w2|LAYOUT only|errors_caught_30_random": {
+      "mean": 0.299508,
+      "se": 0.000188
     },
     "fake_w2|LAYOUT only|page_accuracy": {
       "mean": 1.0,
@@ -301,6 +349,14 @@
       "mean": 0.036948,
       "se": 0.003792
     },
+    "fake_w2|TABLES only|errors_caught_30": {
+      "mean": 0.124074,
+      "se": 0.048679
+    },
+    "fake_w2|TABLES only|errors_caught_30_random": {
+      "mean": 0.29963,
+      "se": 0.0
+    },
     "fake_w2|TABLES only|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -344,6 +400,14 @@
     "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|calibration_error": {
       "mean": 0.035702,
       "se": 0.002712
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|errors_caught_30": {
+      "mean": 0.107324,
+      "se": 0.034582
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|errors_caught_30_random": {
+      "mean": 0.29963,
+      "se": 0.0
     },
     "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|page_accuracy": {
       "mean": 1.0,

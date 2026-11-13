@@ -37,6 +37,14 @@
       "mean": 0.185305,
       "se": 0.007686
     },
+    "realkie|Low (default)|errors_caught_30": {
+      "mean": 0.15807,
+      "se": 0.035067
+    },
+    "realkie|Low (default)|errors_caught_30_random": {
+      "mean": 0.299314,
+      "se": 0.000172
+    },
     "realkie|Low (default)|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -80,6 +88,14 @@
     "realkie|Medium|calibration_error": {
       "mean": 0.17314,
       "se": 0.013412
+    },
+    "realkie|Medium|errors_caught_30": {
+      "mean": 0.244117,
+      "se": 0.007323
+    },
+    "realkie|Medium|errors_caught_30_random": {
+      "mean": 0.299203,
+      "se": 0.000366
     },
     "realkie|Medium|page_accuracy": {
       "mean": 1.0,
@@ -125,6 +141,14 @@
       "mean": 0.16919,
       "se": 0.015381
     },
+    "realkie|High|errors_caught_30": {
+      "mean": 0.26701,
+      "se": 0.032491
+    },
+    "realkie|High|errors_caught_30_random": {
+      "mean": 0.298436,
+      "se": 0.000486
+    },
     "realkie|High|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -168,6 +192,14 @@
     "fake_w2|Low (default)|calibration_error": {
       "mean": 0.051829,
       "se": 0.003256
+    },
+    "fake_w2|Low (default)|errors_caught_30": {
+      "mean": 0.188855,
+      "se": 0.031406
+    },
+    "fake_w2|Low (default)|errors_caught_30_random": {
+      "mean": 0.29963,
+      "se": 0.0
     },
     "fake_w2|Low (default)|page_accuracy": {
       "mean": 1.0,
@@ -213,6 +245,14 @@
       "mean": 0.033117,
       "se": 0.001104
     },
+    "fake_w2|Medium|errors_caught_30": {
+      "mean": 0.145316,
+      "se": 0.016524
+    },
+    "fake_w2|Medium|errors_caught_30_random": {
+      "mean": 0.299507,
+      "se": 0.000123
+    },
     "fake_w2|Medium|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -256,6 +296,14 @@
     "fake_w2|High|calibration_error": {
       "mean": 0.030216,
       "se": 0.000807
+    },
+    "fake_w2|High|errors_caught_30": {
+      "mean": 0.15812,
+      "se": 0.004274
+    },
+    "fake_w2|High|errors_caught_30_random": {
+      "mean": 0.29963,
+      "se": 0.0
     },
     "fake_w2|High|page_accuracy": {
       "mean": 1.0,

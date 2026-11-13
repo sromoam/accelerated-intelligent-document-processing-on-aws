@@ -37,6 +37,14 @@
       "mean": 0.161831,
       "se": 0.012201
     },
+    "realkie|Claude Sonnet 5 (default)|errors_caught_30": {
+      "mean": 0.114432,
+      "se": 0.005697
+    },
+    "realkie|Claude Sonnet 5 (default)|errors_caught_30_random": {
+      "mean": 0.299079,
+      "se": 0.000459
+    },
     "realkie|Claude Sonnet 5 (default)|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -80,6 +88,14 @@
     "realkie|Amazon Nova Lite|calibration_error": {
       "mean": 0.190643,
       "se": 0.006151
+    },
+    "realkie|Amazon Nova Lite|errors_caught_30": {
+      "mean": 0.516117,
+      "se": 0.046243
+    },
+    "realkie|Amazon Nova Lite|errors_caught_30_random": {
+      "mean": 0.299424,
+      "se": 0.000362
     },
     "realkie|Amazon Nova Lite|page_accuracy": {
       "mean": 1.0,
@@ -125,6 +141,14 @@
       "mean": 0.206112,
       "se": 0.009516
     },
+    "realkie|Amazon Nova Pro|errors_caught_30": {
+      "mean": 0.204611,
+      "se": 0.04942
+    },
+    "realkie|Amazon Nova Pro|errors_caught_30_random": {
+      "mean": 0.299143,
+      "se": 5.4e-05
+    },
     "realkie|Amazon Nova Pro|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -168,6 +192,14 @@
     "realkie|Amazon Nova 2 Lite|calibration_error": {
       "mean": 0.166549,
       "se": 0.00092
+    },
+    "realkie|Amazon Nova 2 Lite|errors_caught_30": {
+      "mean": 0.279756,
+      "se": 0.004115
+    },
+    "realkie|Amazon Nova 2 Lite|errors_caught_30_random": {
+      "mean": 0.29984,
+      "se": 5.4e-05
     },
     "realkie|Amazon Nova 2 Lite|page_accuracy": {
       "mean": 1.0,
@@ -213,6 +245,14 @@
       "mean": 0.15771,
       "se": 0.009137
     },
+    "realkie|Claude Haiku 5.5|errors_caught_30": {
+      "mean": 0.397115,
+      "se": 0.048742
+    },
+    "realkie|Claude Haiku 5.5|errors_caught_30_random": {
+      "mean": 0.299485,
+      "se": 0.000157
+    },
     "realkie|Claude Haiku 5.5|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -256,6 +296,14 @@
     "realkie|Claude Sonnet 4.6|calibration_error": {
       "mean": 0.181805,
       "se": 0.001118
+    },
+    "realkie|Claude Sonnet 4.6|errors_caught_30": {
+      "mean": 0.180049,
+      "se": 0.012165
+    },
+    "realkie|Claude Sonnet 4.6|errors_caught_30_random": {
+      "mean": 0.299684,
+      "se": 0.000316
     },
     "realkie|Claude Sonnet 4.6|page_accuracy": {
       "mean": 1.0,
@@ -301,6 +349,14 @@
       "mean": 0.191917,
       "se": 0.002603
     },
+    "realkie|Claude Sonnet 5.5|errors_caught_30": {
+      "mean": 0.219091,
+      "se": 0.036318
+    },
+    "realkie|Claude Sonnet 5.5|errors_caught_30_random": {
+      "mean": 0.299774,
+      "se": 5.5e-05
+    },
     "realkie|Claude Sonnet 5.5|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -344,6 +400,14 @@
     "realkie|Claude Opus 5|calibration_error": {
       "mean": 0.173956,
       "se": 0.010935
+    },
+    "realkie|Claude Opus 5|errors_caught_30": {
+      "mean": 0.263608,
+      "se": 0.003697
+    },
+    "realkie|Claude Opus 5|errors_caught_30_random": {
+      "mean": 0.298964,
+      "se": 0.000176
     },
     "realkie|Claude Opus 5|page_accuracy": {
       "mean": 1.0,
@@ -389,6 +453,14 @@
       "mean": 0.18924,
       "se": 0.011067
     },
+    "realkie|Claude Opus 5.5|errors_caught_30": {
+      "mean": 0.140904,
+      "se": 0.011828
+    },
+    "realkie|Claude Opus 5.5|errors_caught_30_random": {
+      "mean": 0.299404,
+      "se": 0.000233
+    },
     "realkie|Claude Opus 5.5|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -432,6 +504,14 @@
     "realkie|OpenAI GPT-6 Astra|calibration_error": {
       "mean": 0.101925,
       "se": 0.009801
+    },
+    "realkie|OpenAI GPT-6 Astra|errors_caught_30": {
+      "mean": 0.411172,
+      "se": 0.039773
+    },
+    "realkie|OpenAI GPT-6 Astra|errors_caught_30_random": {
+      "mean": 0.298977,
+      "se": 8.4e-05
     },
     "realkie|OpenAI GPT-6 Astra|page_accuracy": {
       "mean": 1.0,
@@ -477,6 +557,14 @@
       "mean": 0.178263,
       "se": 0.010238
     },
+    "realkie|xAI Grok 4.6|errors_caught_30": {
+      "mean": 0.283434,
+      "se": 0.059727
+    },
+    "realkie|xAI Grok 4.6|errors_caught_30_random": {
+      "mean": 0.299398,
+      "se": 0.000253
+    },
     "realkie|xAI Grok 4.6|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -520,6 +608,14 @@
     "fake_w2|Claude Sonnet 5 (default)|calibration_error": {
       "mean": 0.045669,
       "se": 0.00222
+    },
+    "fake_w2|Claude Sonnet 5 (default)|errors_caught_30": {
+      "mean": 0.156962,
+      "se": 0.05485
+    },
+    "fake_w2|Claude Sonnet 5 (default)|errors_caught_30_random": {
+      "mean": 0.29963,
+      "se": 0.0
     },
     "fake_w2|Claude Sonnet 5 (default)|page_accuracy": {
       "mean": 1.0,
@@ -565,6 +661,14 @@
       "mean": 0.12258,
       "se": 0.003967
     },
+    "fake_w2|Amazon Nova Lite|errors_caught_30": {
+      "mean": 0.388328,
+      "se": 0.025283
+    },
+    "fake_w2|Amazon Nova Lite|errors_caught_30_random": {
+      "mean": 0.299602,
+      "se": 0.000288
+    },
     "fake_w2|Amazon Nova Lite|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -608,6 +712,14 @@
     "fake_w2|Amazon Nova Pro|calibration_error": {
       "mean": 0.101022,
       "se": 0.006838
+    },
+    "fake_w2|Amazon Nova Pro|errors_caught_30": {
+      "mean": 0.386313,
+      "se": 0.012163
+    },
+    "fake_w2|Amazon Nova Pro|errors_caught_30_random": {
+      "mean": 0.299311,
+      "se": 4.1e-05
     },
     "fake_w2|Amazon Nova Pro|page_accuracy": {
       "mean": 1.0,
@@ -653,6 +765,14 @@
       "mean": 0.19367,
       "se": 0.00081
     },
+    "fake_w2|Amazon Nova 2 Lite|errors_caught_30": {
+      "mean": 0.356936,
+      "se": 0.009701
+    },
+    "fake_w2|Amazon Nova 2 Lite|errors_caught_30_random": {
+      "mean": 0.29959,
+      "se": 0.000164
+    },
     "fake_w2|Amazon Nova 2 Lite|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -696,6 +816,14 @@
     "fake_w2|Claude Haiku 5.5|calibration_error": {
       "mean": 0.022259,
       "se": 0.002936
+    },
+    "fake_w2|Claude Haiku 5.5|errors_caught_30": {
+      "mean": 0.40095,
+      "se": 0.047189
+    },
+    "fake_w2|Claude Haiku 5.5|errors_caught_30_random": {
+      "mean": 0.299753,
+      "se": 0.000123
     },
     "fake_w2|Claude Haiku 5.5|page_accuracy": {
       "mean": 1.0,
@@ -741,6 +869,14 @@
       "mean": 0.051172,
       "se": 0.002878
     },
+    "fake_w2|Claude Sonnet 4.6|errors_caught_30": {
+      "mean": 0.42296,
+      "se": 0.043939
+    },
+    "fake_w2|Claude Sonnet 4.6|errors_caught_30_random": {
+      "mean": 0.3,
+      "se": 0.0
+    },
     "fake_w2|Claude Sonnet 4.6|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -785,6 +921,14 @@
       "mean": 0.080757,
       "se": 7e-05
     },
+    "fake_w2|Claude Sonnet 5.5|errors_caught_30": {
+      "mean": 0.437811,
+      "se": 0.0199
+    },
+    "fake_w2|Claude Sonnet 5.5|errors_caught_30_random": {
+      "mean": 0.29963,
+      "se": 0.0
+    },
     "fake_w2|Claude Sonnet 5.5|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -828,6 +972,14 @@
     "fake_w2|Claude Opus 5|calibration_error": {
       "mean": 0.004576,
       "se": 0.000105
+    },
+    "fake_w2|Claude Opus 5|errors_caught_30": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Claude Opus 5|errors_caught_30_random": {
+      "mean": 0.29963,
+      "se": 0.0
     },
     "fake_w2|Claude Opus 5|page_accuracy": {
       "mean": 1.0,

@@ -46,17 +46,17 @@ which adds scan noise to real invoices.
 
 **Answer:** Claude Haiku 5.5. It separated right values from wrong ones on both datasets (AUROC 0.98 on W-2 forms and 0.81 on RealKIE invoices) at the same cost as the default, Amazon Nova Lite, which scored 0.47 and 0.42: no better than a coin flip. Claude Sonnet 5 scored about the same as Claude Haiku 5.5 for about twice the cost on W-2s and $110 more per 1,000 invoices. [Details: CF-02](#cf-02-which-scoring-model-should-i-use)
 
-![AUROC against cost per 1,000 documents (USD) for each Scoring model](../../images/benchmark-guidance/CF-02-fields.svg)
+![AUROC and errors caught reviewing 30% of values against cost per 1,000 documents (USD) for each Scoring model](../../images/benchmark-guidance/CF-02-fields.svg)
 
-*AUROC against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
+*AUROC and errors caught reviewing 30% of values against cost per 1,000 documents (USD), one chart each. Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Color and shape mark the model family, and each family has its own chart on the same axes, with the other families' values as gray dots. The dashed line is random review: the share of wrong values a review of 30% of values finds when it picks them at random.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### Separate scoring pass or integrated into extraction?
 
 **Answer:** Separate, with a scoring model that works, or off. On W-2 forms integrated scoring separated right from wrong values better than the default separate pass with Amazon Nova Lite (AUROC 0.76 against 0.47) and used 36% fewer tokens per page, but it lowered extraction accuracy from 0.96 to 0.92. Turning confidence off changed no extracted value and cut tokens per page by 55% to 65%. On RealKIE invoices integrated ran as a separate pass, because in single-pass extraction the accelerator scores a class with list fields separately. For confidence you can act on, use a separate pass with Claude Haiku 5.5 or Claude Sonnet 5 (see CF-02). [Details: CF-03](#cf-03-separate-scoring-pass-or-integrated-into-extraction)
 
-![Weighted accuracy against cost per 1,000 documents (USD) for each Confidence mode](../../images/benchmark-guidance/CF-03-fields.svg)
+![AUROC and errors caught reviewing 30% of values against cost per 1,000 documents (USD) for each Confidence mode](../../images/benchmark-guidance/CF-03-fields.svg)
 
-*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
+*AUROC and errors caught reviewing 30% of values against cost per 1,000 documents (USD), one chart each. Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. The dashed line is random review: the share of wrong values a review of 30% of values finds when it picks them at random.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### What confidence threshold should I set?
 
@@ -82,6 +82,9 @@ which adds scan noise to real invoices.
 - *Calibration error:* the gap between the scores and the measured accuracy.
 - *Values below threshold:* the share of values the threshold sends to review.
 - *Errors below threshold:* the share of wrong values the threshold sends to review.
+- *Errors caught reviewing 30% of values:* the share of wrong values a reviewer finds by
+  checking the 30% of values with the lowest scores. Checking 30% picked at random finds
+  about 30%, which the charts draw as a dashed line labeled "random review".
 
 [Benchmark Datasets](datasets.md) describes each dataset.
 
@@ -127,20 +130,20 @@ which adds scan noise to real invoices.
 | **Models** | OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). |
 | **Runs** | 3 per document, per value; N = 20 documents × 3 runs |
 
-| Dataset | Scoring model | AUROC | Calibration error | Values below threshold | Errors below threshold | Scoring tokens per page | Cost per 1,000 documents (USD) |
-|---|---|---|---|---|---|---|---|
-| ConfBench | Amazon Nova Lite (default) | — | — | — | — | — | — |
-| ConfBench | Amazon Nova 2 Lite | — | — | — | — | — | — |
-| ConfBench | Claude Haiku 5.5 | — | — | — | — | — | — |
-| ConfBench | Claude Sonnet 5 | — | — | — | — | — | — |
-| RealKIE | Amazon Nova Lite (default) | 0.42 ± 0.07 | 0.17 ± 0.02 | — | — | 14,079 ± 166 | $143 |
-| RealKIE | Amazon Nova 2 Lite | 0.61 ± 0.13 | 0.18 ± 0.05 | — | — | 5,290 ± 331 | $139 |
-| RealKIE | Claude Haiku 5.5 | 0.81 ± 0.07 | 0.1 ± 0.03 | — | — | 13,193 ± 1,006 | $140 |
-| RealKIE | Claude Sonnet 5 | 0.83 ± 0.03 | 0.09 ± 0.05 | — | — | 12,025 ± 93 | $254 |
-| Fake-W2 | Amazon Nova Lite (default) | 0.47 ± 0.06 | 0.04 ± 0.01 | — | — | 61,579 ± 106,479 | $32.3 ± $0.10 |
-| Fake-W2 | Amazon Nova 2 Lite | 0.88 ± 0.09 | 0.02 ± 0.01 | — | — | 83,245 ± 77,145 | $34.9 ± $0.07 |
-| Fake-W2 | Claude Haiku 5.5 | 0.98 ± 0 | 0.06 ± 0 | — | — | 215,723 ± 1,227 | $34.1 ± $0.30 |
-| Fake-W2 | Claude Sonnet 5 | 0.98 ± 0 | 0.04 ± 0.01 | — | — | 185,065 ± 1,227 | $69.8 ± $0.70 |
+| Dataset | Scoring model | AUROC | Errors caught reviewing 30% of values | Calibration error | Values below threshold | Errors below threshold | Scoring tokens per page | Cost per 1,000 documents (USD) |
+|---|---|---|---|---|---|---|---|---|
+| ConfBench | Amazon Nova Lite (default) | — | — | — | — | — | — | — |
+| ConfBench | Amazon Nova 2 Lite | — | — | — | — | — | — | — |
+| ConfBench | Claude Haiku 5.5 | — | — | — | — | — | — | — |
+| ConfBench | Claude Sonnet 5 | — | — | — | — | — | — | — |
+| RealKIE | Amazon Nova Lite (default) | 0.42 ± 0.07 | 0.14 ± 0.11 | 0.17 ± 0.02 | — | — | 14,079 ± 166 | $143 |
+| RealKIE | Amazon Nova 2 Lite | 0.61 ± 0.13 | 0.46 ± 0.13 | 0.18 ± 0.05 | — | — | 5,290 ± 331 | $139 |
+| RealKIE | Claude Haiku 5.5 | 0.81 ± 0.07 | 0.66 ± 0.19 | 0.1 ± 0.03 | — | — | 13,193 ± 1,006 | $140 |
+| RealKIE | Claude Sonnet 5 | 0.83 ± 0.03 | 0.76 ± 0.08 | 0.09 ± 0.05 | — | — | 12,025 ± 93 | $254 |
+| Fake-W2 | Amazon Nova Lite (default) | 0.47 ± 0.06 | 0.18 ± 0.07 | 0.04 ± 0.01 | — | — | 61,579 ± 106,479 | $32.3 ± $0.10 |
+| Fake-W2 | Amazon Nova 2 Lite | 0.88 ± 0.09 | 0.78 ± 0.19 | 0.02 ± 0.01 | — | — | 83,245 ± 77,145 | $34.9 ± $0.07 |
+| Fake-W2 | Claude Haiku 5.5 | 0.98 ± 0 | 1 ± 0 | 0.06 ± 0 | — | — | 215,723 ± 1,227 | $34.1 ± $0.30 |
+| Fake-W2 | Claude Sonnet 5 | 0.98 ± 0 | 1 ± 0 | 0.04 ± 0.01 | — | — | 185,065 ± 1,227 | $69.8 ± $0.70 |
 
 *Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13. Amazon Bedrock and Amazon Textract only; Lambda and other AWS charges are not included.*
 
@@ -161,17 +164,17 @@ which adds scan noise to real invoices.
 | **Models** | OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). |
 | **Runs** | 3 per document, per value; N = 20 documents × 3 runs |
 
-| Dataset | Confidence mode | Weighted accuracy | AUROC | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs Off |
+| Dataset | Confidence mode | Weighted accuracy | AUROC | Errors caught reviewing 30% of values | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
 |---|---|---|---|---|---|---|---|
 | ConfBench | Separate (default) | — | — | — | — | — | — |
 | ConfBench | Integrated | — | — | — | — | — | — |
 | ConfBench | Off | — | — | — | — | — | — |
-| RealKIE | Separate (default) | 0.81 ± 0.07 | 0.42 ± 0.02 | 13,240 ± 1,063 | $137 | 36 ± 4.47 | no measurable gain |
-| RealKIE | Integrated | 0.81 ± 0.06 | 0.41 ± 0.04 | 13,206 ± 600 | $135 | 32 ± 3.84 | no measurable gain |
-| RealKIE | Off | 0.8 ± 0.06 | — | — | $134 | 23 ± 0.76 | — |
-| Fake-W2 | Separate (default) | 0.96 ± 0.02 | 0.47 ± 0.03 | 8,319 ± 1.49 | $35.3 | 28 ± 0.71 | no measurable gain |
-| Fake-W2 | Integrated | 0.92 ± 0.02 | 0.76 ± 0.01 | — | $61.5 | 33 ± 0.67 | — |
-| Fake-W2 | Off | 0.96 ± 0.02 | — | — | $31.8 | 17 ± 0.23 | — |
+| RealKIE | Separate (default) | 0.81 ± 0.07 | 0.42 ± 0.02 | 0.18 ± 0.03 | 13,240 ± 1,063 | $137 | 36 ± 4.47 |
+| RealKIE | Integrated | 0.81 ± 0.06 | 0.41 ± 0.04 | 0.18 ± 0.09 | 13,206 ± 600 | $135 | 32 ± 3.84 |
+| RealKIE | Off | 0.8 ± 0.06 | — | — | — | $134 | 23 ± 0.76 |
+| Fake-W2 | Separate (default) | 0.96 ± 0.02 | 0.47 ± 0.03 | 0.13 ± 0.05 | 8,319 ± 1.49 | $35.3 | 28 ± 0.71 |
+| Fake-W2 | Integrated | 0.92 ± 0.02 | 0.76 ± 0.01 | 0.47 ± 0.05 | — | $61.5 | 33 ± 0.67 |
+| Fake-W2 | Off | 0.96 ± 0.02 | — | — | — | $31.8 | 17 ± 0.23 |
 
 | Dataset | Confidence mode | Completeness | AUROC | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
 |---|---|---|---|---|---|---|

@@ -37,6 +37,14 @@
       "mean": 0.956347,
       "se": 0.004306
     },
+    "docsplit|Page by page, one call (default)|errors_caught_30": {
+      "mean": 0.298708,
+      "se": 0.000536
+    },
+    "docsplit|Page by page, one call (default)|errors_caught_30_random": {
+      "mean": 0.298708,
+      "se": 0.000536
+    },
     "docsplit|Page by page, one call (default)|page_accuracy": {
       "mean": 0.816117,
       "se": 0.009104
@@ -80,6 +88,14 @@
     "docsplit|Holistic, one call|calibration_error": {
       "mean": 0.962293,
       "se": 0.003634
+    },
+    "docsplit|Holistic, one call|errors_caught_30": {
+      "mean": 0.298714,
+      "se": 0.000347
+    },
+    "docsplit|Holistic, one call|errors_caught_30_random": {
+      "mean": 0.298714,
+      "se": 0.000347
     },
     "docsplit|Holistic, one call|page_accuracy": {
       "mean": 0.695749,
@@ -125,6 +141,14 @@
       "mean": 0.963056,
       "se": 0.002993
     },
+    "docsplit|Detect sections first (page by page), then classify|errors_caught_30": {
+      "mean": 0.299374,
+      "se": 0.000154
+    },
+    "docsplit|Detect sections first (page by page), then classify|errors_caught_30_random": {
+      "mean": 0.299374,
+      "se": 0.000154
+    },
     "docsplit|Detect sections first (page by page), then classify|page_accuracy": {
       "mean": 0.812714,
       "se": 0.010302
@@ -168,6 +192,14 @@
     "docsplit|Detect sections first (holistic), then classify|calibration_error": {
       "mean": 0.959312,
       "se": 0.005999
+    },
+    "docsplit|Detect sections first (holistic), then classify|errors_caught_30": {
+      "mean": 0.298741,
+      "se": 0.000574
+    },
+    "docsplit|Detect sections first (holistic), then classify|errors_caught_30_random": {
+      "mean": 0.298741,
+      "se": 0.000574
     },
     "docsplit|Detect sections first (holistic), then classify|page_accuracy": {
       "mean": 0.755409,

@@ -37,6 +37,14 @@
       "mean": 0.956347,
       "se": 0.004306
     },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|errors_caught_30": {
+      "mean": 0.298708,
+      "se": 0.000536
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|errors_caught_30_random": {
+      "mean": 0.298708,
+      "se": 0.000536
+    },
     "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|page_accuracy": {
       "mean": 0.816117,
       "se": 0.009104
@@ -80,6 +88,14 @@
     "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|calibration_error": {
       "mean": 0.962293,
       "se": 0.003634
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|errors_caught_30": {
+      "mean": 0.298714,
+      "se": 0.000347
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|errors_caught_30_random": {
+      "mean": 0.298714,
+      "se": 0.000347
     },
     "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|page_accuracy": {
       "mean": 0.695749,
@@ -125,6 +141,14 @@
       "mean": 0.963056,
       "se": 0.002993
     },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|errors_caught_30": {
+      "mean": 0.299374,
+      "se": 0.000154
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|errors_caught_30_random": {
+      "mean": 0.299374,
+      "se": 0.000154
+    },
     "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|page_accuracy": {
       "mean": 0.812714,
       "se": 0.010302
@@ -168,6 +192,14 @@
     "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|calibration_error": {
       "mean": 0.959312,
       "se": 0.005999
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|errors_caught_30": {
+      "mean": 0.298741,
+      "se": 0.000574
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|errors_caught_30_random": {
+      "mean": 0.298741,
+      "se": 0.000574
     },
     "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|page_accuracy": {
       "mean": 0.755409,
@@ -213,6 +245,14 @@
       "mean": 0.963931,
       "se": 0.004693
     },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|errors_caught_30": {
+      "mean": 0.298758,
+      "se": 0.000465
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|errors_caught_30_random": {
+      "mean": 0.298758,
+      "se": 0.000465
+    },
     "docsplit|Page by page \u00b7 Claude Haiku 5.5|page_accuracy": {
       "mean": 0.865967,
       "se": 0.003084
@@ -256,6 +296,14 @@
     "docsplit|Holistic \u00b7 Claude Haiku 5.5|calibration_error": {
       "mean": 0.96132,
       "se": 0.003872
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|errors_caught_30": {
+      "mean": 0.298514,
+      "se": 0.000258
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|errors_caught_30_random": {
+      "mean": 0.298514,
+      "se": 0.000258
     },
     "docsplit|Holistic \u00b7 Claude Haiku 5.5|page_accuracy": {
       "mean": 0.914887,
@@ -301,6 +349,14 @@
       "mean": 0.970079,
       "se": 0.001532
     },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|errors_caught_30": {
+      "mean": 0.299417,
+      "se": 0.000381
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|errors_caught_30_random": {
+      "mean": 0.299417,
+      "se": 0.000381
+    },
     "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|page_accuracy": {
       "mean": 0.842282,
       "se": 0.012099
@@ -344,6 +400,14 @@
     "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|calibration_error": {
       "mean": 0.95557,
       "se": 0.006825
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|errors_caught_30": {
+      "mean": 0.299335,
+      "se": 0.000139
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|errors_caught_30_random": {
+      "mean": 0.299335,
+      "se": 0.000139
     },
     "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|page_accuracy": {
       "mean": 0.866413,
@@ -389,6 +453,14 @@
       "mean": 0.966951,
       "se": 0.002444
     },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|errors_caught_30": {
+      "mean": 0.298884,
+      "se": 0.000262
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|errors_caught_30_random": {
+      "mean": 0.298884,
+      "se": 0.000262
+    },
     "docsplit|Holistic \u00b7 Claude Sonnet 5|page_accuracy": {
       "mean": 0.890928,
       "se": 0.014342
@@ -432,6 +504,14 @@
     "docsplit|Page by page \u00b7 Claude Sonnet 5|calibration_error": {
       "mean": 0.961952,
       "se": 0.001961
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|errors_caught_30": {
+      "mean": 0.299218,
+      "se": 0.000676
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|errors_caught_30_random": {
+      "mean": 0.299218,
+      "se": 0.000676
     },
     "docsplit|Page by page \u00b7 Claude Sonnet 5|page_accuracy": {
       "mean": 0.884404,
@@ -477,6 +557,14 @@
       "mean": 0.965936,
       "se": 0.003332
     },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|errors_caught_30": {
+      "mean": 0.299161,
+      "se": 0.000315
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|errors_caught_30_random": {
+      "mean": 0.299161,
+      "se": 0.000315
+    },
     "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|page_accuracy": {
       "mean": 0.888088,
       "se": 0.012249
@@ -520,6 +608,14 @@
     "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|calibration_error": {
       "mean": 0.963858,
       "se": 0.003626
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|errors_caught_30": {
+      "mean": 0.299368,
+      "se": 0.000446
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|errors_caught_30_random": {
+      "mean": 0.299368,
+      "se": 0.000446
     },
     "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|page_accuracy": {
       "mean": 0.922475,

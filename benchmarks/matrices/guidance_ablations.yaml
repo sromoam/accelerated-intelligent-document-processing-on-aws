@@ -18,7 +18,11 @@
 #   runs      runs per document per value
 #   metrics   keys of `metrics` below, in column order
 #   derives   for ablations computed from another ablation's runs, that ablation's ID
-#   plot      the metric to plot (default: the first metric that applies)
+#   plot      the metric to plot (default: the first metric that applies), or a list
+#             of metrics, which a cost or tokens chart draws side by side in one image
+#   families  true when the values are models: each point takes its model family's
+#             color and shape, and a dataset whose values span more than one family
+#             gets a chart per family on shared axes
 #   plot_x    the tokens metric for the x-axis when cost is not available (default:
 #             total tokens when measured). Cost per 1,000 documents is used whenever
 #             every plotted value has usage in its results file.
@@ -54,6 +58,10 @@ datasets:
   handwritten: {name: "Handwritten forms (to be built)", short: "Handwritten forms", kind: fields, new: true}
   rule_verdicts: {name: "Documents with expert rule verdicts (to be built)", short: "Rule-verdict set", kind: rules, new: true}
 
+# A metric's `short` name labels its axis when charts sit side by side, and its
+# `baseline` names a results-file metric drawn as a dashed line on its chart (`name`
+# labels the line; `caption` says what it is).
+#
 # `kinds` lists the dataset kinds a metric applies to. The renderer draws one results table
 # per dataset kind, with only the metrics that apply to it. `cost_per_1000_docs` is not
 # listed in any ablation: the renderer prices the results file's usage with
@@ -74,6 +82,7 @@ metrics:
   calibration_error: {name: "Calibration error", kinds: [list, fields, packet]}
   alert_rate: {name: "Values below threshold", kinds: [list, fields, packet]}
   errors_caught: {name: "Errors below threshold", kinds: [list, fields, packet]}
+  errors_caught_30: {name: "Errors caught reviewing 30% of values", short: "Errors caught at 30%", kinds: [fields], baseline: {metric: errors_caught_30_random, name: "random review", caption: "the share of wrong values a review of 30% of values finds when it picks them at random"}}
   verdict_agreement: {name: "Verdict agreement", kinds: [rules]}
   wrong_passes: {name: "Wrong passes", kinds: [rules]}
   wrong_fails: {name: "Wrong fails", kinds: [rules]}
@@ -199,6 +208,7 @@ ablations:
     runs: 3
     metrics: [page_accuracy, section_accuracy, grouping_score, classification_tokens, total_tokens]
     plot: section_accuracy
+    families: true
   - id: SC-02
     page: splitting-and-classification
     question: "Do I need page images in the classification prompt?"
@@ -220,6 +230,7 @@ ablations:
     runs: 3
     metrics: [page_accuracy, section_accuracy, grouping_score, boundary_accuracy, label_accuracy, classification_tokens, total_tokens, median_seconds]
     plot: section_accuracy
+    families: true
   - id: SC-04
     page: splitting-and-classification
     question: "How long a packet can holistic classification handle?"
@@ -298,6 +309,7 @@ ablations:
     datasets: [realkie, fake_w2, synth_400]
     runs: 3
     metrics: [weighted_accuracy, completeness, cell_accuracy, extraction_tokens, total_tokens, median_seconds]
+    families: true
   - id: EX-03
     page: extraction
     question: "Does more reasoning effort improve extraction?"
@@ -426,7 +438,9 @@ ablations:
     set: [{"extraction.confidence.model": "us.amazon.nova-lite-v1:0"}, {"extraction.confidence.model": "us.amazon.nova-2-lite-v1:0"}, {"extraction.confidence.model": "us.anthropic.claude-haiku-5-5"}, {"extraction.confidence.model": "us.anthropic.claude-sonnet-5"}]
     datasets: [confbench, realkie, fake_w2]
     runs: 3
-    metrics: [auroc, calibration_error, alert_rate, errors_caught, scoring_tokens]
+    metrics: [auroc, errors_caught_30, calibration_error, alert_rate, errors_caught, scoring_tokens]
+    plot: [auroc, errors_caught_30]
+    families: true
   - id: CF-03
     page: confidence-assessment
     question: "Separate scoring pass or integrated into extraction?"
@@ -436,7 +450,8 @@ ablations:
     holds: "Single-pass (Simple) extraction"
     datasets: [confbench, realkie, synth_800, fake_w2]
     runs: 3
-    metrics: [weighted_accuracy, completeness, auroc, scoring_tokens, median_seconds]
+    metrics: [weighted_accuracy, completeness, auroc, errors_caught_30, scoring_tokens, median_seconds]
+    plot: [auroc, errors_caught_30]
   - id: CF-04
     page: confidence-assessment
     question: "What confidence threshold should I set?"

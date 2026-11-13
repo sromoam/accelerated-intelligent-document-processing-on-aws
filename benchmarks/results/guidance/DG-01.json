@@ -37,6 +37,14 @@
       "mean": 0.166775,
       "se": 0.024025
     },
+    "realkie|Textract, tables and layout (default)|errors_caught_30": {
+      "mean": 0.12745,
+      "se": 0.021335
+    },
+    "realkie|Textract, tables and layout (default)|errors_caught_30_random": {
+      "mean": 0.299109,
+      "se": 0.000332
+    },
     "realkie|Textract, tables and layout (default)|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
@@ -80,6 +88,14 @@
     "realkie|Textract, layout only|calibration_error": {
       "mean": 0.202112,
       "se": 0.005637
+    },
+    "realkie|Textract, layout only|errors_caught_30": {
+      "mean": 0.157996,
+      "se": 0.040335
+    },
+    "realkie|Textract, layout only|errors_caught_30_random": {
+      "mean": 0.299199,
+      "se": 0.00014
     },
     "realkie|Textract, layout only|page_accuracy": {
       "mean": 1.0,
@@ -128,6 +144,14 @@
     "realkie|Bedrock vision model (Nova 2 Lite)|calibration_error": {
       "mean": 0.1082,
       "se": 0.028702
+    },
+    "realkie|Bedrock vision model (Nova 2 Lite)|errors_caught_30": {
+      "mean": 0.23034,
+      "se": 0.026167
+    },
+    "realkie|Bedrock vision model (Nova 2 Lite)|errors_caught_30_random": {
+      "mean": 0.299786,
+      "se": 0.00012
     },
     "realkie|Bedrock vision model (Nova 2 Lite)|page_accuracy": {
       "mean": 1.0,

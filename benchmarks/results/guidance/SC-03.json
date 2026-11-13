@@ -6,8 +6,8 @@
   "verdict": "Claude Haiku 5.5 or Claude Sonnet 5 for packets. On DocSplit both got 0.71 of sections exactly right, against 0.51 for the default, Amazon Nova 2 Lite, and classified more pages correctly (0.86 and 0.89, against 0.82). They used about three times the classification tokens (about 8,800 per page, against 2,850) and about 37% more total tokens. Amazon Nova Pro scored below the default.",
   "cells": {
     "docsplit|Amazon Nova 2 Lite (default)|weighted_accuracy": {
-      "mean": 0.313726,
-      "se": 0.035557
+      "mean": 0.315618,
+      "se": 0.037427
     },
     "docsplit|Amazon Nova 2 Lite (default)|classification_tokens": {
       "mean": 2849.960115,
@@ -37,6 +37,14 @@
       "mean": 0.957916,
       "se": 0.001753
     },
+    "docsplit|Amazon Nova 2 Lite (default)|errors_caught_30": {
+      "mean": 0.298394,
+      "se": 0.000268
+    },
+    "docsplit|Amazon Nova 2 Lite (default)|errors_caught_30_random": {
+      "mean": 0.298394,
+      "se": 0.000268
+    },
     "docsplit|Amazon Nova 2 Lite (default)|page_accuracy": {
       "mean": 0.818291,
       "se": 0.004133
@@ -50,8 +58,8 @@
       "se": 0.008837
     },
     "docsplit|Amazon Nova Pro|weighted_accuracy": {
-      "mean": 0.36438,
-      "se": 0.038128
+      "mean": 0.369263,
+      "se": 0.03986
     },
     "docsplit|Amazon Nova Pro|classification_tokens": {
       "mean": 4356.63311,
@@ -81,6 +89,14 @@
       "mean": 0.968875,
       "se": 0.001596
     },
+    "docsplit|Amazon Nova Pro|errors_caught_30": {
+      "mean": 0.298184,
+      "se": 0.00018
+    },
+    "docsplit|Amazon Nova Pro|errors_caught_30_random": {
+      "mean": 0.298184,
+      "se": 0.00018
+    },
     "docsplit|Amazon Nova Pro|page_accuracy": {
       "mean": 0.759508,
       "se": 0.002237
@@ -94,8 +110,8 @@
       "se": 0.009359
     },
     "docsplit|Claude Haiku 5.5|weighted_accuracy": {
-      "mean": 0.277031,
-      "se": 0.031832
+      "mean": 0.277966,
+      "se": 0.03354
     },
     "docsplit|Claude Haiku 5.5|classification_tokens": {
       "mean": 8986.710533,
@@ -125,6 +141,14 @@
       "mean": 0.967741,
       "se": 0.000995
     },
+    "docsplit|Claude Haiku 5.5|errors_caught_30": {
+      "mean": 0.298753,
+      "se": 0.000295
+    },
+    "docsplit|Claude Haiku 5.5|errors_caught_30_random": {
+      "mean": 0.298753,
+      "se": 0.000295
+    },
     "docsplit|Claude Haiku 5.5|page_accuracy": {
       "mean": 0.86197,
       "se": 0.003718
@@ -138,8 +162,8 @@
       "se": 0.00766
     },
     "docsplit|Claude Sonnet 5|weighted_accuracy": {
-      "mean": 0.282032,
-      "se": 0.032996
+      "mean": 0.283231,
+      "se": 0.034758
     },
     "docsplit|Claude Sonnet 5|classification_tokens": {
       "mean": 8670.686339,
@@ -168,6 +192,14 @@
     "docsplit|Claude Sonnet 5|calibration_error": {
       "mean": 0.963714,
       "se": 0.002323
+    },
+    "docsplit|Claude Sonnet 5|errors_caught_30": {
+      "mean": 0.298873,
+      "se": 0.000216
+    },
+    "docsplit|Claude Sonnet 5|errors_caught_30_random": {
+      "mean": 0.298873,
+      "se": 0.000216
     },
     "docsplit|Claude Sonnet 5|page_accuracy": {
       "mean": 0.885476,

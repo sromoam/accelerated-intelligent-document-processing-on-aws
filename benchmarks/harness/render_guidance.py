@@ -28,8 +28,11 @@ benchmarks/results/guidance/<ID>.json, its values fill the table; otherwise ever
 
 A cell is either a string, printed as is, or a mean and standard error over the runs,
 printed as "0.81 ± 0.01" (two standard errors). For each dataset kind, the ablation's
-`plot` metric (or its first metric) is drawn as a dot-and-band SVG under
-images/benchmark-guidance/ whenever at least one of its cells has a mean.
+`plot` metric (or its first metric) is drawn as an SVG under images/benchmark-guidance/
+whenever at least one of its cells has a mean. `plot` may list several metrics: a
+scatter then draws one chart per metric, side by side in the same image. A metric
+with a `baseline` in the registry gets it as a dashed line, and an ablation marked
+`families` colors its points by model family and gives each family its own chart.
 
 `models` is optional: the model in force at each step of the pipeline. Every chart,
 caption and details table states it, and a step whose model differs across the values
@@ -73,7 +76,9 @@ from guidance_plots import (
     MAX_LABELLED,
     draw_plot,
     draw_scatter,
+    family,
     fmt,
+    lower_name,
     marginal_cost_of_error,
     money,
 )
@@ -91,9 +96,14 @@ COLD_NOTE = (
     "cache the first run wrote, which a document processed once would not.*"
 )
 MCOE_CAPTION = (
-    " Lines run from the cheapest value to each other value, labeled with the "
+    " Lines run from the cheapest value to each more accurate one, labeled with the "
     "marginal cost of error: the extra cost per error prevented "
     f"([Marginal Cost of Error]({MCOE_PAGE}))."
+)
+FAMILY_CAPTION = " Color and shape mark the model family"
+FAMILY_SPLIT_CAPTION = (
+    ", and each family has its own chart on the same axes, with the other families' "
+    "values as gray dots"
 )
 PAGES = REPO / "docs" / "benchmark-guidance"
 #: Generated regions of a page. ABLATIONS is required; the others are optional.
@@ -521,7 +531,10 @@ def render_ablation(
         cols = [m for m in ab["metrics"] if kind in metrics[m]["kinds"]]
         if not cols:
             continue
-        plot_metric = ab.get("plot") if ab.get("plot") in cols else cols[0]
+        wanted = ab.get("plot") or []
+        wanted = [wanted] if isinstance(wanted, str) else list(wanted)
+        plot_metrics = [m for m in wanted if m in cols] or [cols[0]]
+        plot_metric = plot_metrics[0]
         if usage and kind in metrics[COST]["kinds"]:
             cols = with_cost(cols)
         kind_sets = [k for k in ab["datasets"] if datasets[k]["kind"] == kind]
@@ -545,7 +558,10 @@ def render_ablation(
             f"{ds_key}|{value}"
             for ds_key in kind_sets
             for value in ab["values"]
-            if isinstance(cells.get(f"{ds_key}|{value}|{plot_metric}"), dict)
+            if any(
+                isinstance(cells.get(f"{ds_key}|{value}|{m}"), dict)
+                for m in plot_metrics
+            )
         ]
         use_cost = (
             plot_metric != COST
@@ -564,27 +580,59 @@ def render_ablation(
                 )
             )
         )
-        show_mcoe = x_metric == COST and plot_metric in ERROR_RATE_METRICS
+        # The marginal cost of error applies to an accuracy against cost. The table's
+        # column carries it for the first plotted metric it applies to.
+        mcoe_metrics = (
+            {m for m in plot_metrics if m in ERROR_RATE_METRICS}
+            if x_metric == COST
+            else set()
+        )
+        table_mcoe = next((m for m in plot_metrics if m in mcoe_metrics), None)
         mcoe: dict[str, tuple[str, dict[str, float | None]]] = {}
         scatter = []
+        baseline_specs: dict[str, dict[str, str]] = {}
         if x_metric and not plot_metric.endswith("_tokens"):
             for ds_key in kind_sets:
                 pts = []
                 for value in ab["values"]:
                     x = cells.get(f"{ds_key}|{value}|{x_metric}")
-                    y = cells.get(f"{ds_key}|{value}|{plot_metric}")
-                    if isinstance(x, dict) and isinstance(y, dict):
-                        pts.append((value, x, y))
-                if pts:
-                    scatter.append(
-                        (
-                            datasets[ds_key].get("short", datasets[ds_key]["name"]),
-                            panel_subtitle(steps.get(ds_key, {}), sizes.get(ds_key)),
-                            pts,
+                    ys = {
+                        m: y
+                        for m in plot_metrics
+                        if isinstance(y := cells.get(f"{ds_key}|{value}|{m}"), dict)
+                    }
+                    if isinstance(x, dict) and ys:
+                        pts.append((value, x, ys))
+                if not pts:
+                    continue
+                baselines: dict[str, tuple[float, str]] = {}
+                for m in plot_metrics:
+                    spec = metrics[m].get("baseline")
+                    if not spec:
+                        continue
+                    found = [
+                        cell["mean"]
+                        for value in ab["values"]
+                        if isinstance(
+                            cell := cells.get(f"{ds_key}|{value}|{spec['metric']}"),
+                            dict,
                         )
+                    ]
+                    if found:
+                        baselines[m] = (statistics.fmean(found), spec["name"])
+                        baseline_specs[m] = spec
+                scatter.append(
+                    (
+                        datasets[ds_key].get("short", datasets[ds_key]["name"]),
+                        panel_subtitle(steps.get(ds_key, {}), sizes.get(ds_key)),
+                        pts,
+                        baselines,
                     )
-                    if show_mcoe:
-                        mcoe[ds_key] = marginal_cost_of_error(pts)
+                )
+                if table_mcoe:
+                    mcoe[ds_key] = marginal_cost_of_error(
+                        [(v, x, ys[table_mcoe]) for v, x, ys in pts if table_mcoe in ys]
+                    )
         plotted = [
             k
             for k in kind_sets
@@ -597,25 +645,59 @@ def render_ablation(
             prices = price_caveat_svg(region) if on_cost else ""
             if scatter and x_metric:
                 x_name = metrics[x_metric]["name"]
+                drawn = [
+                    m
+                    for m in plot_metrics
+                    if any(m in ys for *_, pts, _ in scatter for _, _, ys in pts)
+                ]
+                metric_name = " and ".join(
+                    metrics[m]["name"] if i == 0 else lower_name(metrics[m]["name"])
+                    for i, m in enumerate(drawn)
+                )
                 out.plots[name] = draw_scatter(
                     x_name,
-                    metric_name,
+                    [
+                        (
+                            m,
+                            metrics[m]["name"],
+                            metrics[m].get("short", metrics[m]["name"]),
+                        )
+                        for m in drawn
+                    ],
                     scatter,
                     ab.get("runs", 0),
                     x_money=x_metric == COST,
-                    mcoe=show_mcoe,
+                    mcoe=mcoe_metrics,
                     prices=prices,
+                    families=bool(ab.get("families")),
                 )
                 x_lower = lower_first(x_name)
                 alt = f"{metric_name} against {x_lower} for each {ab['changes']}"
-                caption = f"*{metric_name} against {x_lower}. {SCATTER_CAPTION}"
-                if max(len(pts) for *_, pts in scatter) > MAX_LABELLED:
+                caption = f"*{metric_name} against {x_lower}"
+                if len(drawn) > 1:
+                    caption += ", one chart each"
+                caption += f". {SCATTER_CAPTION}"
+                if ab.get("families"):
+                    split = any(
+                        len({family(v) for v, _, _ in pts}) > 1
+                        for _, _, pts, _ in scatter
+                    )
+                    caption += FAMILY_CAPTION + (FAMILY_SPLIT_CAPTION if split else "")
+                    caption += "."
+                # A chart whose dots are numbered lists every value in its key.
+                numbered = 'class="keyhead"' in out.plots[name]
+                if (
+                    not numbered
+                    and max(len(p) for _, _, p, _ in scatter) > MAX_LABELLED
+                ):
                     caption += (
                         " Labels mark the default and the values no other value "
                         "beats on both axes; hover a point for the rest."
                     )
                 if any(gains for _, gains in mcoe.values()):
                     caption += MCOE_CAPTION
+                for spec in baseline_specs.values():
+                    caption += f" The dashed line is {spec['name']}: {spec['caption']}."
                 caption += "*"
             else:
                 out.plots[name] = draw_plot(
@@ -660,7 +742,7 @@ def render_ablation(
                         if value not in gains
                         else "no measurable gain"
                         if gains[value] is None
-                        else money(gains[value] or 0.0)
+                        else f"{money(gains[value] or 0.0)} per error prevented"
                     )
                 d.append("| " + " | ".join(row) + " |")
         d.append("")
@@ -690,7 +772,10 @@ def render_ablation(
     # FAQ entry: the question, the answer, the headline plot, a link to details.
     out.faq += [f"### {ab['question']}", "", f"**Answer:** {answer} {details_link}", ""]
     if ab.get("grid") and results:
+        # The grid's tables answer the question; the chart, when there is one,
+        # follows them.
         out.faq += render_grid(ab, reg, cells, region, spec_n, spec_models)
+        out.faq += headline
     else:
         out.faq += headline
     return out
@@ -713,6 +798,7 @@ def render_grid(
     rows, cols = grid["rows"], grid["cols"]
     shown = [m for m in ab["metrics"] if not m.endswith("_tokens")]
     plot = ab.get("plot")
+    plot = plot[0] if isinstance(plot, list) else plot
     if plot in shown:
         shown.remove(plot)
         shown.insert(0, plot)
