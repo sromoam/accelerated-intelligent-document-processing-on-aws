@@ -56,7 +56,7 @@ describes where each dataset comes from and how its ground truth was made.
 - **About the dataset:** [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements)
 - **Preset:** `bank-statement-sample`
 - **Test Studio test set:** not on the benchmark stack yet
-- **Used by:** [SC-01](splitting-and-classification.md#sc-01-help-me-choose-a-mechanism-for-packet-splitting), [EX-13](extraction.md#ex-13-how-should-i-extract-sections-that-hold-several-records)
+- **Used by:** [SC-01](splitting-and-classification.md#sc-01-does-holistic-classification-beat-page-by-page-classification), [EX-13](extraction.md#ex-13-how-should-i-extract-sections-that-hold-several-records)
 
 ### RealKIE-FCC-Verified (20 invoices)
 
@@ -105,14 +105,14 @@ describes where each dataset comes from and how its ground truth was made.
 - **About the dataset:** [Fake-W2-Tax-Forms](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms)
 - **Preset:** `fake-w2`
 - **Test Studio test set:** `fake-w2`, 20 documents per run
-- **Used by:** [DG-06](digitization.md#dg-06-which-textract-features-do-i-need), [EX-01](extraction.md#ex-01-when-is-agentic-iterative-extraction-worth-it), [EX-02](extraction.md#ex-02-which-extraction-model-should-i-use), [EX-03](extraction.md#ex-03-does-more-reasoning-effort-improve-extraction), [EX-04](extraction.md#ex-04-how-much-do-field-descriptions-matter), [EX-05](extraction.md#ex-05-do-few-shot-examples-help-extraction), [EX-06](extraction.md#ex-06-does-sending-page-images-to-the-extraction-model-help), [EX-10](extraction.md#ex-10-do-schema-validation-and-value-coercion-improve-the-output), [EX-11](extraction.md#ex-11-should-i-retry-failed-fields-with-a-stronger-model), [EX-12](extraction.md#ex-12-does-structured-output-make-single-pass-extraction-more-accurate), [EX-13](extraction.md#ex-13-how-should-i-extract-sections-that-hold-several-records), [CF-06](confidence-assessment.md#cf-06-does-the-scoring-model-need-page-images)
+- **Used by:** [DG-06](digitization.md#dg-06-which-textract-features-do-i-need), [EX-01](extraction.md#ex-01-when-is-agentic-iterative-extraction-worth-it), [EX-02](extraction.md#ex-02-which-extraction-model-should-i-use), [EX-03](extraction.md#ex-03-does-more-reasoning-effort-improve-extraction), [EX-04](extraction.md#ex-04-how-much-do-field-descriptions-matter), [EX-05](extraction.md#ex-05-do-few-shot-examples-help-extraction), [EX-06](extraction.md#ex-06-does-sending-page-images-to-the-extraction-model-help), [EX-10](extraction.md#ex-10-do-schema-validation-and-value-coercion-improve-the-output), [EX-11](extraction.md#ex-11-should-i-retry-failed-fields-with-a-stronger-model), [EX-12](extraction.md#ex-12-does-structured-output-make-single-pass-extraction-more-accurate), [EX-13](extraction.md#ex-13-how-should-i-extract-sections-that-hold-several-records), [CF-03](confidence-assessment.md#cf-03-separate-scoring-pass-or-integrated-into-extraction), [CF-06](confidence-assessment.md#cf-06-does-the-scoring-model-need-page-images)
 
 ### DocSplit-Poly-Seq (20 packets)
 
 - **About the dataset:** [DocSplit-Poly-Seq](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq)
 - **Preset:** `docsplit`
 - **Test Studio test set:** `docsplit`, 20 documents per run
-- **Used by:** [TR-01](index.md#tr-01-how-much-do-results-vary-between-identical-runs), [SC-01](splitting-and-classification.md#sc-01-help-me-choose-a-mechanism-for-packet-splitting), [SC-02](splitting-and-classification.md#sc-02-do-i-need-page-images-in-the-classification-prompt), [SC-03](splitting-and-classification.md#sc-03-which-classification-model-should-i-use), [SC-04](splitting-and-classification.md#sc-04-how-long-a-packet-can-holistic-classification-handle), [SC-05](splitting-and-classification.md#sc-05-does-neighboring-page-context-help-page-by-page-classification), [SC-06](splitting-and-classification.md#sc-06-do-few-shot-examples-help-classification), [SC-07](splitting-and-classification.md#sc-07-how-much-do-class-descriptions-matter), [SC-08](splitting-and-classification.md#sc-08-does-accuracy-drop-as-i-add-document-classes), [SC-09](splitting-and-classification.md#sc-09-how-small-can-classification-images-be), [CF-05](confidence-assessment.md#cf-05-does-classification-confidence-flag-the-wrong-document-class), [TU-01](token-use.md#tu-01-where-do-the-tokens-go), [TU-02](token-use.md#tu-02-how-much-does-prompt-caching-save-in-extraction), [TU-03](token-use.md#tu-03-what-do-page-images-cost-in-tokens-step-by-step), [TU-04](token-use.md#tu-04-what-is-the-cheapest-configuration-that-keeps-accuracy)
+- **Used by:** [TR-01](index.md#tr-01-how-much-do-results-vary-between-identical-runs), [SC-01](splitting-and-classification.md#sc-01-does-holistic-classification-beat-page-by-page-classification), [SC-11](splitting-and-classification.md#sc-11-which-splitting-mechanism-works-best-with-each-classification-model), [SC-02](splitting-and-classification.md#sc-02-do-i-need-page-images-in-the-classification-prompt), [SC-03](splitting-and-classification.md#sc-03-which-classification-model-should-i-use), [SC-04](splitting-and-classification.md#sc-04-how-long-a-packet-can-holistic-classification-handle), [SC-05](splitting-and-classification.md#sc-05-does-neighboring-page-context-help-page-by-page-classification), [SC-06](splitting-and-classification.md#sc-06-do-few-shot-examples-help-classification), [SC-07](splitting-and-classification.md#sc-07-how-much-do-class-descriptions-matter), [SC-08](splitting-and-classification.md#sc-08-does-accuracy-drop-as-i-add-document-classes), [SC-09](splitting-and-classification.md#sc-09-how-small-can-classification-images-be), [CF-05](confidence-assessment.md#cf-05-does-classification-confidence-flag-the-wrong-document-class), [TU-01](token-use.md#tu-01-where-do-the-tokens-go), [TU-02](token-use.md#tu-02-how-much-does-prompt-caching-save-in-extraction), [TU-03](token-use.md#tu-03-what-do-page-images-cost-in-tokens-step-by-step), [TU-04](token-use.md#tu-04-what-is-the-cheapest-configuration-that-keeps-accuracy)
 
 ## Datasets we haven't built yet
 
@@ -122,7 +122,7 @@ describes where each dataset comes from and how its ground truth was made.
 
 ### Same-class documents back to back (to be built)
 
-- **Used by:** [SC-01](splitting-and-classification.md#sc-01-help-me-choose-a-mechanism-for-packet-splitting), [SC-05](splitting-and-classification.md#sc-05-does-neighboring-page-context-help-page-by-page-classification)
+- **Used by:** [SC-01](splitting-and-classification.md#sc-01-does-holistic-classification-beat-page-by-page-classification), [SC-05](splitting-and-classification.md#sc-05-does-neighboring-page-context-help-page-by-page-classification)
 
 ### Packets with section and field ground truth (to be built)
 

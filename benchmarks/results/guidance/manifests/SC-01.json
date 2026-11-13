@@ -1,6 +1,6 @@
 {
   "ablation": "SC-01",
-  "verdict": "On DocSplit packets, detect sections first, page by page. It got the most sections exactly right (0.65, against 0.52 for the default) and kept the default's page accuracy (0.81) at the same tokens per page. Holistic classification grouped pages into documents best (grouping score 0.90) and used about 20% fewer tokens, but gave the wrong class to more pages (page accuracy 0.70): choose it when finding where each document starts matters more than its class.",
+  "verdict": "Yes, once a Claude model classifies. With Claude Sonnet 5, holistic classification got 0.89 of DocSplit sections exactly right, against 0.70 page by page, for about 15% fewer tokens (see SC-11). With the default, Amazon Nova 2 Lite, it is a trade: holistic grouped pages into documents far better (grouping score 0.90 against 0.66) but gave the wrong class to more pages (page accuracy 0.70 against 0.82), and the two tied on sections exactly right (0.55 against 0.52).",
   "runs": {
     "docsplit": {
       "Page by page, one call (default)": [

@@ -7,9 +7,19 @@ the setting, this script:
 1. downloads the dataset's preset profile from the stack (the profile named after the
    preset, e.g. `realkie-fcc-verified`),
 2. applies the value's overrides from the registry's `set` list (dotted config paths),
-3. uploads the result as an unmanaged profile `bench-<id>-<dataset>-<n>`,
-4. starts `runs` Test Studio runs of the dataset's test set under that profile, limited
-   to the dataset's `docs`, and waits for their evaluation.
+3. uploads the result as an unmanaged profile `bench-<id>-<dataset>-<n>-r<run>`, one
+   per repeat run, each carrying a run marker in its system prompts,
+4. starts `runs` Test Studio runs of the dataset's test set under those profiles,
+   limited to the dataset's `docs`, and waits for their evaluation.
+
+A repeat run gets its own profile because runs of one value process the same documents
+within the prompt cache's lifetime, so the second and third runs would read the cache
+entries the first run wrote and look cheaper than a document processed once in
+production. The marker is one line appended to the system prompts the configuration
+already has, which moves the cached prefix: calls inside a run still share a cache,
+runs no longer share one with each other. The manifest lists those runs under
+`cache_isolated`, which is how collect_guidance_results.py knows it can average their
+costs instead of pricing the coldest run alone.
 
 It then writes a run manifest under benchmarks/results/guidance/manifests/ and calls
 collect_guidance_results.py, which writes benchmarks/results/guidance/<ID>.json.
@@ -35,6 +45,7 @@ import re
 import subprocess
 import sys
 import threading
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -74,14 +85,51 @@ def set_path(cfg: dict[str, Any], dotted: str, value: Any) -> None:
     node[keys[-1]] = value
 
 
+def nodes(node: Any) -> Iterator[dict[str, Any]]:
+    """Every mapping inside a configuration subtree, including the subtree itself."""
+    if isinstance(node, dict):
+        yield node
+        for value in node.values():
+            yield from nodes(value)
+    elif isinstance(node, list):
+        for value in node:
+            yield from nodes(value)
+
+
+def mark_prompts(cfg: dict[str, Any], run: int) -> int:
+    """Append a run marker to the system prompts, and return how many it changed.
+
+    A prompt cache entry is keyed on the prefix of the request, which starts at the
+    system prompt, so one line there is enough to stop two runs sharing a cache. Only
+    prompts the configuration already carries are touched: a prompt this script
+    created would be a setting the benchmark did not intend to change.
+    """
+    marker = f"\n<!-- benchmark run {run} -->"
+    targets: list[dict[str, Any]] = []
+    extraction = cfg.get("extraction")
+    if isinstance(extraction, dict):
+        targets.append(extraction)
+        if isinstance(extraction.get("confidence"), dict):
+            targets.append(extraction["confidence"])
+    targets += list(nodes(cfg.get("classification")))
+    changed = 0
+    for node in targets:
+        text = node.get("system_prompt")
+        if isinstance(text, str) and text.strip():
+            node["system_prompt"] = text + marker
+            changed += 1
+    return changed
+
+
 def make_profile(
     args: argparse.Namespace,
     ab: dict[str, Any],
     ds_key: str,
     ds: dict[str, Any],
     idx: int,
+    run: int,
 ) -> tuple[str, int]:
-    """Create (or update) the profile for one value; return its name and revision."""
+    """Create (or update) one run's profile; return its name and revision."""
     work = Path(args.workdir) / ab["id"]
     work.mkdir(parents=True, exist_ok=True)
     base = work / f"base-{ds_key}.yaml"
@@ -102,7 +150,12 @@ def make_profile(
     cfg["managed"] = False
     for dotted, value in ab["set"][idx].items():
         set_path(cfg, dotted, value)
-    name = f"bench-{ab['id'].lower()}-{ds_key.replace('_', '-')}-{idx}"
+    if not mark_prompts(cfg, run):
+        raise SystemExit(
+            f"{ds['preset']}: no system prompt to mark, so runs would share a prompt "
+            "cache and repeat runs would look cheaper than they are"
+        )
+    name = f"bench-{ab['id'].lower()}-{ds_key.replace('_', '-')}-{idx}-r{run}"
     path = work / f"{name}.yaml"
     path.write_text(yaml.safe_dump(cfg, sort_keys=False), encoding="utf-8")
     out = cli(
@@ -115,7 +168,7 @@ def make_profile(
         "--config-profile",
         name,
         "--version-description",
-        f"Benchmark {ab['id']}: {ab['values'][idx]}",
+        f"Benchmark {ab['id']}: {ab['values'][idx]} (run {run})",
     )
     m = re.search(r"Revision: r(\d+)", out)
     if not m:
@@ -230,6 +283,7 @@ def main() -> int:
         release=args.release,
         measured=args.measured,
     )
+    isolated: set[str] = set(manifest.get("cache_isolated") or [])
 
     jobs = []
     for ds_key in keys:
@@ -238,12 +292,13 @@ def main() -> int:
             have = manifest["runs"].get(ds_key, {}).get(value, [])
             if len(have) >= runs:
                 continue
-            profile, rev = make_profile(args, ab, ds_key, ds, idx)
             for n in range(len(have), runs):
+                profile, rev = make_profile(args, ab, ds_key, ds, idx, n + 1)
                 jobs.append((ds_key, ds, value, profile, rev, n + 1))
     print(f"{ab['id']}: {len(jobs)} runs to do", flush=True)
 
     def save() -> None:
+        manifest["cache_isolated"] = sorted(isolated)
         mpath.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     with cf.ThreadPoolExecutor(max_workers=args.concurrency) as pool:
@@ -267,6 +322,7 @@ def main() -> int:
                     manifest["runs"].setdefault(ds_key, {}).setdefault(
                         value, []
                     ).append(run_id)
+                    isolated.add(run_id)
                     save()
     save()
 

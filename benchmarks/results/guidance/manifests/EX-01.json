@@ -1,6 +1,6 @@
 {
   "ablation": "EX-01",
-  "verdict": "Not for invoices or forms. On RealKIE invoices both modes scored 0.80; on W-2 forms iterative scored 0.97 against 0.95, a difference within the noise. Iterative used about the same total tokens per page on invoices and 3.4 times as many on W-2s. Use single pass unless your documents have long lists.",
+  "verdict": "Not on invoices or forms, including long ones. On RealKIE invoices both modes scored 0.80; on invoices of 8 to 33 pages iterative scored 0.80 against 0.77, a difference within the noise, and on W-2 forms 0.97 against 0.95, also within the noise. Iterative cost more on every dataset: 17% more on RealKIE invoices, 50% more on short invoices, 86% more on W-2s and about three times as much on long invoices. On the longest invoice, 33 pages with 1,490 line items, iterative ran for 40 minutes and missed Test Studio's time limit in every run; single pass finished it.",
   "runs": {
     "realkie": {
       "Single pass, Simple (default)": [
@@ -43,6 +43,11 @@
         "realkie-fcc-long-20261113-201929",
         "realkie-fcc-long-20261113-201928",
         "realkie-fcc-long-20261113-202020"
+      ],
+      "Iterative, Advanced": [
+        "realkie-fcc-long-20261113-202336",
+        "realkie-fcc-long-20261113-202804",
+        "realkie-fcc-long-20261113-202644"
       ]
     }
   },
@@ -50,5 +55,7 @@
   "region": "us-east-1",
   "release": "0.6.15.dev1",
   "measured": "November 2026",
-  "max_failed": {}
+  "max_failed": {
+    "realkie_long": 1
+  }
 }

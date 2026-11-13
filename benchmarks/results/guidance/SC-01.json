@@ -3,11 +3,11 @@
   "measured": "November 2026",
   "region": "us-east-1",
   "source": "Test Studio runs DocSplit-Poly-Seq-20261113-192327, DocSplit-Poly-Seq-20261113-192328, DocSplit-Poly-Seq-20261113-192329, DocSplit-Poly-Seq-20261113-192706, DocSplit-Poly-Seq-20261113-192708, DocSplit-Poly-Seq-20261113-192711, DocSplit-Poly-Seq-20261113-194400, DocSplit-Poly-Seq-20261113-194401, DocSplit-Poly-Seq-20261113-194402, DocSplit-Poly-Seq-20261113-195220, DocSplit-Poly-Seq-20261113-195216, DocSplit-Poly-Seq-20261113-195221 (4 failed documents left out of the scores)",
-  "verdict": "On DocSplit packets, detect sections first, page by page. It got the most sections exactly right (0.65, against 0.52 for the default) and kept the default's page accuracy (0.81) at the same tokens per page. Holistic classification grouped pages into documents best (grouping score 0.90) and used about 20% fewer tokens, but gave the wrong class to more pages (page accuracy 0.70): choose it when finding where each document starts matters more than its class.",
+  "verdict": "Yes, once a Claude model classifies. With Claude Sonnet 5, holistic classification got 0.89 of DocSplit sections exactly right, against 0.70 page by page, for about 15% fewer tokens (see SC-11). With the default, Amazon Nova 2 Lite, it is a trade: holistic grouped pages into documents far better (grouping score 0.90 against 0.66) but gave the wrong class to more pages (page accuracy 0.70 against 0.82), and the two tied on sections exactly right (0.55 against 0.52).",
   "cells": {
     "docsplit|Page by page, one call (default)|weighted_accuracy": {
-      "mean": 0.314759,
-      "se": 0.034505
+      "mean": 0.31768,
+      "se": 0.036241
     },
     "docsplit|Page by page, one call (default)|classification_tokens": {
       "mean": 2859.035294,
@@ -50,8 +50,8 @@
       "se": 0.008834
     },
     "docsplit|Holistic, one call|weighted_accuracy": {
-      "mean": 0.326614,
-      "se": 0.037601
+      "mean": 0.323336,
+      "se": 0.039484
     },
     "docsplit|Holistic, one call|classification_tokens": {
       "mean": 1132.66443,
@@ -94,8 +94,8 @@
       "se": 0.005003
     },
     "docsplit|Detect sections first (page by page), then classify|weighted_accuracy": {
-      "mean": 0.297629,
-      "se": 0.037993
+      "mean": 0.300136,
+      "se": 0.03996
     },
     "docsplit|Detect sections first (page by page), then classify|classification_tokens": {
       "mean": 2820.951151,
@@ -138,8 +138,8 @@
       "se": 0.004515
     },
     "docsplit|Detect sections first (holistic), then classify|weighted_accuracy": {
-      "mean": 0.305782,
-      "se": 0.03027
+      "mean": 0.313503,
+      "se": 0.030853
     },
     "docsplit|Detect sections first (holistic), then classify|classification_tokens": {
       "mean": 1741.410249,
@@ -180,6 +180,136 @@
     "docsplit|Detect sections first (holistic), then classify|grouping_score": {
       "mean": 0.897914,
       "se": 0.005276
+    }
+  },
+  "sample": {
+    "docsplit|Page by page, one call (default)": {
+      "docs": [
+        20,
+        20,
+        19
+      ],
+      "failed": [
+        0,
+        0,
+        1
+      ],
+      "runs": 3
+    },
+    "docsplit|Holistic, one call": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "docsplit|Detect sections first (page by page), then classify": {
+      "docs": [
+        20,
+        20,
+        19
+      ],
+      "failed": [
+        0,
+        0,
+        1
+      ],
+      "runs": 3
+    },
+    "docsplit|Detect sections first (holistic), then classify": {
+      "docs": [
+        20,
+        19,
+        19
+      ],
+      "failed": [
+        0,
+        1,
+        1
+      ],
+      "runs": 3
+    }
+  },
+  "models": {
+    "docsplit|Page by page, one call (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "docsplit|Holistic, one call": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, holistic",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "docsplit|Detect sections first (page by page), then classify": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite finds the sections (page by page), then Amazon Nova 2 Lite classifies them",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "SectionClassification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Splitting": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
+    },
+    "docsplit|Detect sections first (holistic), then classify": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite finds the sections (holistic), then Amazon Nova 2 Lite classifies them",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "SectionClassification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Splitting": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
     }
   },
   "usage": {
@@ -371,5 +501,27 @@
         "textract/analyze_document-Tables|pages": 15.0526
       }
     ]
+  },
+  "cost_basis": {
+    "docsplit|Page by page, one call (default)": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-192327",
+      "index": 0
+    },
+    "docsplit|Holistic, one call": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-192706",
+      "index": 0
+    },
+    "docsplit|Detect sections first (page by page), then classify": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-194400",
+      "index": 0
+    },
+    "docsplit|Detect sections first (holistic), then classify": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-195216",
+      "index": 1
+    }
   }
 }

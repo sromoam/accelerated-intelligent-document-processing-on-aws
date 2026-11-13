@@ -16,6 +16,7 @@ A run manifest names the runs:
       "release": "0.6.15.dev1",
       "measured": "November 2026",
       "verdict": "...",
+      "cache_isolated": ["RealKIE-FCC-Verified-20261113-173220", ...],
       "runs": {
         "realkie": {
           "Single pass, Simple (default)": ["RealKIE-FCC-Verified-20261113-173220", ...],
@@ -26,7 +27,8 @@ A run manifest names the runs:
 
 Metrics (cell keys `dataset|value|metric`, each a mean and standard error):
 
-    weighted_accuracy   per document, averaged over its runs; SE across documents
+    weighted_accuracy   per document, averaged over its runs; SE across documents;
+                        only documents every run of every value scored
     <step>_tokens       tokens per page for one step, per run; SE across runs
     total_tokens        tokens per page for every Bedrock step, per run; SE across runs
     median_seconds      median workflow time per document, per run; SE across runs
@@ -48,6 +50,40 @@ price it with config_library/pricing.yaml:
          "textract/analyze_document-Tables|pages": 2.1, ...},
         ...one entry per run
     ]}
+
+`cost_basis` says which of those runs the renderer should price, per `dataset|value`:
+
+    {"mode": "cold-run", "run": "<run ID>", "index": 0}   price this run alone
+    {"mode": "cache-isolated"}                            price every run, mean and SE
+
+Repeat runs of one value read the prompt cache the first run wrote, which a document
+processed once in production would not, so by default only the coldest run (the one
+that wrote the most cache; ties go to the earliest) carries the cost. A run started
+under a per-run profile cannot share a cache with its siblings, and the manifest lists
+it in `cache_isolated`; when every run of a value is isolated, all of them count.
+
+`sample` is the sample size behind each `dataset|value`: the documents each run
+scored, and how many runs there were, so the pages can state N without guessing. A
+document that failed is not scored, so it is not in `docs`; `failed` says how many.
+
+    "sample": {"realkie|Iterative, Advanced": {
+        "docs": [20, 20, 20], "failed": [0, 0, 0], "runs": 3
+    }}
+
+`models` says which model ran at each step, per `dataset|value`, so the pages can state
+it on every chart:
+
+    "models": {"realkie|Iterative, Advanced": {
+        "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+        "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+        "Extraction": "Claude Sonnet 5, iterative",
+        "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+        "billed": {"Assessment": ["us.amazon.nova-lite-v1:0", ...], ...}
+    }}
+
+The four step lines come from the configuration each run used; `billed` is the Bedrock
+models the cost breakdown actually charged for, which is how an escalation model that
+the configuration does not name as a step's model still shows up.
 
 Usage:
     AWS_PROFILE=... python3 benchmarks/harness/collect_guidance_results.py \\
@@ -80,12 +116,181 @@ STEP_METRICS = {
 #: Cost-breakdown services kept as usage, and units that carry no price of their own.
 PRICED_SERVICES = ("bedrock/", "textract/")
 UNPRICED_UNITS = ("requests", "totalTokens")
+#: Display names by model ID, without a region prefix or a long-context suffix. A
+#: model that is not listed keeps its raw ID: a wrong name is worse than an ugly one.
+MODEL_NAMES = {
+    "amazon.nova-lite-v1:0": "Amazon Nova Lite",
+    "amazon.nova-pro-v1:0": "Amazon Nova Pro",
+    "amazon.nova-2-lite-v1:0": "Amazon Nova 2 Lite",
+    "amazon.nova-premier-v1:0": "Amazon Nova Premier",
+    "anthropic.claude-haiku-5-5": "Claude Haiku 5.5",
+    "anthropic.claude-sonnet-4-6": "Claude Sonnet 4.6",
+    "anthropic.claude-sonnet-5": "Claude Sonnet 5",
+    "anthropic.claude-sonnet-5-5": "Claude Sonnet 5.5",
+    "anthropic.claude-opus-5": "Claude Opus 5",
+    "anthropic.claude-opus-5-5": "Claude Opus 5.5",
+    "openai.gpt-6-astra": "OpenAI GPT-6 Astra",
+    "xai.grok-4.6": "xAI Grok 4.6",
+}
+REGION_PREFIXES = ("us-gov.", "us.", "eu.", "apac.", "ca.", "global.")
+FEATURE_NAMES = {
+    "TABLES": "Tables",
+    "LAYOUT": "Layout",
+    "SIGNATURES": "Signatures",
+    "FORMS": "Forms",
+    "QUERIES": "Queries",
+}
+GRANULARITY = {"page": "page by page", "packet": "holistic"}
+EXTRACTION_MODES = {"simple": "single pass", "advanced": "iterative"}
+#: The steps of a pipeline, in order, and the cost-breakdown steps that bill each one.
+STEP_BILLING = {
+    "OCR": ("OCR",),
+    "Classification": ("Classification", "Splitting", "SectionClassification"),
+    "Extraction": ("Extraction",),
+    "Confidence": ("Assessment",),
+}
 
 
 def mean_se(values: list[float]) -> dict[str, float]:
     m = statistics.fmean(values)
     se = statistics.stdev(values) / math.sqrt(len(values)) if len(values) > 1 else 0.0
     return {"mean": round(m, 6), "se": round(se, 6)}
+
+
+def model_name(model_id: Any) -> str:
+    """The display name of a model ID, or the raw ID when we have no name for it."""
+    if not model_id:
+        return ""
+    raw = str(model_id)
+    base = raw.removesuffix(":1m")
+    for prefix in REGION_PREFIXES:
+        if base.startswith(prefix):
+            base = base[len(prefix) :]
+            break
+    return MODEL_NAMES.get(base, raw)
+
+
+def ocr_line(cfg: dict[str, Any]) -> str:
+    """What read the pages: Textract with its features, or a vision model."""
+    ocr = cfg.get("ocr") or {}
+    backend = str(ocr.get("backend") or "")
+    if backend == "textract":
+        names = [str(f.get("name") or "") for f in (ocr.get("features") or [])]
+        pretty = ", ".join(FEATURE_NAMES.get(n, n.title()) for n in names if n)
+        return (
+            f"Amazon Textract ({pretty})" if pretty else "Amazon Textract (text only)"
+        )
+    if backend == "bedrock":
+        return f"{model_name(ocr.get('model_id'))}, reading the page images"
+    if backend == "none":
+        return "No OCR step"
+    return backend or "—"
+
+
+def classification_line(cfg: dict[str, Any]) -> str:
+    """What classified the pages, and at which granularity."""
+    cls = cfg.get("classification") or {}
+    if str(cls.get("strategy") or "") == "split_then_classify":
+        stc = cls.get("split_then_classify") or {}
+        splitting = (stc.get("splitting") or {}).get("llm") or {}
+        section = (stc.get("section_classification") or {}).get("llm") or {}
+        how = GRANULARITY.get(str(splitting.get("granularity") or ""), "")
+        found = model_name(splitting.get("model"))
+        head = (
+            f"{found} finds the sections ({how})"
+            if how
+            else f"{found} finds the sections"
+        )
+        return f"{head}, then {model_name(section.get('model'))} classifies them"
+    combined = cls.get("combined") or {}
+    model = model_name((combined.get("llm") or {}).get("model"))
+    how = GRANULARITY.get(str(combined.get("granularity") or ""), "")
+    return f"{model}, {how}" if how else model
+
+
+def extraction_line(cfg: dict[str, Any]) -> str:
+    """What extracted the fields, in which mode, and what any failures escalate to."""
+    ex = cfg.get("extraction") or {}
+    mode = str(ex.get("mode") or "")
+    text = model_name(ex.get("model"))
+    if mode:
+        text += f", {EXTRACTION_MODES.get(mode, mode)}"
+    validation = ex.get("validation") or {}
+    escalation = model_name(validation.get("escalation_model"))
+    if (
+        str(validation.get("fail_action") or "") == "escalate"
+        and escalation
+        and escalation not in text
+    ):
+        text += f", failed fields to {escalation}"
+    return text
+
+
+def confidence_line(cfg: dict[str, Any]) -> str:
+    """What scored the confidence of each value, and what it escalates to."""
+    ex = cfg.get("extraction") or {}
+    conf = ex.get("confidence") or {}
+    mode = str(conf.get("mode") or "off")
+    if mode == "off":
+        return "Off"
+    if mode == "integrated":
+        text = f"{model_name(ex.get('model'))}, integrated into extraction"
+    else:
+        text = model_name(conf.get("model"))
+    escalation = model_name(conf.get("escalation_model"))
+    if conf.get("escalation_enabled") and escalation and escalation not in text:
+        text += f", escalating to {escalation}"
+    return text
+
+
+def config_models(cfg: dict[str, Any]) -> tuple[dict[str, str], set[str]]:
+    """The model in force at each step, and which of those steps call Bedrock."""
+    lines = {
+        "OCR": ocr_line(cfg),
+        "Classification": classification_line(cfg),
+        "Extraction": extraction_line(cfg),
+        "Confidence": confidence_line(cfg),
+    }
+    bedrock = {"Classification", "Extraction"}
+    if str(((cfg.get("ocr") or {}).get("backend")) or "") == "bedrock":
+        bedrock.add("OCR")
+    if lines["Confidence"] != "Off":
+        bedrock.add("Confidence")
+    return lines, bedrock
+
+
+def billed_models(result: dict[str, Any]) -> dict[str, list[str]]:
+    """The Bedrock models the cost breakdown charged for, by step."""
+    out: dict[str, list[str]] = {}
+    steps = {s for names in STEP_BILLING.values() for s in names}
+    for step, items in (result.get("costBreakdown") or {}).items():
+        if step not in steps:
+            continue
+        found = set()
+        for key, item in items.items():
+            if key.startswith("bedrock/") and float(item.get("value") or 0):
+                service_id, _, _ = key.rpartition("_")
+                found.add(service_id.removeprefix("bedrock/"))
+        if found:
+            out[step] = sorted(found)
+    return out
+
+
+def with_billed(
+    lines: dict[str, str], bedrock: set[str], billed: dict[str, list[str]]
+) -> None:
+    """Note any model the runs were billed for that the step's own line leaves out."""
+    for step, names in STEP_BILLING.items():
+        if step not in lines:
+            continue
+        ran = sorted({m for name in names for m in billed.get(name, [])})
+        extra = [
+            n for n in dict.fromkeys(model_name(m) for m in ran) if n not in lines[step]
+        ]
+        if extra:
+            lines[step] += ", plus " + ", ".join(extra)
+        elif not ran and step in bedrock:
+            lines[step] += " (no calls billed)"
 
 
 def step_tokens(result: dict[str, Any], steps: tuple[str, ...] | None) -> int:
@@ -100,15 +305,30 @@ def step_tokens(result: dict[str, Any], steps: tuple[str, ...] | None) -> int:
     return total
 
 
+def cache_writes(result: dict[str, Any]) -> float:
+    """Prompt-cache tokens this run wrote, over every step: how cold its cache was."""
+    total = 0.0
+    for items in (result.get("costBreakdown") or {}).values():
+        for key, item in items.items():
+            if key.startswith("bedrock/") and key.endswith("_cacheWriteInputTokens"):
+                total += float(item.get("value") or 0)
+    return total
+
+
+def scored_docs(result: dict[str, Any]) -> int:
+    """How many documents this run scored: a failed document is not one of them."""
+    return int(result.get("completedFiles") or 0) or (
+        int(result.get("filesCount") or 0) - int(result.get("failedFiles") or 0)
+    )
+
+
 def run_usage(result: dict[str, Any]) -> dict[str, float]:
     """Bedrock and Textract usage per document scored, summed over every step.
 
     Cost-breakdown keys look like `bedrock/<model id>_<unit>`; the result's keys look
     like `bedrock/<model id>|<unit>`.
     """
-    docs = int(result.get("completedFiles") or 0) or (
-        int(result.get("filesCount") or 0) - int(result.get("failedFiles") or 0)
-    )
+    docs = scored_docs(result)
     if docs <= 0:
         return {}
     totals: dict[str, float] = {}
@@ -185,10 +405,32 @@ def main() -> int:
 
     man = json.loads(args.manifest.read_text(encoding="utf-8"))
     table = tracking_table(man["stack"], man["region"])
+    isolated = set(man.get("cache_isolated") or [])
     cells: dict[str, dict[str, float]] = {}
     usage: dict[str, list[dict[str, float]]] = {}
+    basis: dict[str, dict[str, Any]] = {}
+    models: dict[str, dict[str, Any]] = {}
+    sample: dict[str, dict[str, Any]] = {}
     run_ids: list[str] = []
     failed_total = 0
+    # Score every value of a dataset on the same documents: those scored in every run
+    # of every value. A document one value fails on (a timeout, a content filter)
+    # would otherwise count against the values that finished it.
+    common: dict[str, set[str]] = {}
+    for ds_key, values in man["runs"].items():
+        docs: set[str] | None = None
+        for ids in values.values():
+            for run_id in ids:
+                path = args.results_dir / f"{run_id}-result.json"
+                scores = (
+                    json.loads(path.read_text(encoding="utf-8")).get(
+                        "weightedOverallScores"
+                    )
+                    or {}
+                )
+                keys = {k.split("/", 1)[1] for k in scores}
+                docs = keys if docs is None else docs & keys
+        common[ds_key] = docs or set()
     for ds_key, values in man["runs"].items():
         for value, ids in values.items():
             per_doc: dict[str, list[float]] = {}
@@ -196,7 +438,13 @@ def main() -> int:
             medians: list[float] = []
             per_run: dict[str, list[float]] = {}
             runs_usage: list[dict[str, float]] = []
-            for run_id in ids:
+            coldest: list[tuple[float, str, str, int]] = []
+            scored: list[int] = []
+            failures: list[int] = []
+            step_lines: dict[str, list[str]] = {}
+            bedrock_steps: set[str] = set()
+            billed: dict[str, list[str]] = {}
+            for index, run_id in enumerate(ids):
                 path = args.results_dir / f"{run_id}-result.json"
                 result = json.loads(path.read_text(encoding="utf-8"))
                 failed = int(result.get("failedFiles") or 0)
@@ -210,6 +458,8 @@ def main() -> int:
                     )
                 failed_total += failed
                 run_ids.append(run_id)
+                scored.append(scored_docs(result))
+                failures.append(failed)
                 scores = result.get("weightedOverallScores") or {}
                 for key, score in scores.items():
                     per_doc.setdefault(key.split("/", 1)[1], []).append(float(score))
@@ -218,12 +468,32 @@ def main() -> int:
                     tokens[metric].append(step_tokens(result, step) / n_pages)
                 tokens["total"].append(step_tokens(result, None) / n_pages)
                 runs_usage.append(run_usage(result))
+                coldest.append(
+                    (
+                        -cache_writes(result),
+                        str(result.get("createdAt") or ""),
+                        run_id,
+                        index,
+                    )
+                )
+                cfg = (result.get("config") or {}).get("Config") or {}
+                if cfg:
+                    run_lines, bedrock = config_models(cfg)
+                    bedrock_steps |= bedrock
+                    for step, text in run_lines.items():
+                        seen = step_lines.setdefault(step, [])
+                        if text not in seen:
+                            seen.append(text)
+                for step, names in billed_models(result).items():
+                    billed[step] = sorted(set(billed.get(step, [])) | set(names))
                 for metric, v in run_metrics(result).items():
                     per_run.setdefault(metric, []).append(v)
                 secs = workflow_seconds(table, run_id, list(scores))
                 if secs:
                     medians.append(statistics.median(secs))
             cell = f"{ds_key}|{value}|"
+            if common[ds_key]:
+                per_doc = {k: v for k, v in per_doc.items() if k in common[ds_key]}
             if per_doc:
                 cells[cell + "weighted_accuracy"] = mean_se(
                     [statistics.fmean(v) for v in per_doc.values()]
@@ -237,8 +507,28 @@ def main() -> int:
             for metric, vals in per_run.items():
                 if len(vals) == len(ids):
                     cells[cell + metric] = mean_se(vals)
+            key = f"{ds_key}|{value}"
+            if scored:
+                sample[key] = {"docs": scored, "failed": failures, "runs": len(ids)}
+            if step_lines:
+                lines = {
+                    s: " ; ".join(step_lines[s])
+                    for s in STEP_BILLING
+                    if s in step_lines
+                }
+                with_billed(lines, bedrock_steps, billed)
+                models[key] = {**lines, "billed": dict(sorted(billed.items()))}
             if runs_usage and all(runs_usage):
-                usage[f"{ds_key}|{value}"] = runs_usage
+                usage[key] = runs_usage
+                if ids and all(i in isolated for i in ids):
+                    basis[key] = {"mode": "cache-isolated"}
+                else:
+                    _, _, cold_id, cold_index = min(coldest)
+                    basis[key] = {
+                        "mode": "cold-run",
+                        "run": cold_id,
+                        "index": cold_index,
+                    }
 
     out = {
         "release": man["release"],
@@ -253,7 +543,10 @@ def main() -> int:
         ),
         "verdict": man["verdict"],
         "cells": cells,
+        "sample": sample,
+        "models": models,
         "usage": usage,
+        "cost_basis": basis,
     }
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / f"{man['ablation']}.json"

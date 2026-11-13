@@ -1,0 +1,1499 @@
+{
+  "release": "0.6.15.dev1",
+  "measured": "November 2026",
+  "region": "us-east-1",
+  "source": "Test Studio runs DocSplit-Poly-Seq-20261113-192327, DocSplit-Poly-Seq-20261113-192328, DocSplit-Poly-Seq-20261113-192329, DocSplit-Poly-Seq-20261113-192706, DocSplit-Poly-Seq-20261113-192708, DocSplit-Poly-Seq-20261113-192711, DocSplit-Poly-Seq-20261113-194400, DocSplit-Poly-Seq-20261113-194401, DocSplit-Poly-Seq-20261113-194402, DocSplit-Poly-Seq-20261113-195220, DocSplit-Poly-Seq-20261113-195216, DocSplit-Poly-Seq-20261113-195221, DocSplit-Poly-Seq-20261113-205038, DocSplit-Poly-Seq-20261113-205043, DocSplit-Poly-Seq-20261113-205044, DocSplit-Poly-Seq-20261113-205039, DocSplit-Poly-Seq-20261113-205040, DocSplit-Poly-Seq-20261113-205041, DocSplit-Poly-Seq-20261113-205452, DocSplit-Poly-Seq-20261113-205554, DocSplit-Poly-Seq-20261113-205629, DocSplit-Poly-Seq-20261113-205634, DocSplit-Poly-Seq-20261113-205745, DocSplit-Poly-Seq-20261113-205746, DocSplit-Poly-Seq-20261113-210247, DocSplit-Poly-Seq-20261113-205935, DocSplit-Poly-Seq-20261113-210649, DocSplit-Poly-Seq-20261113-205807, DocSplit-Poly-Seq-20261113-205856, DocSplit-Poly-Seq-20261113-205917, DocSplit-Poly-Seq-20261113-210718, DocSplit-Poly-Seq-20261113-210754, DocSplit-Poly-Seq-20261113-210749, DocSplit-Poly-Seq-20261113-210759, DocSplit-Poly-Seq-20261113-210800, DocSplit-Poly-Seq-20261113-211359 (14 failed documents left out of the scores)",
+  "verdict": "Holistic, with a Claude classification model. Holistic with Claude Haiku 5.5 cost about the same as the default, Amazon Nova 2 Lite page by page ($470 against $493 per 1,000 packets), and got 0.80 of DocSplit sections exactly right, against 0.52. Holistic with Claude Sonnet 5 got 0.89 for about $200 more per 1,000 packets. With Amazon Nova 2 Lite, holistic barely helped (0.55). Detecting sections first added nothing over holistic with a Claude model and cost more.",
+  "cells": {
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|weighted_accuracy": {
+      "mean": 0.31768,
+      "se": 0.036241
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|classification_tokens": {
+      "mean": 2859.035294,
+      "se": 8.205679
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|extraction_tokens": {
+      "mean": 7260.580646,
+      "se": 7.787948
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|scoring_tokens": {
+      "mean": 4702.708281,
+      "se": 14.946997
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|total_tokens": {
+      "mean": 14822.324221,
+      "se": 28.886133
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|median_seconds": {
+      "mean": 137.330155,
+      "se": 5.088025
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|calibration_error": {
+      "mean": 0.956347,
+      "se": 0.004306
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|page_accuracy": {
+      "mean": 0.816117,
+      "se": 0.009104
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|section_accuracy": {
+      "mean": 0.516558,
+      "se": 0.01167
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|grouping_score": {
+      "mean": 0.657715,
+      "se": 0.008834
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|weighted_accuracy": {
+      "mean": 0.323336,
+      "se": 0.039484
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|classification_tokens": {
+      "mean": 1132.66443,
+      "se": 0.326494
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|extraction_tokens": {
+      "mean": 6526.379195,
+      "se": 7.692013
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|scoring_tokens": {
+      "mean": 4197.99217,
+      "se": 40.348299
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|total_tokens": {
+      "mean": 11857.035794,
+      "se": 48.093855
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|median_seconds": {
+      "mean": 155.417978,
+      "se": 4.475631
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|calibration_error": {
+      "mean": 0.962293,
+      "se": 0.003634
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|page_accuracy": {
+      "mean": 0.695749,
+      "se": 0.017365
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|section_accuracy": {
+      "mean": 0.548148,
+      "se": 0.022529
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|grouping_score": {
+      "mean": 0.904113,
+      "se": 0.005003
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|weighted_accuracy": {
+      "mean": 0.300136,
+      "se": 0.03996
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|classification_tokens": {
+      "mean": 2820.951151,
+      "se": 14.141441
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|extraction_tokens": {
+      "mean": 6953.707365,
+      "se": 9.880858
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|scoring_tokens": {
+      "mean": 4633.535638,
+      "se": 43.058401
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|total_tokens": {
+      "mean": 14408.194154,
+      "se": 57.884252
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|median_seconds": {
+      "mean": 135.778208,
+      "se": 7.568354
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|calibration_error": {
+      "mean": 0.963056,
+      "se": 0.002993
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|page_accuracy": {
+      "mean": 0.812714,
+      "se": 0.010302
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|section_accuracy": {
+      "mean": 0.652723,
+      "se": 0.007012
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|grouping_score": {
+      "mean": 0.804378,
+      "se": 0.004515
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|weighted_accuracy": {
+      "mean": 0.313503,
+      "se": 0.030853
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|classification_tokens": {
+      "mean": 1741.410249,
+      "se": 13.101538
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|extraction_tokens": {
+      "mean": 6495.551658,
+      "se": 5.464686
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|scoring_tokens": {
+      "mean": 4112.982111,
+      "se": 8.57002
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|total_tokens": {
+      "mean": 12349.944017,
+      "se": 21.052967
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|median_seconds": {
+      "mean": 159.055463,
+      "se": 13.793637
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|calibration_error": {
+      "mean": 0.959312,
+      "se": 0.005999
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|page_accuracy": {
+      "mean": 0.755409,
+      "se": 0.009096
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|section_accuracy": {
+      "mean": 0.546841,
+      "se": 0.022443
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|grouping_score": {
+      "mean": 0.897914,
+      "se": 0.005276
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|weighted_accuracy": {
+      "mean": 0.280003,
+      "se": 0.033551
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|classification_tokens": {
+      "mean": 8986.525641,
+      "se": 19.877818
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|extraction_tokens": {
+      "mean": 6978.707459,
+      "se": 2.767883
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|scoring_tokens": {
+      "mean": 4597.772727,
+      "se": 34.023098
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|total_tokens": {
+      "mean": 20563.005828,
+      "se": 54.940305
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|median_seconds": {
+      "mean": 121.348756,
+      "se": 9.900617
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|calibration_error": {
+      "mean": 0.963931,
+      "se": 0.004693
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|page_accuracy": {
+      "mean": 0.865967,
+      "se": 0.003084
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|section_accuracy": {
+      "mean": 0.713725,
+      "se": 0.003922
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|grouping_score": {
+      "mean": 0.808543,
+      "se": 0.004982
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|weighted_accuracy": {
+      "mean": 0.275624,
+      "se": 0.027219
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|classification_tokens": {
+      "mean": 6297.348892,
+      "se": 9.475492
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|extraction_tokens": {
+      "mean": 6764.144991,
+      "se": 30.392148
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|scoring_tokens": {
+      "mean": 4330.722572,
+      "se": 20.413264
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|total_tokens": {
+      "mean": 17392.216455,
+      "se": 60.237686
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|median_seconds": {
+      "mean": 158.233499,
+      "se": 5.5577
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|calibration_error": {
+      "mean": 0.96132,
+      "se": 0.003872
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|page_accuracy": {
+      "mean": 0.914887,
+      "se": 0.004104
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|section_accuracy": {
+      "mean": 0.804139,
+      "se": 0.01366
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|grouping_score": {
+      "mean": 0.897163,
+      "se": 0.003872
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|weighted_accuracy": {
+      "mean": 0.262132,
+      "se": 0.032494
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|classification_tokens": {
+      "mean": 11296.776286,
+      "se": 17.75318
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|extraction_tokens": {
+      "mean": 6802.996644,
+      "se": 5.117644
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|scoring_tokens": {
+      "mean": 4531.809843,
+      "se": 13.963385
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|total_tokens": {
+      "mean": 22631.582774,
+      "se": 6.86947
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|median_seconds": {
+      "mean": 76.789477,
+      "se": 10.073402
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|calibration_error": {
+      "mean": 0.970079,
+      "se": 0.001532
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|page_accuracy": {
+      "mean": 0.842282,
+      "se": 0.012099
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|section_accuracy": {
+      "mean": 0.72963,
+      "se": 0.009799
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|grouping_score": {
+      "mean": 0.881986,
+      "se": 0.00048
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|weighted_accuracy": {
+      "mean": 0.291902,
+      "se": 0.026014
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|classification_tokens": {
+      "mean": 10295.129785,
+      "se": 48.142331
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|extraction_tokens": {
+      "mean": 6754.336556,
+      "se": 6.623601
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|scoring_tokens": {
+      "mean": 4564.70196,
+      "se": 154.8004
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|total_tokens": {
+      "mean": 21614.168301,
+      "se": 205.843944
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|median_seconds": {
+      "mean": 128.046508,
+      "se": 10.579728
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|calibration_error": {
+      "mean": 0.95557,
+      "se": 0.006825
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|page_accuracy": {
+      "mean": 0.866413,
+      "se": 0.007604
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|section_accuracy": {
+      "mean": 0.761438,
+      "se": 0.023917
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|grouping_score": {
+      "mean": 0.906414,
+      "se": 0.006492
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|weighted_accuracy": {
+      "mean": 0.280413,
+      "se": 0.0237
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|classification_tokens": {
+      "mean": 6254.461108,
+      "se": 6.35928
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|extraction_tokens": {
+      "mean": 6753.028066,
+      "se": 5.814028
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|scoring_tokens": {
+      "mean": 4316.788927,
+      "se": 12.652923
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|total_tokens": {
+      "mean": 17324.278101,
+      "se": 21.799027
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|median_seconds": {
+      "mean": 104.614224,
+      "se": 12.920829
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|calibration_error": {
+      "mean": 0.966951,
+      "se": 0.002444
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|page_accuracy": {
+      "mean": 0.890928,
+      "se": 0.014342
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|section_accuracy": {
+      "mean": 0.894118,
+      "se": 0.005882
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|grouping_score": {
+      "mean": 0.934134,
+      "se": 0.002241
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|weighted_accuracy": {
+      "mean": 0.285277,
+      "se": 0.033454
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|classification_tokens": {
+      "mean": 8673.273533,
+      "se": 7.410857
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|extraction_tokens": {
+      "mean": 7035.34369,
+      "se": 9.10652
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|scoring_tokens": {
+      "mean": 4635.639125,
+      "se": 25.837941
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|total_tokens": {
+      "mean": 20344.256348,
+      "se": 13.198694
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|median_seconds": {
+      "mean": 163.116589,
+      "se": 18.094223
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|calibration_error": {
+      "mean": 0.961952,
+      "se": 0.001961
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|page_accuracy": {
+      "mean": 0.884404,
+      "se": 0.004295
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|section_accuracy": {
+      "mean": 0.701743,
+      "se": 0.004982
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|grouping_score": {
+      "mean": 0.779723,
+      "se": 0.004071
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|weighted_accuracy": {
+      "mean": 0.260951,
+      "se": 0.03255
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|classification_tokens": {
+      "mean": 11382.087006,
+      "se": 12.556351
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|extraction_tokens": {
+      "mean": 6862.187818,
+      "se": 1.949538
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|scoring_tokens": {
+      "mean": 4458.746437,
+      "se": 14.14874
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|total_tokens": {
+      "mean": 22703.021261,
+      "se": 2.993619
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|median_seconds": {
+      "mean": 215.508919,
+      "se": 58.490959
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|calibration_error": {
+      "mean": 0.965936,
+      "se": 0.003332
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|page_accuracy": {
+      "mean": 0.888088,
+      "se": 0.012249
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|section_accuracy": {
+      "mean": 0.784532,
+      "se": 0.010419
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|grouping_score": {
+      "mean": 0.874428,
+      "se": 0.007281
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|weighted_accuracy": {
+      "mean": 0.280202,
+      "se": 0.02314
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|classification_tokens": {
+      "mean": 10205.825589,
+      "se": 46.266867
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|extraction_tokens": {
+      "mean": 6749.866272,
+      "se": 14.120729
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|scoring_tokens": {
+      "mean": 4355.219537,
+      "se": 22.561253
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|total_tokens": {
+      "mean": 21310.911398,
+      "se": 51.20642
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|median_seconds": {
+      "mean": 160.896905,
+      "se": 39.123708
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|all_fields_right": {
+      "mean": 0.0,
+      "se": 0.0
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|calibration_error": {
+      "mean": 0.963858,
+      "se": 0.003626
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|page_accuracy": {
+      "mean": 0.922475,
+      "se": 0.020725
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|section_accuracy": {
+      "mean": 0.891939,
+      "se": 0.011749
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|grouping_score": {
+      "mean": 0.923598,
+      "se": 0.004323
+    }
+  },
+  "sample": {
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)": {
+      "docs": [
+        20,
+        20,
+        19
+      ],
+      "failed": [
+        0,
+        0,
+        1
+      ],
+      "runs": 3
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)": {
+      "docs": [
+        20,
+        20,
+        19
+      ],
+      "failed": [
+        0,
+        0,
+        1
+      ],
+      "runs": 3
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)": {
+      "docs": [
+        20,
+        19,
+        19
+      ],
+      "failed": [
+        0,
+        1,
+        1
+      ],
+      "runs": 3
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5": {
+      "docs": [
+        19,
+        19,
+        19
+      ],
+      "failed": [
+        1,
+        1,
+        1
+      ],
+      "runs": 3
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5": {
+      "docs": [
+        20,
+        20,
+        19
+      ],
+      "failed": [
+        0,
+        0,
+        1
+      ],
+      "runs": 3
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5": {
+      "docs": [
+        20,
+        19,
+        20
+      ],
+      "failed": [
+        0,
+        1,
+        0
+      ],
+      "runs": 3
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5": {
+      "docs": [
+        19,
+        20,
+        20
+      ],
+      "failed": [
+        1,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5": {
+      "docs": [
+        20,
+        19,
+        20
+      ],
+      "failed": [
+        0,
+        1,
+        0
+      ],
+      "runs": 3
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5": {
+      "docs": [
+        20,
+        20,
+        19
+      ],
+      "failed": [
+        0,
+        0,
+        1
+      ],
+      "runs": 3
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5": {
+      "docs": [
+        20,
+        19,
+        19
+      ],
+      "failed": [
+        0,
+        1,
+        1
+      ],
+      "runs": 3
+    }
+  },
+  "models": {
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, holistic",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite finds the sections (page by page), then Amazon Nova 2 Lite classifies them",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "SectionClassification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Splitting": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite finds the sections (holistic), then Amazon Nova 2 Lite classifies them",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "SectionClassification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Splitting": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Claude Haiku 5.5, page by page",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.anthropic.claude-haiku-5-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Claude Haiku 5.5, holistic",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.anthropic.claude-haiku-5-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Claude Haiku 5.5 finds the sections (page by page), then Claude Haiku 5.5 classifies them",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "SectionClassification": [
+          "us.anthropic.claude-haiku-5-5"
+        ],
+        "Splitting": [
+          "us.anthropic.claude-haiku-5-5"
+        ]
+      }
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Claude Haiku 5.5 finds the sections (holistic), then Claude Haiku 5.5 classifies them",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "SectionClassification": [
+          "us.anthropic.claude-haiku-5-5"
+        ],
+        "Splitting": [
+          "us.anthropic.claude-haiku-5-5"
+        ]
+      }
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Claude Sonnet 5, holistic",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Claude Sonnet 5, page by page",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Claude Sonnet 5 finds the sections (page by page), then Claude Sonnet 5 classifies them",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "SectionClassification": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Splitting": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Claude Sonnet 5 finds the sections (holistic), then Claude Sonnet 5 classifies them",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "SectionClassification": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Splitting": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    }
+  },
+  "usage": {
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)": [
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 26724.0,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 181.1,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 12529.5,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 3292.7,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 18248.85,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 38588.2,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10972.75,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 2447.95,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 12453.75,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 1025.7,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 90398.05,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4529.9,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 26905.1,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 0.0,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 12529.5,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 3281.8,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 24731.45,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 32394.35,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10639.2,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 2561.6,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 13319.7,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 90362.2,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4438.5,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 27193.9474,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 0.0,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 12304.1053,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 3291.0,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 25343.2105,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 31635.0526,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10878.4737,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 2483.2105,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 13247.4211,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 386.6316,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 90950.7895,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4541.8421,
+        "textract/analyze_document-Tables|pages": 15.0526
+      }
+    ],
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)": [
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 1791.2,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 84.35,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 14407.75,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 593.55,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 23738.75,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 24328.5,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 12490.95,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1148.8,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 5939.25,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 88804.6,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 2381.85,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 1798.45,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 77.1,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 14407.75,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 584.9,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 29183.9,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 19389.05,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 12459.75,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1196.5,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 5991.35,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 88816.55,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 2323.3,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 1875.55,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 0.0,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 14407.75,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 601.75,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 31272.9,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 18476.2,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 12603.8,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1361.15,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 6167.35,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 88840.55,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 2464.35,
+        "textract/analyze_document-Tables|pages": 14.9
+      }
+    ],
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)": [
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 18588.85,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 135.15,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 20901.5,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 2499.5,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 25304.45,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 32313.9,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10717.25,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1968.2,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8951.15,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 1123.4,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89796.85,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3851.45,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 18718.95,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 61.95,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 21060.3,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 2500.55,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 27348.6,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 28686.05,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10589.2,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1974.4,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 10001.6,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 145.9,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89808.8,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3833.25,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 18985.0,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 0.0,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 20533.0,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 2538.2105,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 31225.3684,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 25013.4737,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10749.4737,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1927.4737,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 10012.7368,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 196.5263,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 90369.0,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3798.4211,
+        "textract/analyze_document-Tables|pages": 15.0526
+      }
+    ],
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)": [
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 4589.7,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 0.0,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 20820.9,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 889.15,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 26503.2,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 21654.25,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 12090.85,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1204.7,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 5514.4,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89003.85,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 2361.15,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 4729.1579,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 84.1579,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 20428.3684,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 939.3684,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 11214.8947,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 36795.7368,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 12445.1579,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1202.6842,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 5127.4211,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 669.7368,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89597.1579,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 2447.7895,
+        "textract/analyze_document-Tables|pages": 15.0526
+      },
+      {
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheReadInputTokens": 4718.1579,
+        "bedrock/us.amazon.nova-2-lite-v1:0|cacheWriteInputTokens": 0.0,
+        "bedrock/us.amazon.nova-2-lite-v1:0|inputTokens": 20244.5263,
+        "bedrock/us.amazon.nova-2-lite-v1:0|outputTokens": 925.5263,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 23619.1053,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 24379.8421,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 12785.2105,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1208.4737,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 5493.8421,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 134.0526,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89571.8947,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 2411.7368,
+        "textract/analyze_document-Tables|pages": 15.0526
+      }
+    ],
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 29416.0526,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 28469.7895,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10218.0526,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 2080.4737,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 32472.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 2952.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 91251.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 9194.2105,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 10676.6842,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 90495.4211,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3937.3158,
+        "textract/analyze_document-Tables|pages": 15.0526
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 40703.3684,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 15559.4211,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10423.5263,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1764.6842,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 35178.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 90609.2632,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 9192.6842,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 10572.1053,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 90482.6316,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4011.1053,
+        "textract/analyze_document-Tables|pages": 15.0526
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 43264.5789,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 13251.0,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10452.9474,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 2021.8421,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 35178.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 90609.2632,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 9176.1579,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 10606.5263,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 90482.8421,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3879.1053,
+        "textract/analyze_document-Tables|pages": 15.0526
+      }
+    ],
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 33556.6,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 15384.5,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 14392.3,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1564.95,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 1723.05,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 164.1,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 90306.65,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 1786.2,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8697.4,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89299.15,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3287.95,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 33175.75,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 15858.85,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 14239.75,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1485.9,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 1887.15,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 90306.65,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 1769.4,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8502.7,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89544.4,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3144.0,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 35771.9474,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 12705.1579,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 14589.2105,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1513.2105,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 1900.1053,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 90947.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 1659.4737,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8011.3158,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89708.1579,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3185.3684,
+        "textract/analyze_document-Tables|pages": 15.0526
+      }
+    ],
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 50979.7,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 5519.55,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 9166.5,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1567.65,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 19760.35,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 479.05,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 143063.35,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 5187.05,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8561.2,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89568.5,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3387.45,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 45807.6,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 11438.55,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 8580.65,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1584.5,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 20239.4,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 143346.4,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 5086.75,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8577.75,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89568.6,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3140.9,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 49641.0,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 7420.95,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 9245.1,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1620.15,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 20125.6,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 142498.3,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 5179.65,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8426.15,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89544.5,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3318.9,
+        "textract/analyze_document-Tables|pages": 14.9
+      }
+    ],
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 35007.95,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 13767.55,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 13941.8,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1429.2,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 7252.7,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 29.65,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 142301.75,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 3046.35,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8035.8,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89460.15,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3038.3,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 38532.4211,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 10309.7895,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 22275.2632,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1746.7368,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 7814.1053,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 145466.1053,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 3136.7368,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8609.8421,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 90115.3158,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3144.6316,
+        "textract/analyze_document-Tables|pages": 15.0526
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 39527.95,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 9408.35,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 17263.85,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1570.15,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 7339.25,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 142349.8,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 3041.9,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 8087.95,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 89472.2,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 2987.6,
+        "textract/analyze_document-Tables|pages": 14.9
+      }
+    ],
+    "docsplit|Holistic \u00b7 Claude Sonnet 5": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 43522.6842,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 5190.2105,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 14484.6842,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1605.6316,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 10193.5789,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 180997.3158,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4250.3684,
+        "textract/analyze_document-Tables|pages": 15.0526
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 42701.95,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 6244.0,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 13655.2,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1516.35,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 9979.3,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 82.05,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 179788.9,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4097.05,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 38928.2,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 10359.15,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 13791.1,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1618.4,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 10063.25,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 179788.9,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4175.8,
+        "textract/analyze_document-Tables|pages": 14.9
+      }
+    ],
+    "docsplit|Page by page \u00b7 Claude Sonnet 5": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 45069.55,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 12806.85,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 9359.5,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 2047.45,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 45825.95,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 180016.05,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 8270.9,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 46943.7895,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 11161.2105,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 9982.7368,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 2231.1053,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 45354.3158,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 984.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 181162.7368,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 8532.7368,
+        "textract/analyze_document-Tables|pages": 15.0526
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 41128.4,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 15167.1,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 10024.65,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 2003.75,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 46010.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 180052.2,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 8359.65,
+        "textract/analyze_document-Tables|pages": 14.9
+      }
+    ],
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 38221.3,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 17812.5,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 8975.1,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1833.9,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 16484.55,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 227.6,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 248525.2,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 6221.35,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 42532.75,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 13089.15,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 9056.1,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1647.4,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 16600.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 248864.65,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 6397.95,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 42237.7368,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 13608.0,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 9316.6316,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1652.8947,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 17351.5263,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 251146.8947,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 6487.6842,
+        "textract/analyze_document-Tables|pages": 15.0526
+      }
+    ],
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 37519.25,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 11865.9,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 13857.8,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1579.05,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 15287.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 234090.9,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4850.1,
+        "textract/analyze_document-Tables|pages": 14.9
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 29897.7895,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 20181.3158,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 14470.1053,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1629.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 14736.7895,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 233958.6316,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 5004.2105,
+        "textract/analyze_document-Tables|pages": 15.0526
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 41732.3684,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 7378.1053,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 14263.3158,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1634.5263,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 15258.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 234900.5789,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4992.8947,
+        "textract/analyze_document-Tables|pages": 15.0526
+      }
+    ]
+  },
+  "cost_basis": {
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-192327",
+      "index": 0
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-192706",
+      "index": 0
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-194400",
+      "index": 0
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-195216",
+      "index": 1
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-205038",
+      "index": 0
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-205040",
+      "index": 1
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-205554",
+      "index": 1
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-205634",
+      "index": 0
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-210649",
+      "index": 2
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-205917",
+      "index": 2
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-210718",
+      "index": 0
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5": {
+      "mode": "cold-run",
+      "run": "DocSplit-Poly-Seq-20261113-210800",
+      "index": 1
+    }
+  }
+}

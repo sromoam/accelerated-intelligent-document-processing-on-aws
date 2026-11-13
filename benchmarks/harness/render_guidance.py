@@ -20,19 +20,32 @@ benchmarks/results/guidance/<ID>.json, its values fill the table; otherwise ever
       "source": "benchmarks/results/v0.6.15/<suite>/summary.json",
       "verdict": "Use iterative extraction above about 400 rows.",
       "cells": {"<dataset key>|<value>|<metric key>": {"mean": 0.812, "se": 0.006}},
-      "usage": {"<dataset key>|<value>": [{"bedrock/<model id>|inputTokens": 41250, ...}]}
+      "models": {"<dataset key>|<value>": {"OCR": "...", "Extraction": "...", ...}},
+      "sample": {"<dataset key>|<value>": {"docs": [20, 20], "failed": [0, 0], "runs": 2}},
+      "usage": {"<dataset key>|<value>": [{"bedrock/<model id>|inputTokens": 41250, ...}]},
+      "cost_basis": {"<dataset key>|<value>": {"mode": "cold-run", "index": 0}}
     }
 
 A cell is either a string, printed as is, or a mean and standard error over the runs,
 printed as "0.81 ± 0.01" (two standard errors). For each dataset kind, the ablation's
-`plot` metric (or its first metric) is drawn as a dot-and-whisker SVG under
+`plot` metric (or its first metric) is drawn as a dot-and-band SVG under
 images/benchmark-guidance/ whenever at least one of its cells has a mean.
+
+`models` is optional: the model in force at each step of the pipeline. Every chart,
+caption and details table states it, and a step whose model differs across the values
+on the chart reads "varies (the setting under test)".
+
+`sample` is optional: the documents each run scored and the number of runs, which
+every chart, caption and details table states as "N = 20 documents x 3 runs". A
+document that failed was not scored, so the caption says how many were left out.
 
 `usage` is optional: each run's Bedrock and Textract usage per document. The renderer
 prices it with config_library/pricing.yaml and adds a "Cost per 1,000 documents"
-column to every table. When every plotted point has a cost, the plot puts cost on the
-x-axis, and when the plotted metric is an accuracy, it draws the marginal cost of
-error from the cheapest value to each more accurate one (marginal-cost-of-error.md).
+column to every table. `cost_basis` says which runs to price: by default only the
+coldest run of each value, because repeat runs read the prompt cache the first run
+wrote. When every plotted point has a cost, the plot puts cost on the x-axis, and when
+the plotted metric is an accuracy, it draws the marginal cost of error from the
+cheapest value to each more accurate one (marginal-cost-of-error.md).
 
 Usage:
     python3 benchmarks/harness/render_guidance.py           # rewrite the pages
@@ -44,9 +57,11 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import math
 import statistics
+import subprocess
 import sys
 from functools import cache
 from pathlib import Path
@@ -69,13 +84,14 @@ RESULTS = REPO / "benchmarks" / "results" / "guidance"
 PRICING = REPO / "config_library" / "pricing.yaml"
 COST = "cost_per_1000_docs"
 MCOE_PAGE = "marginal-cost-of-error.md"
-COST_NOTE = (
-    "*Costs are computed from `config_library/pricing.yaml` at the time this page was "
-    "generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS "
-    "charges are not included.*"
+#: config_library/ sits outside docs/, so the docs site rewrites this to a blob URL.
+PRICING_FROM_PAGES = "../../config_library/pricing.yaml"
+COLD_NOTE = (
+    "*Costs come from each value's first, cold-cache run: repeat runs reuse the prompt "
+    "cache the first run wrote, which a document processed once would not.*"
 )
 MCOE_CAPTION = (
-    " Lines run from the cheapest value to each other value, labelled with the "
+    " Lines run from the cheapest value to each other value, labeled with the "
     "marginal cost of error: the extra cost per error prevented "
     f"([Marginal Cost of Error]({MCOE_PAGE}))."
 )
@@ -87,11 +103,16 @@ DATASETS_PAGE = "datasets.md"
 PLOTS = REPO / "images" / "benchmark-guidance"
 PLOTS_FROM_PAGES = "../../images/benchmark-guidance"
 EMPTY = "—"
-CAPTION = "Dots are the mean of the runs; lines span two standard errors either side."
-SCATTER_CAPTION = (
-    "Each point is one value of the setting; lines span two standard errors either "
-    "side. Up and to the left is better."
+CAPTION = (
+    "Dots are the mean of the runs; shaded bands span two standard errors either side."
 )
+SCATTER_CAPTION = (
+    "Each point is one value of the setting; shaded bands span two standard errors "
+    "either side. Up and to the left is better."
+)
+#: Pipeline steps named on every chart, in order.
+MODEL_STEPS = ("OCR", "Classification", "Extraction", "Confidence")
+VARIES = "varies (the setting under test)"
 
 sys.path.insert(0, str(REPO / "scripts"))
 from check_markdown_links import slugify  # noqa: E402  (github-slugger rules)
@@ -130,6 +151,68 @@ def load_pricing() -> dict[str, dict[str, float]]:
     }
 
 
+@cache
+def pricing_date() -> str:
+    """The date config_library/pricing.yaml last changed, so --check stays stable.
+
+    A date read from the commit is the same for everyone with the same tree. An
+    uncommitted price list has no such date, so it falls back to today and says so.
+    """
+    rel = str(PRICING.relative_to(REPO))
+
+    def git(*cmd: str) -> str:
+        proc = subprocess.run(
+            ["git", *cmd, "--", rel],
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        return proc.stdout.strip()
+
+    if git("status", "--porcelain"):
+        print(
+            f"warning: {rel} has uncommitted changes, so the price list has no commit "
+            "date; the pages will say today's date",
+            file=sys.stderr,
+        )
+        return datetime.date.today().isoformat()
+    return git("log", "-1", "--format=%cs") or datetime.date.today().isoformat()
+
+
+def where(region: str) -> str:
+    return region or "the region we measured in"
+
+
+def price_caveat(region: str) -> str:
+    """The sentence every chart and table that shows a price carries."""
+    return (
+        f"Costs use on-demand prices for {where(region)} from "
+        f"[config_library/pricing.yaml]({PRICING_FROM_PAGES}) as of {pricing_date()}."
+    )
+
+
+def price_caveat_svg(region: str) -> str:
+    """The same caveat inside the image, so a chart shared on its own carries it."""
+    return (
+        f"Prices: on-demand, {where(region)}, config_library/pricing.yaml "
+        f"as of {pricing_date()}"
+    )
+
+
+def cost_note(region: str) -> str:
+    return (
+        f"*{price_caveat(region)} Amazon Bedrock and Amazon Textract only; Lambda and "
+        "other AWS charges are not included.*"
+    )
+
+
+def mean_se(values: list[float]) -> dict[str, float]:
+    m = statistics.fmean(values)
+    se = statistics.stdev(values) / math.sqrt(len(values)) if len(values) > 1 else 0.0
+    return {"mean": round(m, 6), "se": round(se, 6)}
+
+
 def unit_price(name: str, unit: str) -> float | None:
     """The price of one unit, falling back from a `:1m` model ID to its base ID."""
     prices = load_pricing()
@@ -139,22 +222,20 @@ def unit_price(name: str, unit: str) -> float | None:
     return None
 
 
-def mean_se(values: list[float]) -> dict[str, float]:
-    m = statistics.fmean(values)
-    se = statistics.stdev(values) / math.sqrt(len(values)) if len(values) > 1 else 0.0
-    return {"mean": round(m, 6), "se": round(se, 6)}
-
-
 def price_usage(
     usage: dict[str, list[dict[str, float]]],
-) -> tuple[dict[str, dict[str, float]], dict[str, set[str]]]:
+    basis: dict[str, dict[str, Any]],
+) -> tuple[dict[str, dict[str, float]], dict[str, set[str]], set[str]]:
     """Cost per 1,000 documents for each `dataset|value`, and its unpriced usage.
 
-    Each run's usage is priced on its own, so the standard error is across runs.
+    Each run's usage is priced on its own. `basis` says which of them count: a value
+    whose runs could share a prompt cache is priced from its coldest run alone, with
+    no standard error, and is named in the returned set so the page can footnote it.
     Usage with no price counts as $0 and is returned so the page can say so.
     """
     costs: dict[str, dict[str, float]] = {}
     unpriced: dict[str, set[str]] = {}
+    cold: set[str] = set()
     for key, runs in usage.items():
         per_run = []
         for run in runs:
@@ -168,9 +249,147 @@ def price_usage(
                     continue
                 total += amount * price
             per_run.append(total * 1000)
-        if per_run:
+        if not per_run:
+            continue
+        entry = basis.get(key) or {}
+        index = int(entry.get("index") or 0)
+        if entry.get("mode") == "cold-run" and 0 <= index < len(per_run):
+            costs[key] = {"mean": round(per_run[index], 6), "se": 0.0}
+            cold.add(key)
+        else:
             costs[key] = mean_se(per_run)
-    return costs, unpriced
+    return costs, unpriced, cold
+
+
+def model_steps(
+    models: dict[str, dict[str, Any]], ds_keys: list[str], values: list[str]
+) -> dict[str, dict[str, str]]:
+    """The model at each step, per dataset, over a set of values.
+
+    A step whose model or setting differs between those values is the one under test,
+    so it reads "varies" rather than naming one of them.
+    """
+    out: dict[str, dict[str, str]] = {}
+    for ds_key in ds_keys:
+        seen: dict[str, list[str]] = {}
+        for value in values:
+            entry = models.get(f"{ds_key}|{value}") or {}
+            for step in MODEL_STEPS:
+                text = entry.get(step)
+                if text:
+                    seen.setdefault(step, []).append(str(text))
+        if seen:
+            out[ds_key] = {
+                step: texts[0] if len(set(texts)) == 1 else VARIES
+                for step, texts in seen.items()
+            }
+    return out
+
+
+def models_text(steps: dict[str, str]) -> str:
+    return " · ".join(f"{s}: {steps[s]}" for s in MODEL_STEPS if s in steps)
+
+
+def models_sentence(
+    steps: dict[str, dict[str, str]], ds_keys: list[str], datasets: dict[str, Any]
+) -> str:
+    """ "Models: ..." for a caption or a table row.
+
+    Steps every dataset here ran the same way are stated once; a step two datasets
+    ran differently, because their presets differ, is listed per dataset.
+    """
+    present = [k for k in ds_keys if k in steps]
+    if not present:
+        return ""
+    common: list[str] = []
+    parts: list[str] = []
+    for step in MODEL_STEPS:
+        texts = [steps[k][step] for k in present if step in steps[k]]
+        if not texts:
+            continue
+        if len(texts) < len(present) or len(set(texts)) > 1:
+            parts.append(
+                f"{step} by dataset: "
+                + "; ".join(
+                    f"{datasets[k].get('short', datasets[k]['name'])} — "
+                    f"{steps[k].get(step, EMPTY)}"
+                    for k in present
+                )
+            )
+        else:
+            common.append(f"{step}: {texts[0]}")
+    if common:
+        parts.insert(0, " · ".join(common))
+    return "Models: " + ". ".join(parts) + "." if parts else ""
+
+
+def span(values: list[int]) -> str:
+    lo, hi = min(values), max(values)
+    return f"{lo:,}" if lo == hi else f"{lo:,}–{hi:,}"
+
+
+def sample_sizes(
+    sample: dict[str, dict[str, Any]], ds_keys: list[str], values: list[str]
+) -> dict[str, tuple[str, str, int]]:
+    """Documents scored, runs, and failed documents per run, per dataset."""
+    out: dict[str, tuple[str, str, int]] = {}
+    for ds_key in ds_keys:
+        docs: list[int] = []
+        failed: list[int] = []
+        runs: list[int] = []
+        for value in values:
+            entry = sample.get(f"{ds_key}|{value}") or {}
+            docs += [int(d) for d in entry.get("docs") or []]
+            failed += [int(f) for f in entry.get("failed") or []]
+            if entry.get("runs"):
+                runs.append(int(entry["runs"]))
+        if docs and runs:
+            out[ds_key] = (span(docs), span(runs), max(failed or [0]))
+    return out
+
+
+def n_short(entry: tuple[str, str, int]) -> str:
+    docs, runs, _ = entry
+    return f"{docs} documents × {runs} runs"
+
+
+def n_full(entry: tuple[str, str, int]) -> str:
+    """The sample size, and what a failed document took out of it."""
+    failed = entry[2]
+    if not failed:
+        return n_short(entry)
+    word = "document" if failed == 1 else "documents"
+    return f"{n_short(entry)}, {failed} failed {word} per run left out"
+
+
+def sample_sentence(
+    sizes: dict[str, tuple[str, str, int]],
+    ds_keys: list[str],
+    datasets: dict[str, Any],
+) -> str:
+    """ "N = ..." for a caption or a table row, per dataset when they differ."""
+    present = [k for k in ds_keys if k in sizes]
+    if not present:
+        return ""
+    texts = {k: n_full(sizes[k]) for k in present}
+    if len(set(texts.values())) == 1:
+        return f"N = {texts[present[0]]}."
+    return (
+        "N: "
+        + "; ".join(
+            f"{datasets[k].get('short', datasets[k]['name'])} — {texts[k]}"
+            for k in present
+        )
+        + "."
+    )
+
+
+def panel_subtitle(steps: dict[str, str], size: tuple[str, str, int] | None) -> str:
+    """The line under a panel title: the models, then the sample size."""
+    parts = [models_text(steps)] if steps else []
+    if size:
+        parts.append(f"N = {n_short(size)}")
+    return " · ".join(p for p in parts if p)
 
 
 def cell_text(cell: Cell | None, metric: str = "") -> str:
@@ -179,7 +398,9 @@ def cell_text(cell: Cell | None, metric: str = "") -> str:
     if isinstance(cell, str):
         return cell
     if metric == COST:
-        return f"{money(cell['mean'])} ± {money(2 * cell.get('se', 0))}"
+        if not cell.get("se"):
+            return money(cell["mean"])
+        return f"{money(cell['mean'])} ± {money(2 * cell['se'])}"
     return f"{fmt(cell['mean'])} ± {fmt(2 * cell.get('se', 0))}"
 
 
@@ -228,7 +449,10 @@ def render_ablation(
     presets = PRESETS if ab["page"] != "index" else "#how-we-run-a-benchmark"
     cells: dict[str, Cell] = dict((results or {}).get("cells", {}))
     usage = (results or {}).get("usage") or {}
-    costs, unpriced = price_usage(usage)
+    models = (results or {}).get("models") or {}
+    sample = (results or {}).get("sample") or {}
+    region = str((results or {}).get("region") or "")
+    costs, unpriced, cold = price_usage(usage, (results or {}).get("cost_basis") or {})
     for key, names in unpriced.items():
         for name in sorted(names):
             print(
@@ -238,6 +462,7 @@ def render_ablation(
             )
     cells.update({f"{key}|{COST}": cell for key, cell in costs.items()})
     shows_cost = False
+    shows_cold = False
     out = Rendered()
     answer = results["verdict"] if results else "Not yet measured."
     details_link = f"[Details: {ab['id']}](#{slugify(details_heading(ab))})"
@@ -273,9 +498,17 @@ def render_ablation(
         "| **Datasets** | "
         + "; ".join(dataset_label(k, datasets) for k in ab["datasets"])
         + " |",
-        f"| **Runs** | {runs_text} |",
-        "",
     ]
+    spec_models = models_sentence(
+        model_steps(models, ab["datasets"], ab["values"]), ab["datasets"], datasets
+    )
+    if spec_models:
+        d.append(f"| **Models** | {spec_models.removeprefix('Models: ')} |")
+    spec_sizes = sample_sizes(sample, ab["datasets"], ab["values"])
+    spec_n = sample_sentence(spec_sizes, ab["datasets"], datasets)
+    if spec_n:
+        runs_text += f"; {spec_n.rstrip('.')}"
+    d += [f"| **Runs** | {runs_text} |", ""]
 
     # One plot and one table per dataset kind. The first plot drawn is the
     # headline and goes in the FAQ entry; any others stay with their tables.
@@ -292,6 +525,8 @@ def render_ablation(
         if usage and kind in metrics[COST]["kinds"]:
             cols = with_cost(cols)
         kind_sets = [k for k in ab["datasets"] if datasets[k]["kind"] == kind]
+        steps = model_steps(models, kind_sets, ab["values"])
+        sizes = sample_sizes(sample, kind_sets, ab["values"])
         panels = []
         for ds_key in kind_sets:
             rows = []
@@ -299,9 +534,13 @@ def render_ablation(
                 cell = cells.get(f"{ds_key}|{value}|{plot_metric}")
                 rows.append((value, cell if isinstance(cell, dict) else None))
             panels.append(
-                (datasets[ds_key].get("short", datasets[ds_key]["name"]), rows)
+                (
+                    datasets[ds_key].get("short", datasets[ds_key]["name"]),
+                    panel_subtitle(steps.get(ds_key, {}), sizes.get(ds_key)),
+                    rows,
+                )
             )
-        panels = [(name, rows) for name, rows in panels if any(p for _, p in rows)]
+        panels = [p for p in panels if any(cell for _, cell in p[2])]
         measured = [
             f"{ds_key}|{value}"
             for ds_key in kind_sets
@@ -338,13 +577,24 @@ def render_ablation(
                         pts.append((value, x, y))
                 if pts:
                     scatter.append(
-                        (datasets[ds_key].get("short", datasets[ds_key]["name"]), pts)
+                        (
+                            datasets[ds_key].get("short", datasets[ds_key]["name"]),
+                            panel_subtitle(steps.get(ds_key, {}), sizes.get(ds_key)),
+                            pts,
+                        )
                     )
                     if show_mcoe:
                         mcoe[ds_key] = marginal_cost_of_error(pts)
+        plotted = [
+            k
+            for k in kind_sets
+            if datasets[k].get("short", datasets[k]["name"]) in {p[0] for p in panels}
+        ]
         if panels:
             name = f"{ab['id']}-{kind}.svg"
             metric_name = metrics[plot_metric]["name"]
+            on_cost = x_metric == COST or plot_metric == COST
+            prices = price_caveat_svg(region) if on_cost else ""
             if scatter and x_metric:
                 x_name = metrics[x_metric]["name"]
                 out.plots[name] = draw_scatter(
@@ -354,11 +604,12 @@ def render_ablation(
                     ab.get("runs", 0),
                     x_money=x_metric == COST,
                     mcoe=show_mcoe,
+                    prices=prices,
                 )
                 x_lower = lower_first(x_name)
                 alt = f"{metric_name} against {x_lower} for each {ab['changes']}"
                 caption = f"*{metric_name} against {x_lower}. {SCATTER_CAPTION}"
-                if max(len(pts) for _, pts in scatter) > MAX_LABELLED:
+                if max(len(pts) for *_, pts in scatter) > MAX_LABELLED:
                     caption += (
                         " Labels mark the default and the values no other value "
                         "beats on both axes; hover a point for the rest."
@@ -367,20 +618,24 @@ def render_ablation(
                     caption += MCOE_CAPTION
                 caption += "*"
             else:
-                out.plots[name] = draw_plot(metric_name, panels, ab.get("runs", 0))
+                out.plots[name] = draw_plot(
+                    metric_name, panels, ab.get("runs", 0), prices=prices
+                )
                 alt = f"{metric_name} for each value of {ab['changes']}"
                 caption = f"*{metric_name}. {CAPTION}*"
-            plotted = [
-                k
-                for k in kind_sets
-                if datasets[k].get("short", datasets[k]["name"])
-                in {p for p, _ in panels}
-            ]
             caption += (
                 " Datasets: "
                 + ", ".join(dataset_label(k, datasets, short=True) for k in plotted)
                 + "."
             )
+            plot_models = models_sentence(steps, plotted, datasets)
+            if plot_models:
+                caption += f" {plot_models}"
+            plot_n = sample_sentence(sizes, plotted, datasets)
+            if plot_n:
+                caption += f" {plot_n}"
+            if on_cost:
+                caption += f" {price_caveat(region)}"
             plot_md = [f"![{alt}]({PLOTS_FROM_PAGES}/{name})", "", caption, ""]
             if headline:
                 d += plot_md
@@ -413,6 +668,9 @@ def render_ablation(
             f"{k}|{v}" in costs for k in kind_sets for v in ab["values"]
         ):
             shows_cost = True
+            shows_cold = shows_cold or any(
+                f"{k}|{v}" in cold for k in kind_sets for v in ab["values"]
+            )
             missing = sorted(
                 {
                     name
@@ -424,12 +682,85 @@ def render_ablation(
             if missing:
                 d += ["Not priced: " + ", ".join(f"`{n}`" for n in missing) + ".", ""]
     if shows_cost:
-        d += [COST_NOTE, ""]
+        d += [cost_note(region), ""]
+        if shows_cold:
+            d += [COLD_NOTE, ""]
     d.append("")
 
     # FAQ entry: the question, the answer, the headline plot, a link to details.
     out.faq += [f"### {ab['question']}", "", f"**Answer:** {answer} {details_link}", ""]
-    out.faq += headline
+    if ab.get("grid") and results:
+        out.faq += render_grid(ab, reg, cells, region, spec_n, spec_models)
+    else:
+        out.faq += headline
+    return out
+
+
+def render_grid(
+    ab: dict[str, Any],
+    reg: dict[str, Any],
+    cells: dict[str, Cell],
+    region: str,
+    sample_text: str,
+    models_text: str,
+) -> list[str]:
+    """One small table per metric, rows and columns from the ablation's grid.
+
+    The best value in each table is bold: the highest score, or the lowest cost.
+    """
+    metrics: dict[str, Any] = reg["metrics"]
+    grid = ab["grid"]
+    rows, cols = grid["rows"], grid["cols"]
+    shown = [m for m in ab["metrics"] if not m.endswith("_tokens")]
+    plot = ab.get("plot")
+    if plot in shown:
+        shown.remove(plot)
+        shown.insert(0, plot)
+    out: list[str] = []
+    for ds_key in ab["datasets"]:
+        has_cost = any(
+            isinstance(cells.get(f"{ds_key}|{r} · {c}|{COST}"), dict)
+            for r in rows
+            for c in cols
+        )
+        for metric in shown + ([COST] if has_cost else []):
+            values = {
+                (r, c): cells.get(f"{ds_key}|{r} · {c}|{metric}")
+                for r in rows
+                for c in cols
+            }
+            means = {k: v["mean"] for k, v in values.items() if isinstance(v, dict)}
+            if not means:
+                continue
+            best = (min if metric == COST else max)(means.values())
+            name = (
+                "Cost per 1,000 documents (USD)"
+                if metric == COST
+                else metrics[metric]["name"]
+            )
+            out += [f"**{name}**", "", "| | " + " | ".join(cols) + " |"]
+            out.append("|---|" + "---|" * len(cols))
+            for r in rows:
+                row = [r]
+                for c in cols:
+                    m = means.get((r, c))
+                    if m is None:
+                        row.append(EMPTY)
+                        continue
+                    text = f"${m:,.0f}" if metric == COST else f"{m:.2f}"
+                    row.append(f"**{text}**" if m == best else text)
+                out.append("| " + " | ".join(row) + " |")
+            out.append("")
+    notes = [t for t in (sample_text, models_text) if t]
+    if notes:
+        out += ["*" + " ".join(notes) + " The best value in each table is bold.*", ""]
+    if any(
+        isinstance(cells.get(f"{k}|{r} · {c}|{COST}"), dict)
+        for k in ab["datasets"]
+        for r in rows
+        for c in cols
+    ):
+        out += [cost_note(region), ""]
     return out
 
 

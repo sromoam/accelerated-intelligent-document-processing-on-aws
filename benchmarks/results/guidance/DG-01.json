@@ -266,6 +266,189 @@
       "se": 0.0
     }
   },
+  "sample": {
+    "realkie|Textract, tables and layout (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Textract, layout only": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Bedrock vision model (Nova 2 Lite)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "omniai|Textract, tables and layout (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "omniai|Textract, layout only": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "omniai|Bedrock vision model (Nova 2 Lite)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    }
+  },
+  "models": {
+    "realkie|Textract, tables and layout (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|Textract, layout only": {
+      "OCR": "Amazon Textract (Layout)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|Bedrock vision model (Nova 2 Lite)": {
+      "OCR": "Amazon Nova 2 Lite, reading the page images",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "OCR": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
+    },
+    "omniai|Textract, tables and layout (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page",
+      "Extraction": "Amazon Nova 2 Lite, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
+    },
+    "omniai|Textract, layout only": {
+      "OCR": "Amazon Textract (Layout)",
+      "Classification": "Amazon Nova 2 Lite, page by page",
+      "Extraction": "Amazon Nova 2 Lite, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
+    },
+    "omniai|Bedrock vision model (Nova 2 Lite)": {
+      "OCR": "Amazon Nova 2 Lite, reading the page images",
+      "Classification": "Amazon Nova 2 Lite, page by page",
+      "Extraction": "Amazon Nova 2 Lite, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Classification": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "OCR": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
+    }
+  },
   "usage": {
     "realkie|Textract, tables and layout (default)": [
       {
@@ -477,5 +660,37 @@
         "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 678.05
       }
     ]
+  },
+  "cost_basis": {
+    "realkie|Textract, tables and layout (default)": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-200111",
+      "index": 2
+    },
+    "realkie|Textract, layout only": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-200737",
+      "index": 2
+    },
+    "realkie|Bedrock vision model (Nova 2 Lite)": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-201255",
+      "index": 2
+    },
+    "omniai|Textract, tables and layout (default)": {
+      "mode": "cold-run",
+      "run": "OmniAI-OCR-Benchmark-20261113-201450",
+      "index": 0
+    },
+    "omniai|Textract, layout only": {
+      "mode": "cold-run",
+      "run": "OmniAI-OCR-Benchmark-20261113-201740",
+      "index": 0
+    },
+    "omniai|Bedrock vision model (Nova 2 Lite)": {
+      "mode": "cold-run",
+      "run": "OmniAI-OCR-Benchmark-20261113-201905",
+      "index": 0
+    }
   }
 }

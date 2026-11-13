@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT-0
 # How We Benchmark Configurations
 
 - When is agentic extraction worth it?
-- Help me choose a mechanism for packet splitting.
+- Does holistic classification beat page-by-page classification?
 - Does OCR make a difference?
 - What's the spread between Opus and Haiku?
 - Can I route review by confidence?

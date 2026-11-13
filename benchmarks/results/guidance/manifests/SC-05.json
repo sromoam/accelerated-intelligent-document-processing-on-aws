@@ -1,0 +1,30 @@
+{
+  "ablation": "SC-05",
+  "verdict": "Leave it at 0. One neighboring page got more sections exactly right (0.64 against 0.51) but gave fewer pages the right class (0.78 against 0.82), for 67% more classification tokens; two neighboring pages did no better than none.",
+  "runs": {
+    "docsplit": {
+      "0 (default)": [
+        "DocSplit-Poly-Seq-20261113-205249",
+        "DocSplit-Poly-Seq-20261113-205248",
+        "DocSplit-Poly-Seq-20261113-205247"
+      ],
+      "1": [
+        "DocSplit-Poly-Seq-20261113-205744",
+        "DocSplit-Poly-Seq-20261113-205750",
+        "DocSplit-Poly-Seq-20261113-205747"
+      ],
+      "2": [
+        "DocSplit-Poly-Seq-20261113-210239",
+        "DocSplit-Poly-Seq-20261113-210357",
+        "DocSplit-Poly-Seq-20261113-210612"
+      ]
+    }
+  },
+  "max_failed": {
+    "docsplit": 1
+  },
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026"
+}

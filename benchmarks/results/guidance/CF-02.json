@@ -182,6 +182,119 @@
       "se": 0.0
     }
   },
+  "sample": {
+    "realkie|Amazon Nova Lite (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Amazon Nova 2 Lite": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Claude Haiku 5.5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Claude Sonnet 5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    }
+  },
+  "models": {
+    "realkie|Amazon Nova Lite (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|Amazon Nova 2 Lite": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova 2 Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-2-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|Claude Haiku 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Claude Haiku 5.5, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.anthropic.claude-haiku-5-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|Claude Sonnet 5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    }
+  },
   "usage": {
     "realkie|Amazon Nova Lite (default)": [
       {
@@ -311,5 +424,27 @@
         "textract/analyze_document-Tables|pages": 4.05
       }
     ]
+  },
+  "cost_basis": {
+    "realkie|Amazon Nova Lite (default)": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-181724",
+      "index": 0
+    },
+    "realkie|Amazon Nova 2 Lite": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-182034",
+      "index": 0
+    },
+    "realkie|Claude Haiku 5.5": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-182352",
+      "index": 0
+    },
+    "realkie|Claude Sonnet 5": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-182712",
+      "index": 0
+    }
   }
 }

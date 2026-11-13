@@ -22,6 +22,7 @@
 #   plot_x    the tokens metric for the x-axis when cost is not available (default:
 #             total tokens when measured). Cost per 1,000 documents is used whenever
 #             every plotted value has usage in its results file.
+#   grid      optional {rows, cols}: values are named "<row> · <col>" and render as a grid
 #   set       per value, the configuration overrides that produce it (dotted paths),
 #             in the order of `values`; run_guidance_ablation.py applies them
 #
@@ -179,13 +180,24 @@ ablations:
   # ------------------------------------------------- splitting and classification
   - id: SC-01
     page: splitting-and-classification
-    question: "Help me choose a mechanism for packet splitting."
+    question: "Does holistic classification beat page-by-page classification?"
     changes: "Granularity and strategy"
     values: ["Page by page, one call (default)", "Holistic, one call", "Detect sections first (page by page), then classify", "Detect sections first (holistic), then classify"]
     set: [{"classification.strategy": "combined", "classification.combined.granularity": "page"}, {"classification.strategy": "combined", "classification.combined.granularity": "packet"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "page"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "packet"}]
     datasets: [docsplit, synth_two_docs, same_class_packets]
     runs: 3
     metrics: [page_accuracy, section_accuracy, grouping_score, boundary_accuracy, label_accuracy, classification_tokens, total_tokens]
+    plot: section_accuracy
+  - id: SC-11
+    page: splitting-and-classification
+    question: "Which splitting mechanism works best with each classification model?"
+    changes: "Granularity and strategy, by classification model"
+    values: ["Page by page \u00b7 Amazon Nova 2 Lite (default)", "Holistic \u00b7 Amazon Nova 2 Lite (default)", "Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)", "Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)", "Page by page \u00b7 Claude Haiku 5.5", "Holistic \u00b7 Claude Haiku 5.5", "Detect sections first, page by page \u00b7 Claude Haiku 5.5", "Detect sections first, holistic \u00b7 Claude Haiku 5.5", "Page by page \u00b7 Claude Sonnet 5", "Holistic \u00b7 Claude Sonnet 5", "Detect sections first, page by page \u00b7 Claude Sonnet 5", "Detect sections first, holistic \u00b7 Claude Sonnet 5"]
+    set: [{"classification.strategy": "combined", "classification.combined.granularity": "page", "classification.combined.llm.model": "us.amazon.nova-2-lite-v1:0", "classification.split_then_classify.splitting.llm.model": "us.amazon.nova-2-lite-v1:0", "classification.split_then_classify.section_classification.llm.model": "us.amazon.nova-2-lite-v1:0"}, {"classification.strategy": "combined", "classification.combined.granularity": "packet", "classification.combined.llm.model": "us.amazon.nova-2-lite-v1:0", "classification.split_then_classify.splitting.llm.model": "us.amazon.nova-2-lite-v1:0", "classification.split_then_classify.section_classification.llm.model": "us.amazon.nova-2-lite-v1:0"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "page", "classification.combined.llm.model": "us.amazon.nova-2-lite-v1:0", "classification.split_then_classify.splitting.llm.model": "us.amazon.nova-2-lite-v1:0", "classification.split_then_classify.section_classification.llm.model": "us.amazon.nova-2-lite-v1:0"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "packet", "classification.combined.llm.model": "us.amazon.nova-2-lite-v1:0", "classification.split_then_classify.splitting.llm.model": "us.amazon.nova-2-lite-v1:0", "classification.split_then_classify.section_classification.llm.model": "us.amazon.nova-2-lite-v1:0"}, {"classification.strategy": "combined", "classification.combined.granularity": "page", "classification.combined.llm.model": "us.anthropic.claude-haiku-5-5", "classification.split_then_classify.splitting.llm.model": "us.anthropic.claude-haiku-5-5", "classification.split_then_classify.section_classification.llm.model": "us.anthropic.claude-haiku-5-5"}, {"classification.strategy": "combined", "classification.combined.granularity": "packet", "classification.combined.llm.model": "us.anthropic.claude-haiku-5-5", "classification.split_then_classify.splitting.llm.model": "us.anthropic.claude-haiku-5-5", "classification.split_then_classify.section_classification.llm.model": "us.anthropic.claude-haiku-5-5"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "page", "classification.combined.llm.model": "us.anthropic.claude-haiku-5-5", "classification.split_then_classify.splitting.llm.model": "us.anthropic.claude-haiku-5-5", "classification.split_then_classify.section_classification.llm.model": "us.anthropic.claude-haiku-5-5"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "packet", "classification.combined.llm.model": "us.anthropic.claude-haiku-5-5", "classification.split_then_classify.splitting.llm.model": "us.anthropic.claude-haiku-5-5", "classification.split_then_classify.section_classification.llm.model": "us.anthropic.claude-haiku-5-5"}, {"classification.strategy": "combined", "classification.combined.granularity": "page", "classification.combined.llm.model": "us.anthropic.claude-sonnet-5", "classification.split_then_classify.splitting.llm.model": "us.anthropic.claude-sonnet-5", "classification.split_then_classify.section_classification.llm.model": "us.anthropic.claude-sonnet-5"}, {"classification.strategy": "combined", "classification.combined.granularity": "packet", "classification.combined.llm.model": "us.anthropic.claude-sonnet-5", "classification.split_then_classify.splitting.llm.model": "us.anthropic.claude-sonnet-5", "classification.split_then_classify.section_classification.llm.model": "us.anthropic.claude-sonnet-5"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "page", "classification.combined.llm.model": "us.anthropic.claude-sonnet-5", "classification.split_then_classify.splitting.llm.model": "us.anthropic.claude-sonnet-5", "classification.split_then_classify.section_classification.llm.model": "us.anthropic.claude-sonnet-5"}, {"classification.strategy": "split_then_classify", "classification.split_then_classify.splitting.llm.granularity": "packet", "classification.combined.llm.model": "us.anthropic.claude-sonnet-5", "classification.split_then_classify.splitting.llm.model": "us.anthropic.claude-sonnet-5", "classification.split_then_classify.section_classification.llm.model": "us.anthropic.claude-sonnet-5"}]
+    grid: {rows: ["Page by page", "Holistic", "Detect sections first, page by page", "Detect sections first, holistic"], cols: ["Amazon Nova 2 Lite (default)", "Claude Haiku 5.5", "Claude Sonnet 5"]}
+    datasets: [docsplit]
+    runs: 3
+    metrics: [page_accuracy, section_accuracy, grouping_score, classification_tokens, total_tokens]
     plot: section_accuracy
   - id: SC-02
     page: splitting-and-classification
@@ -422,7 +434,7 @@ ablations:
     values: ["Separate (default)", "Integrated", "Off"]
     set: [{"extraction.confidence.mode": "separate"}, {"extraction.confidence.mode": "integrated"}, {"extraction.confidence.mode": "off"}]
     holds: "Single-pass (Simple) extraction"
-    datasets: [confbench, realkie, synth_800]
+    datasets: [confbench, realkie, synth_800, fake_w2]
     runs: 3
     metrics: [weighted_accuracy, completeness, auroc, scoring_tokens, median_seconds]
   - id: CF-04

@@ -4,11 +4,15 @@ render_guidance.py calls one of two functions for each ablation that has measure
 
 - draw_scatter() when the ablation reports cost or tokens: accuracy against cost per
   1,000 documents (or tokens per page), a panel per dataset and a point per value, with
-  lines spanning two standard errors either side on both axes. Up and to the left is
-  better. When x is cost and y is an accuracy, thin lines run from the cheapest value
-  to each more accurate one, labelled with the marginal cost of error.
+  a soft band behind each dot spanning two standard errors either side. Up and to the
+  left is better. When x is cost and y is an accuracy, thin lines run from the cheapest
+  value to each more accurate one, labelled with the marginal cost of error.
 - draw_plot() otherwise: one metric, a panel per dataset, a row per value, a dot at the
-  mean and a line spanning two standard errors either side.
+  mean and a band spanning two standard errors either side.
+
+Each panel carries a subtitle naming the model in force at every step, so a chart on
+its own says which models produced it, and a chart that shows cost carries the price
+list it was computed from.
 
 Each SVG is static (no script), follows the light or dark color scheme, and carries a
 <title> and <desc> for screen readers; the results table under it holds every number.
@@ -43,6 +47,11 @@ PANEL_GAP = 18
 TOP = 8
 CHAR_W = 6.7  # average advance of 12px system-ui, used to wrap value labels
 MAX_CHARS = int(LABEL_W / CHAR_W)
+SUB_CHAR_W = 5.5  # measured advance of 11px system-ui, to wrap the models line
+SUB_LINE_H = 13
+PRICES_H = 16
+#: Half the width of the band behind a dot, in pixels.
+BAND = 5
 
 STYLE = """
   .viz { --series: #2a78d6; --ring: #ffffff; --ink: #0b0b0b; --ink-2: #52514e;
@@ -57,17 +66,17 @@ STYLE = """
   .viz { max-width: 100%; height: auto; }
   text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
   .panel { font-size: 13px; font-weight: 600; fill: var(--ink); }
+  .sub { font-size: 11px; fill: var(--muted); }
   .label { font-size: 12px; fill: var(--ink-2); }
   .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
   .none { font-size: 12px; fill: var(--muted); }
   .grid { stroke: var(--grid); stroke-width: 1; }
   .axis { stroke: var(--axis); stroke-width: 1; }
-  .whisker { stroke: var(--series); stroke-width: 2; stroke-linecap: round; }
+  .band { fill: var(--series); opacity: 0.12; }
   .dot { fill: var(--series); stroke: var(--ring); stroke-width: 2; }
-  .xwhisker { stroke: var(--series); stroke-width: 1.5; stroke-linecap: round;
-              opacity: 0.55; }
   .axislabel { font-size: 11px; fill: var(--ink-2); }
   .note { font-size: 11px; fill: var(--muted); font-style: italic; }
+  .prices { font-size: 10px; fill: var(--muted); }
   .num { font-size: 11px; font-weight: 700; fill: var(--ink); }
   .halo { paint-order: stroke; stroke: var(--ring); stroke-width: 3px;
           stroke-linejoin: round; }
@@ -150,16 +159,69 @@ def wrap(text: str) -> list[str]:
     return [first, rest] if first else [text[: MAX_CHARS - 1] + "…"]
 
 
+def wrap_subtitle(text: str, width: float = WIDTH) -> list[str]:
+    """Wrap the models line, breaking between steps first so nothing is clipped."""
+    if not text:
+        return []
+    limit = max(20, int(width / SUB_CHAR_W) - 2)  # room for a trailing " ·"
+    lines: list[str] = []
+    current = ""
+    for part in text.split(" · "):
+        joined = f"{current} · {part}" if current else part
+        if current and len(joined) > limit:
+            lines.append(current)
+            current = part
+        else:
+            current = joined
+    if current:
+        lines.append(current)
+    out: list[str] = []
+    for n, line in enumerate(lines):
+        pieces: list[str] = []
+        while len(line) > limit:  # one step longer than the width still has to break
+            cut = line.rfind(" ", 0, limit)
+            cut = cut if cut > 0 else limit
+            pieces.append(line[:cut])
+            line = line[cut:].lstrip()
+        pieces.append(line)
+        if n < len(lines) - 1:  # the separator stays at the end of the line it broke
+            pieces[-1] += " ·"
+        out += pieces
+    return out
+
+
+def subtitle_svg(lines: list[str], baseline: float) -> tuple[str, float]:
+    """Render the models line under a panel title; return the SVG and its height."""
+    if not lines:
+        return "", 0.0
+    spans = "".join(
+        f'<tspan x="0" y="{baseline + 14 + i * SUB_LINE_H:.1f}">{escape(line)}</tspan>'
+        for i, line in enumerate(lines)
+    )
+    return f'<text class="sub">{spans}</text>', SUB_LINE_H * len(lines)
+
+
+def prices_svg(prices: str, y: float) -> str:
+    return (
+        f'<text class="prices" x="0" y="{y:.1f}">{escape(prices)}</text>'
+        if prices
+        else ""
+    )
+
+
 def draw_plot(
     metric_name: str,
-    panels: list[tuple[str, list[tuple[str, dict[str, float] | None]]]],
+    panels: list[tuple[str, str, list[tuple[str, dict[str, float] | None]]]],
     runs: int,
+    *,
+    prices: str = "",
 ) -> str:
     """Return an SVG document.
 
-    panels: [(dataset name, [(value label, {"mean": m, "se": s} or None), ...]), ...]
+    panels: [(dataset name, models line, [(value label, {"mean", "se"} or None), ...])]
+    prices: a price-list note for a chart that shows cost, or "" for one that does not.
     """
-    points = [p for _, rows in panels for _, p in rows if p]
+    points = [p for _, _, rows in panels for _, p in rows if p]
     lo = min(p["mean"] - 2 * p.get("se", 0) for p in points)
     hi = max(p["mean"] + 2 * p.get("se", 0) for p in points)
     pad = (hi - lo) * 0.08 or abs(hi) * 0.05 or 1.0
@@ -177,9 +239,11 @@ def draw_plot(
 
     body: list[str] = []
     y = TOP
-    for ds_name, rows in panels:
+    for ds_name, models, rows in panels:
         body.append(f'<text class="panel" x="0" y="{y + 18}">{escape(ds_name)}</text>')
-        y += PANEL_TITLE_H
+        sub, sub_h = subtitle_svg(wrap_subtitle(models), y + 18)
+        body.append(sub)
+        y += PANEL_TITLE_H + sub_h
         top = y
         heights = [ROW_H_WRAPPED if len(wrap(v)) > 1 else ROW_H for v, _ in rows]
         bottom = top + sum(heights)
@@ -206,8 +270,9 @@ def draw_plot(
                 m, s = p["mean"], p.get("se", 0)
                 body.append(
                     f"<g><title>{escape(value)}: {fmt(m)} ± {fmt(2 * s)}</title>"
-                    f'<line class="whisker" x1="{x(m - 2 * s):.1f}" '
-                    f'x2="{x(m + 2 * s):.1f}" y1="{cy:.1f}" y2="{cy:.1f}"/>'
+                    f'<rect class="band" x="{x(m - 2 * s):.1f}" '
+                    f'y="{cy - BAND:.1f}" width="{x(m + 2 * s) - x(m - 2 * s):.1f}" '
+                    f'height="{2 * BAND}" rx="{BAND}"/>'
                     f'<circle class="dot" cx="{x(m):.1f}" cy="{cy:.1f}" r="5"/></g>'
                 )
                 body.append(
@@ -225,12 +290,15 @@ def draw_plot(
                 f'text-anchor="middle">{tick_text(t)}</text>'
             )
         y = bottom + AXIS_H + PANEL_GAP
-    height = y - PANEL_GAP
+    height = y - PANEL_GAP + (PRICES_H if prices else 0)
+    body.append(prices_svg(prices, height - 5))
 
     desc = "; ".join(
         f"{ds}: "
-        + ", ".join(f"{v} {fmt(p['mean'])}" if p else f"{v} not measured" for v, p in r)
-        for ds, r in panels
+        + ", ".join(
+            f"{v} {fmt(p['mean'])}" if p else f"{v} not measured" for v, p in rows
+        )
+        for ds, _, rows in panels
     )
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" class="viz" width="{WIDTH}" '
@@ -243,27 +311,39 @@ def draw_plot(
 
 SC_LEFT = 64
 SC_RIGHT = WIDTH - 24
-SC_PLOT_H = 230
+SC_PLOT_H = 190
 SC_BOTTOM = 44
 #: Above this many points, only the default and the frontier are labelled.
 MAX_LABELLED = 4
+#: Width of the "Better: up and to the left" note, which labels must keep off.
+NOTE_W = 150
 
 
-def _span(values: list[float], start_at_zero: bool, count: int = 4) -> list[float]:
-    """Return ticks covering the values.
+def _span(
+    values: list[float],
+    *,
+    min_span: float = 0.0,
+    pad: float = 0.12,
+    count: int = 4,
+    allow_negative: bool = True,
+) -> list[float]:
+    """Return round ticks covering the values, padded, with a minimum span.
 
-    With start_at_zero (a cost or a count), the axis starts at zero when the values
-    come within half their maximum of it. Otherwise zero would squeeze them into a
-    corner, so the axis spans the values, but at least 15% of the largest, so small
-    differences do not fill the whole width.
+    The axis is sized to the values themselves, not to zero: on a cost axis two
+    values $11 apart would otherwise sit on top of each other in the middle of the
+    range. `min_span`, a fraction of the largest value, stops the opposite problem,
+    where two close values spread across the whole axis and a small difference reads
+    as the whole story. `allow_negative` is False for a cost or a count.
     """
     lo, hi = min(values), max(values)
-    zero = start_at_zero and lo <= hi / 2
-    if start_at_zero and not zero and hi - lo < 0.15 * hi:
-        grow = (0.15 * hi - (hi - lo)) / 2
-        lo, hi = max(0.0, lo - grow), hi + grow
-    pad = (hi - lo) * 0.12 or abs(hi) * 0.05 or 1.0
-    return nice_ticks(0.0 if zero else lo - pad, hi + pad, count)
+    if min_span and hi - lo < min_span * abs(hi):
+        grow = (min_span * abs(hi) - (hi - lo)) / 2
+        lo, hi = lo - grow, hi + grow
+    margin = (hi - lo) * pad or abs(hi) * 0.05 or 1.0
+    lo, hi = lo - margin, hi + margin
+    if not allow_negative:
+        lo = max(0.0, lo)
+    return nice_ticks(lo, hi, count)
 
 
 def _compact(v: float, axis_max: float) -> str:
@@ -407,17 +487,19 @@ def _place_labels(
 def draw_scatter(
     x_name: str,
     y_name: str,
-    panels: list[tuple[str, list[tuple[str, dict[str, float], dict[str, float]]]]],
+    panels: list[tuple[str, str, list[tuple[str, dict[str, float], dict[str, float]]]]],
     runs: int,
     *,
     x_money: bool = False,
     mcoe: bool = False,
+    prices: str = "",
 ) -> str:
     """Return an SVG document plotting y (accuracy) against x (cost or tokens).
 
-    panels: [(dataset name, [(value label, x {"mean", "se"}, y {"mean", "se"}), ...])]
+    panels: [(dataset name, models line, [(value, x {"mean", "se"}, y {...}), ...])]
     x_money: x is cost per 1,000 documents in US dollars (otherwise tokens per page).
     mcoe: draw marginal-cost-of-error lines from each panel's cheapest value.
+    prices: a price-list note for a chart that shows cost, or "" for one that does not.
     """
 
     def x_text(v: float) -> str:
@@ -429,14 +511,19 @@ def draw_scatter(
     body: list[str] = []
     desc_parts: list[str] = []
     top = TOP
-    for ds_name, points in panels:
+    for ds_name, models, points in panels:
         # Each dataset gets its own ranges: results on different datasets are not
         # compared with each other, and a shared range squeezes the small ones.
-        xs = [p[1]["mean"] + s * 2 * p[1].get("se", 0) for p in points for s in (-1, 1)]
-        xt = _span(xs, start_at_zero=True, count=5)
+        xt = _span(
+            [p[1]["mean"] for p in points],
+            min_span=0.20,
+            pad=0.15,
+            count=5,
+            allow_negative=False,
+        )
         x_ticks = _money_ticks(xt) if x_money else [_compact(t, xt[-1]) for t in xt]
         ys = [p[2]["mean"] + s * 2 * p[2].get("se", 0) for p in points for s in (-1, 1)]
-        yt = _span(ys, start_at_zero=False)
+        yt = _span(ys)
         # A score that cannot pass 1.0 gets an axis that stops at 1.0.
         if max(p[2]["mean"] for p in points) <= 1.0:
             yt = [t for t in yt if t <= 1.0 + 1e-9]
@@ -448,7 +535,10 @@ def draw_scatter(
         body.append(
             f'<text class="panel" x="0" y="{top + 18}">{escape(ds_name)}</text>'
         )
-        y0, y1 = top + PANEL_TITLE_H, top + PANEL_TITLE_H + SC_PLOT_H
+        sub, sub_h = subtitle_svg(wrap_subtitle(models), top + 18)
+        body.append(sub)
+        y0 = top + PANEL_TITLE_H + sub_h
+        y1 = y0 + SC_PLOT_H
 
         def px(v: float, xt: list[float] = xt) -> float:
             return SC_LEFT + (v - xt[0]) / (xt[-1] - xt[0]) * (SC_RIGHT - SC_LEFT)
@@ -475,6 +565,9 @@ def draw_scatter(
             f'y="{y1 + 34}" text-anchor="middle">{escape(x_name)}</text>'
             f'<text class="axislabel" transform="translate(12 {(y0 + y1) / 2:.1f}) '
             f'rotate(-90)" text-anchor="middle">{escape(y_name)}</text>'
+        )
+        # Drawn after the lines and dots, so its halo keeps them off the words.
+        note = (
             f'<text class="note halo" x="{SC_LEFT + 8}" y="{y0 + 14}">'
             "Better: up and to the left</text>"
         )
@@ -484,6 +577,22 @@ def draw_scatter(
             return f"{value}: {y_text}, {x_text(x['mean'])}"
 
         centre = {v: (px(x["mean"]), py(y["mean"])) for v, x, y in points}
+
+        # The bands go down first, so the dots and the cost-of-error lines sit on top.
+        # "Better: up and to the left" is already drawn, so nothing may land on it.
+        obstacles = [(SC_LEFT + 6, y0 + 2, SC_LEFT + 6 + NOTE_W, y0 + 18)]
+        for value, _, y in points:
+            cx, cy = centre[value]
+            dy = 2 * y.get("se", 0)
+            band_top, band_bottom = py(y["mean"] + dy), py(y["mean"] - dy)
+            obstacles.append((cx - 7, cy - 7, cx + 7, cy + 7))
+            obstacles.append((cx - BAND, band_top, cx + BAND, band_bottom))
+            if band_bottom > band_top:
+                body.append(
+                    f'<rect class="band" x="{cx - BAND:.1f}" y="{band_top:.1f}" '
+                    f'width="{2 * BAND}" height="{band_bottom - band_top:.1f}" '
+                    f'rx="{BAND}"/>'
+                )
 
         # Marginal cost of error: a thin line from the cheapest value to each value
         # that scores higher, under the dots. Solid when the gain is measurable.
@@ -512,25 +621,18 @@ def draw_scatter(
             if len(points) <= MAX_LABELLED
             else _frontier(points) | {v for v, _, _ in points if "(default)" in v}
         )
-        screen, obstacles = [], []
+        screen = []
         for value, x, y in points:
             cx, cy = centre[value]
-            dx, dy = 2 * x.get("se", 0), 2 * y.get("se", 0)
-            obstacles.append((cx - 7, cy - 7, cx + 7, cy + 7))
-            obstacles.append((px(x["mean"] - dx), cy - 1, px(x["mean"] + dx), cy + 1))
-            obstacles.append((cx - 1, py(y["mean"] + dy), cx + 1, py(y["mean"] - dy)))
+            dy = 2 * y.get("se", 0)
             if value in labelled:
                 screen.append((label(value, x, y), cx, cy))
             body.append(
                 f"<g><title>{escape(value)}: {escape(y_name)} {fmt(y['mean'])} ± "
-                f"{fmt(dy)}, {escape(x_name)} {x_exact(x['mean'])} ± "
-                f"{x_exact(dx)}</title>"
-                f'<line class="xwhisker" x1="{px(x["mean"] - dx):.1f}" '
-                f'x2="{px(x["mean"] + dx):.1f}" y1="{cy:.1f}" y2="{cy:.1f}"/>'
-                f'<line class="xwhisker" x1="{cx:.1f}" x2="{cx:.1f}" '
-                f'y1="{py(y["mean"] - dy):.1f}" y2="{py(y["mean"] + dy):.1f}"/>'
+                f"{fmt(dy)}, {escape(x_name)} {x_exact(x['mean'])}</title>"
                 f'<circle class="dot" cx="{cx:.1f}" cy="{cy:.1f}" r="5"/></g>'
             )
+        body.append(note)
         # Point labels and dot numbers also keep off the cost-of-error lines.
         on_line = [
             (ax + t * (bx - ax) - 1, ay + t * (by - ay) - 1)
@@ -586,15 +688,16 @@ def draw_scatter(
                     f'text-anchor="middle">{escape(text)}</text>'
                 )
         top = y1 + SC_BOTTOM + key_h + PANEL_GAP
-    height = top - PANEL_GAP
+    height = top - PANEL_GAP + (PRICES_H if prices else 0)
+    body.append(prices_svg(prices, height - 5))
 
     desc = "; ".join(
         [
             f"{ds}: "
             + ", ".join(
-                f"{v} {fmt(y['mean'])} at {x_exact(x['mean'])}" for v, x, y in r
+                f"{v} {fmt(y['mean'])} at {x_exact(x['mean'])}" for v, x, y in rows
             )
-            for ds, r in panels
+            for ds, _, rows in panels
         ]
         + desc_parts
     )

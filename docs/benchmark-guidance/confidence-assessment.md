@@ -48,15 +48,15 @@ which adds scan noise to real invoices.
 
 ![AUROC against cost per 1,000 documents (USD) for each Scoring model](../../images/benchmark-guidance/CF-02-fields.svg)
 
-*AUROC against cost per 1,000 documents (USD). Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices).
+*AUROC against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### Separate scoring pass or integrated into extraction?
 
-**Answer:** Turn confidence off unless people review by confidence. On RealKIE invoices scoring was about two thirds of the tokens per page (13,200 of 20,300), did not change extraction accuracy, and with the default scoring model did not separate right values from wrong ones (AUROC 0.42; see CF-02). Integrated scored the same as separate here because in single-pass extraction the accelerator scores a class with list fields, such as invoice line items, in a separate pass even when integrated is selected. [Details: CF-03](#cf-03-separate-scoring-pass-or-integrated-into-extraction)
+**Answer:** Separate, with a scoring model that works, or off. On W-2 forms integrated scoring separated right from wrong values better than the default separate pass with Amazon Nova Lite (AUROC 0.76 against 0.47) and used 36% fewer tokens per page, but it lowered extraction accuracy from 0.96 to 0.92. Turning confidence off changed no extracted value and cut tokens per page by 55% to 65%. On RealKIE invoices integrated ran as a separate pass, because in single-pass extraction the accelerator scores a class with list fields separately. For confidence you can act on, use a separate pass with Claude Haiku 5.5 or Claude Sonnet 5 (see CF-02). [Details: CF-03](#cf-03-separate-scoring-pass-or-integrated-into-extraction)
 
 ![Weighted accuracy against cost per 1,000 documents (USD) for each Confidence mode](../../images/benchmark-guidance/CF-03-fields.svg)
 
-*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labelled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices).
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### What confidence threshold should I set?
 
@@ -124,7 +124,8 @@ which adds scan noise to real invoices.
 | **Changes** | Scoring model |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices) |
-| **Runs** | 3 per document, per value |
+| **Models** | OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). |
+| **Runs** | 3 per document, per value; N = 20 documents × 3 runs |
 
 | Dataset | Scoring model | AUROC | Calibration error | Values below threshold | Errors below threshold | Scoring tokens per page | Cost per 1,000 documents (USD) |
 |---|---|---|---|---|---|---|---|
@@ -132,17 +133,19 @@ which adds scan noise to real invoices.
 | ConfBench | Amazon Nova 2 Lite | — | — | — | — | — | — |
 | ConfBench | Claude Haiku 5.5 | — | — | — | — | — | — |
 | ConfBench | Claude Sonnet 5 | — | — | — | — | — | — |
-| RealKIE | Amazon Nova Lite (default) | 0.42 ± 0.07 | 0.17 ± 0.02 | — | — | 14,079 ± 166 | $139 ± $4.13 |
-| RealKIE | Amazon Nova 2 Lite | 0.61 ± 0.13 | 0.18 ± 0.05 | — | — | 5,290 ± 331 | $141 ± $1.81 |
-| RealKIE | Claude Haiku 5.5 | 0.81 ± 0.07 | 0.1 ± 0.03 | — | — | 13,193 ± 1,006 | $138 ± $2.19 |
-| RealKIE | Claude Sonnet 5 | 0.83 ± 0.03 | 0.09 ± 0.05 | — | — | 12,025 ± 93 | $206 ± $48.9 |
+| RealKIE | Amazon Nova Lite (default) | 0.42 ± 0.07 | 0.17 ± 0.02 | — | — | 14,079 ± 166 | $143 |
+| RealKIE | Amazon Nova 2 Lite | 0.61 ± 0.13 | 0.18 ± 0.05 | — | — | 5,290 ± 331 | $139 |
+| RealKIE | Claude Haiku 5.5 | 0.81 ± 0.07 | 0.1 ± 0.03 | — | — | 13,193 ± 1,006 | $140 |
+| RealKIE | Claude Sonnet 5 | 0.83 ± 0.03 | 0.09 ± 0.05 | — | — | 12,025 ± 93 | $254 |
 
-*Costs are computed from `config_library/pricing.yaml` at the time this page was generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS charges are not included.*
+*Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13. Amazon Bedrock and Amazon Textract only; Lambda and other AWS charges are not included.*
+
+*Costs come from each value's first, cold-cache run: repeat runs reuse the prompt cache the first run wrote, which a document processed once would not.*
 
 
 #### CF-03: Separate scoring pass or integrated into extraction?
 
-**Answer:** Turn confidence off unless people review by confidence. On RealKIE invoices scoring was about two thirds of the tokens per page (13,200 of 20,300), did not change extraction accuracy, and with the default scoring model did not separate right values from wrong ones (AUROC 0.42; see CF-02). Integrated scored the same as separate here because in single-pass extraction the accelerator scores a class with list fields, such as invoice line items, in a separate pass even when integrated is selected.
+**Answer:** Separate, with a scoring model that works, or off. On W-2 forms integrated scoring separated right from wrong values better than the default separate pass with Amazon Nova Lite (AUROC 0.76 against 0.47) and used 36% fewer tokens per page, but it lowered extraction accuracy from 0.96 to 0.92. Turning confidence off changed no extracted value and cut tokens per page by 55% to 65%. On RealKIE invoices integrated ran as a separate pass, because in single-pass extraction the accelerator scores a class with list fields separately. For confidence you can act on, use a separate pass with Claude Haiku 5.5 or Claude Sonnet 5 (see CF-02).
 
 *Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-202145, RealKIE-FCC-Verified-20261113-202146, RealKIE-FCC-Verified-20261113-202147, RealKIE-FCC-Verified-20261113-202440, RealKIE-FCC-Verified-20261113-202454, RealKIE-FCC-Verified-20261113-202607, RealKIE-FCC-Verified-20261113-202740, RealKIE-FCC-Verified-20261113-202800, RealKIE-FCC-Verified-20261113-202905, Fake-W2-Tax-Forms-20261113-203253, Fake-W2-Tax-Forms-20261113-203254, Fake-W2-Tax-Forms-20261113-203255, Fake-W2-Tax-Forms-20261113-203428, Fake-W2-Tax-Forms-20261113-203420, Fake-W2-Tax-Forms-20261113-203440, Fake-W2-Tax-Forms-20261113-203545, Fake-W2-Tax-Forms-20261113-203554, Fake-W2-Tax-Forms-20261113-203604`.*
 
@@ -150,17 +153,21 @@ which adds scan noise to real invoices.
 |---|---|
 | **Changes** | Confidence mode |
 | **Everything else** | Single-pass (Simple) extraction; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Synthetic statement, 800 rows (17 pages)](datasets.md#synthetic-statement-800-rows-17-pages) |
-| **Runs** | 3 per document, per value |
+| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Synthetic statement, 800 rows (17 pages)](datasets.md#synthetic-statement-800-rows-17-pages); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields) |
+| **Models** | OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). |
+| **Runs** | 3 per document, per value; N = 20 documents × 3 runs |
 
 | Dataset | Confidence mode | Weighted accuracy | AUROC | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs Off |
 |---|---|---|---|---|---|---|---|
 | ConfBench | Separate (default) | — | — | — | — | — | — |
 | ConfBench | Integrated | — | — | — | — | — | — |
 | ConfBench | Off | — | — | — | — | — | — |
-| RealKIE | Separate (default) | 0.81 ± 0.07 | 0.42 ± 0.02 | 13,240 ± 1,063 | $136 ± $1.54 | 36 ± 4.47 | no measurable gain |
-| RealKIE | Integrated | 0.81 ± 0.06 | 0.41 ± 0.04 | 13,206 ± 600 | $135 ± $0.48 | 32 ± 3.84 | no measurable gain |
-| RealKIE | Off | 0.8 ± 0.06 | — | — | $134 ± $0.28 | 23 ± 0.76 | — |
+| RealKIE | Separate (default) | 0.81 ± 0.07 | 0.42 ± 0.02 | 13,240 ± 1,063 | $137 | 36 ± 4.47 | no measurable gain |
+| RealKIE | Integrated | 0.81 ± 0.06 | 0.41 ± 0.04 | 13,206 ± 600 | $135 | 32 ± 3.84 | no measurable gain |
+| RealKIE | Off | 0.8 ± 0.06 | — | — | $134 | 23 ± 0.76 | — |
+| Fake-W2 | Separate (default) | 0.96 ± 0.02 | 0.47 ± 0.03 | 8,319 ± 1.49 | $35.3 | 28 ± 0.71 | no measurable gain |
+| Fake-W2 | Integrated | 0.92 ± 0.02 | 0.76 ± 0.01 | — | $61.5 | 33 ± 0.67 | — |
+| Fake-W2 | Off | 0.96 ± 0.02 | — | — | $31.8 | 17 ± 0.23 | — |
 
 | Dataset | Confidence mode | Completeness | AUROC | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
 |---|---|---|---|---|---|---|
@@ -168,7 +175,9 @@ which adds scan noise to real invoices.
 | Statement, 800 rows | Integrated | — | — | — | — | — |
 | Statement, 800 rows | Off | — | — | — | — | — |
 
-*Costs are computed from `config_library/pricing.yaml` at the time this page was generated: Amazon Bedrock and Amazon Textract list prices; Lambda and other AWS charges are not included.*
+*Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13. Amazon Bedrock and Amazon Textract only; Lambda and other AWS charges are not included.*
+
+*Costs come from each value's first, cold-cache run: repeat runs reuse the prompt cache the first run wrote, which a document processed once would not.*
 
 
 #### CF-04: What confidence threshold should I set?

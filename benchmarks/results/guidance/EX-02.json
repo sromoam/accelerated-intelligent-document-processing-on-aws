@@ -962,6 +962,612 @@
       "se": 0.0
     }
   },
+  "sample": {
+    "realkie|Claude Sonnet 5 (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Amazon Nova Lite": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Amazon Nova Pro": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Amazon Nova 2 Lite": {
+      "docs": [
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0
+      ],
+      "runs": 2
+    },
+    "realkie|Claude Haiku 5.5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Claude Sonnet 4.6": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Claude Sonnet 5.5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Claude Opus 5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Claude Opus 5.5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|OpenAI GPT-6 Astra": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|xAI Grok 4.6": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Claude Sonnet 5 (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Amazon Nova Lite": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Amazon Nova Pro": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Amazon Nova 2 Lite": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Claude Haiku 5.5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Claude Sonnet 4.6": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Claude Sonnet 5.5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Claude Opus 5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Claude Opus 5.5": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|OpenAI GPT-6 Astra": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|xAI Grok 4.6": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    }
+  },
+  "models": {
+    "realkie|Claude Sonnet 5 (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|Amazon Nova Lite": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Amazon Nova Lite, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.amazon.nova-lite-v1:0"
+        ]
+      }
+    },
+    "realkie|Amazon Nova Pro": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Amazon Nova Pro, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.amazon.nova-pro-v1:0"
+        ]
+      }
+    },
+    "realkie|Amazon Nova 2 Lite": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Amazon Nova 2 Lite, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
+    },
+    "realkie|Claude Haiku 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Haiku 5.5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-haiku-5-5"
+        ]
+      }
+    },
+    "realkie|Claude Sonnet 4.6": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 4.6, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-4-6"
+        ]
+      }
+    },
+    "realkie|Claude Sonnet 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5.5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5-5"
+        ]
+      }
+    },
+    "realkie|Claude Opus 5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Opus 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-opus-5"
+        ]
+      }
+    },
+    "realkie|Claude Opus 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Opus 5.5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-opus-5-5"
+        ]
+      }
+    },
+    "realkie|OpenAI GPT-6 Astra": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "OpenAI GPT-6 Astra, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.openai.gpt-6-astra"
+        ]
+      }
+    },
+    "realkie|xAI Grok 4.6": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "xAI Grok 4.6, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.xai.grok-4.6"
+        ]
+      }
+    },
+    "fake_w2|Claude Sonnet 5 (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "fake_w2|Amazon Nova Lite": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Amazon Nova Lite, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.amazon.nova-lite-v1:0"
+        ]
+      }
+    },
+    "fake_w2|Amazon Nova Pro": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Amazon Nova Pro, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.amazon.nova-pro-v1:0"
+        ]
+      }
+    },
+    "fake_w2|Amazon Nova 2 Lite": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Amazon Nova 2 Lite, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.amazon.nova-2-lite-v1:0"
+        ]
+      }
+    },
+    "fake_w2|Claude Haiku 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Haiku 5.5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-haiku-5-5"
+        ]
+      }
+    },
+    "fake_w2|Claude Sonnet 4.6": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 4.6, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-4-6"
+        ]
+      }
+    },
+    "fake_w2|Claude Sonnet 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5.5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5-5"
+        ]
+      }
+    },
+    "fake_w2|Claude Opus 5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Opus 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-opus-5"
+        ]
+      }
+    },
+    "fake_w2|Claude Opus 5.5": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Opus 5.5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-opus-5-5"
+        ]
+      }
+    },
+    "fake_w2|OpenAI GPT-6 Astra": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "OpenAI GPT-6 Astra, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.openai.gpt-6-astra"
+        ]
+      }
+    },
+    "fake_w2|xAI Grok 4.6": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "xAI Grok 4.6, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.xai.grok-4.6"
+        ]
+      }
+    }
+  },
   "usage": {
     "realkie|Claude Sonnet 5 (default)": [
       {
@@ -1798,5 +2404,117 @@
         "textract/analyze_document-Tables|pages": 1.0
       }
     ]
+  },
+  "cost_basis": {
+    "realkie|Claude Sonnet 5 (default)": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-183956",
+      "index": 2
+    },
+    "realkie|Amazon Nova Lite": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-184302",
+      "index": 0
+    },
+    "realkie|Amazon Nova Pro": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-184918",
+      "index": 2
+    },
+    "realkie|Amazon Nova 2 Lite": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-190709",
+      "index": 0
+    },
+    "realkie|Claude Haiku 5.5": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-192310",
+      "index": 0
+    },
+    "realkie|Claude Sonnet 4.6": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-194402",
+      "index": 2
+    },
+    "realkie|Claude Sonnet 5.5": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-194401",
+      "index": 0
+    },
+    "realkie|Claude Opus 5": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-195217",
+      "index": 0
+    },
+    "realkie|Claude Opus 5.5": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-195936",
+      "index": 2
+    },
+    "realkie|OpenAI GPT-6 Astra": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-195957",
+      "index": 0
+    },
+    "realkie|xAI Grok 4.6": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-200702",
+      "index": 2
+    },
+    "fake_w2|Claude Sonnet 5 (default)": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-201204",
+      "index": 1
+    },
+    "fake_w2|Amazon Nova Lite": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-201354",
+      "index": 0
+    },
+    "fake_w2|Amazon Nova Pro": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-201521",
+      "index": 0
+    },
+    "fake_w2|Amazon Nova 2 Lite": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-201728",
+      "index": 1
+    },
+    "fake_w2|Claude Haiku 5.5": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-201833",
+      "index": 1
+    },
+    "fake_w2|Claude Sonnet 4.6": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-201858",
+      "index": 0
+    },
+    "fake_w2|Claude Sonnet 5.5": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-202016",
+      "index": 0
+    },
+    "fake_w2|Claude Opus 5": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-202129",
+      "index": 0
+    },
+    "fake_w2|Claude Opus 5.5": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-202327",
+      "index": 1
+    },
+    "fake_w2|OpenAI GPT-6 Astra": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-202412",
+      "index": 0
+    },
+    "fake_w2|xAI Grok 4.6": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-202609",
+      "index": 1
+    }
   }
 }

@@ -1,0 +1,49 @@
+{
+  "ablation": "EX-12",
+  "verdict": "Measured; see the table.",
+  "runs": {
+    "realkie": {
+      "Off: schema in the prompt (default)": [
+        "RealKIE-FCC-Verified-20261113-211217",
+        "RealKIE-FCC-Verified-20261113-211218",
+        "RealKIE-FCC-Verified-20261113-211216"
+      ],
+      "Structured output": [
+        "RealKIE-FCC-Verified-20261113-211535",
+        "RealKIE-FCC-Verified-20261113-211526",
+        "RealKIE-FCC-Verified-20261113-211543"
+      ],
+      "Forced tool": [
+        "RealKIE-FCC-Verified-20261113-211823",
+        "RealKIE-FCC-Verified-20261113-211839",
+        "RealKIE-FCC-Verified-20261113-211824"
+      ]
+    },
+    "fake_w2": {
+      "Off: schema in the prompt (default)": [
+        "Fake-W2-Tax-Forms-20261113-212143",
+        "Fake-W2-Tax-Forms-20261113-212145",
+        "Fake-W2-Tax-Forms-20261113-212202"
+      ]
+    }
+  },
+  "max_failed": {},
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026",
+  "cache_isolated": [
+    "Fake-W2-Tax-Forms-20261113-212143",
+    "Fake-W2-Tax-Forms-20261113-212145",
+    "Fake-W2-Tax-Forms-20261113-212202",
+    "RealKIE-FCC-Verified-20261113-211216",
+    "RealKIE-FCC-Verified-20261113-211217",
+    "RealKIE-FCC-Verified-20261113-211218",
+    "RealKIE-FCC-Verified-20261113-211526",
+    "RealKIE-FCC-Verified-20261113-211535",
+    "RealKIE-FCC-Verified-20261113-211543",
+    "RealKIE-FCC-Verified-20261113-211823",
+    "RealKIE-FCC-Verified-20261113-211824",
+    "RealKIE-FCC-Verified-20261113-211839"
+  ]
+}

@@ -358,6 +358,229 @@
       "se": 0.0
     }
   },
+  "sample": {
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|LAYOUT only": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|TABLES only": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|LAYOUT only": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|TABLES only": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    }
+  },
+  "models": {
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|LAYOUT only": {
+      "OCR": "Amazon Textract (Layout)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|TABLES only": {
+      "OCR": "Amazon Textract (Tables)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures, Forms)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "fake_w2|LAYOUT only": {
+      "OCR": "Amazon Textract (Layout)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "fake_w2|TABLES only": {
+      "OCR": "Amazon Textract (Tables)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures, Forms)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    }
+  },
   "usage": {
     "realkie|TABLES, LAYOUT, SIGNATURES (default)": [
       {
@@ -639,5 +862,47 @@
         "textract/analyze_document-Tables+Forms|pages": 1.0
       }
     ]
+  },
+  "cost_basis": {
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-183157",
+      "index": 2
+    },
+    "realkie|LAYOUT only": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-183443",
+      "index": 0
+    },
+    "realkie|TABLES only": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-183741",
+      "index": 0
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-184029",
+      "index": 0
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-184358",
+      "index": 0
+    },
+    "fake_w2|LAYOUT only": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-184603",
+      "index": 1
+    },
+    "fake_w2|TABLES only": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-184628",
+      "index": 0
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-184825",
+      "index": 1
+    }
   }
 }

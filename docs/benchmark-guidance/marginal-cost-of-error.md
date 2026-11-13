@@ -45,8 +45,9 @@ of 0.80 carry 200 errors.
 
 Each chart on our benchmark pages plots accuracy against cost per 1,000 documents, one point
 per value of a setting. [Key Information Extraction](extraction.md) has examples. We compute
-the costs from Amazon Bedrock and Amazon Textract list prices in `config_library/pricing.yaml`
-when we generate the page.
+the costs from the on-demand Amazon Bedrock and Amazon Textract prices in
+[config_library/pricing.yaml](../../config_library/pricing.yaml), for the one region and on
+the date each chart shows.
 
 Lines run from the cheapest point to every other point:
 
@@ -64,9 +65,11 @@ accuracies directly.
 - **It needs a real accuracy gain.** A gain inside the noise makes the denominator tiny and
   the MCoE large and meaningless. That is why the charts say "no measurable gain" instead.
   See [Why you can trust the results](index.md#why-you-can-trust-the-results).
-- **The costs are list prices for Bedrock and Textract only.** They leave out the other AWS
-  services the stack runs on, such as AWS Lambda, AWS Step Functions and Amazon S3, and any
-  discount you have.
+- **The costs are on-demand Bedrock and Textract prices only**, for the one region and on the
+  date each chart shows, from
+  [config_library/pricing.yaml](../../config_library/pricing.yaml). They leave out the other
+  AWS services the stack runs on, such as AWS Lambda, AWS Step Functions and Amazon S3, and
+  any discount you have.
 
 ## Is the upgrade worth it? Compare MCoE with what an error costs you
 

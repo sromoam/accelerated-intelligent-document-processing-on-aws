@@ -2,8 +2,8 @@
   "release": "0.6.15.dev1",
   "measured": "November 2026",
   "region": "us-east-1",
-  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-173220, RealKIE-FCC-Verified-20261113-173644, RealKIE-FCC-Verified-20261113-173641, RealKIE-FCC-Verified-20261113-173219, RealKIE-FCC-Verified-20261113-173642, RealKIE-FCC-Verified-20261113-173643, Fake-W2-Tax-Forms-20261113-181721, Fake-W2-Tax-Forms-20261113-181722, Fake-W2-Tax-Forms-20261113-181723, Fake-W2-Tax-Forms-20261113-181901, Fake-W2-Tax-Forms-20261113-182002, Fake-W2-Tax-Forms-20261113-182011, realkie-fcc-short-20261113-201254, realkie-fcc-short-20261113-201252, realkie-fcc-short-20261113-201253, realkie-fcc-short-20261113-201713, realkie-fcc-short-20261113-201703, realkie-fcc-short-20261113-201714",
-  "verdict": "Not for invoices or forms. On RealKIE invoices both modes scored 0.80; on W-2 forms iterative scored 0.97 against 0.95, a difference within the noise. Iterative used about the same total tokens per page on invoices and 3.4 times as many on W-2s. Use single pass unless your documents have long lists.",
+  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-173220, RealKIE-FCC-Verified-20261113-173644, RealKIE-FCC-Verified-20261113-173641, RealKIE-FCC-Verified-20261113-173219, RealKIE-FCC-Verified-20261113-173642, RealKIE-FCC-Verified-20261113-173643, Fake-W2-Tax-Forms-20261113-181721, Fake-W2-Tax-Forms-20261113-181722, Fake-W2-Tax-Forms-20261113-181723, Fake-W2-Tax-Forms-20261113-181901, Fake-W2-Tax-Forms-20261113-182002, Fake-W2-Tax-Forms-20261113-182011, realkie-fcc-short-20261113-201254, realkie-fcc-short-20261113-201252, realkie-fcc-short-20261113-201253, realkie-fcc-short-20261113-201713, realkie-fcc-short-20261113-201703, realkie-fcc-short-20261113-201714, realkie-fcc-long-20261113-201929, realkie-fcc-long-20261113-201928, realkie-fcc-long-20261113-202020, realkie-fcc-long-20261113-202336, realkie-fcc-long-20261113-202804, realkie-fcc-long-20261113-202644 (3 failed documents left out of the scores)",
+  "verdict": "Not on invoices or forms, including long ones. On RealKIE invoices both modes scored 0.80; on invoices of 8 to 33 pages iterative scored 0.80 against 0.77, a difference within the noise, and on W-2 forms 0.97 against 0.95, also within the noise. Iterative cost more on every dataset: 17% more on RealKIE invoices, 50% more on short invoices, 86% more on W-2s and about three times as much on long invoices. On the longest invoice, 33 pages with 1,490 line items, iterative ran for 40 minutes and missed Test Studio's time limit in every run; single pass finished it.",
   "cells": {
     "realkie|Single pass, Simple (default)|weighted_accuracy": {
       "mean": 0.802328,
@@ -268,6 +268,319 @@
     "realkie_short|Iterative, Advanced|grouping_score": {
       "mean": 1.0,
       "se": 0.0
+    },
+    "realkie_long|Single pass, Simple (default)|weighted_accuracy": {
+      "mean": 0.771137,
+      "se": 0.041684
+    },
+    "realkie_long|Single pass, Simple (default)|extraction_tokens": {
+      "mean": 7322.428349,
+      "se": 19.402863
+    },
+    "realkie_long|Single pass, Simple (default)|scoring_tokens": {
+      "mean": 27274.395639,
+      "se": 2748.736462
+    },
+    "realkie_long|Single pass, Simple (default)|total_tokens": {
+      "mean": 34596.823988,
+      "se": 2765.67667
+    },
+    "realkie_long|Single pass, Simple (default)|median_seconds": {
+      "mean": 104.549164,
+      "se": 10.686632
+    },
+    "realkie_long|Single pass, Simple (default)|all_fields_right": {
+      "mean": 0.017544,
+      "se": 0.017544
+    },
+    "realkie_long|Single pass, Simple (default)|auroc": {
+      "mean": 0.551637,
+      "se": 0.013761
+    },
+    "realkie_long|Single pass, Simple (default)|calibration_error": {
+      "mean": 0.21293,
+      "se": 0.024598
+    },
+    "realkie_long|Single pass, Simple (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_long|Single pass, Simple (default)|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_long|Single pass, Simple (default)|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_long|Iterative, Advanced|weighted_accuracy": {
+      "mean": 0.796447,
+      "se": 0.041856
+    },
+    "realkie_long|Iterative, Advanced|extraction_tokens": {
+      "mean": 66260.202578,
+      "se": 2971.839942
+    },
+    "realkie_long|Iterative, Advanced|scoring_tokens": {
+      "mean": 18830.257827,
+      "se": 241.601858
+    },
+    "realkie_long|Iterative, Advanced|total_tokens": {
+      "mean": 85090.460405,
+      "se": 2772.886669
+    },
+    "realkie_long|Iterative, Advanced|median_seconds": {
+      "mean": 100.643912,
+      "se": 3.437233
+    },
+    "realkie_long|Iterative, Advanced|all_fields_right": {
+      "mean": 0.037037,
+      "se": 0.018519
+    },
+    "realkie_long|Iterative, Advanced|auroc": {
+      "mean": 0.612684,
+      "se": 0.010623
+    },
+    "realkie_long|Iterative, Advanced|calibration_error": {
+      "mean": 0.144808,
+      "se": 0.009219
+    },
+    "realkie_long|Iterative, Advanced|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_long|Iterative, Advanced|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_long|Iterative, Advanced|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    }
+  },
+  "sample": {
+    "realkie|Single pass, Simple (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Iterative, Advanced": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Single pass, Simple (default)": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Iterative, Advanced": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie_short|Single pass, Simple (default)": {
+      "docs": [
+        24,
+        24,
+        24
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie_short|Iterative, Advanced": {
+      "docs": [
+        24,
+        24,
+        24
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie_long|Single pass, Simple (default)": {
+      "docs": [
+        19,
+        19,
+        19
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie_long|Iterative, Advanced": {
+      "docs": [
+        18,
+        18,
+        18
+      ],
+      "failed": [
+        1,
+        1,
+        1
+      ],
+      "runs": 3
+    }
+  },
+  "models": {
+    "realkie|Single pass, Simple (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|Iterative, Advanced": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, iterative",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "fake_w2|Single pass, Simple (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "fake_w2|Iterative, Advanced": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, iterative",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie_short|Single pass, Simple (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie_short|Iterative, Advanced": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, iterative",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie_long|Single pass, Simple (default)": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie_long|Iterative, Advanced": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, iterative",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
     }
   },
   "usage": {
@@ -480,6 +793,118 @@
         "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 1647.875,
         "textract/analyze_document-Tables|pages": 1.375
       }
+    ],
+    "realkie_long|Single pass, Simple (default)": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 136023.8421,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 22286.1053,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 78912.0,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 4095.7368,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 4748.4211,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 7729.8421,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 77352.9474,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 3463.7895,
+        "textract/analyze_document-Tables|pages": 11.2632
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 99781.2105,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 48523.6316,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 152717.3158,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 4801.3158,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 1680.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 3068.4211,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 77315.4211,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4060.3158,
+        "textract/analyze_document-Tables|pages": 11.2632
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 155520.1579,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 4848.3684,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 167691.5789,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 5059.6316,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 4748.4211,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 23035.5263,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 77390.0,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 4154.4737,
+        "textract/analyze_document-Tables|pages": 11.2632
+      }
+    ],
+    "realkie_long|Iterative, Advanced": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 71593.2222,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 17.7222,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 101579.1667,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 19355.0556,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 304084.8889,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 48850.3333,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 256644.4444,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 28837.9444,
+        "textract/analyze_document-Tables|pages": 11.8889
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 70517.2778,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 0.0,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 99775.5556,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 18868.2778,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 346729.8889,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 257700.4444,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 31062.7222,
+        "textract/analyze_document-Tables|pages": 11.8889
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 67706.1111,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 0.0,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 96768.3889,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 18223.1111,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 368109.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 3287.1667,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 324281.5,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 32903.3333,
+        "textract/analyze_document-Tables|pages": 11.8889
+      }
     ]
+  },
+  "cost_basis": {
+    "realkie|Single pass, Simple (default)": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-173220",
+      "index": 0
+    },
+    "realkie|Iterative, Advanced": {
+      "mode": "cold-run",
+      "run": "RealKIE-FCC-Verified-20261113-173219",
+      "index": 0
+    },
+    "fake_w2|Single pass, Simple (default)": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-181722",
+      "index": 1
+    },
+    "fake_w2|Iterative, Advanced": {
+      "mode": "cold-run",
+      "run": "Fake-W2-Tax-Forms-20261113-181901",
+      "index": 0
+    },
+    "realkie_short|Single pass, Simple (default)": {
+      "mode": "cold-run",
+      "run": "realkie-fcc-short-20261113-201253",
+      "index": 2
+    },
+    "realkie_short|Iterative, Advanced": {
+      "mode": "cold-run",
+      "run": "realkie-fcc-short-20261113-201703",
+      "index": 1
+    },
+    "realkie_long|Single pass, Simple (default)": {
+      "mode": "cold-run",
+      "run": "realkie-fcc-long-20261113-201928",
+      "index": 1
+    },
+    "realkie_long|Iterative, Advanced": {
+      "mode": "cold-run",
+      "run": "realkie-fcc-long-20261113-202336",
+      "index": 0
+    }
   }
 }
