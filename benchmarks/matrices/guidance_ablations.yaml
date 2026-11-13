@@ -130,6 +130,7 @@ ablations:
     question: "What resolution should pages be rendered at?"
     changes: "`ocr.image.dpi`"
     values: ["300 (default)", "200", "150"]
+    set: [{"ocr.image.dpi": 300}, {"ocr.image.dpi": 200}, {"ocr.image.dpi": 150}]
     datasets: [realkie, confbench, synth_400]
     runs: 3
     metrics: [weighted_accuracy, cell_accuracy, total_tokens]
@@ -183,7 +184,8 @@ ablations:
     question: "Do I need page images in the classification prompt?"
     changes: "What the classification model reads"
     values: ["Text and images (default)", "Text only", "Images only"]
-    holds: "Run at both granularities: page by page and holistic"
+    set: [{"classification.combined.llm.modality": {"text": true, "images": true}}, {"classification.combined.llm.modality": {"text": true, "images": false}}, {"classification.combined.llm.modality": {"text": false, "images": true}}]
+    holds: "Page-by-page granularity"
     datasets: [docsplit]
     runs: 3
     metrics: [page_accuracy, boundary_accuracy, label_accuracy, classification_tokens]
@@ -212,6 +214,7 @@ ablations:
     question: "Does neighboring-page context help page-by-page classification?"
     changes: "`contextPagesCount`"
     values: ["0 (default)", "1", "2"]
+    set: [{"classification.combined.page.contextPagesCount": 0}, {"classification.combined.page.contextPagesCount": 1}, {"classification.combined.page.contextPagesCount": 2}]
     datasets: [docsplit, same_class_packets]
     runs: 3
     metrics: [boundary_accuracy, label_accuracy, over_splits, merges, classification_tokens]
@@ -340,6 +343,7 @@ ablations:
     question: "Do schema validation and value coercion improve the output?"
     changes: "`extraction.validation` and `extraction.coercion`"
     values: ["Both on (default)", "Coercion off", "Validation off"]
+    set: [{"extraction.coercion.enabled": true, "extraction.validation.enabled": true}, {"extraction.coercion.enabled": false}, {"extraction.validation.enabled": false}]
     datasets: [fake_w2, realkie]
     runs: 3
     metrics: [weighted_accuracy, all_fields_right, extraction_tokens]
@@ -407,7 +411,8 @@ ablations:
     question: "Separate scoring pass or integrated into extraction?"
     changes: "Confidence mode"
     values: ["Separate (default)", "Integrated", "Off"]
-    holds: "Run in both extraction modes"
+    set: [{"extraction.confidence.mode": "separate"}, {"extraction.confidence.mode": "integrated"}, {"extraction.confidence.mode": "off"}]
+    holds: "Single-pass (Simple) extraction"
     datasets: [confbench, realkie, synth_800]
     runs: 3
     metrics: [weighted_accuracy, completeness, auroc, scoring_tokens, median_seconds]

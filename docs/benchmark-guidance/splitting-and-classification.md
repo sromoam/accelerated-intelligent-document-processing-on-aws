@@ -158,7 +158,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | | |
 |---|---|
 | **Changes** | What the classification model reads |
-| **Everything else** | Run at both granularities: page by page and holistic; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
+| **Everything else** | Page-by-page granularity; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
 | **Runs** | 3 per document, per value |
 

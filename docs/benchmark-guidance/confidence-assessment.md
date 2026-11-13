@@ -155,7 +155,7 @@ which adds scan noise to real invoices.
 | | |
 |---|---|
 | **Changes** | Confidence mode |
-| **Everything else** | Run in both extraction modes; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
+| **Everything else** | Single-pass (Simple) extraction; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
