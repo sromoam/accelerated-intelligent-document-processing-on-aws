@@ -7,35 +7,39 @@ SPDX-License-Identifier: MIT-0
 
 # Key Information Extraction Benchmarks
 
-These ablations answer how to configure extraction: when iterative (agentic) extraction is
-worth it, which extraction model to use, and which settings improve accuracy. For how
-extraction works, see [Key Information Extraction](../idp-fundamentals/extraction.md).
+- When is agentic (iterative) extraction worth it?
+- Which extraction model should I use?
+- What's the spread between Opus and Haiku?
+- Do few-shot examples help extraction?
 
-**Metrics on this page:**
+[Key Information Extraction](../idp-fundamentals/extraction.md) explains how the
+accelerator extracts fields.
+
+**Metrics**
 
 - *Completeness:* rows returned ÷ rows in ground truth, on the synthetic statements.
-- *Cell accuracy:* the share of returned cells that match ground truth exactly, on the
-  synthetic statements.
-- *Weighted accuracy:* Stickler's field-weighted score against ground truth, on real
-  documents.
-- *Documents with every field right:* the share of documents with no field wrong.
+- *Cell accuracy:* the share of returned cells that match ground truth, on the synthetic
+  statements.
+- *Weighted accuracy:* Stickler's field-weighted score against ground truth.
+- *Documents with every field right:* the share of documents with no wrong field.
 
-Read completeness and accuracy together: full accuracy over half the rows is a failure.
-Every ablation holds everything except the setting it changes at the
-[baseline](index.md#the-baseline-every-ablation-starts-from).
+Read completeness and accuracy together: perfect accuracy on half the rows is still half
+the rows.
+
+## Benchmarks
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
 ### EX-01: When is agentic (iterative) extraction worth it?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Extraction mode |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [Synthetic statement, 100 rows (3 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Extraction mode | Completeness | Cell accuracy | Extraction tokens per page | Median seconds per document |
 |---|---|---|---|---|---|
@@ -60,14 +64,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-02: Which extraction model should I use?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Extraction model |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Extraction model | Weighted accuracy | Extraction tokens per page | Median seconds per document |
 |---|---|---|---|---|
@@ -111,14 +115,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-03: What's the spread between Opus and Haiku?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Extraction model |
-| **Held fixed** | Run in both extraction modes; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | Run in both extraction modes; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Extraction model | Weighted accuracy | Documents with every field right | Extraction tokens per page | Median seconds per document |
 |---|---|---|---|---|---|
@@ -141,14 +145,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-04: Does more reasoning effort improve extraction?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `extraction.reasoning_effort` |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `extraction.reasoning_effort` | Weighted accuracy | Extraction tokens per page | Median seconds per document |
 |---|---|---|---|---|
@@ -168,14 +172,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-05: How much do field descriptions matter?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Field descriptions |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Field descriptions | Weighted accuracy | Documents with every field right | Extraction tokens per page |
 |---|---|---|---|---|
@@ -189,14 +193,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-06: Do few-shot examples help extraction?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Few-shot examples |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Few-shot examples | Weighted accuracy | Documents with every field right | Extraction tokens per page |
 |---|---|---|---|---|
@@ -210,14 +214,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-07: Does sending page images to the extraction model help?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Page images in the extraction prompt |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Page images in the extraction prompt | Weighted accuracy | Documents with every field right | Extraction tokens per page |
 |---|---|---|---|---|
@@ -231,14 +235,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-08: Does deterministic table parsing help iterative extraction?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `extraction.agentic.table_parsing.enabled` |
-| **Held fixed** | Iterative (Advanced) extraction; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | Iterative (Advanced) extraction; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `extraction.agentic.table_parsing.enabled` | Completeness | Cell accuracy | Extraction tokens per page | Median seconds per document |
 |---|---|---|---|---|---|
@@ -252,14 +256,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-09: What shard size should iterative extraction use?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Pages per shard (`max_pages_per_shard`) |
-| **Held fixed** | Iterative (Advanced) extraction; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | Iterative (Advanced) extraction; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Pages per shard (`max_pages_per_shard`) | Completeness | Cell accuracy | Extraction tokens per page | Median seconds per document |
 |---|---|---|---|---|---|
@@ -275,14 +279,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-10: Should iterative extraction load page images only when it needs them?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `extraction.agentic.table_parsing.lazy_images` |
-| **Held fixed** | Iterative (Advanced) extraction; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | Iterative (Advanced) extraction; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `extraction.agentic.table_parsing.lazy_images` | Completeness | Cell accuracy | Extraction tokens per page |
 |---|---|---|---|---|
@@ -299,14 +303,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-11: Do schema validation and value coercion improve the output?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `extraction.validation` and `extraction.coercion` |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `extraction.validation` and `extraction.coercion` | Weighted accuracy | Documents with every field right | Extraction tokens per page |
 |---|---|---|---|---|
@@ -320,14 +324,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-12: Should I retry failed fields with a stronger model?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `extraction.validation.fail_action` |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `extraction.validation.fail_action` | Weighted accuracy | Documents with every field right | Extraction tokens per page |
 |---|---|---|---|---|
@@ -341,14 +345,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-13: Does forced tool use make single-pass output more reliable?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `extraction.forced_tool.enabled` |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `extraction.forced_tool.enabled` | Weighted accuracy | Extraction tokens per page |
 |---|---|---|---|
@@ -363,14 +367,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-14: How should I extract sections that hold several records?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Multi-instance sections |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Multi-instance sections | Weighted accuracy | Extraction tokens per page |
 |---|---|---|---|
@@ -380,14 +384,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-15: How accurate is extraction across many document formats?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Document format |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Document format | Weighted accuracy | Documents with every field right | Extraction tokens per page |
 |---|---|---|---|---|
@@ -396,16 +400,16 @@ Every ablation holds everything except the setting it changes at the
 
 ### EX-16: How much do splitting errors cost extraction in a packet?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
-Needs a dataset that does not exist yet: Packets with section and field ground truth (to be built).
+Needs a dataset we haven't built yet: Packets with section and field ground truth (to be built).
 
 | | |
 |---|---|
 | **Changes** | Granularity and strategy |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | Packets with section and field ground truth (to be built) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Granularity and strategy | Boundary accuracy | Weighted accuracy | Total tokens per page |
 |---|---|---|---|---|

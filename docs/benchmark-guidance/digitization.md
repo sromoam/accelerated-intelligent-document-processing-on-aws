@@ -7,34 +7,36 @@ SPDX-License-Identifier: MIT-0
 
 # Digitization (OCR) Benchmarks
 
-These ablations answer which OCR reader to use, at what resolution, and for which documents.
-For how digitization works and how the accelerator reads each page, see
-[Digitization (OCR)](../idp-fundamentals/digitization.md).
+- Does the OCR reader make a difference to extraction accuracy?
+- Does a specialized OCR model beat Textract?
+- What resolution should pages be rendered at?
+- Which Textract features do I need?
 
-We measure digitization by its effect on the steps after it: every ablation scores
-extraction against ground truth, so a better reader shows up as more accurate records in
-your database. To shortlist readers on OCR alone, use public OCR benchmarks.
+We score each OCR reader by the extraction accuracy it produces, because that is what
+lands in your database. To compare readers on OCR alone, use public OCR benchmarks.
+[Digitization (OCR)](../idp-fundamentals/digitization.md) explains how the accelerator
+reads a page.
 
-**Metrics on this page:** *weighted accuracy* is Stickler's field-weighted score against
-ground truth; *documents with every field right* is the share of documents with no field
-wrong; *completeness* and *cell accuracy* apply to the synthetic statements. See
-[How to measure extraction](../idp-fundamentals/extraction.md).
+**Metrics**
 
-Every ablation holds everything except the setting it changes at the
-[baseline](index.md#the-baseline-every-ablation-starts-from).
+- *Weighted accuracy:* Stickler's field-weighted score against ground truth.
+- *Documents with every field right:* the share of documents with no wrong field.
+- *Completeness* and *cell accuracy:* see [Key Information Extraction Benchmarks](extraction.md).
+
+## Benchmarks
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
 ### DG-01: Does the OCR reader make a difference to extraction accuracy?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | OCR reader |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | OCR reader | Weighted accuracy | OCR tokens per page | Total tokens per page |
 |---|---|---|---|---|
@@ -57,14 +59,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### DG-02: If I read pages with a vision model, which model?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Model used for Bedrock vision OCR |
-| **Held fixed** | OCR reader set to the Bedrock vision model; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | OCR reader set to the Bedrock vision model; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Model used for Bedrock vision OCR | Weighted accuracy | OCR tokens per page | Total tokens per page |
 |---|---|---|---|---|
@@ -84,14 +86,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### DG-03: Does a specialized OCR model beat Textract?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | OCR reader |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | OCR reader | Weighted accuracy | Documents with every field right | Total tokens per page |
 |---|---|---|---|---|
@@ -111,14 +113,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### DG-04: What resolution should pages be rendered at?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `ocr.image.dpi` |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `ocr.image.dpi` | Weighted accuracy | Total tokens per page |
 |---|---|---|---|
@@ -138,14 +140,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### DG-05: Does image preprocessing help on poor scans?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `ocr.image.preprocessing` |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `ocr.image.preprocessing` | Weighted accuracy | Documents with every field right | Total tokens per page |
 |---|---|---|---|---|
@@ -157,14 +159,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### DG-06: Which Textract features do I need?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `ocr.features` |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `ocr.features` | Weighted accuracy | Total tokens per page |
 |---|---|---|---|
@@ -187,14 +189,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### DG-07: How much accuracy does scan quality cost?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Scan quality |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Scan quality | Weighted accuracy | Documents with every field right | AUROC |
 |---|---|---|---|---|
@@ -206,16 +208,16 @@ Every ablation holds everything except the setting it changes at the
 
 ### DG-08: Which reader handles handwriting best?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
-Needs a dataset that does not exist yet: Handwritten forms (to be built).
+Needs a dataset we haven't built yet: Handwritten forms (to be built).
 
 | | |
 |---|---|
 | **Changes** | OCR reader |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | Handwritten forms (to be built) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | OCR reader | Weighted accuracy | Documents with every field right | Total tokens per page |
 |---|---|---|---|---|

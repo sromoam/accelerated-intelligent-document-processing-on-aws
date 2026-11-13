@@ -7,36 +7,36 @@ SPDX-License-Identifier: MIT-0
 
 # Confidence Assessment Benchmarks
 
-These ablations answer whether confidence scores can decide which results a person reviews,
-which scoring model to use, and which threshold to set. For how the accelerator assigns
-confidence, see [Confidence Assessment](../idp-fundamentals/confidence-assessment.md).
+- Can I route human review by confidence?
+- Which scoring model should I use?
+- What confidence threshold should I set?
 
-Measuring confidence needs documents on which extraction makes mistakes, so these
-ablations rely on [ConfBench](../extensions/confbench-testset.md), which adds scan noise to
-real invoices without changing their ground truth.
+[Confidence Assessment](../idp-fundamentals/confidence-assessment.md) explains how the
+accelerator scores confidence. We measure it on [ConfBench](../extensions/confbench-testset.md),
+which adds scan noise to real invoices so that extraction makes mistakes for the scores to
+catch.
 
-**Metrics on this page:**
+**Metrics**
 
-- *AUROC:* the probability that a wrong value scores lower than a right one. 0.5 is chance.
-- *Calibration error:* how far the scores are from the observed accuracy.
-- *Values below threshold:* the share of values a threshold sends to review.
-- *Errors below threshold:* the share of wrong values that the threshold sends to review.
+- *AUROC:* the chance that a wrong value scores lower than a right one. 0.5 is a coin flip.
+- *Calibration error:* the gap between the scores and the measured accuracy.
+- *Values below threshold:* the share of values the threshold sends to review.
+- *Errors below threshold:* the share of wrong values the threshold sends to review.
 
-Every ablation holds everything except the setting it changes at the
-[baseline](index.md#the-baseline-every-ablation-starts-from).
+## Benchmarks
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
 ### CF-01: Can I route human review by confidence?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Scoring model |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Scoring model | AUROC | Calibration error | Values below threshold | Errors below threshold |
 |---|---|---|---|---|---|
@@ -53,14 +53,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### CF-02: Which scoring model should I use?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Scoring model |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Scoring model | AUROC | Calibration error | Values below threshold | Errors below threshold | Scoring tokens per page |
 |---|---|---|---|---|---|---|
@@ -76,14 +76,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### CF-03: Separate scoring pass or integrated into extraction?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Confidence mode |
-| **Held fixed** | Run in both extraction modes; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | Run in both extraction modes; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Confidence mode | Weighted accuracy | AUROC | Scoring tokens per page | Median seconds per document |
 |---|---|---|---|---|---|
@@ -103,14 +103,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### CF-04: What confidence threshold should I set?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Confidence threshold |
-| **Held fixed** | Computed from the CF-02 runs, per scoring model; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | Computed from the CF-02 runs, per scoring model; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
-| **Runs** | No new runs: computed from the CF-02 runs |
+| **Runs** | None: computed from the CF-02 runs |
 
 | Dataset | Confidence threshold | Values below threshold | Errors below threshold |
 |---|---|---|---|
@@ -128,14 +128,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### CF-05: Does classification confidence flag the wrong document class?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Classification model |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Classification model | Label accuracy | AUROC | Values below threshold | Errors below threshold | Classification tokens per page |
 |---|---|---|---|---|---|---|
@@ -146,14 +146,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### CF-06: Does the scoring model need page images?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Page images in the scoring prompt |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Page images in the scoring prompt | AUROC | Calibration error | Scoring tokens per page |
 |---|---|---|---|---|
@@ -165,14 +165,14 @@ Every ablation holds everything except the setting it changes at the
 
 ### CF-07: How should long lists be scored?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | `extraction.confidence.list_batch_size` |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `extraction.confidence.list_batch_size` | Completeness | AUROC | Scoring tokens per page | Median seconds per document |
 |---|---|---|---|---|---|

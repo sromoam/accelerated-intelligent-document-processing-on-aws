@@ -7,40 +7,40 @@ SPDX-License-Identifier: MIT-0
 
 # Splitting and Section Classification Benchmarks
 
-These ablations answer how to find and classify the documents in a file: which mechanism,
-whether to send page images, which classification model, and how long a packet the
-accelerator can handle. For how section detection and classification work, see
-[Splitting and Section Classification](../idp-fundamentals/splitting-and-classification.md).
+- Help me choose a mechanism for packet splitting.
+- Do I need page images in the classification prompt?
+- Which classification model should I use?
+- How long a packet can holistic classification handle?
 
-**Metrics on this page:**
+[Splitting and Section Classification](../idp-fundamentals/splitting-and-classification.md)
+explains how the accelerator finds and classifies the documents in a file.
 
-- *Page accuracy:* the share of pages that received the right document class.
-- *Boundary accuracy:* the share of true sections that came back with exactly the right
-  page range. The document class is not checked.
-- *Label accuracy:* of the sections with the right page range, the share that also received
-  the right document class.
-- *Over-splits* and *merges:* the number of documents cut into several sections, and the
-  number of sections that join several documents.
+**Metrics**
 
-See [How to measure section detection and classification](../idp-fundamentals/splitting-and-classification.md#how-to-measure-section-detection-and-classification-on-your-own-files).
+- *Page accuracy:* the share of pages with the right document class.
+- *Boundary accuracy:* the share of sections with exactly the right page range. The
+  document class is not checked.
+- *Label accuracy:* of the sections with the right page range, the share with the right
+  document class.
+- *Over-splits:* documents cut into more than one section.
+- *Merges:* sections that join more than one document.
 
-Every ablation holds everything except the setting it changes at the
-[baseline](index.md#the-baseline-every-ablation-starts-from).
+## Benchmarks
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
 ### SC-01: Help me choose a mechanism for packet splitting.
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
-Needs a dataset that does not exist yet: Same-class documents back to back (to be built).
+Needs a dataset we haven't built yet: Same-class documents back to back (to be built).
 
 | | |
 |---|---|
 | **Changes** | Granularity and strategy |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); Same-class documents back to back (to be built) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Granularity and strategy | Page accuracy | Boundary accuracy | Label accuracy | Over-splits | Merges | Classification tokens per page |
 |---|---|---|---|---|---|---|---|
@@ -60,14 +60,14 @@ Needs a dataset that does not exist yet: Same-class documents back to back (to b
 
 ### SC-02: Do I need page images in the classification prompt?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | What the classification model reads |
-| **Held fixed** | Run at both granularities: page by page and holistic; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | Run at both granularities: page by page and holistic; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | What the classification model reads | Page accuracy | Boundary accuracy | Label accuracy | Classification tokens per page |
 |---|---|---|---|---|---|
@@ -78,14 +78,14 @@ Needs a dataset that does not exist yet: Same-class documents back to back (to b
 
 ### SC-03: Which classification model should I use?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Classification model |
-| **Held fixed** | Run at both granularities: page by page and holistic; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | Run at both granularities: page by page and holistic; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Classification model | Page accuracy | Boundary accuracy | Label accuracy | Classification tokens per page | Median seconds per document |
 |---|---|---|---|---|---|---|
@@ -97,16 +97,16 @@ Needs a dataset that does not exist yet: Same-class documents back to back (to b
 
 ### SC-04: How long a packet can holistic classification handle?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
-Needs a dataset that does not exist yet: Long packets, 30-60 pages (to be built).
+Needs a dataset we haven't built yet: Long packets, 30-60 pages (to be built).
 
 | | |
 |---|---|
 | **Changes** | Pages per holistic call (`window_pages`) |
-| **Held fixed** | Holistic, one call; everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | Holistic, one call; the rest at the [defaults](index.md#the-default-configuration) |
 | **Datasets** | Long packets, 30-60 pages (to be built); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Pages per holistic call (`window_pages`) | Page accuracy | Boundary accuracy | Label accuracy | Classification tokens per page |
 |---|---|---|---|---|---|
@@ -120,16 +120,16 @@ Needs a dataset that does not exist yet: Long packets, 30-60 pages (to be built)
 
 ### SC-05: Does neighboring-page context help page-by-page classification?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
-Needs a dataset that does not exist yet: Same-class documents back to back (to be built).
+Needs a dataset we haven't built yet: Same-class documents back to back (to be built).
 
 | | |
 |---|---|
 | **Changes** | `contextPagesCount` |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); Same-class documents back to back (to be built) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | `contextPagesCount` | Boundary accuracy | Label accuracy | Over-splits | Merges | Classification tokens per page |
 |---|---|---|---|---|---|---|
@@ -143,14 +143,14 @@ Needs a dataset that does not exist yet: Same-class documents back to back (to b
 
 ### SC-06: Do few-shot examples help classification?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Few-shot examples |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Few-shot examples | Page accuracy | Label accuracy | Classification tokens per page |
 |---|---|---|---|---|
@@ -161,14 +161,14 @@ Needs a dataset that does not exist yet: Same-class documents back to back (to b
 
 ### SC-07: How much do class descriptions matter?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Class descriptions |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Class descriptions | Page accuracy | Label accuracy |
 |---|---|---|---|
@@ -179,14 +179,14 @@ Needs a dataset that does not exist yet: Same-class documents back to back (to b
 
 ### SC-08: Does accuracy drop as I add document classes?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Number of document classes in the configuration |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Number of document classes in the configuration | Page accuracy | Label accuracy | Classification tokens per page |
 |---|---|---|---|---|
@@ -197,14 +197,14 @@ Needs a dataset that does not exist yet: Same-class documents back to back (to b
 
 ### SC-09: How small can classification images be?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Classification image size (long edge) |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Classification image size (long edge) | Page accuracy | Boundary accuracy | Classification tokens per page |
 |---|---|---|---|---|
@@ -215,14 +215,14 @@ Needs a dataset that does not exist yet: Same-class documents back to back (to b
 
 ### SC-10: If every file is one document, should I turn splitting off?
 
-**Verdict:** Not yet measured.
+**Answer:** Not yet measured.
 
 | | |
 |---|---|
 | **Changes** | Section splitting |
-| **Held fixed** | Everything else at the [baseline](index.md#the-baseline-every-ablation-starts-from) |
+| **Everything else** | The [defaults](index.md#the-default-configuration) |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document per value |
+| **Runs** | 3 per document, per value |
 
 | Dataset | Section splitting | Weighted accuracy | Classification tokens per page |
 |---|---|---|---|

@@ -9,7 +9,7 @@ ablation into its page under docs/benchmark-guidance/, between the markers
 
 Text outside the markers is hand-written and left alone. When a results file exists at
 benchmarks/results/guidance/<ID>.json, its values fill the table; otherwise every cell is
-"—" and the verdict reads "Not yet measured". A results file looks like:
+"—" and the answer reads "Not yet measured". A results file looks like:
 
     {
       "release": "0.6.15",
@@ -41,7 +41,7 @@ RESULTS = REPO / "benchmarks" / "results" / "guidance"
 PAGES = REPO / "docs" / "benchmark-guidance"
 BEGIN = "<!-- BEGIN GENERATED ABLATIONS -->"
 END = "<!-- END GENERATED ABLATIONS -->"
-BASELINE = "index.md#the-baseline-every-ablation-starts-from"
+DEFAULTS = "index.md#the-default-configuration"
 EMPTY = "—"
 
 
@@ -68,45 +68,43 @@ def render_ablation(ab: dict[str, Any], reg: dict[str, Any]) -> str:
     datasets: dict[str, Any] = reg["datasets"]
     metrics: dict[str, Any] = reg["metrics"]
     page = ab["page"]
-    baseline = (
-        BASELINE if page != "index" else "#the-baseline-every-ablation-starts-from"
-    )
+    defaults = DEFAULTS if page != "index" else "#the-default-configuration"
     results = load_results(ab["id"])
     cells: dict[str, str] = (results or {}).get("cells", {})
 
     lines = [f"### {ab['id']}: {ab['question']}", ""]
     if results:
-        lines.append(f"**Verdict:** {results['verdict']}")
+        lines.append(f"**Answer:** {results['verdict']}")
         lines.append("")
         lines.append(
             f"*Measured on release {results['release']}, {results['measured']}, "
             f"{results['region']}. Source: `{results['source']}`.*"
         )
     else:
-        lines.append("**Verdict:** Not yet measured.")
+        lines.append("**Answer:** Not yet measured.")
     new_sets = [datasets[k]["name"] for k in ab["datasets"] if datasets[k].get("new")]
     if new_sets:
         lines.append("")
         lines.append(
-            "Needs a dataset that does not exist yet: " + "; ".join(new_sets) + "."
+            "Needs a dataset we haven't built yet: " + "; ".join(new_sets) + "."
         )
     lines.append("")
 
     held = ab.get("holds")
-    held_text = (
-        f"{held}; everything else at the [baseline]({baseline})"
+    fixed_text = (
+        f"{held}; the rest at the [defaults]({defaults})"
         if held
-        else f"Everything else at the [baseline]({baseline})"
+        else f"The [defaults]({defaults})"
     )
     if ab.get("derives"):
-        runs_text = f"No new runs: computed from the {ab['derives']} runs"
+        runs_text = f"None: computed from the {ab['derives']} runs"
     else:
-        runs_text = f"{ab['runs']} per document per value"
+        runs_text = f"{ab['runs']} per document, per value"
     lines += [
         "| | |",
         "|---|---|",
         f"| **Changes** | {ab['changes']} |",
-        f"| **Held fixed** | {held_text} |",
+        f"| **Everything else** | {fixed_text} |",
         "| **Datasets** | "
         + "; ".join(dataset_label(k, datasets) for k in ab["datasets"])
         + " |",
