@@ -17,12 +17,19 @@ benchmarks/results/guidance/<ID>.json, its values fill the table; otherwise ever
       "region": "us-west-2",
       "source": "benchmarks/results/v0.6.15/<suite>/summary.json",
       "verdict": "Use iterative extraction above about 400 rows.",
-      "cells": {"<dataset key>|<value>|<metric key>": "0.812"}
+      "cells": {"<dataset key>|<value>|<metric key>": {"mean": 0.812, "se": 0.006}}
     }
+
+A cell is either a string, printed as is, or a mean and standard error over the runs,
+printed as "0.81 ± 0.01" (two standard errors). For each dataset kind, the ablation's
+`plot` metric (or its first metric) is drawn as a dot-and-whisker SVG under
+images/benchmark-guidance/ whenever at least one of its cells has a mean.
 
 Usage:
     python3 benchmarks/harness/render_guidance.py           # rewrite the pages
     python3 benchmarks/harness/render_guidance.py --check   # exit 1 if a page is stale
+    python3 benchmarks/harness/render_guidance.py --preview EX-02 \
+        --results sample.json --out /tmp/plots              # draw one ablation's plots
 """
 
 from __future__ import annotations
@@ -34,6 +41,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from guidance_plots import draw_plot, fmt
 
 REPO = Path(__file__).resolve().parents[2]
 REGISTRY = REPO / "benchmarks" / "matrices" / "guidance_ablations.yaml"
@@ -42,7 +50,11 @@ PAGES = REPO / "docs" / "benchmark-guidance"
 BEGIN = "<!-- BEGIN GENERATED ABLATIONS -->"
 END = "<!-- END GENERATED ABLATIONS -->"
 PRESETS = "index.md#how-we-run-a-benchmark"
+PLOTS = REPO / "images" / "benchmark-guidance"
+PLOTS_FROM_PAGES = "../../images/benchmark-guidance"
 EMPTY = "—"
+
+Cell = str | dict[str, float]
 
 
 def load_registry() -> dict[str, Any]:
@@ -58,19 +70,30 @@ def load_results(ablation_id: str) -> dict[str, Any] | None:
         return json.load(f)
 
 
+def cell_text(cell: Cell | None) -> str:
+    if cell is None:
+        return EMPTY
+    if isinstance(cell, str):
+        return cell
+    return f"{fmt(cell['mean'])} ± {fmt(2 * cell.get('se', 0))}"
+
+
 def dataset_label(key: str, datasets: dict[str, Any]) -> str:
     ds = datasets[key]
     link = ds.get("link")
     return f"[{ds['name']}]({link})" if link else ds["name"]
 
 
-def render_ablation(ab: dict[str, Any], reg: dict[str, Any]) -> str:
+def render_ablation(
+    ab: dict[str, Any], reg: dict[str, Any], results: dict[str, Any] | None
+) -> tuple[str, dict[str, str]]:
+    """Return the ablation's Markdown and its plots, keyed by SVG file name."""
     datasets: dict[str, Any] = reg["datasets"]
     metrics: dict[str, Any] = reg["metrics"]
     page = ab["page"]
     presets = PRESETS if page != "index" else "#how-we-run-a-benchmark"
-    results = load_results(ab["id"])
-    cells: dict[str, str] = (results or {}).get("cells", {})
+    cells: dict[str, Cell] = (results or {}).get("cells", {})
+    plots: dict[str, str] = {}
 
     lines = [f"### {ab['id']}: {ab['question']}", ""]
     if results:
@@ -120,22 +143,50 @@ def render_ablation(ab: dict[str, Any], reg: dict[str, Any]) -> str:
         cols = [m for m in ab["metrics"] if kind in metrics[m]["kinds"]]
         if not cols:
             continue
+        kind_sets = [k for k in ab["datasets"] if datasets[k]["kind"] == kind]
+        plot_metric = ab.get("plot") if ab.get("plot") in cols else cols[0]
+        panels = []
+        for ds_key in kind_sets:
+            rows = []
+            for value in ab["values"]:
+                cell = cells.get(f"{ds_key}|{value}|{plot_metric}")
+                rows.append((value, cell if isinstance(cell, dict) else None))
+            panels.append(
+                (datasets[ds_key].get("short", datasets[ds_key]["name"]), rows)
+            )
+        if any(p for _, rows in panels for _, p in rows):
+            name = f"{ab['id']}-{kind}.svg"
+            metric_name = metrics[plot_metric]["name"]
+            plots[name] = draw_plot(metric_name, panels, ab.get("runs", 0))
+            lines += [
+                f"![{metric_name} for each value of {ab['changes']}]"
+                f"({PLOTS_FROM_PAGES}/{name})",
+                "",
+                f"*{metric_name}. Dots are the mean of the runs; lines span two "
+                "standard errors either side.*",
+                "",
+            ]
         header = ["Dataset", ab["changes"]] + [metrics[m]["name"] for m in cols]
         lines.append("| " + " | ".join(header) + " |")
         lines.append("|" + "---|" * len(header))
-        for ds_key in [k for k in ab["datasets"] if datasets[k]["kind"] == kind]:
+        for ds_key in kind_sets:
             for value in ab["values"]:
                 row = [datasets[ds_key].get("short", datasets[ds_key]["name"]), value]
-                row += [cells.get(f"{ds_key}|{value}|{m}", EMPTY) for m in cols]
+                row += [cell_text(cells.get(f"{ds_key}|{value}|{m}")) for m in cols]
                 lines.append("| " + " | ".join(row) + " |")
         lines.append("")
     lines.append("")
-    return "\n".join(lines)
+    return "\n".join(lines), plots
 
 
-def render_page(page: str, reg: dict[str, Any]) -> str:
-    blocks = [render_ablation(ab, reg) for ab in reg["ablations"] if ab["page"] == page]
-    return "\n".join(blocks).rstrip() + "\n"
+def render_page(page: str, reg: dict[str, Any]) -> tuple[str, dict[str, str]]:
+    blocks, plots = [], {}
+    for ab in reg["ablations"]:
+        if ab["page"] == page:
+            text, ab_plots = render_ablation(ab, reg, load_results(ab["id"]))
+            blocks.append(text)
+            plots.update(ab_plots)
+    return "\n".join(blocks).rstrip() + "\n", plots
 
 
 def splice(text: str, generated: str, path: Path) -> str:
@@ -151,6 +202,9 @@ def main() -> int:
     parser.add_argument(
         "--check", action="store_true", help="fail if a page is out of date"
     )
+    parser.add_argument("--preview", metavar="ID", help="draw one ablation's plots")
+    parser.add_argument("--results", type=Path, help="results file for --preview")
+    parser.add_argument("--out", type=Path, help="output directory for --preview")
     args = parser.parse_args()
 
     reg = load_registry()
@@ -159,17 +213,50 @@ def main() -> int:
     if duplicates:
         raise SystemExit(f"duplicate ablation IDs: {', '.join(duplicates)}")
 
+    if args.preview:
+        if not (args.results and args.out):
+            raise SystemExit("--preview needs --results and --out")
+        ab = next((a for a in reg["ablations"] if a["id"] == args.preview), None)
+        if ab is None:
+            raise SystemExit(f"no ablation {args.preview}")
+        results = json.loads(args.results.read_text(encoding="utf-8"))
+        _, plots = render_ablation(ab, reg, results)
+        args.out.mkdir(parents=True, exist_ok=True)
+        for name, svg in plots.items():
+            (args.out / name).write_text(svg, encoding="utf-8")
+            print(f"wrote {args.out / name}")
+        return 0
+
     stale: list[str] = []
+    expected: dict[str, str] = {}
     for page in sorted({ab["page"] for ab in reg["ablations"]}):
         path = PAGES / f"{page}.md"
         text = path.read_text(encoding="utf-8")
-        updated = splice(text, render_page(page, reg), path)
+        generated, plots = render_page(page, reg)
+        expected.update(plots)
+        updated = splice(text, generated, path)
         if updated != text:
             if args.check:
                 stale.append(str(path.relative_to(REPO)))
             else:
                 path.write_text(updated, encoding="utf-8")
                 print(f"rendered {path.relative_to(REPO)}")
+    existing = {p.name for p in PLOTS.glob("*.svg")} if PLOTS.exists() else set()
+    for name, svg in expected.items():
+        plot = PLOTS / name
+        if not plot.exists() or plot.read_text(encoding="utf-8") != svg:
+            if args.check:
+                stale.append(str(plot.relative_to(REPO)))
+            else:
+                PLOTS.mkdir(parents=True, exist_ok=True)
+                plot.write_text(svg, encoding="utf-8")
+                print(f"drew {plot.relative_to(REPO)}")
+    for name in sorted(existing - expected.keys()):
+        if args.check:
+            stale.append(f"{(PLOTS / name).relative_to(REPO)} (no longer drawn)")
+        else:
+            (PLOTS / name).unlink()
+            print(f"removed {(PLOTS / name).relative_to(REPO)}")
     if stale:
         print(
             "out of date, run render_guidance.py: " + ", ".join(stale), file=sys.stderr
