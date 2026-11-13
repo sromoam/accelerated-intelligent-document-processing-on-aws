@@ -1,6 +1,6 @@
 {
   "ablation": "EX-12",
-  "verdict": "Measured; see the table.",
+  "verdict": "Structured output, or leave it off; avoid the forced tool. Structured output scored the same as the default on W-2 forms (0.96) and slightly higher on RealKIE invoices (0.84 against 0.81, at the edge of the noise), and it was a little cheaper and faster. The forced tool lowered accuracy on W-2 forms (0.89 against 0.96) and got no W-2 fully right.",
   "runs": {
     "realkie": {
       "Off: schema in the prompt (default)": [
@@ -24,10 +24,39 @@
         "Fake-W2-Tax-Forms-20261113-212143",
         "Fake-W2-Tax-Forms-20261113-212145",
         "Fake-W2-Tax-Forms-20261113-212202"
+      ],
+      "Structured output": [
+        "Fake-W2-Tax-Forms-20261113-212313",
+        "Fake-W2-Tax-Forms-20261113-212311",
+        "Fake-W2-Tax-Forms-20261113-212326"
+      ],
+      "Forced tool": [
+        "Fake-W2-Tax-Forms-20261113-212439",
+        "Fake-W2-Tax-Forms-20261113-212441",
+        "Fake-W2-Tax-Forms-20261113-212442"
+      ]
+    },
+    "realkie_long": {
+      "Structured output": [
+        "realkie-fcc-long-20261113-213052",
+        "realkie-fcc-long-20261113-213055",
+        "realkie-fcc-long-20261113-213057"
+      ],
+      "Off: schema in the prompt (default)": [
+        "realkie-fcc-long-20261113-213053",
+        "realkie-fcc-long-20261113-213054",
+        "realkie-fcc-long-20261113-213056"
+      ],
+      "Forced tool": [
+        "realkie-fcc-long-20261113-213058",
+        "realkie-fcc-long-20261113-213059",
+        "realkie-fcc-long-20261113-213104"
       ]
     }
   },
-  "max_failed": {},
+  "max_failed": {
+    "realkie_long": 1
+  },
   "stack": "sr-testing",
   "region": "us-east-1",
   "release": "0.6.15.dev1",
@@ -36,6 +65,12 @@
     "Fake-W2-Tax-Forms-20261113-212143",
     "Fake-W2-Tax-Forms-20261113-212145",
     "Fake-W2-Tax-Forms-20261113-212202",
+    "Fake-W2-Tax-Forms-20261113-212311",
+    "Fake-W2-Tax-Forms-20261113-212313",
+    "Fake-W2-Tax-Forms-20261113-212326",
+    "Fake-W2-Tax-Forms-20261113-212439",
+    "Fake-W2-Tax-Forms-20261113-212441",
+    "Fake-W2-Tax-Forms-20261113-212442",
     "RealKIE-FCC-Verified-20261113-211216",
     "RealKIE-FCC-Verified-20261113-211217",
     "RealKIE-FCC-Verified-20261113-211218",
@@ -44,6 +79,15 @@
     "RealKIE-FCC-Verified-20261113-211543",
     "RealKIE-FCC-Verified-20261113-211823",
     "RealKIE-FCC-Verified-20261113-211824",
-    "RealKIE-FCC-Verified-20261113-211839"
+    "RealKIE-FCC-Verified-20261113-211839",
+    "realkie-fcc-long-20261113-213052",
+    "realkie-fcc-long-20261113-213053",
+    "realkie-fcc-long-20261113-213054",
+    "realkie-fcc-long-20261113-213055",
+    "realkie-fcc-long-20261113-213056",
+    "realkie-fcc-long-20261113-213057",
+    "realkie-fcc-long-20261113-213058",
+    "realkie-fcc-long-20261113-213059",
+    "realkie-fcc-long-20261113-213104"
   ]
 }

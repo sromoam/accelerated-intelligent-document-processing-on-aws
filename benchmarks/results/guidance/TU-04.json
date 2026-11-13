@@ -1,0 +1,567 @@
+{
+  "release": "0.6.15.dev1",
+  "measured": "November 2026",
+  "region": "us-east-1",
+  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-213122, RealKIE-FCC-Verified-20261113-213123, RealKIE-FCC-Verified-20261113-213124, RealKIE-FCC-Verified-20261113-213133, RealKIE-FCC-Verified-20261113-213135, RealKIE-FCC-Verified-20261113-213136, RealKIE-FCC-Verified-20261113-213134, RealKIE-FCC-Verified-20261113-213137, RealKIE-FCC-Verified-20261113-213138, Fake-W2-Tax-Forms-20261113-213138, Fake-W2-Tax-Forms-20261113-213139, Fake-W2-Tax-Forms-20261113-213145, Fake-W2-Tax-Forms-20261113-213146, Fake-W2-Tax-Forms-20261113-213148, Fake-W2-Tax-Forms-20261113-213149, Fake-W2-Tax-Forms-20261113-213147, Fake-W2-Tax-Forms-20261113-213150, Fake-W2-Tax-Forms-20261113-213151",
+  "verdict": "Claude Haiku 5.5 for extraction, Amazon Textract with Layout only, and confidence off or scored by Claude Haiku 5.5. On RealKIE invoices it cost $21 per 1,000 documents against $135 for the default, and scored the same (0.83 against 0.82); on W-2 forms it cost $5 against $32 and scored higher (0.998 against 0.966). Scoring with Claude Haiku 5.5 added $7 per 1,000 invoices and gave confidence that separates right from wrong (AUROC 0.84, against 0.51 for the default).",
+  "cells": {
+    "realkie|Default|weighted_accuracy": {
+      "mean": 0.817479,
+      "se": 0.033442
+    },
+    "realkie|Default|extraction_tokens": {
+      "mean": 557024.666667,
+      "se": 10193.670215
+    },
+    "realkie|Default|scoring_tokens": {
+      "mean": 1043226.333333,
+      "se": 41421.911119
+    },
+    "realkie|Default|total_tokens": {
+      "mean": 1600251.0,
+      "se": 44244.361754
+    },
+    "realkie|Default|median_seconds": {
+      "mean": 37.704207,
+      "se": 1.69449
+    },
+    "realkie|Default|all_fields_right": {
+      "mean": 0.033333,
+      "se": 0.016667
+    },
+    "realkie|Default|auroc": {
+      "mean": 0.51188,
+      "se": 0.001663
+    },
+    "realkie|Default|calibration_error": {
+      "mean": 0.173622,
+      "se": 0.010775
+    },
+    "realkie|Default|errors_caught_30": {
+      "mean": 0.270541,
+      "se": 0.011046
+    },
+    "realkie|Default|errors_caught_30_random": {
+      "mean": 0.299417,
+      "se": 0.000291
+    },
+    "realkie|Default|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off|weighted_accuracy": {
+      "mean": 0.827923,
+      "se": 0.03531
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off|extraction_tokens": {
+      "mean": 391700.646091,
+      "se": 192230.641363
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off|total_tokens": {
+      "mean": 391700.646091,
+      "se": 192230.641363
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off|median_seconds": {
+      "mean": 22.863261,
+      "se": 0.292006
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off|all_fields_right": {
+      "mean": 0.033333,
+      "se": 0.016667
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|weighted_accuracy": {
+      "mean": 0.828622,
+      "se": 0.033154
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|extraction_tokens": {
+      "mean": 574834.0,
+      "se": 2729.170387
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|scoring_tokens": {
+      "mean": 1066022.666667,
+      "se": 53678.580475
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|total_tokens": {
+      "mean": 1640856.666667,
+      "se": 56291.190591
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|median_seconds": {
+      "mean": 38.607135,
+      "se": 0.257231
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|all_fields_right": {
+      "mean": 0.1,
+      "se": 0.0
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|auroc": {
+      "mean": 0.840594,
+      "se": 0.047114
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|calibration_error": {
+      "mean": 0.050545,
+      "se": 0.013958
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|errors_caught_30": {
+      "mean": 0.822806,
+      "se": 0.109328
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|errors_caught_30_random": {
+      "mean": 0.299059,
+      "se": 0.000297
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Default|weighted_accuracy": {
+      "mean": 0.966389,
+      "se": 0.006035
+    },
+    "fake_w2|Default|extraction_tokens": {
+      "mean": 92112.666667,
+      "se": 46056.364632
+    },
+    "fake_w2|Default|scoring_tokens": {
+      "mean": 111450.0,
+      "se": 55725.083413
+    },
+    "fake_w2|Default|total_tokens": {
+      "mean": 203562.666667,
+      "se": 101781.3423
+    },
+    "fake_w2|Default|median_seconds": {
+      "mean": 24.708682,
+      "se": 0.155021
+    },
+    "fake_w2|Default|all_fields_right": {
+      "mean": 0.25,
+      "se": 0.076376
+    },
+    "fake_w2|Default|auroc": {
+      "mean": 0.412861,
+      "se": 0.038306
+    },
+    "fake_w2|Default|calibration_error": {
+      "mean": 0.034173,
+      "se": 0.007211
+    },
+    "fake_w2|Default|errors_caught_30": {
+      "mean": 0.094444,
+      "se": 0.058002
+    },
+    "fake_w2|Default|errors_caught_30_random": {
+      "mean": 0.29963,
+      "se": 0.0
+    },
+    "fake_w2|Default|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off|weighted_accuracy": {
+      "mean": 0.997791,
+      "se": 0.001321
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off|extraction_tokens": {
+      "mean": 101094.733333,
+      "se": 46834.827538
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off|total_tokens": {
+      "mean": 101094.733333,
+      "se": 46834.827538
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off|median_seconds": {
+      "mean": 16.922079,
+      "se": 0.179941
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off|all_fields_right": {
+      "mean": 0.8,
+      "se": 0.028868
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|weighted_accuracy": {
+      "mean": 0.997791,
+      "se": 0.001223
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|extraction_tokens": {
+      "mean": 101280.066667,
+      "se": 46935.048386
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|scoring_tokens": {
+      "mean": 146743.616667,
+      "se": 67782.220733
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|total_tokens": {
+      "mean": 248023.683333,
+      "se": 114716.268225
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|median_seconds": {
+      "mean": 29.673552,
+      "se": 0.26747
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|all_fields_right": {
+      "mean": 0.8,
+      "se": 0.0
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|auroc": {
+      "mean": 0.98321,
+      "se": 0.015554
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|calibration_error": {
+      "mean": 0.048178,
+      "se": 0.000361
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|errors_caught_30": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|errors_caught_30_random": {
+      "mean": 0.299753,
+      "se": 0.000123
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    }
+  },
+  "sample": {
+    "realkie|Default": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Default": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring": {
+      "docs": [
+        20,
+        20,
+        20
+      ],
+      "failed": [
+        0,
+        0,
+        0
+      ],
+      "runs": 3
+    }
+  },
+  "models": {
+    "realkie|Default": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0",
+          "us.anthropic.claude-sonnet-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off": {
+      "OCR": "Amazon Textract (Layout)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Haiku 5.5, single pass",
+      "Confidence": "Off",
+      "billed": {
+        "Extraction": [
+          "us.anthropic.claude-haiku-5-5"
+        ]
+      }
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring": {
+      "OCR": "Amazon Textract (Layout)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Haiku 5.5, single pass",
+      "Confidence": "Claude Haiku 5.5, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.anthropic.claude-haiku-5-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-haiku-5-5"
+        ]
+      }
+    },
+    "fake_w2|Default": {
+      "OCR": "Amazon Textract (Tables, Layout, Signatures)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Sonnet 5, single pass",
+      "Confidence": "Amazon Nova Lite, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.amazon.nova-lite-v1:0"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-sonnet-5"
+        ]
+      }
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off": {
+      "OCR": "Amazon Textract (Layout)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Haiku 5.5, single pass",
+      "Confidence": "Off",
+      "billed": {
+        "Extraction": [
+          "us.anthropic.claude-haiku-5-5"
+        ]
+      }
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring": {
+      "OCR": "Amazon Textract (Layout)",
+      "Classification": "Amazon Nova 2 Lite, page by page (no calls billed)",
+      "Extraction": "Claude Haiku 5.5, single pass",
+      "Confidence": "Claude Haiku 5.5, escalating to Claude Sonnet 5",
+      "billed": {
+        "Assessment": [
+          "us.anthropic.claude-haiku-5-5"
+        ],
+        "Extraction": [
+          "us.anthropic.claude-haiku-5-5"
+        ]
+      }
+    }
+  },
+  "usage": {
+    "realkie|Default": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 32807.8,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 14486.25,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 3799.2,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1775.15,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 1695.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 2638.85,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 25315.2,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 1644.3,
+        "textract/analyze_document-Tables|pages": 4.05
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 24630.15,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 19820.75,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 3585.1,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1638.6,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 4249.1,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 23765.15,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 1579.45,
+        "textract/analyze_document-Tables|pages": 3.8
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 29709.2,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 13599.75,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 3528.9,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 1617.95,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 1610.25,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 25003.85,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 1537.7,
+        "textract/analyze_document-Tables|pages": 4.0
+      }
+    ],
+    "realkie|Claude Haiku 5.5, Layout only, confidence off": [
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 1610.25,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 84.75,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 23615.7,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 3675.15,
+        "textract/analyze_document-Layout|pages": 4.05
+      },
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 1695.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 23615.7,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 4095.05,
+        "textract/analyze_document-Layout|pages": 4.05
+      },
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 1610.25,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 84.75,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 23615.7,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 4132.55,
+        "textract/analyze_document-Layout|pages": 4.05
+      }
+    ],
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring": [
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 15520.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 29478.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 25749.1,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 8218.35,
+        "textract/analyze_document-Layout|pages": 4.05
+      },
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 15604.75,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 29393.25,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 25788.65,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 8712.9,
+        "textract/analyze_document-Layout|pages": 4.05
+      },
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 21890.4,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 29393.25,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 26278.75,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 10101.1,
+        "textract/analyze_document-Layout|pages": 4.05
+      }
+    ],
+    "fake_w2|Default": [
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 3111.85,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 1470.0,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 2790.95,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 977.6,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 3142.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 2860.5,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 910.6,
+        "textract/analyze_document-Tables|pages": 1.0
+      },
+      {
+        "bedrock/us.amazon.nova-lite-v1:0|cacheReadInputTokens": 2935.6,
+        "bedrock/us.amazon.nova-lite-v1:0|cacheWriteInputTokens": 1646.1,
+        "bedrock/us.amazon.nova-lite-v1:0|inputTokens": 2790.2,
+        "bedrock/us.amazon.nova-lite-v1:0|outputTokens": 995.2,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheReadInputTokens": 3142.0,
+        "bedrock/us.anthropic.claude-sonnet-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-sonnet-5|inputTokens": 2860.5,
+        "bedrock/us.anthropic.claude-sonnet-5|outputTokens": 901.3,
+        "textract/analyze_document-Tables|pages": 1.0
+      }
+    ],
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off": [
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 3142.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 2357.9,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 1926.3,
+        "textract/analyze_document-Layout|pages": 1.0
+      },
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 3142.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 2357.9,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 1916.4,
+        "textract/analyze_document-Layout|pages": 1.0
+      },
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 3142.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 0.0,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 2357.9,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 1876.7,
+        "textract/analyze_document-Layout|pages": 1.0
+      }
+    ],
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring": [
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 6056.8,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 2358.6,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 4673.4,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 5076.05,
+        "textract/analyze_document-Layout|pages": 1.0
+      },
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 6051.65,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 2363.75,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 4673.5,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 5020.2,
+        "textract/analyze_document-Layout|pages": 1.0
+      },
+      {
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheReadInputTokens": 4177.7,
+        "bedrock/us.anthropic.claude-haiku-5-5|cacheWriteInputTokens": 4501.4,
+        "bedrock/us.anthropic.claude-haiku-5-5|inputTokens": 4746.25,
+        "bedrock/us.anthropic.claude-haiku-5-5|outputTokens": 5166.7,
+        "textract/analyze_document-Layout|pages": 1.0
+      }
+    ]
+  },
+  "cost_basis": {
+    "realkie|Default": {
+      "mode": "cache-isolated"
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off": {
+      "mode": "cache-isolated"
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring": {
+      "mode": "cache-isolated"
+    },
+    "fake_w2|Default": {
+      "mode": "cache-isolated"
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, confidence off": {
+      "mode": "cache-isolated"
+    },
+    "fake_w2|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring": {
+      "mode": "cache-isolated"
+    }
+  }
+}

@@ -51,7 +51,11 @@ Some benchmarks here reuse runs from other pages.
 
 ### What is the cheapest configuration that keeps accuracy?
 
-**Answer:** Not yet measured. [Details: TU-04](#tu-04-what-is-the-cheapest-configuration-that-keeps-accuracy)
+**Answer:** Claude Haiku 5.5 for extraction, Amazon Textract with Layout only, and confidence off or scored by Claude Haiku 5.5. On RealKIE invoices it cost $21 per 1,000 documents against $135 for the default, and scored the same (0.83 against 0.82); on W-2 forms it cost $5 against $32 and scored higher (0.998 against 0.966). Scoring with Claude Haiku 5.5 added $7 per 1,000 invoices and gave confidence that separates right from wrong (AUROC 0.84, against 0.51 for the default). [Details: TU-04](#tu-04-what-is-the-cheapest-configuration-that-keeps-accuracy)
+
+![Weighted accuracy against cost per 1,000 documents (USD) for each Configuration](../../images/benchmark-guidance/TU-04-fields.svg)
+
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: varies (the setting under test) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: varies (the setting under test) · Confidence: varies (the setting under test). N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### How many tokens does each extraction model use for the same document?
 
@@ -150,38 +154,28 @@ Some benchmarks here reuse runs from other pages.
 
 #### TU-04: What is the cheapest configuration that keeps accuracy?
 
-**Answer:** Not yet measured.
+**Answer:** Claude Haiku 5.5 for extraction, Amazon Textract with Layout only, and confidence off or scored by Claude Haiku 5.5. On RealKIE invoices it cost $21 per 1,000 documents against $135 for the default, and scored the same (0.83 against 0.82); on W-2 forms it cost $5 against $32 and scored higher (0.998 against 0.966). Scoring with Claude Haiku 5.5 added $7 per 1,000 invoices and gave confidence that separates right from wrong (AUROC 0.84, against 0.51 for the default).
+
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-213122, RealKIE-FCC-Verified-20261113-213123, RealKIE-FCC-Verified-20261113-213124, RealKIE-FCC-Verified-20261113-213133, RealKIE-FCC-Verified-20261113-213135, RealKIE-FCC-Verified-20261113-213136, RealKIE-FCC-Verified-20261113-213134, RealKIE-FCC-Verified-20261113-213137, RealKIE-FCC-Verified-20261113-213138, Fake-W2-Tax-Forms-20261113-213138, Fake-W2-Tax-Forms-20261113-213139, Fake-W2-Tax-Forms-20261113-213145, Fake-W2-Tax-Forms-20261113-213146, Fake-W2-Tax-Forms-20261113-213148, Fake-W2-Tax-Forms-20261113-213149, Fake-W2-Tax-Forms-20261113-213147, Fake-W2-Tax-Forms-20261113-213150, Fake-W2-Tax-Forms-20261113-213151`.*
 
 | | |
 |---|---|
 | **Changes** | Configuration |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
-| **Runs** | 3 per document, per value |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields) |
+| **Models** | OCR: varies (the setting under test) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: varies (the setting under test) · Confidence: varies (the setting under test). |
+| **Runs** | 3 per document, per value; N = 20 documents × 3 runs |
 
-| Dataset | Configuration | Weighted accuracy | Total tokens per page |
-|---|---|---|---|
-| RealKIE | Preset | — | — |
-| RealKIE | Holistic classification, text only | — | — |
-| RealKIE | Textract layout only | — | — |
-| RealKIE | Confidence off | — | — |
-| RealKIE | All three together | — | — |
+| Dataset | Configuration | Weighted accuracy | Documents with every field right | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs Claude Haiku 5.5, Layout only, confidence off |
+|---|---|---|---|---|---|---|---|
+| RealKIE | Default | 0.82 ± 0.07 | 0.03 ± 0.03 | 1,600,251 ± 88,489 | $135 ± $8.69 | 38 ± 3.39 | — |
+| RealKIE | Claude Haiku 5.5, Layout only, confidence off | 0.83 ± 0.07 | 0.03 ± 0.03 | 391,701 ± 384,461 | $21.0 ± $0.16 | 23 ± 0.58 | — |
+| RealKIE | Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring | 0.83 ± 0.07 | 0.1 ± 0 | 1,640,857 ± 112,582 | $28.2 ± $0.70 | 39 ± 0.51 | no measurable gain |
+| Fake-W2 | Default | 0.97 ± 0.01 | 0.25 ± 0.15 | 203,563 ± 203,563 | $32.4 ± $0.10 | 25 ± 0.31 | — |
+| Fake-W2 | Claude Haiku 5.5, Layout only, confidence off | 1 ± 0 | 0.8 ± 0.06 | 101,095 ± 93,670 | $5.34 ± $0.02 | 17 ± 0.36 | — |
+| Fake-W2 | Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring | 1 ± 0 | 0.8 ± 0 | 248,024 ± 229,433 | $7.80 ± $0.23 | 30 ± 0.53 | — |
 
-| Dataset | Configuration | Boundary accuracy | Total tokens per page |
-|---|---|---|---|
-| DocSplit | Preset | — | — |
-| DocSplit | Holistic classification, text only | — | — |
-| DocSplit | Textract layout only | — | — |
-| DocSplit | Confidence off | — | — |
-| DocSplit | All three together | — | — |
-
-| Dataset | Configuration | Completeness | Total tokens per page |
-|---|---|---|---|
-| Statement, 400 rows | Preset | — | — |
-| Statement, 400 rows | Holistic classification, text only | — | — |
-| Statement, 400 rows | Textract layout only | — | — |
-| Statement, 400 rows | Confidence off | — | — |
-| Statement, 400 rows | All three together | — | — |
+*Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13. Amazon Bedrock and Amazon Textract only; Lambda and other AWS charges are not included.*
 
 
 #### TU-05: How many tokens does each extraction model use for the same document?

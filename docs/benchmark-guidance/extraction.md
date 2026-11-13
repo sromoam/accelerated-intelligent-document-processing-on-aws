@@ -115,7 +115,11 @@ Poor scans and handwriting give it less to read, and long tables need a mode bui
 
 ### Does structured output make single-pass extraction more accurate?
 
-**Answer:** Not yet measured. [Details: EX-12](#ex-12-does-structured-output-make-single-pass-extraction-more-accurate)
+**Answer:** Structured output, or leave it off; avoid the forced tool. Structured output scored the same as the default on W-2 forms (0.96) and slightly higher on RealKIE invoices (0.84 against 0.81, at the edge of the noise), and it was a little cheaper and faster. The forced tool lowered accuracy on W-2 forms (0.89 against 0.96) and got no W-2 fully right. [Details: EX-12](#ex-12-does-structured-output-make-single-pass-extraction-more-accurate)
+
+![Weighted accuracy against cost per 1,000 documents (USD) for each Schema enforcement (`extraction.schema_enforcement.mode`)](../../images/benchmark-guidance/EX-12-fields.svg)
+
+*Weighted accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each other value, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)).* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields), [RealKIE, long](datasets.md#realkie-fcc-verified-long-invoices-19-invoices-8-to-33-pages). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N: RealKIE — 20 documents × 3 runs; Fake-W2 — 20 documents × 3 runs; RealKIE, long — 19 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### How should I extract sections that hold several records?
 
@@ -458,26 +462,31 @@ the rows.
 
 #### EX-12: Does structured output make single-pass extraction more accurate?
 
-**Answer:** Not yet measured.
+**Answer:** Structured output, or leave it off; avoid the forced tool. Structured output scored the same as the default on W-2 forms (0.96) and slightly higher on RealKIE invoices (0.84 against 0.81, at the edge of the noise), and it was a little cheaper and faster. The forced tool lowered accuracy on W-2 forms (0.89 against 0.96) and got no W-2 fully right.
+
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-211217, RealKIE-FCC-Verified-20261113-211218, RealKIE-FCC-Verified-20261113-211216, RealKIE-FCC-Verified-20261113-211535, RealKIE-FCC-Verified-20261113-211526, RealKIE-FCC-Verified-20261113-211543, RealKIE-FCC-Verified-20261113-211823, RealKIE-FCC-Verified-20261113-211839, RealKIE-FCC-Verified-20261113-211824, Fake-W2-Tax-Forms-20261113-212143, Fake-W2-Tax-Forms-20261113-212145, Fake-W2-Tax-Forms-20261113-212202, Fake-W2-Tax-Forms-20261113-212313, Fake-W2-Tax-Forms-20261113-212311, Fake-W2-Tax-Forms-20261113-212326, Fake-W2-Tax-Forms-20261113-212439, Fake-W2-Tax-Forms-20261113-212441, Fake-W2-Tax-Forms-20261113-212442, realkie-fcc-long-20261113-213052, realkie-fcc-long-20261113-213055, realkie-fcc-long-20261113-213057, realkie-fcc-long-20261113-213053, realkie-fcc-long-20261113-213054, realkie-fcc-long-20261113-213056, realkie-fcc-long-20261113-213058, realkie-fcc-long-20261113-213059, realkie-fcc-long-20261113-213104`.*
 
 | | |
 |---|---|
 | **Changes** | Schema enforcement (`extraction.schema_enforcement.mode`) |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields); [RealKIE-FCC-Verified, long invoices (19 invoices, 8 to 33 pages)](datasets.md#realkie-fcc-verified-long-invoices-19-invoices-8-to-33-pages) |
-| **Runs** | 3 per document, per value |
+| **Models** | OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. |
+| **Runs** | 3 per document, per value; N: RealKIE — 20 documents × 3 runs; Fake-W2 — 20 documents × 3 runs; RealKIE, long — 19 documents × 3 runs |
 
-| Dataset | Schema enforcement (`extraction.schema_enforcement.mode`) | Weighted accuracy | Documents with every field right | Extraction tokens per page | Total tokens per page | Median seconds per document |
-|---|---|---|---|---|---|---|
-| RealKIE | Off: schema in the prompt (default) | — | — | — | — | — |
-| RealKIE | Structured output | — | — | — | — | — |
-| RealKIE | Forced tool | — | — | — | — | — |
-| Fake-W2 | Off: schema in the prompt (default) | — | — | — | — | — |
-| Fake-W2 | Structured output | — | — | — | — | — |
-| Fake-W2 | Forced tool | — | — | — | — | — |
-| RealKIE, long | Off: schema in the prompt (default) | — | — | — | — | — |
-| RealKIE, long | Structured output | — | — | — | — | — |
-| RealKIE, long | Forced tool | — | — | — | — | — |
+| Dataset | Schema enforcement (`extraction.schema_enforcement.mode`) | Weighted accuracy | Documents with every field right | Extraction tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs cheapest |
+|---|---|---|---|---|---|---|---|---|
+| RealKIE | Off: schema in the prompt (default) | 0.81 ± 0.06 | 0.05 ± 0 | 7,055 ± 6.46 | 21,131 ± 246 | $145 ± $1.25 | 41 ± 6.93 | — |
+| RealKIE | Structured output | 0.84 ± 0.07 | 0.08 ± 0.03 | 7,252 ± 0.28 | 20,383 ± 957 | $135 ± $0.74 | 31 ± 3.49 | — |
+| RealKIE | Forced tool | 0.82 ± 0.07 | 0.07 ± 0.03 | 7,335 ± 3.28 | 21,270 ± 1,326 | $139 ± $4.94 | 36 ± 3.36 | — |
+| Fake-W2 | Off: schema in the prompt (default) | 0.96 ± 0.01 | 0.15 ± 0.06 | 6,901 ± 11 | 15,276 ± 40 | $34.0 ± $0.93 | 27 ± 1.78 | — |
+| Fake-W2 | Structured output | 0.96 ± 0.01 | 0.22 ± 0.03 | 6,905 ± 14 | 15,272 ± 31 | $32.4 ± $0.16 | 25 ± 0.52 | — |
+| Fake-W2 | Forced tool | 0.89 ± 0.01 | 0 ± 0 | 9,962 ± 0.52 | 18,313 ± 4.9 | $42.5 ± $1.26 | 29 ± 1.45 | — |
+| RealKIE, long | Off: schema in the prompt (default) | 0.79 ± 0.08 | 0.04 ± 0.04 | 1,043,012 ± 1,035,840 | 5,119,416 ± 5,222,129 | $448 ± $9.63 | 149 ± 2.5 | no measurable gain |
+| RealKIE, long | Structured output | 0.81 ± 0.06 | 0 ± 0 | 1,059,084 ± 1,051,665 | 5,225,387 ± 5,184,786 | $404 ± $8.84 | 142 ± 15 | no measurable gain |
+| RealKIE, long | Forced tool | 0.77 ± 0.06 | 0 ± 0 | 1,059,792 ± 1,059,793 | 5,044,236 ± 5,045,061 | $401 ± $9.30 | 99 ± 6.03 | — |
+
+*Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13. Amazon Bedrock and Amazon Textract only; Lambda and other AWS charges are not included.*
 
 
 #### EX-13: How should I extract sections that hold several records?

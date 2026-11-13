@@ -35,6 +35,11 @@ Metrics (cell keys `dataset|value|metric`, each a mean and standard error):
     all_fields_right    share of documents scoring 1.0, per run; SE across runs
     auroc               field-confidence AUROC, per run; SE across runs
     calibration_error   field-confidence ECE, per run; SE across runs
+    errors_caught_30    share of wrong values found by reviewing the 30% of values
+                        with the lowest confidence, per run; SE across runs
+    errors_caught_30_random
+                        the share the same review finds when it picks values at
+                        random (about 0.30), per run; SE across runs
     page_accuracy       share of pages with the right class, per run; SE across runs
     section_accuracy    share of sections with the right pages and class, per run
     grouping_score      DocSplit packet score for grouping pages into documents
@@ -113,6 +118,9 @@ STEP_METRICS = {
     "extraction_tokens": ("Extraction",),
     "scoring_tokens": ("Assessment",),
 }
+#: The review budget behind `errors_caught_30`: the share of values a reviewer checks,
+#: lowest confidence first, as Test Studio keys it under error_capture_at_budget.
+REVIEW_BUDGET = "0.30"
 #: Cost-breakdown services kept as usage, and units that carry no price of their own.
 PRICED_SERVICES = ("bedrock/", "textract/")
 UNPRICED_UNITS = ("requests", "totalTokens")
@@ -355,6 +363,15 @@ def run_metrics(result: dict[str, Any]) -> dict[str, float]:
         out["auroc"] = float(overall["auroc"]["value"])
     if (overall.get("ece") or {}).get("value") is not None:
         out["calibration_error"] = float(overall["ece"]["value"])
+    budget = (
+        ((overall.get("error_capture_at_budget") or {}).get("budgets") or {}).get(
+            REVIEW_BUDGET
+        )
+    ) or {}
+    if budget.get("pct_errors_caught") is not None:
+        out["errors_caught_30"] = float(budget["pct_errors_caught"])
+    if budget.get("pct_errors_random") is not None:
+        out["errors_caught_30_random"] = float(budget["pct_errors_random"])
     split = result.get("splitClassificationMetrics") or {}
     if split.get("page_level_accuracy") is not None:
         out["page_accuracy"] = float(split["page_level_accuracy"])
@@ -518,9 +535,15 @@ def main() -> int:
                 }
                 with_billed(lines, bedrock_steps, billed)
                 models[key] = {**lines, "billed": dict(sorted(billed.items()))}
+            all_isolated = bool(ids) and all(i in isolated for i in ids)
+            if all_isolated and any(runs_usage) and not all(runs_usage):
+                # Test Studio occasionally records no metering for a run. With
+                # cache-isolated runs every run is priced alike, so price the
+                # value from the runs that have usage.
+                runs_usage = [u for u in runs_usage if u]
             if runs_usage and all(runs_usage):
                 usage[key] = runs_usage
-                if ids and all(i in isolated for i in ids):
+                if all_isolated:
                     basis[key] = {"mode": "cache-isolated"}
                 else:
                     _, _, cold_id, cold_index = min(coldest)

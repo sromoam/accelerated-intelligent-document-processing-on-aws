@@ -424,7 +424,7 @@ ablations:
     changes: "Scoring model"
     values: ["Amazon Nova Lite (default)", "Amazon Nova 2 Lite", "Claude Haiku 5.5", "Claude Sonnet 5"]
     set: [{"extraction.confidence.model": "us.amazon.nova-lite-v1:0"}, {"extraction.confidence.model": "us.amazon.nova-2-lite-v1:0"}, {"extraction.confidence.model": "us.anthropic.claude-haiku-5-5"}, {"extraction.confidence.model": "us.anthropic.claude-sonnet-5"}]
-    datasets: [confbench, realkie]
+    datasets: [confbench, realkie, fake_w2]
     runs: 3
     metrics: [auroc, calibration_error, alert_rate, errors_caught, scoring_tokens]
   - id: CF-03
@@ -535,10 +535,11 @@ ablations:
     page: token-use
     question: "What is the cheapest configuration that keeps accuracy?"
     changes: "Configuration"
-    values: ["Preset", "Holistic classification, text only", "Textract layout only", "Confidence off", "All three together"]
-    datasets: [realkie, docsplit, synth_400]
+    values: ["Default", "Claude Haiku 5.5, Layout only, confidence off", "Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring"]
+    set: [{}, {"extraction.model": "us.anthropic.claude-haiku-5-5", "extraction.confidence.mode": "off", "ocr.features": [{"name": "LAYOUT"}]}, {"extraction.model": "us.anthropic.claude-haiku-5-5", "extraction.confidence.model": "us.anthropic.claude-haiku-5-5", "ocr.features": [{"name": "LAYOUT"}]}]
+    datasets: [realkie, fake_w2]
     runs: 3
-    metrics: [weighted_accuracy, boundary_accuracy, completeness, total_tokens]
+    metrics: [weighted_accuracy, all_fields_right, total_tokens, median_seconds]
   - id: TU-05
     page: token-use
     question: "How many tokens does each extraction model use for the same document?"
