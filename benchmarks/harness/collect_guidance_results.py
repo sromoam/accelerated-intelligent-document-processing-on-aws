@@ -143,6 +143,7 @@ def main() -> int:
     table = tracking_table(man["stack"], man["region"])
     cells: dict[str, dict[str, float]] = {}
     run_ids: list[str] = []
+    failed_total = 0
     for ds_key, values in man["runs"].items():
         for value, ids in values.items():
             per_doc: dict[str, list[float]] = {}
@@ -152,10 +153,16 @@ def main() -> int:
             for run_id in ids:
                 path = args.results_dir / f"{run_id}-result.json"
                 result = json.loads(path.read_text(encoding="utf-8"))
-                if result.get("status") != "COMPLETE" or result.get("failedFiles"):
+                failed = int(result.get("failedFiles") or 0)
+                allowed = int(man.get("max_failed", {}).get(ds_key, 0))
+                if failed > allowed or result.get("status") not in (
+                    "COMPLETE",
+                    "PARTIAL_COMPLETE",
+                ):
                     raise SystemExit(
                         f"{run_id}: not a clean run ({result.get('status')})"
                     )
+                failed_total += failed
                 run_ids.append(run_id)
                 scores = result.get("weightedOverallScores") or {}
                 for key, score in scores.items():
@@ -188,7 +195,13 @@ def main() -> int:
         "release": man["release"],
         "measured": man["measured"],
         "region": man["region"],
-        "source": "Test Studio runs " + ", ".join(run_ids),
+        "source": "Test Studio runs "
+        + ", ".join(run_ids)
+        + (
+            f" ({failed_total} failed documents left out of the scores)"
+            if failed_total
+            else ""
+        ),
         "verdict": man["verdict"],
         "cells": cells,
     }
