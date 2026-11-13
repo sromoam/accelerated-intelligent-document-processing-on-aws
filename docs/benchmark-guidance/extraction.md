@@ -90,7 +90,7 @@ the rows.
 
 ### When is agentic (iterative) extraction worth it?
 
-**Answer:** On invoices, iterative extraction scored the same as single pass (0.80 each) and used about twice the extraction tokens per page. Use single pass for invoices and other documents without long lists. [Details: EX-01](#ex-01-when-is-agentic-iterative-extraction-worth-it)
+**Answer:** Not for invoices or forms. On RealKIE invoices both modes scored 0.80; on W-2 forms iterative scored 0.97 against 0.95, a difference within the noise. Iterative used about the same total tokens per page on invoices and 3.4 times as many on W-2s. Use single pass unless your documents have long lists. [Details: EX-01](#ex-01-when-is-agentic-iterative-extraction-worth-it)
 
 ![Weighted accuracy against total tokens per page for each Extraction mode](../../images/benchmark-guidance/EX-01-fields.svg)
 
@@ -160,9 +160,9 @@ the rows.
 
 #### EX-01: When is agentic (iterative) extraction worth it?
 
-**Answer:** On invoices, iterative extraction scored the same as single pass (0.80 each) and used about twice the extraction tokens per page. Use single pass for invoices and other documents without long lists.
+**Answer:** Not for invoices or forms. On RealKIE invoices both modes scored 0.80; on W-2 forms iterative scored 0.97 against 0.95, a difference within the noise. Iterative used about the same total tokens per page on invoices and 3.4 times as many on W-2s. Use single pass unless your documents have long lists.
 
-*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-173220, RealKIE-FCC-Verified-20261113-173644, RealKIE-FCC-Verified-20261113-173641, RealKIE-FCC-Verified-20261113-173219, RealKIE-FCC-Verified-20261113-173642, RealKIE-FCC-Verified-20261113-173643`.*
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-173220, RealKIE-FCC-Verified-20261113-173644, RealKIE-FCC-Verified-20261113-173641, RealKIE-FCC-Verified-20261113-173219, RealKIE-FCC-Verified-20261113-173642, RealKIE-FCC-Verified-20261113-173643, Fake-W2-Tax-Forms-20261113-181721, Fake-W2-Tax-Forms-20261113-181722, Fake-W2-Tax-Forms-20261113-181723, Fake-W2-Tax-Forms-20261113-181901, Fake-W2-Tax-Forms-20261113-182002, Fake-W2-Tax-Forms-20261113-182011`.*
 
 | | |
 |---|---|
@@ -188,8 +188,8 @@ the rows.
 |---|---|---|---|---|---|
 | RealKIE | Single pass, Simple (default) | 0.8 ± 0.06 | 7,042 ± 14 | 20,208 ± 339 | 58 ± 37 |
 | RealKIE | Iterative, Advanced | 0.8 ± 0.08 | 15,368 ± 597 | 20,843 ± 516 | 65 ± 29 |
-| Fake-W2 | Single pass, Simple (default) | — | — | — | — |
-| Fake-W2 | Iterative, Advanced | — | — | — | — |
+| Fake-W2 | Single pass, Simple (default) | 0.95 ± 0.02 | 6,876 ± 2.3 | 15,192 ± 2.09 | 38 ± 1.14 |
+| Fake-W2 | Iterative, Advanced | 0.97 ± 0.01 | 46,661 ± 84 | 51,789 ± 84 | 30 ± 0.46 |
 
 
 #### EX-02: Which extraction model should I use?

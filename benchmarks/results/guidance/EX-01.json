@@ -2,8 +2,8 @@
   "release": "0.6.15.dev1",
   "measured": "November 2026",
   "region": "us-east-1",
-  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-173220, RealKIE-FCC-Verified-20261113-173644, RealKIE-FCC-Verified-20261113-173641, RealKIE-FCC-Verified-20261113-173219, RealKIE-FCC-Verified-20261113-173642, RealKIE-FCC-Verified-20261113-173643",
-  "verdict": "On invoices, iterative extraction scored the same as single pass (0.80 each) and used about twice the extraction tokens per page. Use single pass for invoices and other documents without long lists.",
+  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-173220, RealKIE-FCC-Verified-20261113-173644, RealKIE-FCC-Verified-20261113-173641, RealKIE-FCC-Verified-20261113-173219, RealKIE-FCC-Verified-20261113-173642, RealKIE-FCC-Verified-20261113-173643, Fake-W2-Tax-Forms-20261113-181721, Fake-W2-Tax-Forms-20261113-181722, Fake-W2-Tax-Forms-20261113-181723, Fake-W2-Tax-Forms-20261113-181901, Fake-W2-Tax-Forms-20261113-182002, Fake-W2-Tax-Forms-20261113-182011",
+  "verdict": "Not for invoices or forms. On RealKIE invoices both modes scored 0.80; on W-2 forms iterative scored 0.97 against 0.95, a difference within the noise. Iterative used about the same total tokens per page on invoices and 3.4 times as many on W-2s. Use single pass unless your documents have long lists.",
   "cells": {
     "realkie|Single pass, Simple (default)|weighted_accuracy": {
       "mean": 0.802328,
@@ -74,6 +74,78 @@
       "se": 0.004196
     },
     "realkie|Iterative, Advanced|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Single pass, Simple (default)|weighted_accuracy": {
+      "mean": 0.952609,
+      "se": 0.009158
+    },
+    "fake_w2|Single pass, Simple (default)|extraction_tokens": {
+      "mean": 6875.916667,
+      "se": 1.149033
+    },
+    "fake_w2|Single pass, Simple (default)|scoring_tokens": {
+      "mean": 8315.766667,
+      "se": 0.294863
+    },
+    "fake_w2|Single pass, Simple (default)|total_tokens": {
+      "mean": 15191.683333,
+      "se": 1.043365
+    },
+    "fake_w2|Single pass, Simple (default)|median_seconds": {
+      "mean": 37.586978,
+      "se": 0.572119
+    },
+    "fake_w2|Single pass, Simple (default)|all_fields_right": {
+      "mean": 0.116667,
+      "se": 0.016667
+    },
+    "fake_w2|Single pass, Simple (default)|auroc": {
+      "mean": 0.47348,
+      "se": 0.013373
+    },
+    "fake_w2|Single pass, Simple (default)|calibration_error": {
+      "mean": 0.05019,
+      "se": 0.003468
+    },
+    "fake_w2|Single pass, Simple (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Iterative, Advanced|weighted_accuracy": {
+      "mean": 0.968241,
+      "se": 0.004465
+    },
+    "fake_w2|Iterative, Advanced|extraction_tokens": {
+      "mean": 46661.066667,
+      "se": 42.194958
+    },
+    "fake_w2|Iterative, Advanced|scoring_tokens": {
+      "mean": 5127.583333,
+      "se": 0.859425
+    },
+    "fake_w2|Iterative, Advanced|total_tokens": {
+      "mean": 51788.65,
+      "se": 41.858004
+    },
+    "fake_w2|Iterative, Advanced|median_seconds": {
+      "mean": 30.035997,
+      "se": 0.231302
+    },
+    "fake_w2|Iterative, Advanced|all_fields_right": {
+      "mean": 0.15,
+      "se": 0.028868
+    },
+    "fake_w2|Iterative, Advanced|auroc": {
+      "mean": 0.496601,
+      "se": 0.000214
+    },
+    "fake_w2|Iterative, Advanced|calibration_error": {
+      "mean": 0.032654,
+      "se": 0.000398
+    },
+    "fake_w2|Iterative, Advanced|page_accuracy": {
       "mean": 1.0,
       "se": 0.0
     }

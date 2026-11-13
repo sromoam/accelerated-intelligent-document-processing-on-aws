@@ -1,6 +1,6 @@
 {
   "ablation": "EX-01",
-  "verdict": "On invoices, iterative extraction scored the same as single pass (0.80 each) and used about twice the extraction tokens per page. Use single pass for invoices and other documents without long lists.",
+  "verdict": "Not for invoices or forms. On RealKIE invoices both modes scored 0.80; on W-2 forms iterative scored 0.97 against 0.95, a difference within the noise. Iterative used about the same total tokens per page on invoices and 3.4 times as many on W-2s. Use single pass unless your documents have long lists.",
   "runs": {
     "realkie": {
       "Single pass, Simple (default)": [
@@ -12,6 +12,18 @@
         "RealKIE-FCC-Verified-20261113-173219",
         "RealKIE-FCC-Verified-20261113-173642",
         "RealKIE-FCC-Verified-20261113-173643"
+      ]
+    },
+    "fake_w2": {
+      "Single pass, Simple (default)": [
+        "Fake-W2-Tax-Forms-20261113-181721",
+        "Fake-W2-Tax-Forms-20261113-181722",
+        "Fake-W2-Tax-Forms-20261113-181723"
+      ],
+      "Iterative, Advanced": [
+        "Fake-W2-Tax-Forms-20261113-181901",
+        "Fake-W2-Tax-Forms-20261113-182002",
+        "Fake-W2-Tax-Forms-20261113-182011"
       ]
     }
   },

@@ -1,0 +1,17 @@
+{
+  "ablation": "CF-02",
+  "verdict": "Measured; see the table.",
+  "runs": {
+    "realkie": {
+      "Amazon Nova Lite (default)": [
+        "RealKIE-FCC-Verified-20261113-181724",
+        "RealKIE-FCC-Verified-20261113-181722",
+        "RealKIE-FCC-Verified-20261113-181723"
+      ]
+    }
+  },
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026"
+}
