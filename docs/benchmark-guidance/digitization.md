@@ -81,7 +81,11 @@ right in the page text, the fix is in your classification or extraction definiti
 
 ### Which Textract features do I need?
 
-**Answer:** Not yet measured. [Details: DG-06](#dg-06-which-textract-features-do-i-need)
+**Answer:** Pick the features your documents need; none of the combinations we tried changed accuracy measurably. On RealKIE invoices and W-2 forms every combination scored within the noise of the default, and LAYOUT alone used about 3% fewer total tokens per page because it sends less page text. Textract prices each page by the features you select, so dropping a feature your documents do not need saves Textract charges rather than tokens. [Details: DG-06](#dg-06-which-textract-features-do-i-need)
+
+![Weighted accuracy against total tokens per page for each `ocr.features`](../../images/benchmark-guidance/DG-06-fields.svg)
+
+*Weighted accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.*
 
 ### How much accuracy does scan quality cost?
 
@@ -229,7 +233,9 @@ right in the page text, the fix is in your classification or extraction definiti
 
 #### DG-06: Which Textract features do I need?
 
-**Answer:** Not yet measured.
+**Answer:** Pick the features your documents need; none of the combinations we tried changed accuracy measurably. On RealKIE invoices and W-2 forms every combination scored within the noise of the default, and LAYOUT alone used about 3% fewer total tokens per page because it sends less page text. Textract prices each page by the features you select, so dropping a feature your documents do not need saves Textract charges rather than tokens.
+
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-183155, RealKIE-FCC-Verified-20261113-183156, RealKIE-FCC-Verified-20261113-183157, RealKIE-FCC-Verified-20261113-183443, RealKIE-FCC-Verified-20261113-183516, RealKIE-FCC-Verified-20261113-183512, RealKIE-FCC-Verified-20261113-183741, RealKIE-FCC-Verified-20261113-183751, RealKIE-FCC-Verified-20261113-183840, RealKIE-FCC-Verified-20261113-184029, RealKIE-FCC-Verified-20261113-184136, RealKIE-FCC-Verified-20261113-184120, Fake-W2-Tax-Forms-20261113-184358, Fake-W2-Tax-Forms-20261113-184446, Fake-W2-Tax-Forms-20261113-184443, Fake-W2-Tax-Forms-20261113-184524, Fake-W2-Tax-Forms-20261113-184603, Fake-W2-Tax-Forms-20261113-184607, Fake-W2-Tax-Forms-20261113-184628, Fake-W2-Tax-Forms-20261113-184719, Fake-W2-Tax-Forms-20261113-184721, Fake-W2-Tax-Forms-20261113-184742, Fake-W2-Tax-Forms-20261113-184825, Fake-W2-Tax-Forms-20261113-184846`.*
 
 | | |
 |---|---|
@@ -240,14 +246,14 @@ right in the page text, the fix is in your classification or extraction definiti
 
 | Dataset | `ocr.features` | Weighted accuracy | Total tokens per page |
 |---|---|---|---|
-| RealKIE | TABLES, LAYOUT, SIGNATURES (default) | — | — |
-| RealKIE | LAYOUT only | — | — |
-| RealKIE | TABLES only | — | — |
-| RealKIE | TABLES, LAYOUT, SIGNATURES, FORMS | — | — |
-| Fake-W2 | TABLES, LAYOUT, SIGNATURES (default) | — | — |
-| Fake-W2 | LAYOUT only | — | — |
-| Fake-W2 | TABLES only | — | — |
-| Fake-W2 | TABLES, LAYOUT, SIGNATURES, FORMS | — | — |
+| RealKIE | TABLES, LAYOUT, SIGNATURES (default) | 0.8 ± 0.06 | 20,870 ± 671 |
+| RealKIE | LAYOUT only | 0.79 ± 0.07 | 19,457 ± 676 |
+| RealKIE | TABLES only | 0.81 ± 0.06 | 21,293 ± 2,175 |
+| RealKIE | TABLES, LAYOUT, SIGNATURES, FORMS | 0.79 ± 0.07 | 21,429 ± 2,720 |
+| Fake-W2 | TABLES, LAYOUT, SIGNATURES (default) | 0.95 ± 0.02 | 15,195 ± 7.48 |
+| Fake-W2 | LAYOUT only | 0.96 ± 0.02 | 14,705 ± 7.77 |
+| Fake-W2 | TABLES only | 0.97 ± 0.01 | 15,178 ± 3.93 |
+| Fake-W2 | TABLES, LAYOUT, SIGNATURES, FORMS | 0.97 ± 0.02 | 15,197 ± 1.59 |
 
 | Dataset | `ocr.features` | Completeness | Cell accuracy | Total tokens per page |
 |---|---|---|---|---|

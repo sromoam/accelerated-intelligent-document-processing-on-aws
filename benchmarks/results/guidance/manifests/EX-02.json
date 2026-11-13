@@ -1,0 +1,30 @@
+{
+  "ablation": "EX-02",
+  "verdict": "Measured; see the table.",
+  "runs": {
+    "realkie": {
+      "Claude Sonnet 5 (default)": [
+        "RealKIE-FCC-Verified-20261113-183955",
+        "RealKIE-FCC-Verified-20261113-183954",
+        "RealKIE-FCC-Verified-20261113-183956"
+      ],
+      "Amazon Nova Lite": [
+        "RealKIE-FCC-Verified-20261113-184302",
+        "RealKIE-FCC-Verified-20261113-184254",
+        "RealKIE-FCC-Verified-20261113-184301"
+      ],
+      "Amazon Nova Pro": [
+        "RealKIE-FCC-Verified-20261113-184609",
+        "RealKIE-FCC-Verified-20261113-184643",
+        "RealKIE-FCC-Verified-20261113-184918"
+      ],
+      "Amazon Nova 2 Lite": [
+        "RealKIE-FCC-Verified-20261113-190709"
+      ]
+    }
+  },
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026"
+}

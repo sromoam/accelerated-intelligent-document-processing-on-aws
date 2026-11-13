@@ -1,0 +1,297 @@
+{
+  "release": "0.6.15.dev1",
+  "measured": "November 2026",
+  "region": "us-east-1",
+  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-183155, RealKIE-FCC-Verified-20261113-183156, RealKIE-FCC-Verified-20261113-183157, RealKIE-FCC-Verified-20261113-183443, RealKIE-FCC-Verified-20261113-183516, RealKIE-FCC-Verified-20261113-183512, RealKIE-FCC-Verified-20261113-183741, RealKIE-FCC-Verified-20261113-183751, RealKIE-FCC-Verified-20261113-183840, RealKIE-FCC-Verified-20261113-184029, RealKIE-FCC-Verified-20261113-184136, RealKIE-FCC-Verified-20261113-184120, Fake-W2-Tax-Forms-20261113-184358, Fake-W2-Tax-Forms-20261113-184446, Fake-W2-Tax-Forms-20261113-184443, Fake-W2-Tax-Forms-20261113-184524, Fake-W2-Tax-Forms-20261113-184603, Fake-W2-Tax-Forms-20261113-184607, Fake-W2-Tax-Forms-20261113-184628, Fake-W2-Tax-Forms-20261113-184719, Fake-W2-Tax-Forms-20261113-184721, Fake-W2-Tax-Forms-20261113-184742, Fake-W2-Tax-Forms-20261113-184825, Fake-W2-Tax-Forms-20261113-184846",
+  "verdict": "Pick the features your documents need; none of the combinations we tried changed accuracy measurably. On RealKIE invoices and W-2 forms every combination scored within the noise of the default, and LAYOUT alone used about 3% fewer total tokens per page because it sends less page text. Textract prices each page by the features you select, so dropping a feature your documents do not need saves Textract charges rather than tokens.",
+  "cells": {
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|weighted_accuracy": {
+      "mean": 0.795569,
+      "se": 0.030742
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|extraction_tokens": {
+      "mean": 7045.057613,
+      "se": 2.528648
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|scoring_tokens": {
+      "mean": 13825.185185,
+      "se": 337.503636
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|total_tokens": {
+      "mean": 20870.242798,
+      "se": 335.278205
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|median_seconds": {
+      "mean": 43.257854,
+      "se": 3.552496
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|all_fields_right": {
+      "mean": 0.033333,
+      "se": 0.033333
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|auroc": {
+      "mean": 0.387966,
+      "se": 0.00378
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|calibration_error": {
+      "mean": 0.17528,
+      "se": 0.012481
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|LAYOUT only|weighted_accuracy": {
+      "mean": 0.788171,
+      "se": 0.032716
+    },
+    "realkie|LAYOUT only|extraction_tokens": {
+      "mean": 6623.300412,
+      "se": 11.049269
+    },
+    "realkie|LAYOUT only|scoring_tokens": {
+      "mean": 12833.872428,
+      "se": 337.416676
+    },
+    "realkie|LAYOUT only|total_tokens": {
+      "mean": 19457.17284,
+      "se": 337.916645
+    },
+    "realkie|LAYOUT only|median_seconds": {
+      "mean": 35.476931,
+      "se": 2.837446
+    },
+    "realkie|LAYOUT only|all_fields_right": {
+      "mean": 0.05,
+      "se": 0.0
+    },
+    "realkie|LAYOUT only|auroc": {
+      "mean": 0.423403,
+      "se": 0.008529
+    },
+    "realkie|LAYOUT only|calibration_error": {
+      "mean": 0.208944,
+      "se": 0.007505
+    },
+    "realkie|LAYOUT only|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|TABLES only|weighted_accuracy": {
+      "mean": 0.811923,
+      "se": 0.03209
+    },
+    "realkie|TABLES only|extraction_tokens": {
+      "mean": 7017.415638,
+      "se": 3.450982
+    },
+    "realkie|TABLES only|scoring_tokens": {
+      "mean": 14275.139918,
+      "se": 1084.588324
+    },
+    "realkie|TABLES only|total_tokens": {
+      "mean": 21292.555556,
+      "se": 1087.624796
+    },
+    "realkie|TABLES only|median_seconds": {
+      "mean": 34.608363,
+      "se": 1.675485
+    },
+    "realkie|TABLES only|all_fields_right": {
+      "mean": 0.05,
+      "se": 0.028868
+    },
+    "realkie|TABLES only|auroc": {
+      "mean": 0.393974,
+      "se": 0.030371
+    },
+    "realkie|TABLES only|calibration_error": {
+      "mean": 0.159752,
+      "se": 0.020108
+    },
+    "realkie|TABLES only|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|weighted_accuracy": {
+      "mean": 0.793747,
+      "se": 0.034895
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|extraction_tokens": {
+      "mean": 7048.609053,
+      "se": 5.359297
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|scoring_tokens": {
+      "mean": 14380.037037,
+      "se": 1354.795416
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|total_tokens": {
+      "mean": 21428.646091,
+      "se": 1360.142996
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|median_seconds": {
+      "mean": 35.369624,
+      "se": 1.815267
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|all_fields_right": {
+      "mean": 0.066667,
+      "se": 0.016667
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|auroc": {
+      "mean": 0.453135,
+      "se": 0.010044
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|calibration_error": {
+      "mean": 0.202764,
+      "se": 0.022982
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|weighted_accuracy": {
+      "mean": 0.950318,
+      "se": 0.01005
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|extraction_tokens": {
+      "mean": 6878.233333,
+      "se": 1.345466
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|scoring_tokens": {
+      "mean": 8316.983333,
+      "se": 2.418735
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|total_tokens": {
+      "mean": 15195.216667,
+      "se": 3.742363
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|median_seconds": {
+      "mean": 26.011522,
+      "se": 0.725013
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|all_fields_right": {
+      "mean": 0.116667,
+      "se": 0.033333
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|auroc": {
+      "mean": 0.471101,
+      "se": 0.005689
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|calibration_error": {
+      "mean": 0.052327,
+      "se": 0.003093
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|LAYOUT only|weighted_accuracy": {
+      "mean": 0.961521,
+      "se": 0.010594
+    },
+    "fake_w2|LAYOUT only|extraction_tokens": {
+      "mean": 6389.216667,
+      "se": 5.082678
+    },
+    "fake_w2|LAYOUT only|scoring_tokens": {
+      "mean": 8315.383333,
+      "se": 1.68556
+    },
+    "fake_w2|LAYOUT only|total_tokens": {
+      "mean": 14704.6,
+      "se": 3.884692
+    },
+    "fake_w2|LAYOUT only|median_seconds": {
+      "mean": 24.507087,
+      "se": 0.130198
+    },
+    "fake_w2|LAYOUT only|all_fields_right": {
+      "mean": 0.4,
+      "se": 0.028868
+    },
+    "fake_w2|LAYOUT only|auroc": {
+      "mean": 0.431731,
+      "se": 0.03813
+    },
+    "fake_w2|LAYOUT only|calibration_error": {
+      "mean": 0.029468,
+      "se": 0.004943
+    },
+    "fake_w2|LAYOUT only|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|TABLES only|weighted_accuracy": {
+      "mean": 0.965242,
+      "se": 0.006219
+    },
+    "fake_w2|TABLES only|extraction_tokens": {
+      "mean": 6859.016667,
+      "se": 2.413561
+    },
+    "fake_w2|TABLES only|scoring_tokens": {
+      "mean": 8318.983333,
+      "se": 1.036554
+    },
+    "fake_w2|TABLES only|total_tokens": {
+      "mean": 15178.0,
+      "se": 1.963628
+    },
+    "fake_w2|TABLES only|median_seconds": {
+      "mean": 24.042139,
+      "se": 0.054059
+    },
+    "fake_w2|TABLES only|all_fields_right": {
+      "mean": 0.166667,
+      "se": 0.044096
+    },
+    "fake_w2|TABLES only|auroc": {
+      "mean": 0.446209,
+      "se": 0.027978
+    },
+    "fake_w2|TABLES only|calibration_error": {
+      "mean": 0.036948,
+      "se": 0.003792
+    },
+    "fake_w2|TABLES only|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|weighted_accuracy": {
+      "mean": 0.965886,
+      "se": 0.008931
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|extraction_tokens": {
+      "mean": 6882.15,
+      "se": 0.125831
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|scoring_tokens": {
+      "mean": 8314.65,
+      "se": 0.822091
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|total_tokens": {
+      "mean": 15196.8,
+      "se": 0.79425
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|median_seconds": {
+      "mean": 25.311935,
+      "se": 0.22301
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|all_fields_right": {
+      "mean": 0.3,
+      "se": 0.028868
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|auroc": {
+      "mean": 0.458189,
+      "se": 0.01968
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|calibration_error": {
+      "mean": 0.035702,
+      "se": 0.002712
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    }
+  }
+}
