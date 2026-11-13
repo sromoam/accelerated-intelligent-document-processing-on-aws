@@ -1,10 +1,15 @@
-"""Draw the dot-and-whisker plots for the "Benchmarks by Problem Set" pages.
+"""Draw the plots for the "Benchmarks by Problem Set" pages.
 
-render_guidance.py calls draw_plot() for each ablation that has measured cells. One
-SVG shows one metric: a panel per dataset, a row per value, a dot at the mean of the
-runs and a line spanning two standard errors either side. The SVG is static (no
-script), follows the light or dark color scheme, and carries a <title> and <desc>
-for screen readers; the results table under it holds every number.
+render_guidance.py calls one of two functions for each ablation that has measured cells:
+
+- draw_scatter() when the ablation reports tokens: accuracy against tokens per page, a
+  panel per dataset and a point per value, with lines spanning two standard errors
+  either side on both axes. Up and to the left is better.
+- draw_plot() otherwise: one metric, a panel per dataset, a row per value, a dot at the
+  mean and a line spanning two standard errors either side.
+
+Each SVG is static (no script), follows the light or dark color scheme, and carries a
+<title> and <desc> for screen readers; the results table under it holds every number.
 """
 
 from __future__ import annotations
@@ -45,6 +50,10 @@ STYLE = """
   .axis { stroke: var(--axis); stroke-width: 1; }
   .whisker { stroke: var(--series); stroke-width: 2; stroke-linecap: round; }
   .dot { fill: var(--series); stroke: var(--ring); stroke-width: 2; }
+  .xwhisker { stroke: var(--series); stroke-width: 1.5; stroke-linecap: round;
+              opacity: 0.55; }
+  .axislabel { font-size: 11px; fill: var(--ink-2); }
+  .note { font-size: 11px; fill: var(--muted); font-style: italic; }
 """
 
 
@@ -171,5 +180,215 @@ def draw_plot(
         f'height="{height}" viewBox="0 0 {WIDTH} {height}" role="img">'
         f"<title>{escape(metric_name)}, mean of {runs} runs with two standard "
         f"errors either side</title><desc>{escape(desc)}</desc>"
+        f"<style>{STYLE}</style>" + "".join(body) + "</svg>\n"
+    )
+
+
+SC_LEFT = 64
+SC_RIGHT = WIDTH - 24
+SC_PLOT_H = 230
+SC_BOTTOM = 44
+#: Above this many points, only the default and the frontier are labelled.
+MAX_LABELLED = 4
+
+
+def _span(values: list[float], start_at_zero: bool) -> list[float]:
+    lo, hi = min(values), max(values)
+    pad = (hi - lo) * 0.12 or abs(hi) * 0.05 or 1.0
+    return nice_ticks(0.0 if start_at_zero else lo - pad, hi + pad, 4)
+
+
+def _compact(v: float, axis_max: float) -> str:
+    """One style per axis: compact (5K, 10K) when the axis reaches 10,000."""
+    if axis_max >= 10_000:
+        return f"{v / 1000:,.{0 if v % 1000 == 0 else 1}f}K" if v else "0"
+    return f"{v:,.0f}"
+
+
+def _frontier(points: list[tuple[str, dict[str, float], dict[str, float]]]) -> set[str]:
+    """Values no other value beats on both axes (fewer tokens and higher accuracy)."""
+    keep = set()
+    for v, x, y in points:
+        if not any(
+            ox["mean"] <= x["mean"]
+            and oy["mean"] >= y["mean"]
+            and (ox["mean"] < x["mean"] or oy["mean"] > y["mean"])
+            for ov, ox, oy in points
+            if ov != v
+        ):
+            keep.add(v)
+    return keep
+
+
+def _place_labels(
+    points: list[tuple[str, float, float]],
+    bounds: tuple[float, float, float, float],
+    obstacles: list[tuple[float, float, float, float]],
+) -> list[tuple[str, float, float, str, tuple[float, float] | None]]:
+    """Place one label per point without overlaps.
+
+    Tries right, left, above and below each point; takes the first spot clear of the
+    other labels, the dots and the plot edges. If none is clear, the label goes below
+    the lowest clear spot on the right with a leader line back to its point.
+    Returns (text, x, y, anchor, leader start or None).
+    """
+    x0, y0, x1, y1 = bounds
+    dots = obstacles
+    taken: list[tuple[float, float, float, float]] = []
+    out = []
+
+    def rect(lx: float, ly: float, w: float, anchor: str) -> tuple[float, ...]:
+        left = lx if anchor == "start" else lx - w if anchor == "end" else lx - w / 2
+        return (left, ly - 11, left + w, ly + 3)
+
+    def clear(r: tuple[float, ...]) -> bool:
+        if r[0] < x0 or r[2] > x1 or r[1] < y0 or r[3] > y1:
+            return False
+        return not any(
+            r[0] < o[2] and o[0] < r[2] and r[1] < o[3] and o[1] < r[3]
+            for o in taken + dots
+        )
+
+    for text, cx, cy in sorted(points, key=lambda p: (p[2], p[1])):
+        w = len(text) * CHAR_W
+        spots = [
+            (cx + 10, cy + 4, "start"),
+            (cx - 10, cy + 4, "end"),
+            (cx, cy - 12, "middle"),
+            (cx, cy + 20, "middle"),
+            (cx + 8, cy - 10, "start"),
+            (cx + 8, cy + 18, "start"),
+            (cx - 8, cy - 10, "end"),
+            (cx - 8, cy + 18, "end"),
+        ]
+        for lx, ly, anchor in spots:
+            r = rect(lx, ly, w, anchor)
+            if clear(r):
+                taken.append(r)
+                out.append((text, lx, ly, anchor, None))
+                break
+        else:
+            anchor = "start" if cx + 24 + w <= x1 else "end"
+            lx = cx + 24 if anchor == "start" else cx - 24
+            ly = cy + 4
+            while not clear(rect(lx, ly, w, anchor)) and ly < y1 - 4:
+                ly += 14
+            taken.append(rect(lx, ly, w, anchor))
+            out.append((text, lx, ly, anchor, (cx, cy)))
+    return out
+
+
+def draw_scatter(
+    x_name: str,
+    y_name: str,
+    panels: list[tuple[str, list[tuple[str, dict[str, float], dict[str, float]]]]],
+    runs: int,
+) -> str:
+    """Return an SVG document plotting y (accuracy) against x (tokens per page).
+
+    panels: [(dataset name, [(value label, x {"mean", "se"}, y {"mean", "se"}), ...])]
+    """
+    xs = [
+        p[1]["mean"] + s * 2 * p[1].get("se", 0)
+        for _, r in panels
+        for p in r
+        for s in (-1, 1)
+    ]
+    ys = [
+        p[2]["mean"] + s * 2 * p[2].get("se", 0)
+        for _, r in panels
+        for p in r
+        for s in (-1, 1)
+    ]
+    xt, yt = _span(xs, start_at_zero=True), _span(ys, start_at_zero=False)
+    y_step = yt[1] - yt[0] if len(yt) > 1 else 1.0
+    y_dec = max(0, -math.floor(math.log10(y_step) + 1e-9))
+
+    body: list[str] = []
+    top = TOP
+    for ds_name, points in panels:
+        body.append(
+            f'<text class="panel" x="0" y="{top + 18}">{escape(ds_name)}</text>'
+        )
+        y0, y1 = top + PANEL_TITLE_H, top + PANEL_TITLE_H + SC_PLOT_H
+
+        def px(v: float) -> float:
+            return SC_LEFT + (v - xt[0]) / (xt[-1] - xt[0]) * (SC_RIGHT - SC_LEFT)
+
+        def py(v: float, y0: float = y0, y1: float = y1) -> float:
+            return y1 - (v - yt[0]) / (yt[-1] - yt[0]) * (y1 - y0)
+
+        for t in yt:
+            body.append(
+                f'<line class="grid" x1="{SC_LEFT}" x2="{SC_RIGHT}" '
+                f'y1="{py(t):.1f}" y2="{py(t):.1f}"/>'
+                f'<text class="tick" x="{SC_LEFT - 8}" y="{py(t) + 4:.1f}" '
+                f'text-anchor="end">{t:.{y_dec}f}</text>'
+            )
+        for t in xt:
+            body.append(
+                f'<text class="tick" x="{px(t):.1f}" y="{y1 + 16}" '
+                f'text-anchor="middle">{_compact(t, xt[-1])}</text>'
+            )
+        body.append(
+            f'<line class="axis" x1="{SC_LEFT}" x2="{SC_RIGHT}" y1="{y1}" y2="{y1}"/>'
+            f'<line class="axis" x1="{SC_LEFT}" x2="{SC_LEFT}" y1="{y0}" y2="{y1}"/>'
+            f'<text class="axislabel" x="{(SC_LEFT + SC_RIGHT) / 2:.1f}" '
+            f'y="{y1 + 34}" text-anchor="middle">{escape(x_name)}</text>'
+            f'<text class="axislabel" transform="translate(12 {(y0 + y1) / 2:.1f}) '
+            f'rotate(-90)" text-anchor="middle">{escape(y_name)}</text>'
+            f'<text class="note" x="{SC_LEFT + 8}" y="{y0 + 14}">'
+            "Better: up and to the left</text>"
+        )
+        # Label every point when there are few; otherwise only the default and the
+        # points on the frontier, leaving the rest to the hover text and the table.
+        labelled = (
+            {v for v, _, _ in points}
+            if len(points) <= MAX_LABELLED
+            else _frontier(points) | {v for v, _, _ in points if "(default)" in v}
+        )
+        screen, obstacles = [], []
+        for value, x, y in points:
+            cx, cy = px(x["mean"]), py(y["mean"])
+            dx, dy = 2 * x.get("se", 0), 2 * y.get("se", 0)
+            obstacles.append((cx - 7, cy - 7, cx + 7, cy + 7))
+            obstacles.append((px(x["mean"] - dx), cy - 1, px(x["mean"] + dx), cy + 1))
+            obstacles.append((cx - 1, py(y["mean"] + dy), cx + 1, py(y["mean"] - dy)))
+            if value in labelled:
+                screen.append((value, cx, cy))
+            body.append(
+                f"<g><title>{escape(value)}: {escape(y_name)} {fmt(y['mean'])} ± "
+                f"{fmt(dy)}, {escape(x_name)} {fmt(x['mean'])} ± {fmt(dx)}</title>"
+                f'<line class="xwhisker" x1="{px(x["mean"] - dx):.1f}" '
+                f'x2="{px(x["mean"] + dx):.1f}" y1="{cy:.1f}" y2="{cy:.1f}"/>'
+                f'<line class="xwhisker" x1="{cx:.1f}" x2="{cx:.1f}" '
+                f'y1="{py(y["mean"] - dy):.1f}" y2="{py(y["mean"] + dy):.1f}"/>'
+                f'<circle class="dot" cx="{cx:.1f}" cy="{cy:.1f}" r="5"/></g>'
+            )
+        for text, lx, ly, anchor, leader in _place_labels(
+            screen, (SC_LEFT + 2, y0 + 20, SC_RIGHT, y1 - 2), obstacles
+        ):
+            if leader:
+                body.append(
+                    f'<line class="grid" x1="{leader[0]:.1f}" y1="{leader[1]:.1f}" '
+                    f'x2="{lx:.1f}" y2="{ly - 4:.1f}"/>'
+                )
+            body.append(
+                f'<text class="label" x="{lx:.1f}" y="{ly:.1f}" '
+                f'text-anchor="{anchor}">{escape(text)}</text>'
+            )
+        top = y1 + SC_BOTTOM + PANEL_GAP
+    height = top - PANEL_GAP
+
+    desc = "; ".join(
+        f"{ds}: "
+        + ", ".join(f"{v} {fmt(y['mean'])} at {fmt(x['mean'])}" for v, x, y in r)
+        for ds, r in panels
+    )
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" class="viz" width="{WIDTH}" '
+        f'height="{height}" viewBox="0 0 {WIDTH} {height}" role="img">'
+        f"<title>{escape(y_name)} against {escape(x_name)}, mean of {runs} runs "
+        f"with two standard errors either side</title><desc>{escape(desc)}</desc>"
         f"<style>{STYLE}</style>" + "".join(body) + "</svg>\n"
     )

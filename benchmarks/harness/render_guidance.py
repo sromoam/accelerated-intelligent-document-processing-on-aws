@@ -43,7 +43,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from guidance_plots import draw_plot, fmt
+from guidance_plots import MAX_LABELLED, draw_plot, draw_scatter, fmt
 
 REPO = Path(__file__).resolve().parents[2]
 REGISTRY = REPO / "benchmarks" / "matrices" / "guidance_ablations.yaml"
@@ -56,6 +56,10 @@ PLOTS = REPO / "images" / "benchmark-guidance"
 PLOTS_FROM_PAGES = "../../images/benchmark-guidance"
 EMPTY = "—"
 CAPTION = "Dots are the mean of the runs; lines span two standard errors either side."
+SCATTER_CAPTION = (
+    "Each point is one value of the setting; lines span two standard errors either "
+    "side. Up and to the left is better."
+)
 
 sys.path.insert(0, str(REPO / "scripts"))
 from check_markdown_links import slugify  # noqa: E402  (github-slugger rules)
@@ -179,17 +183,43 @@ def render_ablation(
                 (datasets[ds_key].get("short", datasets[ds_key]["name"]), rows)
             )
         panels = [(name, rows) for name, rows in panels if any(p for _, p in rows)]
+        x_metric = ab.get("plot_x") or next(
+            (m for m in cols if m.endswith("_tokens") and m != plot_metric), None
+        )
+        scatter = []
+        if x_metric and not plot_metric.endswith("_tokens"):
+            for ds_key in kind_sets:
+                pts = []
+                for value in ab["values"]:
+                    x = cells.get(f"{ds_key}|{value}|{x_metric}")
+                    y = cells.get(f"{ds_key}|{value}|{plot_metric}")
+                    if isinstance(x, dict) and isinstance(y, dict):
+                        pts.append((value, x, y))
+                if pts:
+                    scatter.append(
+                        (datasets[ds_key].get("short", datasets[ds_key]["name"]), pts)
+                    )
         if panels:
             name = f"{ab['id']}-{kind}.svg"
             metric_name = metrics[plot_metric]["name"]
-            out.plots[name] = draw_plot(metric_name, panels, ab.get("runs", 0))
-            plot_md = [
-                f"![{metric_name} for each value of {ab['changes']}]"
-                f"({PLOTS_FROM_PAGES}/{name})",
-                "",
-                f"*{metric_name}. {CAPTION}*",
-                "",
-            ]
+            if scatter and x_metric:
+                x_name = metrics[x_metric]["name"]
+                out.plots[name] = draw_scatter(
+                    x_name, metric_name, scatter, ab.get("runs", 0)
+                )
+                alt = f"{metric_name} against {x_name.lower()} for each {ab['changes']}"
+                caption = f"*{metric_name} against {x_name.lower()}. {SCATTER_CAPTION}"
+                if max(len(pts) for _, pts in scatter) > MAX_LABELLED:
+                    caption += (
+                        " Labels mark the default and the values no other value "
+                        "beats on both axes; hover a point for the rest."
+                    )
+                caption += "*"
+            else:
+                out.plots[name] = draw_plot(metric_name, panels, ab.get("runs", 0))
+                alt = f"{metric_name} for each value of {ab['changes']}"
+                caption = f"*{metric_name}. {CAPTION}*"
+            plot_md = [f"![{alt}]({PLOTS_FROM_PAGES}/{name})", "", caption, ""]
             if headline:
                 d += plot_md
             else:

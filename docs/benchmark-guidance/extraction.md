@@ -92,9 +92,9 @@ the rows.
 
 **Answer:** On invoices, iterative extraction scored the same as single pass (0.80 each) and used about twice the extraction tokens per page. Use single pass for invoices and other documents without long lists. [Details: EX-01](#ex-01-when-is-agentic-iterative-extraction-worth-it)
 
-![Weighted accuracy for each value of Extraction mode](../../images/benchmark-guidance/EX-01-fields.svg)
+![Weighted accuracy against extraction tokens per page for each Extraction mode](../../images/benchmark-guidance/EX-01-fields.svg)
 
-*Weighted accuracy. Dots are the mean of the runs; lines span two standard errors either side.*
+*Weighted accuracy against extraction tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.*
 
 ### Which extraction model should I use?
 
