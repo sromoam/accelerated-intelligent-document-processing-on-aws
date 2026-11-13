@@ -1,5 +1,7 @@
 ---
 title: "How We Benchmark Configurations"
+tableOfContents:
+  maxHeadingLevel: 3
 ---
 
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -26,13 +28,28 @@ changes one setting, and runs the same documents with each value of the setting.
 benchmark has an ID, such as `EX-01`, and a results table. A table reads *Not yet
 measured* until we run it.
 
+<!-- BEGIN GENERATED DATASETS -->
+
 | Dataset | Preset |
 |---|---|
-| Synthetic bank statements | `bank-statement-sample` |
-| RealKIE-FCC-Verified, ConfBench | `realkie-fcc-verified` |
-| OmniAI-OCR-Benchmark | `ocr-benchmark` |
-| Fake-W2-Tax-Forms | `fake-w2` |
-| DocSplit-Poly-Seq | `docsplit` |
+| [Synthetic statement, 100 rows (3 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
+| [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) | `realkie-fcc-verified` |
+| [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) | `ocr-benchmark` |
+| [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) | `fake-w2` |
+| [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) | `docsplit` |
+| Long packets, 30-60 pages (to be built) | — |
+| Same-class documents back to back (to be built) | — |
+| Packets with section and field ground truth (to be built) | — |
+| Handwritten forms (to be built) | — |
+| Documents with expert rule verdicts (to be built) | — |
+
+<!-- END GENERATED DATASETS -->
 
 Defaults differ from preset to preset. To configure your own stack, start from the
 [preset](../../config_library/unified/README.md) closest to your documents.
@@ -62,11 +79,25 @@ Defaults differ from preset to preset. To configure your own stack, start from t
 - **Datasets we haven't built yet:** long packets, same-class packets, packets with field
   ground truth, handwritten forms, and rule verdicts. Benchmarks that need one say so.
 
-## Benchmarks for every problem set
+## Questions for every problem set
+
+<!-- BEGIN GENERATED FAQ -->
+
+### How much do results vary between identical runs?
+
+**Answer:** Not yet measured. [Details: TR-01](#tr-01-how-much-do-results-vary-between-identical-runs)
+
+### How long does a document take, and how many documents an hour?
+
+**Answer:** Not yet measured. [Details: TR-02](#tr-02-how-long-does-a-document-take-and-how-many-documents-an-hour)
+
+<!-- END GENERATED FAQ -->
+
+## Benchmark details
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
-### TR-01: How much do results vary between identical runs?
+#### TR-01: How much do results vary between identical runs?
 
 **Answer:** Not yet measured.
 
@@ -90,7 +121,7 @@ Defaults differ from preset to preset. To configure your own stack, start from t
 | Statement, 400 rows | Preset | — | — |
 
 
-### TR-02: How long does a document take, and how many documents an hour?
+#### TR-02: How long does a document take, and how many documents an hour?
 
 **Answer:** Not yet measured.
 

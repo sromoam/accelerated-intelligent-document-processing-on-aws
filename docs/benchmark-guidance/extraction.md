@@ -53,7 +53,7 @@ the rows.
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
-### EX-01: When is agentic (iterative) extraction worth it?
+#### EX-01: When is agentic (iterative) extraction worth it?
 
 **Answer:** Not yet measured.
 
@@ -85,7 +85,7 @@ the rows.
 | Fake-W2 | Iterative, Advanced | — | — | — |
 
 
-### EX-02: Which extraction model should I use?
+#### EX-02: Which extraction model should I use?
 
 **Answer:** Not yet measured.
 
@@ -136,7 +136,7 @@ the rows.
 | Statement, 400 rows | xAI Grok 4.6 | — | — | — | — |
 
 
-### EX-03: Does more reasoning effort improve extraction?
+#### EX-03: Does more reasoning effort improve extraction?
 
 **Answer:** Not yet measured.
 
@@ -163,7 +163,7 @@ the rows.
 | Statement, 400 rows | High | — | — | — |
 
 
-### EX-04: How much do field descriptions matter?
+#### EX-04: How much do field descriptions matter?
 
 **Answer:** Not yet measured.
 
@@ -184,7 +184,7 @@ the rows.
 | Fake-W2 | Descriptions with location, exclusions and format | — | — | — |
 
 
-### EX-05: Do few-shot examples help extraction?
+#### EX-05: Do few-shot examples help extraction?
 
 **Answer:** Not yet measured.
 
@@ -205,7 +205,7 @@ the rows.
 | Fake-W2 | Three examples per class | — | — | — |
 
 
-### EX-06: Does sending page images to the extraction model help?
+#### EX-06: Does sending page images to the extraction model help?
 
 **Answer:** Not yet measured.
 
@@ -226,7 +226,7 @@ the rows.
 | ConfBench | Text only | — | — | — |
 
 
-### EX-07: Does deterministic table parsing help iterative extraction?
+#### EX-07: Does deterministic table parsing help iterative extraction?
 
 **Answer:** Not yet measured.
 
@@ -247,7 +247,7 @@ the rows.
 | Statement, 3,200 rows | Off | — | — | — | — |
 
 
-### EX-08: What shard size should iterative extraction use?
+#### EX-08: What shard size should iterative extraction use?
 
 **Answer:** Not yet measured.
 
@@ -270,7 +270,7 @@ the rows.
 | Statement, 3,200 rows | 25 | — | — | — | — |
 
 
-### EX-09: Should iterative extraction load page images only when it needs them?
+#### EX-09: Should iterative extraction load page images only when it needs them?
 
 **Answer:** Not yet measured.
 
@@ -294,7 +294,7 @@ the rows.
 | RealKIE | Off | — | — |
 
 
-### EX-10: Do schema validation and value coercion improve the output?
+#### EX-10: Do schema validation and value coercion improve the output?
 
 **Answer:** Not yet measured.
 
@@ -315,7 +315,7 @@ the rows.
 | RealKIE | Validation off | — | — | — |
 
 
-### EX-11: Should I retry failed fields with a stronger model?
+#### EX-11: Should I retry failed fields with a stronger model?
 
 **Answer:** Not yet measured.
 
@@ -336,7 +336,7 @@ the rows.
 | RealKIE | reject | — | — | — |
 
 
-### EX-12: Does forced tool use make single-pass output more reliable?
+#### EX-12: Does forced tool use make single-pass output more reliable?
 
 **Answer:** Not yet measured.
 
@@ -358,7 +358,7 @@ the rows.
 | Statement, 400 rows | On | — | — |
 
 
-### EX-13: How should I extract sections that hold several records?
+#### EX-13: How should I extract sections that hold several records?
 
 **Answer:** Not yet measured.
 
@@ -375,7 +375,7 @@ the rows.
 | Fake-W2 | On | — | — |
 
 
-### EX-14: How accurate is extraction across many document formats?
+#### EX-14: How accurate is extraction across many document formats?
 
 **Answer:** Not yet measured.
 
@@ -391,7 +391,7 @@ the rows.
 | OmniAI | Each of the 9 OmniAI formats | — | — | — |
 
 
-### EX-15: How much do splitting errors cost extraction in a packet?
+#### EX-15: How much do splitting errors cost extraction in a packet?
 
 **Answer:** Not yet measured.
 

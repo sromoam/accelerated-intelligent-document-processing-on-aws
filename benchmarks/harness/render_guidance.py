@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Render the ablation tables of the "Benchmarks by Problem Set" pages.
 
-Reads the ablation registry (benchmarks/matrices/guidance_ablations.yaml) and writes each
-ablation into its page under docs/benchmark-guidance/, between the markers
+Reads the ablation registry (benchmarks/matrices/guidance_ablations.yaml) and writes three
+regions of each page under docs/benchmark-guidance/, each between a pair of markers:
 
-    <!-- BEGIN GENERATED ABLATIONS -->
-    <!-- END GENERATED ABLATIONS -->
+    <!-- BEGIN GENERATED DATASETS -->  the datasets the page uses and their presets
+    <!-- BEGIN GENERATED FAQ -->       each question, its answer and its headline plot
+    <!-- BEGIN GENERATED ABLATIONS --> each ablation's details and results tables
 
-Text outside the markers is hand-written and left alone. When a results file exists at
+(each closed by the matching END marker). Only ABLATIONS is required. Text outside the
+markers is hand-written and left alone. When a results file exists at
 benchmarks/results/guidance/<ID>.json, its values fill the table; otherwise every cell is
 "—" and the answer reads "Not yet measured". A results file looks like:
 
@@ -47,14 +49,25 @@ REPO = Path(__file__).resolve().parents[2]
 REGISTRY = REPO / "benchmarks" / "matrices" / "guidance_ablations.yaml"
 RESULTS = REPO / "benchmarks" / "results" / "guidance"
 PAGES = REPO / "docs" / "benchmark-guidance"
-BEGIN = "<!-- BEGIN GENERATED ABLATIONS -->"
-END = "<!-- END GENERATED ABLATIONS -->"
+#: Generated regions of a page. ABLATIONS is required; the others are optional.
+REGIONS = ("DATASETS", "FAQ", "ABLATIONS")
 PRESETS = "index.md#how-we-run-a-benchmark"
 PLOTS = REPO / "images" / "benchmark-guidance"
 PLOTS_FROM_PAGES = "../../images/benchmark-guidance"
 EMPTY = "—"
+CAPTION = "Dots are the mean of the runs; lines span two standard errors either side."
+
+sys.path.insert(0, str(REPO / "scripts"))
+from check_markdown_links import slugify  # noqa: E402  (github-slugger rules)
 
 Cell = str | dict[str, float]
+
+
+def markers(region: str) -> tuple[str, str]:
+    return (
+        f"<!-- BEGIN GENERATED {region} -->",
+        f"<!-- END GENERATED {region} -->",
+    )
 
 
 def load_registry() -> dict[str, Any]:
@@ -84,35 +97,42 @@ def dataset_label(key: str, datasets: dict[str, Any]) -> str:
     return f"[{ds['name']}]({link})" if link else ds["name"]
 
 
+def details_heading(ab: dict[str, Any]) -> str:
+    return f"{ab['id']}: {ab['question']}"
+
+
+class Rendered:
+    """One ablation's FAQ entry, details section and plots."""
+
+    def __init__(self) -> None:
+        self.faq: list[str] = []
+        self.details: list[str] = []
+        self.plots: dict[str, str] = {}
+
+
 def render_ablation(
     ab: dict[str, Any], reg: dict[str, Any], results: dict[str, Any] | None
-) -> tuple[str, dict[str, str]]:
-    """Return the ablation's Markdown and its plots, keyed by SVG file name."""
+) -> Rendered:
     datasets: dict[str, Any] = reg["datasets"]
     metrics: dict[str, Any] = reg["metrics"]
-    page = ab["page"]
-    presets = PRESETS if page != "index" else "#how-we-run-a-benchmark"
+    presets = PRESETS if ab["page"] != "index" else "#how-we-run-a-benchmark"
     cells: dict[str, Cell] = (results or {}).get("cells", {})
-    plots: dict[str, str] = {}
+    out = Rendered()
+    answer = results["verdict"] if results else "Not yet measured."
+    details_link = f"[Details: {ab['id']}](#{slugify(details_heading(ab))})"
 
-    lines = [f"### {ab['id']}: {ab['question']}", ""]
+    # Details: heading, answer, what was run.
+    d = out.details
+    d += [f"#### {details_heading(ab)}", "", f"**Answer:** {answer}"]
     if results:
-        lines.append(f"**Answer:** {results['verdict']}")
-        lines.append("")
-        lines.append(
+        d += [
+            "",
             f"*Measured on release {results['release']}, {results['measured']}, "
-            f"{results['region']}. Source: `{results['source']}`.*"
-        )
-    else:
-        lines.append("**Answer:** Not yet measured.")
+            f"{results['region']}. Source: `{results['source']}`.*",
+        ]
     new_sets = [datasets[k]["name"] for k in ab["datasets"] if datasets[k].get("new")]
     if new_sets:
-        lines.append("")
-        lines.append(
-            "Needs a dataset we haven't built yet: " + "; ".join(new_sets) + "."
-        )
-    lines.append("")
-
+        d += ["", "Needs a dataset we haven't built yet: " + "; ".join(new_sets) + "."]
     held = ab.get("holds")
     fixed_text = (
         f"{held}; the rest as each dataset's [preset]({presets}) sets it"
@@ -123,7 +143,8 @@ def render_ablation(
         runs_text = f"None: computed from the {ab['derives']} runs"
     else:
         runs_text = f"{ab['runs']} per document, per value"
-    lines += [
+    d += [
+        "",
         "| | |",
         "|---|---|",
         f"| **Changes** | {ab['changes']} |",
@@ -135,10 +156,13 @@ def render_ablation(
         "",
     ]
 
+    # One plot and one table per dataset kind. The first plot drawn is the
+    # headline and goes in the FAQ entry; any others stay with their tables.
     kinds: list[str] = []
     for ds_key in ab["datasets"]:
         if datasets[ds_key]["kind"] not in kinds:
             kinds.append(datasets[ds_key]["kind"])
+    headline: list[str] = []
     for kind in kinds:
         cols = [m for m in ab["metrics"] if kind in metrics[m]["kinds"]]
         if not cols:
@@ -157,44 +181,85 @@ def render_ablation(
         if any(p for _, rows in panels for _, p in rows):
             name = f"{ab['id']}-{kind}.svg"
             metric_name = metrics[plot_metric]["name"]
-            plots[name] = draw_plot(metric_name, panels, ab.get("runs", 0))
-            lines += [
+            out.plots[name] = draw_plot(metric_name, panels, ab.get("runs", 0))
+            plot_md = [
                 f"![{metric_name} for each value of {ab['changes']}]"
                 f"({PLOTS_FROM_PAGES}/{name})",
                 "",
-                f"*{metric_name}. Dots are the mean of the runs; lines span two "
-                "standard errors either side.*",
+                f"*{metric_name}. {CAPTION}*",
                 "",
             ]
+            if headline:
+                d += plot_md
+            else:
+                headline = plot_md
         header = ["Dataset", ab["changes"]] + [metrics[m]["name"] for m in cols]
-        lines.append("| " + " | ".join(header) + " |")
-        lines.append("|" + "---|" * len(header))
+        d.append("| " + " | ".join(header) + " |")
+        d.append("|" + "---|" * len(header))
         for ds_key in kind_sets:
             for value in ab["values"]:
                 row = [datasets[ds_key].get("short", datasets[ds_key]["name"]), value]
                 row += [cell_text(cells.get(f"{ds_key}|{value}|{m}")) for m in cols]
-                lines.append("| " + " | ".join(row) + " |")
-        lines.append("")
-    lines.append("")
-    return "\n".join(lines), plots
+                d.append("| " + " | ".join(row) + " |")
+        d.append("")
+    d.append("")
+
+    # FAQ entry: the question, the answer, the headline plot, a link to details.
+    out.faq += [f"### {ab['question']}", "", f"**Answer:** {answer} {details_link}", ""]
+    out.faq += headline
+    return out
 
 
-def render_page(page: str, reg: dict[str, Any]) -> tuple[str, dict[str, str]]:
-    blocks, plots = [], {}
+def render_datasets(page: str, reg: dict[str, Any]) -> str:
+    """The datasets a page's ablations use (every dataset on the index page)."""
+    datasets: dict[str, Any] = reg["datasets"]
+    if page == "index":
+        keys = list(datasets)
+    else:
+        used = {
+            k for ab in reg["ablations"] if ab["page"] == page for k in ab["datasets"]
+        }
+        keys = [k for k in datasets if k in used]
+    lines = ["| Dataset | Preset |", "|---|---|"]
+    for k in keys:
+        ds = datasets[k]
+        preset = f"`{ds['preset']}`" if ds.get("preset") else EMPTY
+        lines.append(f"| {dataset_label(k, datasets)} | {preset} |")
+    return "\n".join(lines) + "\n"
+
+
+def render_page(
+    page: str, reg: dict[str, Any]
+) -> tuple[dict[str, str], dict[str, str]]:
+    """Return the page's generated regions and its plots."""
+    faq: list[str] = []
+    details: list[str] = []
+    plots: dict[str, str] = {}
     for ab in reg["ablations"]:
         if ab["page"] == page:
-            text, ab_plots = render_ablation(ab, reg, load_results(ab["id"]))
-            blocks.append(text)
-            plots.update(ab_plots)
-    return "\n".join(blocks).rstrip() + "\n", plots
+            r = render_ablation(ab, reg, load_results(ab["id"]))
+            faq += r.faq
+            details += r.details
+            plots.update(r.plots)
+    regions = {
+        "DATASETS": render_datasets(page, reg),
+        "FAQ": "\n".join(faq).rstrip() + "\n",
+        "ABLATIONS": "\n".join(details).rstrip() + "\n",
+    }
+    return regions, plots
 
 
-def splice(text: str, generated: str, path: Path) -> str:
-    if BEGIN not in text or END not in text:
-        raise SystemExit(f"{path}: missing {BEGIN} / {END} markers")
-    head, rest = text.split(BEGIN, 1)
-    _, tail = rest.split(END, 1)
-    return f"{head}{BEGIN}\n\n{generated}\n{END}{tail}"
+def splice(text: str, regions: dict[str, str], path: Path) -> str:
+    for region in REGIONS:
+        begin, end = markers(region)
+        if begin not in text or end not in text:
+            if region == "ABLATIONS":
+                raise SystemExit(f"{path}: missing {begin} / {end} markers")
+            continue
+        head, rest = text.split(begin, 1)
+        _, tail = rest.split(end, 1)
+        text = f"{head}{begin}\n\n{regions[region]}\n{end}{tail}"
+    return text
 
 
 def main() -> int:
@@ -220,7 +285,7 @@ def main() -> int:
         if ab is None:
             raise SystemExit(f"no ablation {args.preview}")
         results = json.loads(args.results.read_text(encoding="utf-8"))
-        _, plots = render_ablation(ab, reg, results)
+        plots = render_ablation(ab, reg, results).plots
         args.out.mkdir(parents=True, exist_ok=True)
         for name, svg in plots.items():
             (args.out / name).write_text(svg, encoding="utf-8")
@@ -232,9 +297,9 @@ def main() -> int:
     for page in sorted({ab["page"] for ab in reg["ablations"]}):
         path = PAGES / f"{page}.md"
         text = path.read_text(encoding="utf-8")
-        generated, plots = render_page(page, reg)
+        regions, plots = render_page(page, reg)
         expected.update(plots)
-        updated = splice(text, generated, path)
+        updated = splice(text, regions, path)
         if updated != text:
             if args.check:
                 stale.append(str(path.relative_to(REPO)))

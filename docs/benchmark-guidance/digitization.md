@@ -1,5 +1,7 @@
 ---
 title: "Digitization (OCR) Benchmarks"
+tableOfContents:
+  maxHeadingLevel: 3
 ---
 
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -7,16 +9,45 @@ SPDX-License-Identifier: MIT-0
 
 # Digitization (OCR) Benchmarks
 
-- Does the OCR reader make a difference to extraction accuracy?
-- Does a specialized OCR model beat Textract?
-- What resolution should pages be rendered at?
-- Which Textract features do I need?
+Digitization turns each page into page text that the later steps read.
+[Digitization (OCR)](../idp-fundamentals/digitization.md) explains how it works.
 
 We don't benchmark OCR on its own today. We measure its effect on the steps after it: each
 benchmark here scores the extraction accuracy an OCR reader produces, because that is what
 lands in your database. To compare readers on OCR alone, use public OCR benchmarks.
-[Digitization (OCR)](../idp-fundamentals/digitization.md) explains how the accelerator
-reads a page.
+
+## How to improve digitization on your documents
+
+**Your definitions.** The reader doesn't use them: it reads every page the same way. When a
+value is wrong, open [View Page Text](../web-ui.md#view-page-text) first. If the value is
+right in the page text, the fix is in your classification or extraction definitions.
+
+**Data quality.** Scan at 300 DPI, and turn on preprocessing for photos and poor scans. See
+[Improving digitization](../idp-fundamentals/digitization.md#improving-digitization-once-your-pipeline-is-running).
+
+**Settings.**
+
+| Setting | What it changes | Questions |
+|---|---|---|
+| OCR reader (`ocr.backend`) | Amazon Textract, a vision model, or a specialized OCR model | [DG-01](#does-the-ocr-reader-make-a-difference-to-extraction-accuracy) to [DG-03](#does-a-specialized-ocr-model-beat-textract) |
+| Resolution (`ocr.image.dpi`) | The DPI the accelerator renders pages at | [DG-04](#what-resolution-should-pages-be-rendered-at) |
+| Preprocessing (`ocr.image.preprocessing`) | Cleans up shadows, uneven lighting and low contrast | [DG-05](#does-image-preprocessing-help-on-poor-scans) |
+| Textract features (`ocr.features`) | Tables, layout and signatures | [DG-06](#which-textract-features-do-i-need) |
+
+## Benchmark datasets and metrics
+
+<!-- BEGIN GENERATED DATASETS -->
+
+| Dataset | Preset |
+|---|---|
+| [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
+| [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) | `realkie-fcc-verified` |
+| [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) | `ocr-benchmark` |
+| [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) | `fake-w2` |
+| Handwritten forms (to be built) | — |
+
+<!-- END GENERATED DATASETS -->
 
 **Metrics**
 
@@ -24,11 +55,49 @@ reads a page.
 - *Documents with every field right:* the share of documents with no wrong field.
 - *Completeness* and *cell accuracy:* see [Key Information Extraction Benchmarks](extraction.md).
 
-## Benchmarks
+## Questions
+
+<!-- BEGIN GENERATED FAQ -->
+
+### Does the OCR reader make a difference to extraction accuracy?
+
+**Answer:** Not yet measured. [Details: DG-01](#dg-01-does-the-ocr-reader-make-a-difference-to-extraction-accuracy)
+
+### If I read pages with a vision model, which model?
+
+**Answer:** Not yet measured. [Details: DG-02](#dg-02-if-i-read-pages-with-a-vision-model-which-model)
+
+### Does a specialized OCR model beat Textract?
+
+**Answer:** Not yet measured. [Details: DG-03](#dg-03-does-a-specialized-ocr-model-beat-textract)
+
+### What resolution should pages be rendered at?
+
+**Answer:** Not yet measured. [Details: DG-04](#dg-04-what-resolution-should-pages-be-rendered-at)
+
+### Does image preprocessing help on poor scans?
+
+**Answer:** Not yet measured. [Details: DG-05](#dg-05-does-image-preprocessing-help-on-poor-scans)
+
+### Which Textract features do I need?
+
+**Answer:** Not yet measured. [Details: DG-06](#dg-06-which-textract-features-do-i-need)
+
+### How much accuracy does scan quality cost?
+
+**Answer:** Not yet measured. [Details: DG-07](#dg-07-how-much-accuracy-does-scan-quality-cost)
+
+### Which reader handles handwriting best?
+
+**Answer:** Not yet measured. [Details: DG-08](#dg-08-which-reader-handles-handwriting-best)
+
+<!-- END GENERATED FAQ -->
+
+## Benchmark details
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
-### DG-01: Does the OCR reader make a difference to extraction accuracy?
+#### DG-01: Does the OCR reader make a difference to extraction accuracy?
 
 **Answer:** Not yet measured.
 
@@ -58,7 +127,7 @@ reads a page.
 | Statement, 400 rows | Bedrock vision model (Nova 2 Lite) | — | — | — | — |
 
 
-### DG-02: If I read pages with a vision model, which model?
+#### DG-02: If I read pages with a vision model, which model?
 
 **Answer:** Not yet measured.
 
@@ -85,7 +154,7 @@ reads a page.
 | Statement, 400 rows | Claude Sonnet 5 | — | — | — |
 
 
-### DG-03: Does a specialized OCR model beat Textract?
+#### DG-03: Does a specialized OCR model beat Textract?
 
 **Answer:** Not yet measured.
 
@@ -112,7 +181,7 @@ reads a page.
 | OmniAI | Cohere Parse (Lambda hook) | — | — | — |
 
 
-### DG-04: What resolution should pages be rendered at?
+#### DG-04: What resolution should pages be rendered at?
 
 **Answer:** Not yet measured.
 
@@ -139,7 +208,7 @@ reads a page.
 | Statement, 400 rows | 150 | — | — |
 
 
-### DG-05: Does image preprocessing help on poor scans?
+#### DG-05: Does image preprocessing help on poor scans?
 
 **Answer:** Not yet measured.
 
@@ -158,7 +227,7 @@ reads a page.
 | RealKIE | On | — | — | — |
 
 
-### DG-06: Which Textract features do I need?
+#### DG-06: Which Textract features do I need?
 
 **Answer:** Not yet measured.
 
@@ -188,7 +257,7 @@ reads a page.
 | Statement, 400 rows | TABLES, LAYOUT, SIGNATURES, FORMS | — | — | — |
 
 
-### DG-07: How much accuracy does scan quality cost?
+#### DG-07: How much accuracy does scan quality cost?
 
 **Answer:** Not yet measured.
 
@@ -207,7 +276,7 @@ reads a page.
 | ConfBench | Heavy noise | — | — | — |
 
 
-### DG-08: Which reader handles handwriting best?
+#### DG-08: Which reader handles handwriting best?
 
 **Answer:** Not yet measured.
 

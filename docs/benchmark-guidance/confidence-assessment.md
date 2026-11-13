@@ -1,5 +1,7 @@
 ---
 title: "Confidence Assessment Benchmarks"
+tableOfContents:
+  maxHeadingLevel: 3
 ---
 
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -7,14 +9,46 @@ SPDX-License-Identifier: MIT-0
 
 # Confidence Assessment Benchmarks
 
-- Can I route human review by confidence?
-- Which scoring model should I use?
-- What confidence threshold should I set?
+Confidence assessment gives every extracted value a score, so a person reviews the values
+most likely to be wrong instead of every value.
+[Confidence Assessment](../idp-fundamentals/confidence-assessment.md) explains how it works.
 
-[Confidence Assessment](../idp-fundamentals/confidence-assessment.md) explains how the
-accelerator scores confidence. We measure it on [ConfBench](../extensions/confbench-testset.md),
-which adds scan noise to real invoices so that extraction makes mistakes for the scores to
-catch.
+## How to improve confidence on your documents
+
+**Your definitions.** The scoring model reads each field's description when it judges a
+value. Say what a right value looks like. Mark the fields you can't do without as required:
+an empty required field goes to review even though it has no score. See
+[Improving confidence](../idp-fundamentals/confidence-assessment.md#improving-confidence-once-your-pipeline-is-running).
+
+**Data quality.** Poor scans cause more extraction mistakes, and catching those mistakes is
+the job confidence does. We measure it on [ConfBench](../extensions/confbench-testset.md),
+which adds scan noise to real invoices.
+
+**Settings.**
+
+| Setting | What it changes | Questions |
+|---|---|---|
+| Scoring mode | A separate scoring pass, scores inside the extraction call, or none | [CF-03](#separate-scoring-pass-or-integrated-into-extraction) |
+| Scoring model | The model that scores each value | [CF-02](#which-scoring-model-should-i-use) |
+| Confidence threshold | The score below which a value goes to review | [CF-01](#can-i-route-human-review-by-confidence), [CF-04](#what-confidence-threshold-should-i-set) |
+| Page images | Whether the scoring model sees the pages | [CF-06](#does-the-scoring-model-need-page-images) |
+| List batch size | How many list rows the scoring model scores in one request | [CF-07](#how-should-long-lists-be-scored) |
+
+## Benchmark datasets and metrics
+
+<!-- BEGIN GENERATED DATASETS -->
+
+| Dataset | Preset |
+|---|---|
+| [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
+| [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) | `realkie-fcc-verified` |
+| [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) | `fake-w2` |
+| [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) | `docsplit` |
+
+<!-- END GENERATED DATASETS -->
 
 **Metrics**
 
@@ -23,11 +57,45 @@ catch.
 - *Values below threshold:* the share of values the threshold sends to review.
 - *Errors below threshold:* the share of wrong values the threshold sends to review.
 
-## Benchmarks
+## Questions
+
+<!-- BEGIN GENERATED FAQ -->
+
+### Can I route human review by confidence?
+
+**Answer:** Not yet measured. [Details: CF-01](#cf-01-can-i-route-human-review-by-confidence)
+
+### Which scoring model should I use?
+
+**Answer:** Not yet measured. [Details: CF-02](#cf-02-which-scoring-model-should-i-use)
+
+### Separate scoring pass or integrated into extraction?
+
+**Answer:** Not yet measured. [Details: CF-03](#cf-03-separate-scoring-pass-or-integrated-into-extraction)
+
+### What confidence threshold should I set?
+
+**Answer:** Not yet measured. [Details: CF-04](#cf-04-what-confidence-threshold-should-i-set)
+
+### Does classification confidence flag the wrong document class?
+
+**Answer:** Not yet measured. [Details: CF-05](#cf-05-does-classification-confidence-flag-the-wrong-document-class)
+
+### Does the scoring model need page images?
+
+**Answer:** Not yet measured. [Details: CF-06](#cf-06-does-the-scoring-model-need-page-images)
+
+### How should long lists be scored?
+
+**Answer:** Not yet measured. [Details: CF-07](#cf-07-how-should-long-lists-be-scored)
+
+<!-- END GENERATED FAQ -->
+
+## Benchmark details
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
-### CF-01: Can I route human review by confidence?
+#### CF-01: Can I route human review by confidence?
 
 **Answer:** Not yet measured.
 
@@ -51,7 +119,7 @@ catch.
 | Statement, 400 rows | Claude Sonnet 5 | — | — | — | — |
 
 
-### CF-02: Which scoring model should I use?
+#### CF-02: Which scoring model should I use?
 
 **Answer:** Not yet measured.
 
@@ -74,7 +142,7 @@ catch.
 | RealKIE | Claude Sonnet 5 | — | — | — | — | — |
 
 
-### CF-03: Separate scoring pass or integrated into extraction?
+#### CF-03: Separate scoring pass or integrated into extraction?
 
 **Answer:** Not yet measured.
 
@@ -101,7 +169,7 @@ catch.
 | Statement, 800 rows | Off | — | — | — | — |
 
 
-### CF-04: What confidence threshold should I set?
+#### CF-04: What confidence threshold should I set?
 
 **Answer:** Not yet measured.
 
@@ -126,7 +194,7 @@ catch.
 | RealKIE | 0.95 | — | — |
 
 
-### CF-05: Does classification confidence flag the wrong document class?
+#### CF-05: Does classification confidence flag the wrong document class?
 
 **Answer:** Not yet measured.
 
@@ -144,7 +212,7 @@ catch.
 | DocSplit | Claude Sonnet 5 | — | — | — | — | — |
 
 
-### CF-06: Does the scoring model need page images?
+#### CF-06: Does the scoring model need page images?
 
 **Answer:** Not yet measured.
 
@@ -163,7 +231,7 @@ catch.
 | Fake-W2 | Text only | — | — | — |
 
 
-### CF-07: How should long lists be scored?
+#### CF-07: How should long lists be scored?
 
 **Answer:** Not yet measured.
 
