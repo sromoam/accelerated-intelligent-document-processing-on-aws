@@ -3,12 +3,13 @@ import starlight from "@astrojs/starlight";
 import mermaid from "astro-mermaid";
 import remarkGithubVideo from "./plugins/remark-github-video.mjs";
 import remarkRewriteDocsLinks from "./plugins/remark-rewrite-docs-links.mjs";
+import remarkInlineBenchmarkPlots from "./plugins/remark-inline-benchmark-plots.mjs";
 
 export default defineConfig({
   site: "https://aws-solutions-library-samples.github.io",
   base: "/accelerated-intelligent-document-processing-on-aws",
   markdown: {
-    remarkPlugins: [remarkGithubVideo, remarkRewriteDocsLinks],
+    remarkPlugins: [remarkGithubVideo, remarkRewriteDocsLinks, remarkInlineBenchmarkPlots],
   },
   integrations: [
     // Renders ```mermaid fences. Must be registered before starlight, which

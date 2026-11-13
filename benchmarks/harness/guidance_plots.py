@@ -29,9 +29,13 @@ STYLE = """
   .viz { --series: #2a78d6; --ring: #ffffff; --ink: #0b0b0b; --ink-2: #52514e;
          --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7; }
   @media (prefers-color-scheme: dark) {
-    .viz { --series: #3987e5; --ring: #17181c; --ink: #f0efec; --ink-2: #c3c2b7;
-           --muted: #898781; --grid: #2c2c2a; --axis: #383835; }
+    :root:where(:not([data-theme="light"])) .viz, svg.viz:root { --series: #3987e5;
+      --ring: #17181c; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+      --grid: #2c2c2a; --axis: #383835; }
   }
+  :root[data-theme="dark"] .viz { --series: #3987e5; --ring: #17181c; --ink: #f0efec;
+    --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835; }
+  .viz { max-width: 100%; height: auto; }
   text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
   .panel { font-size: 13px; font-weight: 600; fill: var(--ink); }
   .label { font-size: 12px; fill: var(--ink-2); }
