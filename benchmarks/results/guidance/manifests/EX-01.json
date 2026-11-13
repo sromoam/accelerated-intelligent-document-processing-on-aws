@@ -1,0 +1,22 @@
+{
+  "ablation": "EX-01",
+  "verdict": "On invoices, iterative extraction scored the same as single pass (0.80 each) and used about twice the extraction tokens per page. Use single pass for invoices and other documents without long lists.",
+  "runs": {
+    "realkie": {
+      "Single pass, Simple (default)": [
+        "RealKIE-FCC-Verified-20261113-173220",
+        "RealKIE-FCC-Verified-20261113-173644",
+        "RealKIE-FCC-Verified-20261113-173641"
+      ],
+      "Iterative, Advanced": [
+        "RealKIE-FCC-Verified-20261113-173219",
+        "RealKIE-FCC-Verified-20261113-173642",
+        "RealKIE-FCC-Verified-20261113-173643"
+      ]
+    }
+  },
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026"
+}

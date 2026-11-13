@@ -183,8 +183,12 @@ def render_ablation(
                 (datasets[ds_key].get("short", datasets[ds_key]["name"]), rows)
             )
         panels = [(name, rows) for name, rows in panels if any(p for _, p in rows)]
-        x_metric = ab.get("plot_x") or next(
-            (m for m in cols if m.endswith("_tokens") and m != plot_metric), None
+        x_metric = ab.get("plot_x") or (
+            "total_tokens"
+            if "total_tokens" in cols
+            else next(
+                (m for m in cols if m.endswith("_tokens") and m != plot_metric), None
+            )
         )
         scatter = []
         if x_metric and not plot_metric.endswith("_tokens"):

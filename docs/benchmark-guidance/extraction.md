@@ -92,9 +92,9 @@ the rows.
 
 **Answer:** On invoices, iterative extraction scored the same as single pass (0.80 each) and used about twice the extraction tokens per page. Use single pass for invoices and other documents without long lists. [Details: EX-01](#ex-01-when-is-agentic-iterative-extraction-worth-it)
 
-![Weighted accuracy against extraction tokens per page for each Extraction mode](../../images/benchmark-guidance/EX-01-fields.svg)
+![Weighted accuracy against total tokens per page for each Extraction mode](../../images/benchmark-guidance/EX-01-fields.svg)
 
-*Weighted accuracy against extraction tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.*
+*Weighted accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.*
 
 ### Which extraction model should I use?
 
@@ -171,25 +171,25 @@ the rows.
 | **Datasets** | [Synthetic statement, 100 rows (3 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | Extraction mode | Completeness | Cell accuracy | Extraction tokens per page | Median seconds per document |
-|---|---|---|---|---|---|
-| Statement, 100 rows | Single pass, Simple (default) | — | — | — | — |
-| Statement, 100 rows | Iterative, Advanced | — | — | — | — |
-| Statement, 400 rows | Single pass, Simple (default) | — | — | — | — |
-| Statement, 400 rows | Iterative, Advanced | — | — | — | — |
-| Statement, 800 rows | Single pass, Simple (default) | — | — | — | — |
-| Statement, 800 rows | Iterative, Advanced | — | — | — | — |
-| Statement, 1,600 rows | Single pass, Simple (default) | — | — | — | — |
-| Statement, 1,600 rows | Iterative, Advanced | — | — | — | — |
-| Statement, 3,200 rows | Single pass, Simple (default) | — | — | — | — |
-| Statement, 3,200 rows | Iterative, Advanced | — | — | — | — |
+| Dataset | Extraction mode | Completeness | Cell accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
+|---|---|---|---|---|---|---|
+| Statement, 100 rows | Single pass, Simple (default) | — | — | — | — | — |
+| Statement, 100 rows | Iterative, Advanced | — | — | — | — | — |
+| Statement, 400 rows | Single pass, Simple (default) | — | — | — | — | — |
+| Statement, 400 rows | Iterative, Advanced | — | — | — | — | — |
+| Statement, 800 rows | Single pass, Simple (default) | — | — | — | — | — |
+| Statement, 800 rows | Iterative, Advanced | — | — | — | — | — |
+| Statement, 1,600 rows | Single pass, Simple (default) | — | — | — | — | — |
+| Statement, 1,600 rows | Iterative, Advanced | — | — | — | — | — |
+| Statement, 3,200 rows | Single pass, Simple (default) | — | — | — | — | — |
+| Statement, 3,200 rows | Iterative, Advanced | — | — | — | — | — |
 
-| Dataset | Extraction mode | Weighted accuracy | Extraction tokens per page | Median seconds per document |
-|---|---|---|---|---|
-| RealKIE | Single pass, Simple (default) | 0.8 ± 0.06 | 7,042 ± 14 | 58 ± 37 |
-| RealKIE | Iterative, Advanced | 0.8 ± 0.08 | 15,368 ± 597 | 65 ± 29 |
-| Fake-W2 | Single pass, Simple (default) | — | — | — |
-| Fake-W2 | Iterative, Advanced | — | — | — |
+| Dataset | Extraction mode | Weighted accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
+|---|---|---|---|---|---|
+| RealKIE | Single pass, Simple (default) | 0.8 ± 0.06 | 7,042 ± 14 | 20,208 ± 339 | 58 ± 37 |
+| RealKIE | Iterative, Advanced | 0.8 ± 0.08 | 15,368 ± 597 | 20,843 ± 516 | 65 ± 29 |
+| Fake-W2 | Single pass, Simple (default) | — | — | — | — |
+| Fake-W2 | Iterative, Advanced | — | — | — | — |
 
 
 #### EX-02: Which extraction model should I use?
@@ -203,44 +203,44 @@ the rows.
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | Extraction model | Weighted accuracy | Extraction tokens per page | Median seconds per document |
-|---|---|---|---|---|
-| RealKIE | Claude Sonnet 5 (default) | — | — | — |
-| RealKIE | Amazon Nova Lite | — | — | — |
-| RealKIE | Amazon Nova Pro | — | — | — |
-| RealKIE | Amazon Nova 2 Lite | — | — | — |
-| RealKIE | Claude Haiku 5.5 | — | — | — |
-| RealKIE | Claude Sonnet 4.6 | — | — | — |
-| RealKIE | Claude Sonnet 5.5 | — | — | — |
-| RealKIE | Claude Opus 5 | — | — | — |
-| RealKIE | Claude Opus 5.5 | — | — | — |
-| RealKIE | OpenAI GPT-6 Astra | — | — | — |
-| RealKIE | xAI Grok 4.6 | — | — | — |
-| Fake-W2 | Claude Sonnet 5 (default) | — | — | — |
-| Fake-W2 | Amazon Nova Lite | — | — | — |
-| Fake-W2 | Amazon Nova Pro | — | — | — |
-| Fake-W2 | Amazon Nova 2 Lite | — | — | — |
-| Fake-W2 | Claude Haiku 5.5 | — | — | — |
-| Fake-W2 | Claude Sonnet 4.6 | — | — | — |
-| Fake-W2 | Claude Sonnet 5.5 | — | — | — |
-| Fake-W2 | Claude Opus 5 | — | — | — |
-| Fake-W2 | Claude Opus 5.5 | — | — | — |
-| Fake-W2 | OpenAI GPT-6 Astra | — | — | — |
-| Fake-W2 | xAI Grok 4.6 | — | — | — |
-
-| Dataset | Extraction model | Completeness | Cell accuracy | Extraction tokens per page | Median seconds per document |
+| Dataset | Extraction model | Weighted accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
 |---|---|---|---|---|---|
-| Statement, 400 rows | Claude Sonnet 5 (default) | — | — | — | — |
-| Statement, 400 rows | Amazon Nova Lite | — | — | — | — |
-| Statement, 400 rows | Amazon Nova Pro | — | — | — | — |
-| Statement, 400 rows | Amazon Nova 2 Lite | — | — | — | — |
-| Statement, 400 rows | Claude Haiku 5.5 | — | — | — | — |
-| Statement, 400 rows | Claude Sonnet 4.6 | — | — | — | — |
-| Statement, 400 rows | Claude Sonnet 5.5 | — | — | — | — |
-| Statement, 400 rows | Claude Opus 5 | — | — | — | — |
-| Statement, 400 rows | Claude Opus 5.5 | — | — | — | — |
-| Statement, 400 rows | OpenAI GPT-6 Astra | — | — | — | — |
-| Statement, 400 rows | xAI Grok 4.6 | — | — | — | — |
+| RealKIE | Claude Sonnet 5 (default) | — | — | — | — |
+| RealKIE | Amazon Nova Lite | — | — | — | — |
+| RealKIE | Amazon Nova Pro | — | — | — | — |
+| RealKIE | Amazon Nova 2 Lite | — | — | — | — |
+| RealKIE | Claude Haiku 5.5 | — | — | — | — |
+| RealKIE | Claude Sonnet 4.6 | — | — | — | — |
+| RealKIE | Claude Sonnet 5.5 | — | — | — | — |
+| RealKIE | Claude Opus 5 | — | — | — | — |
+| RealKIE | Claude Opus 5.5 | — | — | — | — |
+| RealKIE | OpenAI GPT-6 Astra | — | — | — | — |
+| RealKIE | xAI Grok 4.6 | — | — | — | — |
+| Fake-W2 | Claude Sonnet 5 (default) | — | — | — | — |
+| Fake-W2 | Amazon Nova Lite | — | — | — | — |
+| Fake-W2 | Amazon Nova Pro | — | — | — | — |
+| Fake-W2 | Amazon Nova 2 Lite | — | — | — | — |
+| Fake-W2 | Claude Haiku 5.5 | — | — | — | — |
+| Fake-W2 | Claude Sonnet 4.6 | — | — | — | — |
+| Fake-W2 | Claude Sonnet 5.5 | — | — | — | — |
+| Fake-W2 | Claude Opus 5 | — | — | — | — |
+| Fake-W2 | Claude Opus 5.5 | — | — | — | — |
+| Fake-W2 | OpenAI GPT-6 Astra | — | — | — | — |
+| Fake-W2 | xAI Grok 4.6 | — | — | — | — |
+
+| Dataset | Extraction model | Completeness | Cell accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
+|---|---|---|---|---|---|---|
+| Statement, 400 rows | Claude Sonnet 5 (default) | — | — | — | — | — |
+| Statement, 400 rows | Amazon Nova Lite | — | — | — | — | — |
+| Statement, 400 rows | Amazon Nova Pro | — | — | — | — | — |
+| Statement, 400 rows | Amazon Nova 2 Lite | — | — | — | — | — |
+| Statement, 400 rows | Claude Haiku 5.5 | — | — | — | — | — |
+| Statement, 400 rows | Claude Sonnet 4.6 | — | — | — | — | — |
+| Statement, 400 rows | Claude Sonnet 5.5 | — | — | — | — | — |
+| Statement, 400 rows | Claude Opus 5 | — | — | — | — | — |
+| Statement, 400 rows | Claude Opus 5.5 | — | — | — | — | — |
+| Statement, 400 rows | OpenAI GPT-6 Astra | — | — | — | — | — |
+| Statement, 400 rows | xAI Grok 4.6 | — | — | — | — | — |
 
 
 #### EX-03: Does more reasoning effort improve extraction?
@@ -254,20 +254,20 @@ the rows.
 | **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | `extraction.reasoning_effort` | Weighted accuracy | Extraction tokens per page | Median seconds per document |
-|---|---|---|---|---|
-| RealKIE | Low (default) | — | — | — |
-| RealKIE | Medium | — | — | — |
-| RealKIE | High | — | — | — |
-| Fake-W2 | Low (default) | — | — | — |
-| Fake-W2 | Medium | — | — | — |
-| Fake-W2 | High | — | — | — |
+| Dataset | `extraction.reasoning_effort` | Weighted accuracy | Extraction tokens per page | Total tokens per page | Median seconds per document |
+|---|---|---|---|---|---|
+| RealKIE | Low (default) | — | — | — | — |
+| RealKIE | Medium | — | — | — | — |
+| RealKIE | High | — | — | — | — |
+| Fake-W2 | Low (default) | — | — | — | — |
+| Fake-W2 | Medium | — | — | — | — |
+| Fake-W2 | High | — | — | — | — |
 
-| Dataset | `extraction.reasoning_effort` | Completeness | Extraction tokens per page | Median seconds per document |
-|---|---|---|---|---|
-| Statement, 400 rows | Low (default) | — | — | — |
-| Statement, 400 rows | Medium | — | — | — |
-| Statement, 400 rows | High | — | — | — |
+| Dataset | `extraction.reasoning_effort` | Completeness | Extraction tokens per page | Total tokens per page | Median seconds per document |
+|---|---|---|---|---|---|
+| Statement, 400 rows | Low (default) | — | — | — | — |
+| Statement, 400 rows | Medium | — | — | — | — |
+| Statement, 400 rows | High | — | — | — | — |
 
 
 #### EX-04: How much do field descriptions matter?

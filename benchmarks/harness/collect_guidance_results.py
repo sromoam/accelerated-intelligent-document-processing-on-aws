@@ -30,6 +30,13 @@ Metrics (cell keys `dataset|value|metric`, each a mean and standard error):
     <step>_tokens       tokens per page for one step, per run; SE across runs
     total_tokens        tokens per page for every Bedrock step, per run; SE across runs
     median_seconds      median workflow time per document, per run; SE across runs
+    all_fields_right    share of documents scoring 1.0, per run; SE across runs
+    auroc               field-confidence AUROC, per run; SE across runs
+    calibration_error   field-confidence ECE, per run; SE across runs
+    page_accuracy       share of pages with the right class, per run; SE across runs
+
+A metric is written only when the runs report it (confidence metrics need confidence
+on; page accuracy needs page-level class ground truth).
 
 Usage:
     AWS_PROFILE=... python3 benchmarks/harness/collect_guidance_results.py \\
@@ -78,6 +85,23 @@ def step_tokens(result: dict[str, Any], step: str | None) -> int:
     return total
 
 
+def run_metrics(result: dict[str, Any]) -> dict[str, float]:
+    """Per-run metrics that Test Studio reports directly, when present."""
+    out: dict[str, float] = {}
+    scores = [float(v) for v in result.get("weightedOverallScores", {}).values()]
+    if scores:
+        out["all_fields_right"] = sum(v >= 0.9999 for v in scores) / len(scores)
+    overall = (result.get("confidenceMetrics") or {}).get("overall") or {}
+    if (overall.get("auroc") or {}).get("value") is not None:
+        out["auroc"] = float(overall["auroc"]["value"])
+    if (overall.get("ece") or {}).get("value") is not None:
+        out["calibration_error"] = float(overall["ece"]["value"])
+    split = result.get("splitClassificationMetrics") or {}
+    if split.get("page_level_accuracy") is not None:
+        out["page_accuracy"] = float(split["page_level_accuracy"])
+    return out
+
+
 def pages(result: dict[str, Any]) -> int:
     return int(result.get("splitClassificationMetrics", {}).get("total_pages") or 0)
 
@@ -124,6 +148,7 @@ def main() -> int:
             per_doc: dict[str, list[float]] = {}
             tokens: dict[str, list[float]] = {k: [] for k in [*STEP_METRICS, "total"]}
             medians: list[float] = []
+            per_run: dict[str, list[float]] = {}
             for run_id in ids:
                 path = args.results_dir / f"{run_id}-result.json"
                 result = json.loads(path.read_text(encoding="utf-8"))
@@ -132,26 +157,32 @@ def main() -> int:
                         f"{run_id}: not a clean run ({result.get('status')})"
                     )
                 run_ids.append(run_id)
-                scores = result["weightedOverallScores"]
+                scores = result.get("weightedOverallScores") or {}
                 for key, score in scores.items():
                     per_doc.setdefault(key.split("/", 1)[1], []).append(float(score))
-                n_pages = pages(result)
+                n_pages = pages(result) or 1
                 for metric, step in STEP_METRICS.items():
                     tokens[metric].append(step_tokens(result, step) / n_pages)
                 tokens["total"].append(step_tokens(result, None) / n_pages)
+                for metric, v in run_metrics(result).items():
+                    per_run.setdefault(metric, []).append(v)
                 secs = workflow_seconds(table, run_id, list(scores))
                 if secs:
                     medians.append(statistics.median(secs))
             cell = f"{ds_key}|{value}|"
-            cells[cell + "weighted_accuracy"] = mean_se(
-                [statistics.fmean(v) for v in per_doc.values()]
-            )
+            if per_doc:
+                cells[cell + "weighted_accuracy"] = mean_se(
+                    [statistics.fmean(v) for v in per_doc.values()]
+                )
             for metric in STEP_METRICS:
                 if any(tokens[metric]):
                     cells[cell + metric] = mean_se(tokens[metric])
             cells[cell + "total_tokens"] = mean_se(tokens["total"])
             if medians:
                 cells[cell + "median_seconds"] = mean_se(medians)
+            for metric, vals in per_run.items():
+                if len(vals) == len(ids):
+                    cells[cell + metric] = mean_se(vals)
 
     out = {
         "release": man["release"],

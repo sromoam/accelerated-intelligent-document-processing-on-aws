@@ -25,6 +25,22 @@
       "mean": 58.401598,
       "se": 18.290965
     },
+    "realkie|Single pass, Simple (default)|all_fields_right": {
+      "mean": 0.033333,
+      "se": 0.016667
+    },
+    "realkie|Single pass, Simple (default)|auroc": {
+      "mean": 0.429011,
+      "se": 0.003172
+    },
+    "realkie|Single pass, Simple (default)|calibration_error": {
+      "mean": 0.178111,
+      "se": 0.015376
+    },
+    "realkie|Single pass, Simple (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "realkie|Iterative, Advanced|weighted_accuracy": {
       "mean": 0.801252,
       "se": 0.038957
@@ -44,6 +60,22 @@
     "realkie|Iterative, Advanced|median_seconds": {
       "mean": 64.764973,
       "se": 14.709939
+    },
+    "realkie|Iterative, Advanced|all_fields_right": {
+      "mean": 0.05,
+      "se": 0.0
+    },
+    "realkie|Iterative, Advanced|auroc": {
+      "mean": 0.579152,
+      "se": 0.008562
+    },
+    "realkie|Iterative, Advanced|calibration_error": {
+      "mean": 0.209561,
+      "se": 0.004196
+    },
+    "realkie|Iterative, Advanced|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
     }
   }
 }
