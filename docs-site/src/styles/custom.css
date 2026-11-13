@@ -21,3 +21,24 @@
   border: 1px solid var(--sl-color-gray-4);
   margin: 1rem 0;
 }
+
+/* Wider content column on wide screens. Starlight's default (45rem) leaves charts and
+   wide tables cramped on large monitors; widen it in steps as the window grows. */
+@media (min-width: 90rem) {
+  :root {
+    --sl-content-width: 56rem;
+  }
+}
+@media (min-width: 110rem) {
+  :root {
+    --sl-content-width: 68rem;
+  }
+}
+
+/* Benchmark charts (inline SVG from benchmarks/harness/guidance_plots.py) scale with
+   the content column instead of staying at their drawn width. */
+.sl-markdown-content svg.viz {
+  width: 100%;
+  max-width: 60rem;
+  height: auto;
+}
