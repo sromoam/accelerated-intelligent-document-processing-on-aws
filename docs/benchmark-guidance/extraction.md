@@ -1,5 +1,7 @@
 ---
 title: "Key Information Extraction Benchmarks"
+tableOfContents:
+  maxHeadingLevel: 3
 ---
 
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -7,36 +9,69 @@ SPDX-License-Identifier: MIT-0
 
 # Key Information Extraction Benchmarks
 
-- When is agentic (iterative) extraction worth it?
-- Which extraction model should I use?
-- How much do field descriptions matter?
-- Do few-shot examples help extraction?
+Extraction fills your database. For each section, it returns the values of the fields you
+defined for the section's document class.
+[Key Information Extraction](../idp-fundamentals/extraction.md) explains how it works.
 
-## What decides extraction accuracy
+## What decides extraction accuracy on your documents
 
-**Your definitions.** The extraction model returns the fields you define for each document
-class, and reads each field's description as its instruction. A good description says where
-the value appears, what it is not, and the format you want.
-[EX-04](#ex-04-how-much-do-field-descriptions-matter) measures how much descriptions matter;
-[Improving accuracy](../idp-fundamentals/extraction.md#improving-accuracy-once-your-pipeline-is-running) shows how to
-write them.
+This page measures how configuration choices change extraction accuracy. On your own
+documents, two things matter more than any setting.
 
-**Data quality.** The extraction model reads the OCR text and the page images. Poor scans
-and handwriting give it less to read, and long tables need a mode built for them.
-[Digitization (OCR) Benchmarks](digitization.md) measure the effect of scan quality.
+**1. Your definitions.** The extraction model returns the fields you define, in the structure
+you define, and reads each field's description as its instruction. Good definitions:
 
-**Settings.**
+- **Name the right fields.** Ask for the values your database needs, one value per field.
+- **Get the relationships right.** Put values that belong together, such as the date, rate
+  and description of a line item, in one list, so each row stays whole.
+- **Say clearly what each field is.** Say where the value appears and what it is not: "the
+  date the invoice was issued, not the due date".
+- **Show what a value looks like.** Give the format you want, such as YYYY-MM-DD, or a number
+  without a currency sign. For a hard document class, add a few-shot example.
 
-| Setting | What it changes | Benchmarks |
+See [Improving accuracy](../idp-fundamentals/extraction.md#improving-accuracy-once-your-pipeline-is-running).
+
+**2. Your annotations.** Test Studio measures accuracy against the ground truth in your test
+set, so a wrong annotation counts as an extraction error. In our experience, annotation
+errors usually make up more than half of the errors Test Studio reports. Reliable numbers
+need a test set with few annotation errors, and getting there usually takes a few rounds of
+review: check each reported error, and fix the annotation when the extraction was right. See
+[Measure with ground truth](../idp-fundamentals/index.md#4-measure-with-ground-truth) and
+[Draft labeling](../test-studio.md#draft-labeling-unlabeled-documents--ground-truth).
+
+**Data quality** matters too. The extraction model reads the OCR text and the page images.
+Poor scans and handwriting give it less to read, and long tables need a mode built for them.
+
+**Settings** are what the benchmarks below measure:
+
+| Setting | What it changes | Questions |
 |---|---|---|
-| *Extraction mode* (`extraction.mode`) | One request per section (*Simple*), or an agent that works through the section in shards (*Advanced*) | [EX-01](#ex-01-when-is-agentic-iterative-extraction-worth-it), [EX-07](#ex-07-does-deterministic-table-parsing-help-iterative-extraction) to [EX-09](#ex-09-should-iterative-extraction-load-page-images-only-when-it-needs-them) |
-| *Extraction model* (`extraction.model`) | The model that reads the section | [EX-02](#ex-02-which-extraction-model-should-i-use) |
-| `extraction.reasoning_effort` | How long the model reasons before it answers | [EX-03](#ex-03-does-more-reasoning-effort-improve-extraction) |
-| Few-shot examples | Sample documents with their correct values, added to the prompt | [EX-05](#ex-05-do-few-shot-examples-help-extraction) |
-| Page images | Whether the model sees the pages as well as the OCR text | [EX-06](#ex-06-does-sending-page-images-to-the-extraction-model-help) |
-| Value coercion and schema validation | Type repair and schema checks on every record | [EX-10](#ex-10-do-schema-validation-and-value-coercion-improve-the-output), [EX-11](#ex-11-should-i-retry-failed-fields-with-a-stronger-model) |
+| *Extraction mode* (`extraction.mode`) | One request per section (*Simple*), or an agent that works through the section in shards (*Advanced*) | [EX-01](#when-is-agentic-iterative-extraction-worth-it), [EX-07](#does-deterministic-table-parsing-help-iterative-extraction) to [EX-09](#should-iterative-extraction-load-page-images-only-when-it-needs-them) |
+| *Extraction model* (`extraction.model`) | The model that reads the section | [EX-02](#which-extraction-model-should-i-use) |
+| Reasoning effort (`extraction.reasoning_effort`) | How long the model reasons before it answers | [EX-03](#does-more-reasoning-effort-improve-extraction) |
+| Few-shot examples | Sample documents with their correct values, added to the prompt | [EX-05](#do-few-shot-examples-help-extraction) |
+| Page images | Whether the model sees the pages as well as the OCR text | [EX-06](#does-sending-page-images-to-the-extraction-model-help) |
+| Value coercion and schema validation | Type repair and schema checks on every record | [EX-10](#do-schema-validation-and-value-coercion-improve-the-output), [EX-11](#should-i-retry-failed-fields-with-a-stronger-model) |
 
-[Key Information Extraction](../idp-fundamentals/extraction.md) explains how each mode works.
+## Benchmark datasets and metrics
+
+<!-- BEGIN GENERATED DATASETS -->
+
+| Dataset | Preset |
+|---|---|
+| [Synthetic statement, 100 rows (3 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
+| [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
+| [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) | `realkie-fcc-verified` |
+| [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) | `ocr-benchmark` |
+| [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) | `fake-w2` |
+| Packets with section and field ground truth (to be built) | — |
+
+<!-- END GENERATED DATASETS -->
 
 **Metrics**
 
@@ -49,7 +84,73 @@ and handwriting give it less to read, and long tables need a mode built for them
 Read completeness and accuracy together: perfect accuracy on half the rows is still half
 the rows.
 
-## Benchmarks
+## Questions
+
+<!-- BEGIN GENERATED FAQ -->
+
+### When is agentic (iterative) extraction worth it?
+
+**Answer:** Not yet measured. [Details: EX-01](#ex-01-when-is-agentic-iterative-extraction-worth-it)
+
+### Which extraction model should I use?
+
+**Answer:** Not yet measured. [Details: EX-02](#ex-02-which-extraction-model-should-i-use)
+
+### Does more reasoning effort improve extraction?
+
+**Answer:** Not yet measured. [Details: EX-03](#ex-03-does-more-reasoning-effort-improve-extraction)
+
+### How much do field descriptions matter?
+
+**Answer:** Not yet measured. [Details: EX-04](#ex-04-how-much-do-field-descriptions-matter)
+
+### Do few-shot examples help extraction?
+
+**Answer:** Not yet measured. [Details: EX-05](#ex-05-do-few-shot-examples-help-extraction)
+
+### Does sending page images to the extraction model help?
+
+**Answer:** Not yet measured. [Details: EX-06](#ex-06-does-sending-page-images-to-the-extraction-model-help)
+
+### Does deterministic table parsing help iterative extraction?
+
+**Answer:** Not yet measured. [Details: EX-07](#ex-07-does-deterministic-table-parsing-help-iterative-extraction)
+
+### What shard size should iterative extraction use?
+
+**Answer:** Not yet measured. [Details: EX-08](#ex-08-what-shard-size-should-iterative-extraction-use)
+
+### Should iterative extraction load page images only when it needs them?
+
+**Answer:** Not yet measured. [Details: EX-09](#ex-09-should-iterative-extraction-load-page-images-only-when-it-needs-them)
+
+### Do schema validation and value coercion improve the output?
+
+**Answer:** Not yet measured. [Details: EX-10](#ex-10-do-schema-validation-and-value-coercion-improve-the-output)
+
+### Should I retry failed fields with a stronger model?
+
+**Answer:** Not yet measured. [Details: EX-11](#ex-11-should-i-retry-failed-fields-with-a-stronger-model)
+
+### Does forced tool use make single-pass output more reliable?
+
+**Answer:** Not yet measured. [Details: EX-12](#ex-12-does-forced-tool-use-make-single-pass-output-more-reliable)
+
+### How should I extract sections that hold several records?
+
+**Answer:** Not yet measured. [Details: EX-13](#ex-13-how-should-i-extract-sections-that-hold-several-records)
+
+### How accurate is extraction across many document formats?
+
+**Answer:** Not yet measured. [Details: EX-14](#ex-14-how-accurate-is-extraction-across-many-document-formats)
+
+### How much do splitting errors cost extraction in a packet?
+
+**Answer:** Not yet measured. [Details: EX-15](#ex-15-how-much-do-splitting-errors-cost-extraction-in-a-packet)
+
+<!-- END GENERATED FAQ -->
+
+## Benchmark details
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
