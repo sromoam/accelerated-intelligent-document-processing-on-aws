@@ -9,11 +9,34 @@ SPDX-License-Identifier: MIT-0
 
 - When is agentic (iterative) extraction worth it?
 - Which extraction model should I use?
-- What's the spread between Opus and Haiku?
+- How much do field descriptions matter?
 - Do few-shot examples help extraction?
 
-[Key Information Extraction](../idp-fundamentals/extraction.md) explains how the
-accelerator extracts fields.
+## What decides extraction accuracy
+
+**Your definitions.** The extraction model returns the fields you define for each document
+class, and reads each field's description as its instruction. A good description says where
+the value appears, what it is not, and the format you want.
+[EX-04](#ex-04-how-much-do-field-descriptions-matter) measures how much descriptions matter;
+[Improving accuracy](../idp-fundamentals/extraction.md#improving-accuracy-once-your-pipeline-is-running) shows how to
+write them.
+
+**Data quality.** The extraction model reads the OCR text and the page images. Poor scans
+and handwriting give it less to read, and long tables need a mode built for them.
+[Digitization (OCR) Benchmarks](digitization.md) measure the effect of scan quality.
+
+**Settings.**
+
+| Setting | What it changes | Benchmarks |
+|---|---|---|
+| *Extraction mode* (`extraction.mode`) | One request per section (*Simple*), or an agent that works through the section in shards (*Advanced*) | [EX-01](#ex-01-when-is-agentic-iterative-extraction-worth-it), [EX-07](#ex-07-does-deterministic-table-parsing-help-iterative-extraction) to [EX-09](#ex-09-should-iterative-extraction-load-page-images-only-when-it-needs-them) |
+| *Extraction model* (`extraction.model`) | The model that reads the section | [EX-02](#ex-02-which-extraction-model-should-i-use) |
+| `extraction.reasoning_effort` | How long the model reasons before it answers | [EX-03](#ex-03-does-more-reasoning-effort-improve-extraction) |
+| Few-shot examples | Sample documents with their correct values, added to the prompt | [EX-05](#ex-05-do-few-shot-examples-help-extraction) |
+| Page images | Whether the model sees the pages as well as the OCR text | [EX-06](#ex-06-does-sending-page-images-to-the-extraction-model-help) |
+| Value coercion and schema validation | Type repair and schema checks on every record | [EX-10](#ex-10-do-schema-validation-and-value-coercion-improve-the-output), [EX-11](#ex-11-should-i-retry-failed-fields-with-a-stronger-model) |
+
+[Key Information Extraction](../idp-fundamentals/extraction.md) explains how each mode works.
 
 **Metrics**
 
@@ -113,37 +136,7 @@ the rows.
 | Statement, 400 rows | xAI Grok 4.6 | — | — | — | — |
 
 
-### EX-03: What's the spread between Opus and Haiku?
-
-**Answer:** Not yet measured.
-
-| | |
-|---|---|
-| **Changes** | Extraction model |
-| **Everything else** | Run in both extraction modes; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
-| **Runs** | 3 per document, per value |
-
-| Dataset | Extraction model | Weighted accuracy | Documents with every field right | Extraction tokens per page | Median seconds per document |
-|---|---|---|---|---|---|
-| Fake-W2 | Claude Haiku 5.5 | — | — | — | — |
-| Fake-W2 | Claude Sonnet 5 (default) | — | — | — | — |
-| Fake-W2 | Claude Opus 5.5 | — | — | — | — |
-| RealKIE | Claude Haiku 5.5 | — | — | — | — |
-| RealKIE | Claude Sonnet 5 (default) | — | — | — | — |
-| RealKIE | Claude Opus 5.5 | — | — | — | — |
-| ConfBench | Claude Haiku 5.5 | — | — | — | — |
-| ConfBench | Claude Sonnet 5 (default) | — | — | — | — |
-| ConfBench | Claude Opus 5.5 | — | — | — | — |
-
-| Dataset | Extraction model | Completeness | Extraction tokens per page | Median seconds per document |
-|---|---|---|---|---|
-| Statement, 800 rows | Claude Haiku 5.5 | — | — | — |
-| Statement, 800 rows | Claude Sonnet 5 (default) | — | — | — |
-| Statement, 800 rows | Claude Opus 5.5 | — | — | — |
-
-
-### EX-04: Does more reasoning effort improve extraction?
+### EX-03: Does more reasoning effort improve extraction?
 
 **Answer:** Not yet measured.
 
@@ -170,7 +163,7 @@ the rows.
 | Statement, 400 rows | High | — | — | — |
 
 
-### EX-05: How much do field descriptions matter?
+### EX-04: How much do field descriptions matter?
 
 **Answer:** Not yet measured.
 
@@ -191,7 +184,7 @@ the rows.
 | Fake-W2 | Descriptions with location, exclusions and format | — | — | — |
 
 
-### EX-06: Do few-shot examples help extraction?
+### EX-05: Do few-shot examples help extraction?
 
 **Answer:** Not yet measured.
 
@@ -212,7 +205,7 @@ the rows.
 | Fake-W2 | Three examples per class | — | — | — |
 
 
-### EX-07: Does sending page images to the extraction model help?
+### EX-06: Does sending page images to the extraction model help?
 
 **Answer:** Not yet measured.
 
@@ -233,7 +226,7 @@ the rows.
 | ConfBench | Text only | — | — | — |
 
 
-### EX-08: Does deterministic table parsing help iterative extraction?
+### EX-07: Does deterministic table parsing help iterative extraction?
 
 **Answer:** Not yet measured.
 
@@ -254,7 +247,7 @@ the rows.
 | Statement, 3,200 rows | Off | — | — | — | — |
 
 
-### EX-09: What shard size should iterative extraction use?
+### EX-08: What shard size should iterative extraction use?
 
 **Answer:** Not yet measured.
 
@@ -277,7 +270,7 @@ the rows.
 | Statement, 3,200 rows | 25 | — | — | — | — |
 
 
-### EX-10: Should iterative extraction load page images only when it needs them?
+### EX-09: Should iterative extraction load page images only when it needs them?
 
 **Answer:** Not yet measured.
 
@@ -301,7 +294,7 @@ the rows.
 | RealKIE | Off | — | — |
 
 
-### EX-11: Do schema validation and value coercion improve the output?
+### EX-10: Do schema validation and value coercion improve the output?
 
 **Answer:** Not yet measured.
 
@@ -322,7 +315,7 @@ the rows.
 | RealKIE | Validation off | — | — | — |
 
 
-### EX-12: Should I retry failed fields with a stronger model?
+### EX-11: Should I retry failed fields with a stronger model?
 
 **Answer:** Not yet measured.
 
@@ -343,7 +336,7 @@ the rows.
 | RealKIE | reject | — | — | — |
 
 
-### EX-13: Does forced tool use make single-pass output more reliable?
+### EX-12: Does forced tool use make single-pass output more reliable?
 
 **Answer:** Not yet measured.
 
@@ -365,7 +358,7 @@ the rows.
 | Statement, 400 rows | On | — | — |
 
 
-### EX-14: How should I extract sections that hold several records?
+### EX-13: How should I extract sections that hold several records?
 
 **Answer:** Not yet measured.
 
@@ -382,7 +375,7 @@ the rows.
 | Fake-W2 | On | — | — |
 
 
-### EX-15: How accurate is extraction across many document formats?
+### EX-14: How accurate is extraction across many document formats?
 
 **Answer:** Not yet measured.
 
@@ -398,7 +391,7 @@ the rows.
 | OmniAI | Each of the 9 OmniAI formats | — | — | — |
 
 
-### EX-16: How much do splitting errors cost extraction in a packet?
+### EX-15: How much do splitting errors cost extraction in a packet?
 
 **Answer:** Not yet measured.
 

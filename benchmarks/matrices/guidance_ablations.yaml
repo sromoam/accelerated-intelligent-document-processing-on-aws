@@ -256,22 +256,13 @@ ablations:
     metrics: [weighted_accuracy, completeness, cell_accuracy, extraction_tokens, median_seconds]
   - id: EX-03
     page: extraction
-    question: "What's the spread between Opus and Haiku?"
-    changes: "Extraction model"
-    values: ["Claude Haiku 5.5", "Claude Sonnet 5 (default)", "Claude Opus 5.5"]
-    holds: "Run in both extraction modes"
-    datasets: [fake_w2, realkie, confbench, synth_800]
-    runs: 3
-    metrics: [weighted_accuracy, all_fields_right, completeness, extraction_tokens, median_seconds]
-  - id: EX-04
-    page: extraction
     question: "Does more reasoning effort improve extraction?"
     changes: "`extraction.reasoning_effort`"
     values: ["Low (default)", "Medium", "High"]
     datasets: [realkie, fake_w2, synth_400]
     runs: 3
     metrics: [weighted_accuracy, completeness, extraction_tokens, median_seconds]
-  - id: EX-05
+  - id: EX-04
     page: extraction
     question: "How much do field descriptions matter?"
     changes: "Field descriptions"
@@ -279,7 +270,7 @@ ablations:
     datasets: [realkie, fake_w2]
     runs: 3
     metrics: [weighted_accuracy, all_fields_right, extraction_tokens]
-  - id: EX-06
+  - id: EX-05
     page: extraction
     question: "Do few-shot examples help extraction?"
     changes: "Few-shot examples"
@@ -287,7 +278,7 @@ ablations:
     datasets: [realkie, fake_w2]
     runs: 3
     metrics: [weighted_accuracy, all_fields_right, extraction_tokens]
-  - id: EX-07
+  - id: EX-06
     page: extraction
     question: "Does sending page images to the extraction model help?"
     changes: "Page images in the extraction prompt"
@@ -295,7 +286,7 @@ ablations:
     datasets: [realkie, fake_w2, confbench]
     runs: 3
     metrics: [weighted_accuracy, all_fields_right, extraction_tokens]
-  - id: EX-08
+  - id: EX-07
     page: extraction
     question: "Does deterministic table parsing help iterative extraction?"
     changes: "`extraction.agentic.table_parsing.enabled`"
@@ -304,7 +295,7 @@ ablations:
     datasets: [synth_400, synth_800, synth_3200]
     runs: 3
     metrics: [completeness, cell_accuracy, extraction_tokens, median_seconds]
-  - id: EX-09
+  - id: EX-08
     page: extraction
     question: "What shard size should iterative extraction use?"
     changes: "Pages per shard (`max_pages_per_shard`)"
@@ -313,7 +304,7 @@ ablations:
     datasets: [synth_800, synth_3200]
     runs: 3
     metrics: [completeness, cell_accuracy, extraction_tokens, median_seconds]
-  - id: EX-10
+  - id: EX-09
     page: extraction
     question: "Should iterative extraction load page images only when it needs them?"
     changes: "`extraction.agentic.table_parsing.lazy_images`"
@@ -322,7 +313,7 @@ ablations:
     datasets: [synth_400, synth_800, realkie]
     runs: 3
     metrics: [completeness, cell_accuracy, weighted_accuracy, extraction_tokens]
-  - id: EX-11
+  - id: EX-10
     page: extraction
     question: "Do schema validation and value coercion improve the output?"
     changes: "`extraction.validation` and `extraction.coercion`"
@@ -330,7 +321,7 @@ ablations:
     datasets: [fake_w2, realkie]
     runs: 3
     metrics: [weighted_accuracy, all_fields_right, extraction_tokens]
-  - id: EX-12
+  - id: EX-11
     page: extraction
     question: "Should I retry failed fields with a stronger model?"
     changes: "`extraction.validation.fail_action`"
@@ -338,7 +329,7 @@ ablations:
     datasets: [fake_w2, realkie]
     runs: 3
     metrics: [weighted_accuracy, all_fields_right, extraction_tokens]
-  - id: EX-13
+  - id: EX-12
     page: extraction
     question: "Does forced tool use make single-pass output more reliable?"
     changes: "`extraction.forced_tool.enabled`"
@@ -346,7 +337,7 @@ ablations:
     datasets: [realkie, synth_400]
     runs: 3
     metrics: [weighted_accuracy, completeness, extraction_tokens]
-  - id: EX-14
+  - id: EX-13
     page: extraction
     question: "How should I extract sections that hold several records?"
     changes: "Multi-instance sections"
@@ -354,7 +345,7 @@ ablations:
     datasets: [synth_two_docs, fake_w2]
     runs: 3
     metrics: [completeness, weighted_accuracy, extraction_tokens]
-  - id: EX-15
+  - id: EX-14
     page: extraction
     question: "How accurate is extraction across many document formats?"
     changes: "Document format"
@@ -362,7 +353,7 @@ ablations:
     datasets: [omniai]
     runs: 3
     metrics: [weighted_accuracy, all_fields_right, extraction_tokens]
-  - id: EX-16
+  - id: EX-15
     page: extraction
     question: "How much do splitting errors cost extraction in a packet?"
     changes: "Granularity and strategy"
