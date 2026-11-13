@@ -1,0 +1,35 @@
+{
+  "ablation": "SC-03",
+  "verdict": "Claude Haiku 5.5 or Claude Sonnet 5 for packets. On DocSplit both got 0.71 of sections exactly right, against 0.51 for the default, Amazon Nova 2 Lite, and classified more pages correctly (0.86 and 0.89, against 0.82). They used about three times the classification tokens (about 8,800 per page, against 2,850) and about 37% more total tokens. Amazon Nova Pro scored below the default.",
+  "runs": {
+    "docsplit": {
+      "Amazon Nova 2 Lite (default)": [
+        "DocSplit-Poly-Seq-20261113-195743",
+        "DocSplit-Poly-Seq-20261113-195742",
+        "DocSplit-Poly-Seq-20261113-195744"
+      ],
+      "Amazon Nova Pro": [
+        "DocSplit-Poly-Seq-20261113-200102",
+        "DocSplit-Poly-Seq-20261113-200054",
+        "DocSplit-Poly-Seq-20261113-200100"
+      ],
+      "Claude Haiku 5.5": [
+        "DocSplit-Poly-Seq-20261113-200705",
+        "DocSplit-Poly-Seq-20261113-200700",
+        "DocSplit-Poly-Seq-20261113-200701"
+      ],
+      "Claude Sonnet 5": [
+        "DocSplit-Poly-Seq-20261113-201125",
+        "DocSplit-Poly-Seq-20261113-201126",
+        "DocSplit-Poly-Seq-20261113-201048"
+      ]
+    }
+  },
+  "max_failed": {
+    "docsplit": 1
+  },
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026"
+}

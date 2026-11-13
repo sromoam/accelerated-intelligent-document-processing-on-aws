@@ -1,0 +1,17 @@
+{
+  "ablation": "CF-03",
+  "verdict": "Measured; see the table.",
+  "runs": {
+    "realkie": {
+      "Separate (default)": [
+        "RealKIE-FCC-Verified-20261113-202145",
+        "RealKIE-FCC-Verified-20261113-202146"
+      ]
+    }
+  },
+  "max_failed": {},
+  "stack": "sr-testing",
+  "region": "us-east-1",
+  "release": "0.6.15.dev1",
+  "measured": "November 2026"
+}

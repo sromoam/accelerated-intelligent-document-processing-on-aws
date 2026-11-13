@@ -33,24 +33,6 @@ more in every step.
 
 Some benchmarks here reuse runs from other pages.
 
-## Benchmark datasets and metrics
-
-<!-- BEGIN GENERATED DATASETS -->
-
-| Dataset | Preset |
-|---|---|
-| [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
-| [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) | `docsplit` |
-
-<!-- END GENERATED DATASETS -->
-
-**Metrics**
-
-- *Tokens per page:* input, output and prompt cache reads and writes, per step.
-- *Share of input from cache:* Amazon Bedrock bills cache reads at a reduced rate.
-- *Accuracy:* where a benchmark trades tokens against it.
-
 ## Questions
 
 <!-- BEGIN GENERATED FAQ -->
@@ -77,6 +59,14 @@ Some benchmarks here reuse runs from other pages.
 
 <!-- END GENERATED FAQ -->
 
+## Metrics on this page
+
+- *Tokens per page:* input, output and prompt cache reads and writes, per step.
+- *Share of input from cache:* Amazon Bedrock bills cache reads at a reduced rate.
+- *Accuracy:* where a benchmark trades tokens against it.
+
+[Benchmark Datasets](datasets.md) describes each dataset.
+
 ## Benchmark details
 
 <!-- BEGIN GENERATED ABLATIONS -->
@@ -89,7 +79,7 @@ Some benchmarks here reuse runs from other pages.
 |---|---|
 | **Changes** | Nothing: the preset, measured step by step |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Nothing: the preset, measured step by step | OCR tokens per page | Classification tokens per page | Extraction tokens per page | Scoring tokens per page | Total tokens per page | Share of input served from cache |
@@ -113,7 +103,7 @@ Some benchmarks here reuse runs from other pages.
 |---|---|
 | **Changes** | `extraction.prompt_cache` |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | `extraction.prompt_cache` | Total tokens per page | Share of input served from cache | Median seconds per document |
@@ -140,7 +130,7 @@ Some benchmarks here reuse runs from other pages.
 |---|---|
 | **Changes** | Page images |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Page images | Classification tokens per page | Extraction tokens per page | Scoring tokens per page | Total tokens per page |
@@ -166,7 +156,7 @@ Some benchmarks here reuse runs from other pages.
 |---|---|
 | **Changes** | Configuration |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Configuration | Weighted accuracy | Total tokens per page |
@@ -202,7 +192,7 @@ Some benchmarks here reuse runs from other pages.
 |---|---|
 | **Changes** | Extraction model |
 | **Everything else** | Computed from the EX-02 runs; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | None: computed from the EX-02 runs |
 
 | Dataset | Extraction model | Extraction tokens per page | Total tokens per page |

@@ -41,6 +41,71 @@
         "RealKIE-FCC-Verified-20261113-195217",
         "RealKIE-FCC-Verified-20261113-195219",
         "RealKIE-FCC-Verified-20261113-195617"
+      ],
+      "Claude Opus 5.5": [
+        "RealKIE-FCC-Verified-20261113-195659",
+        "RealKIE-FCC-Verified-20261113-195740",
+        "RealKIE-FCC-Verified-20261113-195936"
+      ],
+      "OpenAI GPT-6 Astra": [
+        "RealKIE-FCC-Verified-20261113-195957",
+        "RealKIE-FCC-Verified-20261113-200106",
+        "RealKIE-FCC-Verified-20261113-200235"
+      ],
+      "xAI Grok 4.6": [
+        "RealKIE-FCC-Verified-20261113-200733",
+        "RealKIE-FCC-Verified-20261113-200820",
+        "RealKIE-FCC-Verified-20261113-200702"
+      ]
+    },
+    "fake_w2": {
+      "Claude Sonnet 5 (default)": [
+        "Fake-W2-Tax-Forms-20261113-201217",
+        "Fake-W2-Tax-Forms-20261113-201204",
+        "Fake-W2-Tax-Forms-20261113-201242"
+      ],
+      "Amazon Nova Lite": [
+        "Fake-W2-Tax-Forms-20261113-201354",
+        "Fake-W2-Tax-Forms-20261113-201419",
+        "Fake-W2-Tax-Forms-20261113-201509"
+      ],
+      "Amazon Nova Pro": [
+        "Fake-W2-Tax-Forms-20261113-201521",
+        "Fake-W2-Tax-Forms-20261113-201543",
+        "Fake-W2-Tax-Forms-20261113-201623"
+      ],
+      "Amazon Nova 2 Lite": [
+        "Fake-W2-Tax-Forms-20261113-201638",
+        "Fake-W2-Tax-Forms-20261113-201728",
+        "Fake-W2-Tax-Forms-20261113-201737"
+      ],
+      "Claude Haiku 5.5": [
+        "Fake-W2-Tax-Forms-20261113-201754",
+        "Fake-W2-Tax-Forms-20261113-201833",
+        "Fake-W2-Tax-Forms-20261113-201841"
+      ],
+      "Claude Sonnet 4.6": [
+        "Fake-W2-Tax-Forms-20261113-201858",
+        "Fake-W2-Tax-Forms-20261113-201947",
+        "Fake-W2-Tax-Forms-20261113-202015"
+      ],
+      "Claude Sonnet 5.5": [
+        "Fake-W2-Tax-Forms-20261113-202016",
+        "Fake-W2-Tax-Forms-20261113-202114",
+        "Fake-W2-Tax-Forms-20261113-202132"
+      ],
+      "Claude Opus 5": [
+        "Fake-W2-Tax-Forms-20261113-202129",
+        "Fake-W2-Tax-Forms-20261113-202220",
+        "Fake-W2-Tax-Forms-20261113-202242"
+      ],
+      "Claude Opus 5.5": [
+        "Fake-W2-Tax-Forms-20261113-202246",
+        "Fake-W2-Tax-Forms-20261113-202327",
+        "Fake-W2-Tax-Forms-20261113-202346"
+      ],
+      "OpenAI GPT-6 Astra": [
+        "Fake-W2-Tax-Forms-20261113-202412"
       ]
     }
   },

@@ -34,23 +34,6 @@ fact, the rule comes back *Information Not Found*.
 We haven't built the dataset these benchmarks need yet: documents with an expert's verdict
 on each rule.
 
-## Benchmark datasets and metrics
-
-<!-- BEGIN GENERATED DATASETS -->
-
-| Dataset | Preset |
-|---|---|
-| Documents with expert rule verdicts (to be built) | — |
-
-<!-- END GENERATED DATASETS -->
-
-**Metrics**
-
-- *Verdict agreement:* the share of verdicts that match the expert's.
-- *Wrong passes:* rules the accelerator passed and the expert failed.
-- *Wrong fails:* rules the accelerator failed and the expert passed.
-- *Information not found:* rules the accelerator could not decide.
-
 ## Questions
 
 <!-- BEGIN GENERATED FAQ -->
@@ -73,6 +56,15 @@ on each rule.
 
 <!-- END GENERATED FAQ -->
 
+## Metrics on this page
+
+- *Verdict agreement:* the share of verdicts that match the expert's.
+- *Wrong passes:* rules the accelerator passed and the expert failed.
+- *Wrong fails:* rules the accelerator failed and the expert passed.
+- *Information not found:* rules the accelerator could not decide.
+
+[Benchmark Datasets](datasets.md) describes each dataset.
+
 ## Benchmark details
 
 <!-- BEGIN GENERATED ABLATIONS -->
@@ -87,7 +79,7 @@ Needs a dataset we haven't built yet: Documents with expert rule verdicts (to be
 |---|---|
 | **Changes** | Rule validation model |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | Documents with expert rule verdicts (to be built) |
+| **Datasets** | [Documents with expert rule verdicts (to be built)](datasets.md#documents-with-expert-rule-verdicts-to-be-built) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Rule validation model | Verdict agreement | Wrong passes | Wrong fails | Information not found | Rule validation tokens per document |
@@ -107,7 +99,7 @@ Needs a dataset we haven't built yet: Documents with expert rule verdicts (to be
 |---|---|
 | **Changes** | Rule engine (`x-aws-idp-validation-engine`) |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | Documents with expert rule verdicts (to be built) |
+| **Datasets** | [Documents with expert rule verdicts (to be built)](datasets.md#documents-with-expert-rule-verdicts-to-be-built) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Rule engine (`x-aws-idp-validation-engine`) | Verdict agreement | Wrong passes | Wrong fails | Rule validation tokens per document |
@@ -126,7 +118,7 @@ Needs a dataset we haven't built yet: Documents with expert rule verdicts (to be
 |---|---|
 | **Changes** | Rule source |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | Documents with expert rule verdicts (to be built) |
+| **Datasets** | [Documents with expert rule verdicts (to be built)](datasets.md#documents-with-expert-rule-verdicts-to-be-built) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Rule source | Verdict agreement | Wrong passes | Wrong fails |
@@ -146,7 +138,7 @@ Needs a dataset we haven't built yet: Documents with expert rule verdicts (to be
 |---|---|
 | **Changes** | `max_chunk_size` |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | Documents with expert rule verdicts (to be built) |
+| **Datasets** | [Documents with expert rule verdicts (to be built)](datasets.md#documents-with-expert-rule-verdicts-to-be-built) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | `max_chunk_size` | Verdict agreement | Information not found | Rule validation tokens per document |

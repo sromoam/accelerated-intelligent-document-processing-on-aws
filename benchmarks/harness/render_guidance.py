@@ -4,11 +4,11 @@
 Reads the ablation registry (benchmarks/matrices/guidance_ablations.yaml) and writes three
 regions of each page under docs/benchmark-guidance/, each between a pair of markers:
 
-    <!-- BEGIN GENERATED DATASETS -->  the datasets the page uses and their presets
     <!-- BEGIN GENERATED FAQ -->       each question, its answer and its headline plot
     <!-- BEGIN GENERATED ABLATIONS --> each ablation's details and results tables
 
-(each closed by the matching END marker). Only ABLATIONS is required. Text outside the
+(each closed by the matching END marker), and the dataset list of datasets.md between
+DATASETS markers. Text outside the
 markers is hand-written and left alone. When a results file exists at
 benchmarks/results/guidance/<ID>.json, its values fill the table; otherwise every cell is
 "—" and the answer reads "Not yet measured". A results file looks like:
@@ -50,8 +50,9 @@ REGISTRY = REPO / "benchmarks" / "matrices" / "guidance_ablations.yaml"
 RESULTS = REPO / "benchmarks" / "results" / "guidance"
 PAGES = REPO / "docs" / "benchmark-guidance"
 #: Generated regions of a page. ABLATIONS is required; the others are optional.
-REGIONS = ("DATASETS", "FAQ", "ABLATIONS")
+REGIONS = ("FAQ", "ABLATIONS")
 PRESETS = "index.md#how-we-run-a-benchmark"
+DATASETS_PAGE = "datasets.md"
 PLOTS = REPO / "images" / "benchmark-guidance"
 PLOTS_FROM_PAGES = "../../images/benchmark-guidance"
 EMPTY = "—"
@@ -95,10 +96,14 @@ def cell_text(cell: Cell | None) -> str:
     return f"{fmt(cell['mean'])} ± {fmt(2 * cell.get('se', 0))}"
 
 
-def dataset_label(key: str, datasets: dict[str, Any]) -> str:
+def dataset_anchor(key: str, datasets: dict[str, Any]) -> str:
+    return f"{DATASETS_PAGE}#{slugify(datasets[key]['name'])}"
+
+
+def dataset_label(key: str, datasets: dict[str, Any], short: bool = False) -> str:
     ds = datasets[key]
-    link = ds.get("link")
-    return f"[{ds['name']}]({link})" if link else ds["name"]
+    text = ds.get("short", ds["name"]) if short else ds["name"]
+    return f"[{text}]({dataset_anchor(key, datasets)})"
 
 
 def details_heading(ab: dict[str, Any]) -> str:
@@ -223,6 +228,17 @@ def render_ablation(
                 out.plots[name] = draw_plot(metric_name, panels, ab.get("runs", 0))
                 alt = f"{metric_name} for each value of {ab['changes']}"
                 caption = f"*{metric_name}. {CAPTION}*"
+            plotted = [
+                k
+                for k in kind_sets
+                if datasets[k].get("short", datasets[k]["name"])
+                in {p for p, _ in panels}
+            ]
+            caption += (
+                " Datasets: "
+                + ", ".join(dataset_label(k, datasets, short=True) for k in plotted)
+                + "."
+            )
             plot_md = [f"![{alt}]({PLOTS_FROM_PAGES}/{name})", "", caption, ""]
             if headline:
                 d += plot_md
@@ -245,22 +261,47 @@ def render_ablation(
     return out
 
 
-def render_datasets(page: str, reg: dict[str, Any]) -> str:
-    """The datasets a page's ablations use (every dataset on the index page)."""
+def render_datasets(reg: dict[str, Any]) -> str:
+    """The Benchmark Datasets page: one section per dataset in the registry."""
     datasets: dict[str, Any] = reg["datasets"]
-    if page == "index":
-        keys = list(datasets)
-    else:
-        used = {
-            k for ab in reg["ablations"] if ab["page"] == page for k in ab["datasets"]
-        }
-        keys = [k for k in datasets if k in used]
-    lines = ["| Dataset | Preset |", "|---|---|"]
-    for k in keys:
-        ds = datasets[k]
-        preset = f"`{ds['preset']}`" if ds.get("preset") else EMPTY
-        lines.append(f"| {dataset_label(k, datasets)} | {preset} |")
-    return "\n".join(lines) + "\n"
+    used: dict[str, list[dict[str, Any]]] = {k: [] for k in datasets}
+    for ab in reg["ablations"]:
+        for k in ab["datasets"]:
+            used[k].append(ab)
+    built = [k for k in datasets if not datasets[k].get("new")]
+    planned = [k for k in datasets if datasets[k].get("new")]
+    lines: list[str] = []
+    for heading, keys in (
+        ("Datasets we run", built),
+        ("Datasets we haven't built yet", planned),
+    ):
+        lines += [f"## {heading}", ""]
+        for k in keys:
+            ds = datasets[k]
+            lines += [f"### {ds['name']}", ""]
+            if ds.get("link"):
+                lines.append(
+                    f"- **About the dataset:** [{ds['name'].split(' (')[0].split(',')[0]}]({ds['link']})"
+                )
+            if ds.get("preset"):
+                lines.append(f"- **Preset:** `{ds['preset']}`")
+            if ds.get("testset"):
+                lines.append(
+                    f"- **Test Studio test set:** `{ds['testset']}`, "
+                    f"{ds.get('docs', 20)} documents per run"
+                )
+            elif not ds.get("new"):
+                lines.append(
+                    "- **Test Studio test set:** not on the benchmark stack yet"
+                )
+            if used[k]:
+                links = ", ".join(
+                    f"[{ab['id']}]({ab['page']}.md#{slugify(details_heading(ab))})"
+                    for ab in used[k]
+                )
+                lines.append(f"- **Used by:** {links}")
+            lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def render_page(
@@ -277,7 +318,6 @@ def render_page(
             details += r.details
             plots.update(r.plots)
     regions = {
-        "DATASETS": render_datasets(page, reg),
         "FAQ": "\n".join(faq).rstrip() + "\n",
         "ABLATIONS": "\n".join(details).rstrip() + "\n",
     }
@@ -341,6 +381,18 @@ def main() -> int:
             else:
                 path.write_text(updated, encoding="utf-8")
                 print(f"rendered {path.relative_to(REPO)}")
+    ds_path = PAGES / f"{DATASETS_PAGE}"
+    ds_text = ds_path.read_text(encoding="utf-8")
+    begin, end = markers("DATASETS")
+    head, rest = ds_text.split(begin, 1)
+    _, tail = rest.split(end, 1)
+    ds_updated = f"{head}{begin}\n\n{render_datasets(reg)}\n{end}{tail}"
+    if ds_updated != ds_text:
+        if args.check:
+            stale.append(str(ds_path.relative_to(REPO)))
+        else:
+            ds_path.write_text(ds_updated, encoding="utf-8")
+            print(f"rendered {ds_path.relative_to(REPO)}")
     existing = {p.name for p in PLOTS.glob("*.svg")} if PLOTS.exists() else set()
     for name, svg in expected.items():
         plot = PLOTS / name

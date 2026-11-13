@@ -41,6 +41,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES (default)|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "realkie|LAYOUT only|weighted_accuracy": {
       "mean": 0.788171,
       "se": 0.032716
@@ -74,6 +82,14 @@
       "se": 0.007505
     },
     "realkie|LAYOUT only|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|LAYOUT only|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|LAYOUT only|grouping_score": {
       "mean": 1.0,
       "se": 0.0
     },
@@ -113,6 +129,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "realkie|TABLES only|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|TABLES only|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|weighted_accuracy": {
       "mean": 0.793747,
       "se": 0.034895
@@ -146,6 +170,14 @@
       "se": 0.022982
     },
     "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|TABLES, LAYOUT, SIGNATURES, FORMS|grouping_score": {
       "mean": 1.0,
       "se": 0.0
     },
@@ -185,6 +217,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES (default)|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "fake_w2|LAYOUT only|weighted_accuracy": {
       "mean": 0.961521,
       "se": 0.010594
@@ -218,6 +258,14 @@
       "se": 0.004943
     },
     "fake_w2|LAYOUT only|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|LAYOUT only|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|LAYOUT only|grouping_score": {
       "mean": 1.0,
       "se": 0.0
     },
@@ -257,6 +305,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "fake_w2|TABLES only|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|TABLES only|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|weighted_accuracy": {
       "mean": 0.965886,
       "se": 0.008931
@@ -290,6 +346,14 @@
       "se": 0.002712
     },
     "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|TABLES, LAYOUT, SIGNATURES, FORMS|grouping_score": {
       "mean": 1.0,
       "se": 0.0
     }

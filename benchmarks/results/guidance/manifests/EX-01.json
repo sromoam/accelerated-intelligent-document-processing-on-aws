@@ -25,10 +25,28 @@
         "Fake-W2-Tax-Forms-20261113-182002",
         "Fake-W2-Tax-Forms-20261113-182011"
       ]
+    },
+    "realkie_short": {
+      "Single pass, Simple (default)": [
+        "realkie-fcc-short-20261113-201254",
+        "realkie-fcc-short-20261113-201252",
+        "realkie-fcc-short-20261113-201253"
+      ],
+      "Iterative, Advanced": [
+        "realkie-fcc-short-20261113-201713",
+        "realkie-fcc-short-20261113-201703",
+        "realkie-fcc-short-20261113-201714"
+      ]
+    },
+    "realkie_long": {
+      "Single pass, Simple (default)": [
+        "realkie-fcc-long-20261113-201929"
+      ]
     }
   },
   "stack": "sr-testing",
   "region": "us-east-1",
   "release": "0.6.15.dev1",
-  "measured": "November 2026"
+  "measured": "November 2026",
+  "max_failed": {}
 }

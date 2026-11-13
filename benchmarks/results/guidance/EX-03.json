@@ -41,6 +41,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "realkie|Low (default)|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Low (default)|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "realkie|Medium|weighted_accuracy": {
       "mean": 0.812483,
       "se": 0.033546
@@ -74,6 +82,14 @@
       "se": 0.013412
     },
     "realkie|Medium|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Medium|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Medium|grouping_score": {
       "mean": 1.0,
       "se": 0.0
     },
@@ -113,6 +129,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "realkie|High|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|High|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "fake_w2|Low (default)|weighted_accuracy": {
       "mean": 0.950717,
       "se": 0.009305
@@ -146,6 +170,14 @@
       "se": 0.003256
     },
     "fake_w2|Low (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Low (default)|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Low (default)|grouping_score": {
       "mean": 1.0,
       "se": 0.0
     },
@@ -185,6 +217,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "fake_w2|Medium|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Medium|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "fake_w2|High|weighted_accuracy": {
       "mean": 0.970627,
       "se": 0.003997
@@ -218,6 +258,14 @@
       "se": 0.000807
     },
     "fake_w2|High|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|High|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|High|grouping_score": {
       "mean": 1.0,
       "se": 0.0
     }

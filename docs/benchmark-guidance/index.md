@@ -28,30 +28,8 @@ changes one setting, and runs the same documents with each value of the setting.
 benchmark has an ID, such as `EX-01`, and a results table. A table reads *Not yet
 measured* until we run it.
 
-<!-- BEGIN GENERATED DATASETS -->
-
-| Dataset | Preset |
-|---|---|
-| [Synthetic statement, 100 rows (3 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [Synthetic statement, 3,200 rows (66 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
-| [RealKIE-FCC-Verified, long invoices (19 invoices, 8 to 33 pages)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
-| [RealKIE-FCC-Verified, short invoices (24 invoices, 1 or 2 pages)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
-| [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) | `realkie-fcc-verified` |
-| [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) | `ocr-benchmark` |
-| [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) | `fake-w2` |
-| [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) | `docsplit` |
-| Long packets, 30-60 pages (to be built) | — |
-| Same-class documents back to back (to be built) | — |
-| Packets with section and field ground truth (to be built) | — |
-| Handwritten forms (to be built) | — |
-| Documents with expert rule verdicts (to be built) | — |
-
-<!-- END GENERATED DATASETS -->
+[Benchmark Datasets](datasets.md) lists each dataset with its preset and its Test Studio
+test set.
 
 Defaults differ from preset to preset. To configure your own stack, start from the
 [preset](../../config_library/unified/README.md) closest to your documents.
@@ -107,7 +85,7 @@ Defaults differ from preset to preset. To configure your own stack, start from t
 |---|---|
 | **Changes** | Nothing: the preset, run 10 times |
 | **Everything else** | As each dataset's [preset](#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 10 per document, per value |
 
 | Dataset | Nothing: the preset, run 10 times | Weighted accuracy | Total tokens per page |
@@ -131,7 +109,7 @@ Defaults differ from preset to preset. To configure your own stack, start from t
 |---|---|
 | **Changes** | Documents submitted at once |
 | **Everything else** | As each dataset's [preset](#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Documents submitted at once | Median seconds per document |

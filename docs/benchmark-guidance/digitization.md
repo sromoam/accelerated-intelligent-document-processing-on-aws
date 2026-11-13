@@ -34,34 +34,17 @@ right in the page text, the fix is in your classification or extraction definiti
 | Preprocessing (`ocr.image.preprocessing`) | Cleans up shadows, uneven lighting and low contrast | [DG-05](#does-image-preprocessing-help-on-poor-scans) |
 | Textract features (`ocr.features`) | Tables, layout and signatures | [DG-06](#which-textract-features-do-i-need) |
 
-## Benchmark datasets and metrics
-
-<!-- BEGIN GENERATED DATASETS -->
-
-| Dataset | Preset |
-|---|---|
-| [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
-| [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) | `realkie-fcc-verified` |
-| [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) | `ocr-benchmark` |
-| [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) | `fake-w2` |
-| Handwritten forms (to be built) | — |
-
-<!-- END GENERATED DATASETS -->
-
-**Metrics**
-
-- *Weighted accuracy:* Stickler's field-weighted score against ground truth.
-- *Documents with every field right:* the share of documents with no wrong field.
-- *Completeness* and *cell accuracy:* see [Key Information Extraction Benchmarks](extraction.md).
-
 ## Questions
 
 <!-- BEGIN GENERATED FAQ -->
 
 ### Does the OCR reader make a difference to extraction accuracy?
 
-**Answer:** Not yet measured. [Details: DG-01](#dg-01-does-the-ocr-reader-make-a-difference-to-extraction-accuracy)
+**Answer:** Keep Textract. On RealKIE invoices the three readers scored within the noise of each other (0.81, 0.80 and 0.81). On bank checks the Bedrock vision model scored lower than Textract (0.90 against 0.94), a gap near the edge of the noise. The vision model's shorter page text cut total tokens per page on invoices (16,400 against 19,600), but it returns no word confidence for the scoring model to use. [Details: DG-01](#dg-01-does-the-ocr-reader-make-a-difference-to-extraction-accuracy)
+
+![Weighted accuracy against total tokens per page for each OCR reader](../../images/benchmark-guidance/DG-01-fields.svg)
+
+*Weighted accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [OmniAI, bank checks](datasets.md#omniai-ocr-benchmark-bank-checks-20).
 
 ### If I read pages with a vision model, which model?
 
@@ -85,7 +68,7 @@ right in the page text, the fix is in your classification or extraction definiti
 
 ![Weighted accuracy against total tokens per page for each `ocr.features`](../../images/benchmark-guidance/DG-06-fields.svg)
 
-*Weighted accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.*
+*Weighted accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields).
 
 ### How much accuracy does scan quality cost?
 
@@ -97,32 +80,42 @@ right in the page text, the fix is in your classification or extraction definiti
 
 <!-- END GENERATED FAQ -->
 
+## Metrics on this page
+
+- *Weighted accuracy:* Stickler's field-weighted score against ground truth.
+- *Documents with every field right:* the share of documents with no wrong field.
+- *Completeness* and *cell accuracy:* see [Key Information Extraction Benchmarks](extraction.md).
+
+[Benchmark Datasets](datasets.md) describes each dataset.
+
 ## Benchmark details
 
 <!-- BEGIN GENERATED ABLATIONS -->
 
 #### DG-01: Does the OCR reader make a difference to extraction accuracy?
 
-**Answer:** Not yet measured.
+**Answer:** Keep Textract. On RealKIE invoices the three readers scored within the noise of each other (0.81, 0.80 and 0.81). On bank checks the Bedrock vision model scored lower than Textract (0.90 against 0.94), a gap near the edge of the noise. The vision model's shorter page text cut total tokens per page on invoices (16,400 against 19,600), but it returns no word confidence for the scoring model to use.
+
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs RealKIE-FCC-Verified-20261113-200107, RealKIE-FCC-Verified-20261113-200110, RealKIE-FCC-Verified-20261113-200111, RealKIE-FCC-Verified-20261113-200734, RealKIE-FCC-Verified-20261113-200735, RealKIE-FCC-Verified-20261113-200737, RealKIE-FCC-Verified-20261113-201141, RealKIE-FCC-Verified-20261113-201235, RealKIE-FCC-Verified-20261113-201255, OmniAI-OCR-Benchmark-20261113-201450, OmniAI-OCR-Benchmark-20261113-201607, OmniAI-OCR-Benchmark-20261113-201632, OmniAI-OCR-Benchmark-20261113-201740, OmniAI-OCR-Benchmark-20261113-201755, OmniAI-OCR-Benchmark-20261113-201803, OmniAI-OCR-Benchmark-20261113-201905, OmniAI-OCR-Benchmark-20261113-201929, OmniAI-OCR-Benchmark-20261113-201940`.*
 
 | | |
 |---|---|
 | **Changes** | OCR reader |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [OmniAI-OCR-Benchmark, bank checks (20)](datasets.md#omniai-ocr-benchmark-bank-checks-20); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | OCR reader | Weighted accuracy | OCR tokens per page | Total tokens per page |
 |---|---|---|---|---|
-| RealKIE | Textract, tables and layout (default) | — | — | — |
-| RealKIE | Textract, layout only | — | — | — |
-| RealKIE | Bedrock vision model (Nova 2 Lite) | — | — | — |
+| RealKIE | Textract, tables and layout (default) | 0.81 ± 0.06 | — | 19,629 ± 164 |
+| RealKIE | Textract, layout only | 0.8 ± 0.07 | — | 19,810 ± 612 |
+| RealKIE | Bedrock vision model (Nova 2 Lite) | 0.81 ± 0.07 | 1,907 ± 111 | 16,382 ± 772 |
 | ConfBench | Textract, tables and layout (default) | — | — | — |
 | ConfBench | Textract, layout only | — | — | — |
 | ConfBench | Bedrock vision model (Nova 2 Lite) | — | — | — |
-| OmniAI | Textract, tables and layout (default) | — | — | — |
-| OmniAI | Textract, layout only | — | — | — |
-| OmniAI | Bedrock vision model (Nova 2 Lite) | — | — | — |
+| OmniAI, bank checks | Textract, tables and layout (default) | 0.94 ± 0.03 | — | 9,613 ± 4.36 |
+| OmniAI, bank checks | Textract, layout only | 0.94 ± 0.04 | — | 9,225 ± 1.45 |
+| OmniAI, bank checks | Bedrock vision model (Nova 2 Lite) | 0.9 ± 0.06 | 727 ± 31 | 9,710 ± 111 |
 
 | Dataset | OCR reader | Completeness | Cell accuracy | OCR tokens per page | Total tokens per page |
 |---|---|---|---|---|---|
@@ -139,7 +132,7 @@ right in the page text, the fix is in your classification or extraction definiti
 |---|---|
 | **Changes** | Model used for Bedrock vision OCR |
 | **Everything else** | OCR reader set to the Bedrock vision model; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Model used for Bedrock vision OCR | Weighted accuracy | OCR tokens per page | Total tokens per page |
@@ -166,7 +159,7 @@ right in the page text, the fix is in your classification or extraction definiti
 |---|---|
 | **Changes** | OCR reader |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [OmniAI-OCR-Benchmark, all 9 formats](../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [OmniAI-OCR-Benchmark, bank checks (20)](datasets.md#omniai-ocr-benchmark-bank-checks-20) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | OCR reader | Weighted accuracy | Documents with every field right | Total tokens per page |
@@ -179,10 +172,10 @@ right in the page text, the fix is in your classification or extraction definiti
 | ConfBench | Chandra (Lambda hook) | — | — | — |
 | ConfBench | Mistral OCR (Lambda hook) | — | — | — |
 | ConfBench | Cohere Parse (Lambda hook) | — | — | — |
-| OmniAI | Textract, tables and layout (default) | — | — | — |
-| OmniAI | Chandra (Lambda hook) | — | — | — |
-| OmniAI | Mistral OCR (Lambda hook) | — | — | — |
-| OmniAI | Cohere Parse (Lambda hook) | — | — | — |
+| OmniAI, bank checks | Textract, tables and layout (default) | — | — | — |
+| OmniAI, bank checks | Chandra (Lambda hook) | — | — | — |
+| OmniAI, bank checks | Mistral OCR (Lambda hook) | — | — | — |
+| OmniAI, bank checks | Cohere Parse (Lambda hook) | — | — | — |
 
 
 #### DG-04: What resolution should pages be rendered at?
@@ -193,7 +186,7 @@ right in the page text, the fix is in your classification or extraction definiti
 |---|---|
 | **Changes** | `ocr.image.dpi` |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | `ocr.image.dpi` | Weighted accuracy | Total tokens per page |
@@ -220,7 +213,7 @@ right in the page text, the fix is in your classification or extraction definiti
 |---|---|
 | **Changes** | `ocr.image.preprocessing` |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
+| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | `ocr.image.preprocessing` | Weighted accuracy | Documents with every field right | Total tokens per page |
@@ -241,7 +234,7 @@ right in the page text, the fix is in your classification or extraction definiti
 |---|---|
 | **Changes** | `ocr.features` |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | `ocr.features` | Weighted accuracy | Total tokens per page |
@@ -271,7 +264,7 @@ right in the page text, the fix is in your classification or extraction definiti
 |---|---|
 | **Changes** | Scan quality |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) |
+| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Scan quality | Weighted accuracy | Documents with every field right | AUROC |
@@ -292,7 +285,7 @@ Needs a dataset we haven't built yet: Handwritten forms (to be built).
 |---|---|
 | **Changes** | OCR reader |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | Handwritten forms (to be built) |
+| **Datasets** | [Handwritten forms (to be built)](datasets.md#handwritten-forms-to-be-built) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | OCR reader | Weighted accuracy | Documents with every field right | Total tokens per page |

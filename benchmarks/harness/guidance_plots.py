@@ -54,6 +54,7 @@ STYLE = """
               opacity: 0.55; }
   .axislabel { font-size: 11px; fill: var(--ink-2); }
   .note { font-size: 11px; fill: var(--muted); font-style: italic; }
+  .num { font-size: 11px; font-weight: 700; fill: var(--ink); }
 """
 
 
@@ -156,6 +157,10 @@ def draw_plot(
                     f'<line class="whisker" x1="{x(m - 2 * s):.1f}" '
                     f'x2="{x(m + 2 * s):.1f}" y1="{cy:.1f}" y2="{cy:.1f}"/>'
                     f'<circle class="dot" cx="{x(m):.1f}" cy="{cy:.1f}" r="5"/></g>'
+                )
+                body.append(
+                    f'<text class="label" x="{x(m + 2 * s) + 8:.1f}" y="{cy + 4:.1f}">'
+                    f"{fmt(m)}</text>"
                 )
             y += h
         body.append(
@@ -268,13 +273,25 @@ def _place_labels(
                 out.append((text, lx, ly, anchor, None))
                 break
         else:
-            anchor = "start" if cx + 24 + w <= x1 else "end"
-            lx = cx + 24 if anchor == "start" else cx - 24
-            ly = cy + 4
-            while not clear(rect(lx, ly, w, anchor)) and ly < y1 - 4:
-                ly += 14
-            taken.append(rect(lx, ly, w, anchor))
-            out.append((text, lx, ly, anchor, (cx, cy)))
+            # Search outward, above and below, on both sides; draw a leader line.
+            for k in range(1, 16):
+                hit = None
+                for dy in (-14 * k - 4, 14 * k + 4):
+                    for dx, anchor in ((18, "start"), (-18, "end")):
+                        lx, ly = cx + dx, cy + dy
+                        r = rect(lx, ly, w, anchor)
+                        if clear(r):
+                            hit = (lx, ly, anchor, r)
+                            break
+                    if hit:
+                        break
+                if hit:
+                    lx, ly, anchor, r = hit
+                    taken.append(r)
+                    out.append((text, lx, ly, anchor, (cx, cy)))
+                    break
+            else:
+                out.append((text, cx + 10, cy + 4, "start", (cx, cy)))
     return out
 
 
@@ -294,19 +311,23 @@ def draw_scatter(
         for p in r
         for s in (-1, 1)
     ]
-    ys = [
-        p[2]["mean"] + s * 2 * p[2].get("se", 0)
-        for _, r in panels
-        for p in r
-        for s in (-1, 1)
-    ]
-    xt, yt = _span(xs, start_at_zero=True), _span(ys, start_at_zero=False)
-    y_step = yt[1] - yt[0] if len(yt) > 1 else 1.0
-    y_dec = max(0, -math.floor(math.log10(y_step) + 1e-9))
+    xt = _span(xs, start_at_zero=True)
 
     body: list[str] = []
     top = TOP
     for ds_name, points in panels:
+        # Each dataset gets its own vertical range: scores on different datasets are
+        # not compared with each other, and a shared range squeezes the high ones.
+        ys = [p[2]["mean"] + s * 2 * p[2].get("se", 0) for p in points for s in (-1, 1)]
+        yt = _span(ys, start_at_zero=False)
+        # A score that cannot pass 1.0 gets an axis that stops at 1.0.
+        if max(p[2]["mean"] for p in points) <= 1.0:
+            yt = [t for t in yt if t <= 1.0 + 1e-9]
+            if yt[-1] < 1.0 and max(ys) > yt[-1]:
+                yt.append(1.0)
+        y_step = yt[1] - yt[0] if len(yt) > 1 else 1.0
+        y_dec = max(0, -math.floor(math.log10(y_step) + 1e-9))
+
         body.append(
             f'<text class="panel" x="0" y="{top + 18}">{escape(ds_name)}</text>'
         )
@@ -315,7 +336,7 @@ def draw_scatter(
         def px(v: float) -> float:
             return SC_LEFT + (v - xt[0]) / (xt[-1] - xt[0]) * (SC_RIGHT - SC_LEFT)
 
-        def py(v: float, y0: float = y0, y1: float = y1) -> float:
+        def py(v: float, y0: float = y0, y1: float = y1, yt: list[float] = yt) -> float:
             return y1 - (v - yt[0]) / (yt[-1] - yt[0]) * (y1 - y0)
 
         for t in yt:
@@ -340,22 +361,29 @@ def draw_scatter(
             f'<text class="note" x="{SC_LEFT + 8}" y="{y0 + 14}">'
             "Better: up and to the left</text>"
         )
-        # Label every point when there are few; otherwise only the default and the
-        # points on the frontier, leaving the rest to the hover text and the table.
+
+        def label(value: str, x: dict[str, float], y: dict[str, float]) -> str:
+            y_text = f"{y['mean']:.{max(2, y_dec)}f}"
+            return f"{value}: {y_text}, {_compact(x['mean'], 10_000)}"
+
+        # Few points: label each one next to its dot. Otherwise only the default and
+        # the frontier. If a label cannot sit cleanly beside its dot, number every
+        # dot instead and list the names and values in a key under the chart.
         labelled = (
             {v for v, _, _ in points}
             if len(points) <= MAX_LABELLED
             else _frontier(points) | {v for v, _, _ in points if "(default)" in v}
         )
-        screen, obstacles = [], []
+        screen, obstacles, centres = [], [], []
         for value, x, y in points:
             cx, cy = px(x["mean"]), py(y["mean"])
             dx, dy = 2 * x.get("se", 0), 2 * y.get("se", 0)
+            centres.append((cx, cy))
             obstacles.append((cx - 7, cy - 7, cx + 7, cy + 7))
             obstacles.append((px(x["mean"] - dx), cy - 1, px(x["mean"] + dx), cy + 1))
             obstacles.append((cx - 1, py(y["mean"] + dy), cx + 1, py(y["mean"] - dy)))
             if value in labelled:
-                screen.append((value, cx, cy))
+                screen.append((label(value, x, y), cx, cy))
             body.append(
                 f"<g><title>{escape(value)}: {escape(y_name)} {fmt(y['mean'])} ± "
                 f"{fmt(dy)}, {escape(x_name)} {fmt(x['mean'])} ± {fmt(dx)}</title>"
@@ -365,19 +393,27 @@ def draw_scatter(
                 f'y1="{py(y["mean"] - dy):.1f}" y2="{py(y["mean"] + dy):.1f}"/>'
                 f'<circle class="dot" cx="{cx:.1f}" cy="{cy:.1f}" r="5"/></g>'
             )
-        for text, lx, ly, anchor, leader in _place_labels(
+        placed = _place_labels(
             screen, (SC_LEFT + 2, y0 + 20, SC_RIGHT, y1 - 2), obstacles
-        ):
-            if leader:
+        )
+        key_h = 0
+        if any(leader for *_, leader in placed):
+            for i, ((value, x, y), (cx, cy)) in enumerate(zip(points, centres), 1):
                 body.append(
-                    f'<line class="grid" x1="{leader[0]:.1f}" y1="{leader[1]:.1f}" '
-                    f'x2="{lx:.1f}" y2="{ly - 4:.1f}"/>'
+                    f'<text class="num" x="{cx + 7:.1f}" y="{cy - 7:.1f}">{i}</text>'
                 )
-            body.append(
-                f'<text class="label" x="{lx:.1f}" y="{ly:.1f}" '
-                f'text-anchor="{anchor}">{escape(text)}</text>'
-            )
-        top = y1 + SC_BOTTOM + PANEL_GAP
+                body.append(
+                    f'<text class="label" x="{SC_LEFT}" y="{y1 + 58 + (i - 1) * 16}">'
+                    f'<tspan class="num">{i}</tspan>  {escape(label(value, x, y))}</text>'
+                )
+            key_h = 12 + 16 * len(points)
+        else:
+            for text, lx, ly, anchor, _ in placed:
+                body.append(
+                    f'<text class="label" x="{lx:.1f}" y="{ly:.1f}" '
+                    f'text-anchor="{anchor}">{escape(text)}</text>'
+                )
+        top = y1 + SC_BOTTOM + key_h + PANEL_GAP
     height = top - PANEL_GAP
 
     desc = "; ".join(

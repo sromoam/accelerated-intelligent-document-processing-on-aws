@@ -34,29 +34,6 @@ which adds scan noise to real invoices.
 | Page images | Whether the scoring model sees the pages | [CF-06](#does-the-scoring-model-need-page-images) |
 | List batch size | How many list rows the scoring model scores in one request | [CF-07](#how-should-long-lists-be-scored) |
 
-## Benchmark datasets and metrics
-
-<!-- BEGIN GENERATED DATASETS -->
-
-| Dataset | Preset |
-|---|---|
-| [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
-| [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md) | `realkie-fcc-verified` |
-| [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) | `fake-w2` |
-| [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) | `docsplit` |
-
-<!-- END GENERATED DATASETS -->
-
-**Metrics**
-
-- *AUROC:* the chance that a wrong value scores lower than a right one. 0.5 is a coin flip.
-- *Calibration error:* the gap between the scores and the measured accuracy.
-- *Values below threshold:* the share of values the threshold sends to review.
-- *Errors below threshold:* the share of wrong values the threshold sends to review.
-
 ## Questions
 
 <!-- BEGIN GENERATED FAQ -->
@@ -71,7 +48,7 @@ which adds scan noise to real invoices.
 
 ![AUROC against scoring tokens per page for each Scoring model](../../images/benchmark-guidance/CF-02-fields.svg)
 
-*AUROC against scoring tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.*
+*AUROC against scoring tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices).
 
 ### Separate scoring pass or integrated into extraction?
 
@@ -95,6 +72,15 @@ which adds scan noise to real invoices.
 
 <!-- END GENERATED FAQ -->
 
+## Metrics on this page
+
+- *AUROC:* the chance that a wrong value scores lower than a right one. 0.5 is a coin flip.
+- *Calibration error:* the gap between the scores and the measured accuracy.
+- *Values below threshold:* the share of values the threshold sends to review.
+- *Errors below threshold:* the share of wrong values the threshold sends to review.
+
+[Benchmark Datasets](datasets.md) describes each dataset.
+
 ## Benchmark details
 
 <!-- BEGIN GENERATED ABLATIONS -->
@@ -107,7 +93,7 @@ which adds scan noise to real invoices.
 |---|---|
 | **Changes** | Scoring model |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Scoring model | AUROC | Calibration error | Values below threshold | Errors below threshold |
@@ -133,7 +119,7 @@ which adds scan noise to real invoices.
 |---|---|
 | **Changes** | Scoring model |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
+| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Scoring model | AUROC | Calibration error | Values below threshold | Errors below threshold | Scoring tokens per page |
@@ -156,7 +142,7 @@ which adds scan noise to real invoices.
 |---|---|
 | **Changes** | Confidence mode |
 | **Everything else** | Single-pass (Simple) extraction; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Synthetic statement, 800 rows (17 pages)](datasets.md#synthetic-statement-800-rows-17-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Confidence mode | Weighted accuracy | AUROC | Scoring tokens per page | Median seconds per document |
@@ -183,7 +169,7 @@ which adds scan noise to real invoices.
 |---|---|
 | **Changes** | Confidence threshold |
 | **Everything else** | Computed from the CF-02 runs, per scoring model; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) |
+| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices) |
 | **Runs** | None: computed from the CF-02 runs |
 
 | Dataset | Confidence threshold | Values below threshold | Errors below threshold |
@@ -208,7 +194,7 @@ which adds scan noise to real invoices.
 |---|---|
 | **Changes** | Classification model |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
+| **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Classification model | Label accuracy | AUROC | Values below threshold | Errors below threshold | Classification tokens per page |
@@ -226,7 +212,7 @@ which adds scan noise to real invoices.
 |---|---|
 | **Changes** | Page images in the scoring prompt |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](../extensions/confbench-testset.md); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms) |
+| **Datasets** | [ConfBench (RealKIE invoices with scan noise)](datasets.md#confbench-realkie-invoices-with-scan-noise); [Fake-W2-Tax-Forms (W-2 forms, 45 fields)](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Page images in the scoring prompt | AUROC | Calibration error | Scoring tokens per page |
@@ -245,7 +231,7 @@ which adds scan noise to real invoices.
 |---|---|
 | **Changes** | `extraction.confidence.list_batch_size` |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 1,600 rows (33 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages); [Synthetic statement, 800 rows (17 pages)](datasets.md#synthetic-statement-800-rows-17-pages); [Synthetic statement, 1,600 rows (33 pages)](datasets.md#synthetic-statement-1600-rows-33-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | `extraction.confidence.list_batch_size` | Completeness | AUROC | Scoring tokens per page | Median seconds per document |

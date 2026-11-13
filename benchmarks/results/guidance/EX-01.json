@@ -2,7 +2,7 @@
   "release": "0.6.15.dev1",
   "measured": "November 2026",
   "region": "us-east-1",
-  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-173220, RealKIE-FCC-Verified-20261113-173644, RealKIE-FCC-Verified-20261113-173641, RealKIE-FCC-Verified-20261113-173219, RealKIE-FCC-Verified-20261113-173642, RealKIE-FCC-Verified-20261113-173643, Fake-W2-Tax-Forms-20261113-181721, Fake-W2-Tax-Forms-20261113-181722, Fake-W2-Tax-Forms-20261113-181723, Fake-W2-Tax-Forms-20261113-181901, Fake-W2-Tax-Forms-20261113-182002, Fake-W2-Tax-Forms-20261113-182011",
+  "source": "Test Studio runs RealKIE-FCC-Verified-20261113-173220, RealKIE-FCC-Verified-20261113-173644, RealKIE-FCC-Verified-20261113-173641, RealKIE-FCC-Verified-20261113-173219, RealKIE-FCC-Verified-20261113-173642, RealKIE-FCC-Verified-20261113-173643, Fake-W2-Tax-Forms-20261113-181721, Fake-W2-Tax-Forms-20261113-181722, Fake-W2-Tax-Forms-20261113-181723, Fake-W2-Tax-Forms-20261113-181901, Fake-W2-Tax-Forms-20261113-182002, Fake-W2-Tax-Forms-20261113-182011, realkie-fcc-short-20261113-201254, realkie-fcc-short-20261113-201252, realkie-fcc-short-20261113-201253, realkie-fcc-short-20261113-201713, realkie-fcc-short-20261113-201703, realkie-fcc-short-20261113-201714",
   "verdict": "Not for invoices or forms. On RealKIE invoices both modes scored 0.80; on W-2 forms iterative scored 0.97 against 0.95, a difference within the noise. Iterative used about the same total tokens per page on invoices and 3.4 times as many on W-2s. Use single pass unless your documents have long lists.",
   "cells": {
     "realkie|Single pass, Simple (default)|weighted_accuracy": {
@@ -38,6 +38,14 @@
       "se": 0.015376
     },
     "realkie|Single pass, Simple (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Single pass, Simple (default)|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Single pass, Simple (default)|grouping_score": {
       "mean": 1.0,
       "se": 0.0
     },
@@ -77,6 +85,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "realkie|Iterative, Advanced|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Iterative, Advanced|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "fake_w2|Single pass, Simple (default)|weighted_accuracy": {
       "mean": 0.952609,
       "se": 0.009158
@@ -113,6 +129,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "fake_w2|Single pass, Simple (default)|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Single pass, Simple (default)|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "fake_w2|Iterative, Advanced|weighted_accuracy": {
       "mean": 0.968241,
       "se": 0.004465
@@ -146,6 +170,102 @@
       "se": 0.000398
     },
     "fake_w2|Iterative, Advanced|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Iterative, Advanced|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Iterative, Advanced|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_short|Single pass, Simple (default)|weighted_accuracy": {
+      "mean": 0.81986,
+      "se": 0.029644
+    },
+    "realkie_short|Single pass, Simple (default)|extraction_tokens": {
+      "mean": 8593.393939,
+      "se": 14.262537
+    },
+    "realkie_short|Single pass, Simple (default)|scoring_tokens": {
+      "mean": 11018.646465,
+      "se": 127.861157
+    },
+    "realkie_short|Single pass, Simple (default)|total_tokens": {
+      "mean": 19612.040404,
+      "se": 126.645146
+    },
+    "realkie_short|Single pass, Simple (default)|median_seconds": {
+      "mean": 22.406956,
+      "se": 0.327065
+    },
+    "realkie_short|Single pass, Simple (default)|all_fields_right": {
+      "mean": 0.111111,
+      "se": 0.013889
+    },
+    "realkie_short|Single pass, Simple (default)|auroc": {
+      "mean": 0.451976,
+      "se": 0.011859
+    },
+    "realkie_short|Single pass, Simple (default)|calibration_error": {
+      "mean": 0.172841,
+      "se": 0.002961
+    },
+    "realkie_short|Single pass, Simple (default)|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_short|Single pass, Simple (default)|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_short|Single pass, Simple (default)|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_short|Iterative, Advanced|weighted_accuracy": {
+      "mean": 0.81691,
+      "se": 0.032181
+    },
+    "realkie_short|Iterative, Advanced|extraction_tokens": {
+      "mean": 34801.787879,
+      "se": 1462.321435
+    },
+    "realkie_short|Iterative, Advanced|scoring_tokens": {
+      "mean": 6622.626263,
+      "se": 42.228286
+    },
+    "realkie_short|Iterative, Advanced|total_tokens": {
+      "mean": 41424.414141,
+      "se": 1422.838293
+    },
+    "realkie_short|Iterative, Advanced|median_seconds": {
+      "mean": 28.368043,
+      "se": 0.817048
+    },
+    "realkie_short|Iterative, Advanced|all_fields_right": {
+      "mean": 0.041667,
+      "se": 0.0
+    },
+    "realkie_short|Iterative, Advanced|auroc": {
+      "mean": 0.586116,
+      "se": 0.054078
+    },
+    "realkie_short|Iterative, Advanced|calibration_error": {
+      "mean": 0.133793,
+      "se": 0.021303
+    },
+    "realkie_short|Iterative, Advanced|page_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_short|Iterative, Advanced|section_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_short|Iterative, Advanced|grouping_score": {
       "mean": 1.0,
       "se": 0.0
     }

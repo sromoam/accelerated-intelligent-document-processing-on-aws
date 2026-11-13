@@ -37,35 +37,6 @@ find where a document starts.
 | Few-shot examples | Sample pages with their correct class, added to the prompt | [SC-06](#do-few-shot-examples-help-classification) |
 | Section splitting | Detect sections, or keep every file as one section | [SC-10](#if-every-file-is-one-document-should-i-turn-splitting-off) |
 
-## Benchmark datasets and metrics
-
-<!-- BEGIN GENERATED DATASETS -->
-
-| Dataset | Preset |
-|---|---|
-| [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) | `bank-statement-sample` |
-| [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified) | `realkie-fcc-verified` |
-| [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) | `docsplit` |
-| Long packets, 30-60 pages (to be built) | — |
-| Same-class documents back to back (to be built) | — |
-
-<!-- END GENERATED DATASETS -->
-
-**Metrics**
-
-- *Page accuracy:* the share of pages with the right document class.
-- *Section accuracy:* the share of true sections returned with exactly the right pages and
-  the right document class.
-- *Grouping score:* how well the accelerator groups pages into documents, from 0 to 1,
-  whatever their class. It is DocSplit's packet score, which combines how pages are
-  clustered and how they are ordered.
-- *Boundary accuracy:* the share of sections with exactly the right page range. The
-  document class is not checked.
-- *Label accuracy:* of the sections with the right page range, the share with the right
-  document class.
-
 ## Questions
 
 <!-- BEGIN GENERATED FAQ -->
@@ -76,7 +47,7 @@ find where a document starts.
 
 ![Section accuracy against total tokens per page for each Granularity and strategy](../../images/benchmark-guidance/SC-01-packet.svg)
 
-*Section accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.*
+*Section accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [DocSplit](datasets.md#docsplit-poly-seq-20-packets).
 
 ### Do I need page images in the classification prompt?
 
@@ -84,7 +55,11 @@ find where a document starts.
 
 ### Which classification model should I use?
 
-**Answer:** Not yet measured. [Details: SC-03](#sc-03-which-classification-model-should-i-use)
+**Answer:** Claude Haiku 5.5 or Claude Sonnet 5 for packets. On DocSplit both got 0.71 of sections exactly right, against 0.51 for the default, Amazon Nova 2 Lite, and classified more pages correctly (0.86 and 0.89, against 0.82). They used about three times the classification tokens (about 8,800 per page, against 2,850) and about 37% more total tokens. Amazon Nova Pro scored below the default. [Details: SC-03](#sc-03-which-classification-model-should-i-use)
+
+![Section accuracy against total tokens per page for each Classification model](../../images/benchmark-guidance/SC-03-packet.svg)
+
+*Section accuracy against total tokens per page. Each point is one value of the setting; lines span two standard errors either side. Up and to the left is better.* Datasets: [DocSplit](datasets.md#docsplit-poly-seq-20-packets).
 
 ### How long a packet can holistic classification handle?
 
@@ -116,6 +91,21 @@ find where a document starts.
 
 <!-- END GENERATED FAQ -->
 
+## Metrics on this page
+
+- *Page accuracy:* the share of pages with the right document class.
+- *Section accuracy:* the share of true sections returned with exactly the right pages and
+  the right document class.
+- *Grouping score:* how well the accelerator groups pages into documents, from 0 to 1,
+  whatever their class. It is DocSplit's packet score, which combines how pages are
+  clustered and how they are ordered.
+- *Boundary accuracy:* the share of sections with exactly the right page range. The
+  document class is not checked.
+- *Label accuracy:* of the sections with the right page range, the share with the right
+  document class.
+
+[Benchmark Datasets](datasets.md) describes each dataset.
+
 ## Benchmark details
 
 <!-- BEGIN GENERATED ABLATIONS -->
@@ -132,7 +122,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 |---|---|
 | **Changes** | Granularity and strategy |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); [Synthetic file holding two statements](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); Same-class documents back to back (to be built) |
+| **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets); [Synthetic file holding two statements](datasets.md#synthetic-file-holding-two-statements); [Same-class documents back to back (to be built)](datasets.md#same-class-documents-back-to-back-to-be-built) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Granularity and strategy | Page accuracy | Section accuracy | Grouping score | Boundary accuracy | Label accuracy | Classification tokens per page | Total tokens per page |
@@ -159,7 +149,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 |---|---|
 | **Changes** | What the classification model reads |
 | **Everything else** | Page-by-page granularity; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
+| **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | What the classification model reads | Page accuracy | Boundary accuracy | Label accuracy | Classification tokens per page |
@@ -171,21 +161,23 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 
 #### SC-03: Which classification model should I use?
 
-**Answer:** Not yet measured.
+**Answer:** Claude Haiku 5.5 or Claude Sonnet 5 for packets. On DocSplit both got 0.71 of sections exactly right, against 0.51 for the default, Amazon Nova 2 Lite, and classified more pages correctly (0.86 and 0.89, against 0.82). They used about three times the classification tokens (about 8,800 per page, against 2,850) and about 37% more total tokens. Amazon Nova Pro scored below the default.
+
+*Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: `Test Studio runs DocSplit-Poly-Seq-20261113-195743, DocSplit-Poly-Seq-20261113-195742, DocSplit-Poly-Seq-20261113-195744, DocSplit-Poly-Seq-20261113-200102, DocSplit-Poly-Seq-20261113-200054, DocSplit-Poly-Seq-20261113-200100, DocSplit-Poly-Seq-20261113-200705, DocSplit-Poly-Seq-20261113-200700, DocSplit-Poly-Seq-20261113-200701, DocSplit-Poly-Seq-20261113-201125, DocSplit-Poly-Seq-20261113-201126, DocSplit-Poly-Seq-20261113-201048 (5 failed documents left out of the scores)`.*
 
 | | |
 |---|---|
 | **Changes** | Classification model |
 | **Everything else** | Run at both granularities: page by page and holistic; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
+| **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Classification model | Page accuracy | Section accuracy | Grouping score | Boundary accuracy | Label accuracy | Classification tokens per page | Total tokens per page | Median seconds per document |
 |---|---|---|---|---|---|---|---|---|---|
-| DocSplit | Amazon Nova 2 Lite (default) | — | — | — | — | — | — | — | — |
-| DocSplit | Amazon Nova Pro | — | — | — | — | — | — | — | — |
-| DocSplit | Claude Haiku 5.5 | — | — | — | — | — | — | — | — |
-| DocSplit | Claude Sonnet 5 | — | — | — | — | — | — | — | — |
+| DocSplit | Amazon Nova 2 Lite (default) | 0.82 ± 0.01 | 0.51 ± 0.02 | 0.65 ± 0.02 | — | — | 2,850 ± 15 | 14,865 ± 38 | 114 ± 11 |
+| DocSplit | Amazon Nova Pro | 0.76 ± 0 | 0.48 ± 0 | 0.6 ± 0.02 | — | — | 4,357 ± 9.85 | 16,630 ± 60 | 112 ± 8.2 |
+| DocSplit | Claude Haiku 5.5 | 0.86 ± 0.01 | 0.71 ± 0.03 | 0.8 ± 0.02 | — | — | 8,987 ± 21 | 20,667 ± 124 | 144 ± 15 |
+| DocSplit | Claude Sonnet 5 | 0.89 ± 0 | 0.71 ± 0.02 | 0.79 ± 0.02 | — | — | 8,671 ± 15 | 20,274 ± 67 | 120 ± 37 |
 
 
 #### SC-04: How long a packet can holistic classification handle?
@@ -198,7 +190,7 @@ Needs a dataset we haven't built yet: Long packets, 30-60 pages (to be built).
 |---|---|
 | **Changes** | Pages per holistic call (`window_pages`) |
 | **Everything else** | Holistic, one call; the rest as each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | Long packets, 30-60 pages (to be built); [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
+| **Datasets** | [Long packets, 30-60 pages (to be built)](datasets.md#long-packets-30-60-pages-to-be-built); [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Pages per holistic call (`window_pages`) | Page accuracy | Boundary accuracy | Label accuracy | Classification tokens per page |
@@ -221,7 +213,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 |---|---|
 | **Changes** | `contextPagesCount` |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq); Same-class documents back to back (to be built) |
+| **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets); [Same-class documents back to back (to be built)](datasets.md#same-class-documents-back-to-back-to-be-built) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | `contextPagesCount` | Boundary accuracy | Label accuracy | Over-splits | Merges | Classification tokens per page |
@@ -242,7 +234,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 |---|---|
 | **Changes** | Few-shot examples |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
+| **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Few-shot examples | Page accuracy | Label accuracy | Classification tokens per page |
@@ -260,7 +252,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 |---|---|
 | **Changes** | Class descriptions |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
+| **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Class descriptions | Page accuracy | Label accuracy |
@@ -278,7 +270,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 |---|---|
 | **Changes** | Number of document classes in the configuration |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
+| **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Number of document classes in the configuration | Page accuracy | Label accuracy | Classification tokens per page |
@@ -296,7 +288,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 |---|---|
 | **Changes** | Classification image size (long edge) |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [DocSplit-Poly-Seq (20 packets)](../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq) |
+| **Datasets** | [DocSplit-Poly-Seq (20 packets)](datasets.md#docsplit-poly-seq-20-packets) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Classification image size (long edge) | Page accuracy | Boundary accuracy | Classification tokens per page |
@@ -314,7 +306,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 |---|---|
 | **Changes** | Section splitting |
 | **Everything else** | As each dataset's [preset](index.md#how-we-run-a-benchmark) sets it |
-| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified); [Synthetic statement, 400 rows (9 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements); [Synthetic statement, 800 rows (17 pages)](../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements) |
+| **Datasets** | [RealKIE-FCC-Verified (20 invoices)](datasets.md#realkie-fcc-verified-20-invoices); [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages); [Synthetic statement, 800 rows (17 pages)](datasets.md#synthetic-statement-800-rows-17-pages) |
 | **Runs** | 3 per document, per value |
 
 | Dataset | Section splitting | Weighted accuracy | Classification tokens per page |
