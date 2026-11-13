@@ -178,7 +178,8 @@ def render_ablation(
             panels.append(
                 (datasets[ds_key].get("short", datasets[ds_key]["name"]), rows)
             )
-        if any(p for _, rows in panels for _, p in rows):
+        panels = [(name, rows) for name, rows in panels if any(p for _, p in rows)]
+        if panels:
             name = f"{ab['id']}-{kind}.svg"
             metric_name = metrics[plot_metric]["name"]
             out.plots[name] = draw_plot(metric_name, panels, ab.get("runs", 0))

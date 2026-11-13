@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="viz" width="720" height="116" viewBox="0 0 720 116" role="img"><title>Weighted accuracy, mean of 3 runs with two standard errors either side</title><desc>RealKIE: Single pass, Simple (default) 0.8, Iterative, Advanced 0.8</desc><style>
+  .viz { --series: #2a78d6; --ring: #ffffff; --ink: #0b0b0b; --ink-2: #52514e;
+         --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7; }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz, svg.viz:root { --series: #3987e5;
+      --ring: #17181c; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+      --grid: #2c2c2a; --axis: #383835; }
+  }
+  :root[data-theme="dark"] .viz { --series: #3987e5; --ring: #17181c; --ink: #f0efec;
+    --ink-2: #c3c2b7; --muted: #898781; --grid: #2c2c2a; --axis: #383835; }
+  .viz { max-width: 100%; height: auto; }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .panel { font-size: 13px; font-weight: 600; fill: var(--ink); }
+  .label { font-size: 12px; fill: var(--ink-2); }
+  .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .none { font-size: 12px; fill: var(--muted); }
+  .grid { stroke: var(--grid); stroke-width: 1; }
+  .axis { stroke: var(--axis); stroke-width: 1; }
+  .whisker { stroke: var(--series); stroke-width: 2; stroke-linecap: round; }
+  .dot { fill: var(--series); stroke: var(--ring); stroke-width: 2; }
+</style><text class="panel" x="0" y="26">RealKIE</text><line class="grid" x1="280.0" x2="280.0" y1="38" y2="90"/><line class="grid" x1="383.0" x2="383.0" y1="38" y2="90"/><line class="grid" x1="486.0" x2="486.0" y1="38" y2="90"/><line class="grid" x1="589.0" x2="589.0" y1="38" y2="90"/><line class="grid" x1="692.0" x2="692.0" y1="38" y2="90"/><text class="label"><tspan x="0" y="55.0">Single pass, Simple (default)</tspan></text><g><title>Single pass, Simple (default): 0.8 ± 0.06</title><line class="whisker" x1="363.3" x2="618.2" y1="51.0" y2="51.0"/><circle class="dot" cx="490.8" cy="51.0" r="5"/></g><text class="label"><tspan x="0" y="81.0">Iterative, Advanced</tspan></text><g><title>Iterative, Advanced: 0.8 ± 0.08</title><line class="whisker" x1="328.1" x2="649.1" y1="77.0" y2="77.0"/><circle class="dot" cx="488.6" cy="77.0" r="5"/></g><line class="axis" x1="280" x2="692" y1="90" y2="90"/><text class="tick" x="280.0" y="106" text-anchor="middle">0.70</text><text class="tick" x="383.0" y="106" text-anchor="middle">0.75</text><text class="tick" x="486.0" y="106" text-anchor="middle">0.80</text><text class="tick" x="589.0" y="106" text-anchor="middle">0.85</text><text class="tick" x="692.0" y="106" text-anchor="middle">0.90</text></svg>
