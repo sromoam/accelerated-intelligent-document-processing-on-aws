@@ -75,6 +75,23 @@ document that failed is not scored, so it is not in `docs`; `failed` says how ma
         "docs": [20, 20, 20], "failed": [0, 0, 0], "runs": 3
     }}
 
+`per_doc` is each document's own scores, per `dataset|value`, averaged over the runs
+that scored it, for the documents every run of every value scored (the rule weighted
+accuracy uses). Only the keys a document has are written:
+
+    "per_doc": {"realkie|Iterative, Advanced": {"<document>": {
+        "list_score": 0.62,          Stickler's score for the largest list field:
+                                     matched rows over the larger of the true and
+                                     returned row counts
+        "list_rows": 247,            rows the ground truth has in that list
+        "boundary_accuracy": 1.0,    from the document's own doc_split_metrics
+        "label_accuracy": 1.0
+    }}}
+
+`boundary_accuracy` and `label_accuracy` are also written as per-run cells, each the
+mean over the documents that run scored, because Test Studio's run-level metrics do
+not include them.
+
 `models` says which model ran at each step, per `dataset|value`, so the pages can state
 it on every chart:
 
@@ -102,6 +119,7 @@ import json
 import math
 import statistics
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -118,6 +136,13 @@ STEP_METRICS = {
     "extraction_tokens": ("Extraction",),
     "scoring_tokens": ("Assessment",),
 }
+#: Split metrics a document's own evaluation reports, which the run aggregate does
+#: not break down per document.
+DOC_SPLIT_METRICS = ("boundary_accuracy", "label_accuracy")
+#: Where per-document evaluations are cached: one file per run and document, plus one
+#: row-count file per test set under `_rows/`.
+DOC_EVAL_CACHE = Path("/tmp/guidance-runs/doceval")
+DOC_EVAL_WORKERS = 8
 #: The review budget behind `errors_caught_30`: the share of values a reviewer checks,
 #: lowest confidence first, as Test Studio keys it under error_capture_at_budget.
 REVIEW_BUDGET = "0.30"
@@ -352,12 +377,11 @@ def run_usage(result: dict[str, Any]) -> dict[str, float]:
     return {k: round(v / docs, 4) for k, v in sorted(totals.items())}
 
 
-def list_cells(result: dict[str, Any]) -> tuple[int, int, int] | None:
-    """Cell counts (tp, fn, fp) over the leaf fields of the largest list field.
+def list_field(result: dict[str, Any]) -> str | None:
+    """The run's largest list field: the parent whose cells were scored most often.
 
-    Test Studio scores a list cell by cell under `fieldMetrics["<List>.<Field>"]`.
-    The weighted score counts a whole list as one field, so it barely moves when
-    rows go missing; these counts are what show a lost row.
+    Test Studio scores a list cell by cell under `fieldMetrics["<List>.<Field>"]`, so
+    a top-level field with leaf fields under it is a list.
     """
     fields = result.get("fieldMetrics") or {}
     parents: dict[str, int] = {}
@@ -367,9 +391,19 @@ def list_cells(result: dict[str, Any]) -> tuple[int, int, int] | None:
             parents[parent] = parents.get(parent, 0) + int(
                 m.get("accuracy_observations") or 0
             )
-    if not parents:
+    return max(parents, key=lambda p: parents[p]) if parents else None
+
+
+def list_cells(result: dict[str, Any]) -> tuple[int, int, int] | None:
+    """Cell counts (tp, fn, fp) over the leaf fields of the largest list field.
+
+    The weighted score counts a whole list as one field, so it barely moves when
+    rows go missing; these counts are what show a lost row.
+    """
+    fields = result.get("fieldMetrics") or {}
+    parent = list_field(result)
+    if parent is None:
         return None
-    parent = max(parents, key=lambda p: parents[p])
     tp = fn = fp = 0
     for name, m in fields.items():
         if name.startswith(parent + "."):
@@ -417,6 +451,126 @@ def run_metrics(result: dict[str, Any]) -> dict[str, float]:
     return out
 
 
+def doc_list_score(doc: dict[str, Any], field: str) -> float | None:
+    """Stickler's score for one list field of a document: matched rows over the larger
+    of the true and returned row counts.
+
+    The score belongs to a section, so it stands for the document only when the
+    document is one section. A packet's first section is not the document, and its
+    list score would read as one.
+    """
+    sections = doc.get("section_results") or []
+    if len(sections) != 1:
+        return None
+    scores = (
+        (sections[0].get("stickler_comparison_result") or {}).get("field_scores")
+    ) or {}
+    value = scores.get(field)
+    return None if value is None else float(value)
+
+
+def doc_split_scores(doc: dict[str, Any]) -> dict[str, float]:
+    """The split metrics a document's own evaluation reports, when it has them."""
+    split = doc.get("doc_split_metrics") or {}
+    return {
+        metric: float(split[metric])
+        for metric in DOC_SPLIT_METRICS
+        if split.get(metric) is not None
+    }
+
+
+class DocEvals:
+    """Per-document evaluations, and the ground-truth length of a document's list.
+
+    Test Studio writes one evaluation per document to the output bucket at
+    `<run ID>/<document>/evaluation/results.json`, and a test set's ground truth to
+    the test set bucket at `<test set>/baseline/<document>/sections/1/result.json`.
+    Both are fetched once and cached on disk: a re-collect of the same runs reads
+    nothing from S3. Row counts are cached one small file per test set, so the
+    baselines themselves are never kept.
+    """
+
+    def __init__(self, resources: dict[str, str], region: str, cache: Path) -> None:
+        self.s3 = boto3.client("s3", region_name=region)
+        self.output_bucket = resources.get("OutputBucket")
+        self.testset_bucket = resources.get("TestSetBucket")
+        self.cache = cache
+        self.rows_cache = cache / "_rows"
+        self.missing: set[str] = set()
+
+    def _get(self, bucket: str, key: str) -> dict[str, Any] | None:
+        try:
+            body = self.s3.get_object(Bucket=bucket, Key=key)["Body"].read()
+        except Exception as exc:  # a document with no evaluation is not an error
+            self.missing.add(f"s3://{bucket}/{key}: {type(exc).__name__}")
+            return None
+        return json.loads(body)
+
+    def _cached(self, bucket: str, key: str, path: Path) -> dict[str, Any] | None:
+        if path.exists():
+            return json.loads(path.read_text(encoding="utf-8"))
+        doc = self._get(bucket, key)
+        if doc is None:
+            return None
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(doc), encoding="utf-8")
+        return doc
+
+    def evaluations(self, run_id: str, docs: list[str]) -> dict[str, dict[str, Any]]:
+        """Every document's evaluation for one run, by document name."""
+        if not self.output_bucket:
+            return {}
+        out: dict[str, dict[str, Any]] = {}
+        with ThreadPoolExecutor(max_workers=DOC_EVAL_WORKERS) as pool:
+            fetched = pool.map(
+                lambda doc: (
+                    doc,
+                    self._cached(
+                        self.output_bucket or "",
+                        f"{run_id}/{doc}/evaluation/results.json",
+                        self.cache / run_id / doc / "evaluation" / "results.json",
+                    ),
+                ),
+                docs,
+            )
+            for doc, result in fetched:
+                if result is not None:
+                    out[doc] = result
+        return out
+
+    def rows(self, testset: str, docs: list[str], field: str) -> dict[str, int]:
+        """How many rows the ground truth has in `field`, per document."""
+        if not self.testset_bucket:
+            return {}
+        path = self.rows_cache / f"{testset}.json"
+        known: dict[str, dict[str, int]] = (
+            json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+        )
+        wanted = [d for d in docs if field not in known.get(d, {})]
+        with ThreadPoolExecutor(max_workers=DOC_EVAL_WORKERS) as pool:
+            fetched = pool.map(
+                lambda doc: (
+                    doc,
+                    self._get(
+                        self.testset_bucket or "",
+                        f"{testset}/baseline/{doc}/sections/1/result.json",
+                    ),
+                ),
+                wanted,
+            )
+            for doc, baseline in fetched:
+                if baseline is None:
+                    continue
+                truth = baseline.get("inference_result") or {}
+                known.setdefault(doc, {}).update(
+                    {k: len(v) for k, v in truth.items() if isinstance(v, list)}
+                )
+        if wanted:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps(known, indent=0, sort_keys=True), "utf-8")
+        return {d: known[d][field] for d in docs if field in known.get(d, {})}
+
+
 def pages(result: dict[str, Any]) -> int:
     return int(result.get("splitClassificationMetrics", {}).get("total_pages") or 0)
 
@@ -437,26 +591,50 @@ def workflow_seconds(table: Any, run_id: str, doc_keys: list[str]) -> list[float
     return out
 
 
-def tracking_table(stack: str, region: str) -> Any:
+def stack_resources(stack: str, region: str) -> dict[str, str]:
+    """Every resource of the benchmark stack, by logical ID."""
     cfn = boto3.client("cloudformation", region_name=region)
+    out: dict[str, str] = {}
     for page in cfn.get_paginator("list_stack_resources").paginate(StackName=stack):
         for r in page["StackResourceSummaries"]:
-            if r["LogicalResourceId"] == "TrackingTable":
-                return boto3.resource("dynamodb", region_name=region).Table(
-                    r["PhysicalResourceId"]
-                )
-    raise SystemExit(f"{stack}: no TrackingTable resource")
+            out[r["LogicalResourceId"]] = r["PhysicalResourceId"]
+    return out
+
+
+def tracking_table(resources: dict[str, str], stack: str, region: str) -> Any:
+    name = resources.get("TrackingTable")
+    if not name:
+        raise SystemExit(f"{stack}: no TrackingTable resource")
+    return boto3.resource("dynamodb", region_name=region).Table(name)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--results-dir", type=Path, required=True)
+    parser.add_argument(
+        "--doceval-cache",
+        type=Path,
+        default=DOC_EVAL_CACHE,
+        help="where per-document evaluations and row counts are cached",
+    )
+    parser.add_argument(
+        "--no-per-doc",
+        action="store_true",
+        help="skip the per-document evaluations (no S3 reads beyond the run results)",
+    )
     args = parser.parse_args()
 
     man = json.loads(args.manifest.read_text(encoding="utf-8"))
-    table = tracking_table(man["stack"], man["region"])
+    resources = stack_resources(man["stack"], man["region"])
+    table = tracking_table(resources, man["stack"], man["region"])
+    evals = (
+        None
+        if args.no_per_doc
+        else DocEvals(resources, man["region"], args.doceval_cache)
+    )
     isolated = set(man.get("cache_isolated") or [])
+    by_doc: dict[str, dict[str, dict[str, float]]] = {}
     cells: dict[str, dict[str, float]] = {}
     usage: dict[str, list[dict[str, float]]] = {}
     basis: dict[str, dict[str, Any]] = {}
@@ -495,6 +673,10 @@ def main() -> int:
             step_lines: dict[str, list[str]] = {}
             bedrock_steps: set[str] = set()
             billed: dict[str, list[str]] = {}
+            # Per-document scores, each metric averaged over the runs that scored it.
+            doc_metrics: dict[str, dict[str, list[float]]] = {}
+            list_fields: list[str] = []
+            testsets: list[str] = []
             for index, run_id in enumerate(ids):
                 path = args.results_dir / f"{run_id}-result.json"
                 result = json.loads(path.read_text(encoding="utf-8"))
@@ -539,6 +721,26 @@ def main() -> int:
                     billed[step] = sorted(set(billed.get(step, [])) | set(names))
                 for metric, v in run_metrics(result).items():
                     per_run.setdefault(metric, []).append(v)
+                if evals is not None:
+                    field = list_field(result)
+                    if field:
+                        list_fields.append(field)
+                    if result.get("testSetId"):
+                        testsets.append(str(result["testSetId"]))
+                    names = [k.split("/", 1)[1] for k in scores]
+                    split_means: dict[str, list[float]] = {}
+                    for doc, doc_result in evals.evaluations(run_id, names).items():
+                        found = doc_metrics.setdefault(doc, {})
+                        score = doc_list_score(doc_result, field) if field else None
+                        if score is not None:
+                            found.setdefault("list_score", []).append(score)
+                        for metric, v in doc_split_scores(doc_result).items():
+                            found.setdefault(metric, []).append(v)
+                            split_means.setdefault(metric, []).append(v)
+                    # Split accuracy per run is the mean over the documents it scored,
+                    # the way Test Studio's own run metrics are.
+                    for metric, vals in split_means.items():
+                        per_run.setdefault(metric, []).append(statistics.fmean(vals))
                 secs = workflow_seconds(table, run_id, list(scores))
                 if secs:
                     medians.append(statistics.median(secs))
@@ -559,6 +761,35 @@ def main() -> int:
                 if len(vals) == len(ids):
                     cells[cell + metric] = mean_se(vals)
             key = f"{ds_key}|{value}"
+            if evals is not None and doc_metrics:
+                shown = [
+                    d
+                    for d in sorted(doc_metrics)
+                    if not common[ds_key] or d in common[ds_key]
+                ]
+                field = statistics.mode(list_fields) if list_fields else ""
+                rows = (
+                    evals.rows(statistics.mode(testsets), shown, field)
+                    if field and testsets
+                    else {}
+                )
+                entries: dict[str, dict[str, float]] = {}
+                for doc in shown:
+                    found = doc_metrics[doc]
+                    entry: dict[str, float] = {}
+                    if "list_score" in found:
+                        entry["list_score"] = round(
+                            statistics.fmean(found["list_score"]), 6
+                        )
+                        if doc in rows:
+                            entry["list_rows"] = rows[doc]
+                    for metric in DOC_SPLIT_METRICS:
+                        if metric in found:
+                            entry[metric] = round(statistics.fmean(found[metric]), 6)
+                    if entry:
+                        entries[doc] = entry
+                if entries:
+                    by_doc[key] = entries
             if scored:
                 sample[key] = {"docs": scored, "failed": failures, "runs": len(ids)}
             if step_lines:
@@ -605,12 +836,24 @@ def main() -> int:
         "usage": usage,
         "cost_basis": basis,
     }
+    if by_doc:
+        out["per_doc"] = by_doc
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / f"{man['ablation']}.json"
     path.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {path.relative_to(REPO)}")
     for k, v in cells.items():
         print(f"  {k}: {v['mean']:.4g} ± {2 * v['se']:.2g}")
+    for k, entries in by_doc.items():
+        with_list = [d for d in entries.values() if "list_score" in d]
+        print(f"  {k}: {len(entries)} documents, {len(with_list)} with a list score")
+    if evals is not None and evals.missing:
+        for name in sorted(evals.missing)[:5]:
+            print(f"  no per-document evaluation at {name}", file=sys.stderr)
+        print(
+            f"  {len(evals.missing)} per-document files could not be read",
+            file=sys.stderr,
+        )
     return 0
 
 

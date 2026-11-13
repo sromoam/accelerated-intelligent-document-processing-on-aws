@@ -11,6 +11,11 @@ render_guidance.py calls one of two functions for each ablation that has measure
   review, for errors caught) gets it as a dashed line. When the values are models,
   each point takes its family's color and shape, and each family can get its own
   chart on shared axes with the other families' points in gray behind it.
+- draw_by_size() for an ablation with a `by_size` key: one per-document score against
+  the document's own size on a log x axis, one point per document per value, colored
+  and shaped per value, with each value's running median over log-spaced bins as a
+  line. It answers where one value overtakes another, which a mean over a dataset
+  cannot show.
 - draw_plot() otherwise: one metric, a panel per dataset, a row per value, a dot at the
   mean and a band spanning two standard errors either side.
 
@@ -26,6 +31,7 @@ Each SVG is static (no script), follows the light or dark color scheme, and carr
 from __future__ import annotations
 
 import math
+import statistics
 import textwrap
 from html import escape
 from typing import Any
@@ -1072,4 +1078,185 @@ def draw_scatter(
         f"<title>{escape(y_title)} against {escape(x_name)}, mean of {runs} runs "
         f"with two standard errors either side</title><desc>{escape(desc)}</desc>"
         f"<style>{STYLE}</style>" + "".join(body) + "</svg>\n"
+    )
+
+
+#: Categorical slots for a chart whose series are the values of one setting: a color
+#: and a marker shape each, so a reader who cannot tell the colors apart still can
+#: tell the series apart. Three is the most this chart is used for. The rules sit
+#: beside STYLE rather than in it, so a chart that draws no series carries none of
+#: them and its image does not change when they do.
+SERIES_SHAPES = ("circle", "square", "diamond")
+SERIES_STYLE = """
+  .viz .s1 { fill: var(--fam-nova); }
+  .viz .s2 { fill: var(--fam-claude); }
+  .viz .s3 { fill: var(--fam-other); }
+  .viz .pt { opacity: 0.75; }
+  .viz .trend { fill: none; stroke-width: 2; stroke-linejoin: round; }
+  .viz .trend.t1 { stroke: var(--fam-nova); }
+  .viz .trend.t2 { stroke: var(--fam-claude); }
+  .viz .trend.t3 { stroke: var(--fam-other); }
+"""
+BY_PLOT_H = 240
+BY_LEGEND_H = 20
+#: Points in a log-spaced bin before its median joins the trend line.
+BIN_MIN_POINTS = 2
+#: Bins per decade of the x axis, for the running median.
+BINS_PER_DECADE = 2
+
+
+def _decades(lo: float, hi: float) -> list[float]:
+    """Powers of ten covering [lo, hi]: the ticks of a log axis."""
+    first = math.floor(math.log10(max(lo, 1e-9)))
+    last = math.ceil(math.log10(max(hi, 10 ** (first + 1))))
+    return [10.0**e for e in range(first, last + 1)]
+
+
+def _running_median(
+    points: list[tuple[float, float]], lo: float, hi: float
+) -> list[tuple[float, float]]:
+    """The median of the points in each log-spaced bin, left to right.
+
+    A bin holding fewer than BIN_MIN_POINTS points is left out rather than drawn as a
+    trend, so one document cannot bend the line.
+    """
+    span = math.log10(hi) - math.log10(lo)
+    count = max(2, round(span * BINS_PER_DECADE))
+    bins: list[list[tuple[float, float]]] = [[] for _ in range(count)]
+    for x, y in points:
+        at = (math.log10(x) - math.log10(lo)) / span * count if span else 0.0
+        bins[min(count - 1, max(0, int(at)))].append((x, y))
+    out = []
+    for group in bins:
+        if len(group) >= BIN_MIN_POINTS:
+            out.append(
+                (
+                    statistics.median(x for x, _ in group),
+                    statistics.median(y for _, y in group),
+                )
+            )
+    return out
+
+
+def _legend(
+    series: list[str], y: float, left: float, width: float
+) -> tuple[str, float]:
+    """A swatch and a label per series, wrapped onto as many lines as it takes."""
+    out: list[str] = []
+    x, line = left, 0
+    for i, value in enumerate(series):
+        w = 16 + len(value) * CHAR_W + 18
+        if x > left and x + w > left + width:
+            x, line = left, line + 1
+        cy = y + line * BY_LEGEND_H
+        out.append(marker(SERIES_SHAPES[i % 3], x + 5, cy - 4, 5, f"dot s{i % 3 + 1}"))
+        out.append(
+            f'<text class="label" x="{x + 16:.1f}" y="{cy:.1f}">{escape(value)}</text>'
+        )
+        x += w
+    return "".join(out), (line + 1) * BY_LEGEND_H
+
+
+def draw_by_size(
+    x_name: str,
+    y_name: str,
+    series: list[tuple[str, list[tuple[str, float, float]]]],
+    *,
+    title: str = "",
+    models: Models = "",
+) -> str:
+    """Return an SVG plotting one per-document score against the document's size.
+
+    series: one entry per value of the setting, [(value, [(document, x, y), ...])].
+        x is a count, drawn on a log axis; y is a score. One point per document per
+        value, colored and shaped by value, with the running median of each value
+        over log-spaced bins as a line, so a trend reads without a fitted curve.
+    """
+    points = [(x, y) for _, pts in series for _, x, y in pts]
+    if not points:
+        return ""
+    xt = _decades(min(x for x, _ in points), max(x for x, _ in points))
+    ys = [y for _, y in points]
+    yt = (
+        [0.0, 0.25, 0.5, 0.75, 1.0]
+        if min(ys) >= 0 and max(ys) <= 1
+        else _span(ys, pad=0.08)
+    )
+    y_dec = tick_decimals(yt)
+    left, right = SC_LEFT, WIDTH - 24
+    body: list[str] = []
+    top = TOP
+    if title:
+        body.append(
+            f'<text class="panel" x="0" y="{top + 18:.1f}">{escape(title)}</text>'
+        )
+        sub, sub_h = models_svg(models, top + 18)
+        body.append(sub)
+        top += PANEL_TITLE_H + sub_h
+    key_svg, key_h = _legend([v for v, _ in series], top + 10, left, right - left)
+    body.append(key_svg)
+    y0 = top + key_h + 6
+    y1 = y0 + BY_PLOT_H
+
+    def px(v: float) -> float:
+        lo, hi = math.log10(xt[0]), math.log10(xt[-1])
+        return left + (math.log10(max(v, xt[0])) - lo) / (hi - lo) * (right - left)
+
+    def py(v: float) -> float:
+        return y1 - (v - yt[0]) / (yt[-1] - yt[0]) * (y1 - y0)
+
+    for t in yt:
+        body.append(
+            f'<line class="grid" x1="{left}" x2="{right}" '
+            f'y1="{py(t):.1f}" y2="{py(t):.1f}"/>'
+            f'<text class="tick" x="{left - 8}" y="{py(t) + 4:.1f}" '
+            f'text-anchor="end">{t:.{y_dec}f}</text>'
+        )
+    for t in xt:
+        body.append(
+            f'<line class="grid" x1="{px(t):.1f}" x2="{px(t):.1f}" '
+            f'y1="{y0}" y2="{y1}"/>'
+            f'<text class="tick" x="{px(t):.1f}" y="{y1 + 16}" '
+            f'text-anchor="middle">{t:,.0f}</text>'
+        )
+    body.append(
+        f'<line class="axis" x1="{left}" x2="{right}" y1="{y1}" y2="{y1}"/>'
+        f'<line class="axis" x1="{left}" x2="{left}" y1="{y0}" y2="{y1}"/>'
+        f'<text class="axislabel" x="{(left + right) / 2:.1f}" y="{y1 + 34}" '
+        f'text-anchor="middle">{escape(x_name)}</text>'
+        f'<text class="axislabel" transform="translate(12 {(y0 + y1) / 2:.1f}) '
+        f'rotate(-90)" text-anchor="middle">{escape(y_name)}</text>'
+    )
+    desc_parts: list[str] = []
+    for i, (value, pts) in enumerate(series):
+        slot = i % 3 + 1
+        for doc, x, y in pts:
+            body.append(
+                f"<g><title>{escape(doc)}: {escape(value)}, {x:,.0f} rows, "
+                f"{escape(lower_name(y_name))} {y:.2f}</title>"
+                + marker(SERIES_SHAPES[i % 3], px(x), py(y), 3.4, f"pt s{slot}")
+                + "</g>"
+            )
+    for i, (value, pts) in enumerate(series):
+        trend = _running_median([(x, y) for _, x, y in pts], xt[0], xt[-1])
+        if len(trend) > 1:
+            path = " ".join(
+                f"{'M' if n == 0 else 'L'}{px(x):.1f} {py(y):.1f}"
+                for n, (x, y) in enumerate(trend)
+            )
+            body.append(
+                f"<g><title>{escape(value)}: running median</title>"
+                f'<path class="trend t{i % 3 + 1}" d="{path}"/></g>'
+            )
+        desc_parts.append(
+            f"{value}: {len(pts)} documents, running median "
+            + ", ".join(f"{y:.2f} at {x:,.0f} rows" for x, y in trend)
+        )
+    height = y1 + SC_BOTTOM
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" class="viz" width="{WIDTH}" '
+        f'height="{height:.0f}" viewBox="0 0 {WIDTH} {height:.0f}" role="img">'
+        f"<title>{escape(y_name)} against {escape(lower_name(x_name))}, one point "
+        f"per document per value</title><desc>{escape('; '.join(desc_parts))}</desc>"
+        f"<style>{STYLE}{SERIES_STYLE}</style>" + "".join(body) + "</svg>\n"
     )

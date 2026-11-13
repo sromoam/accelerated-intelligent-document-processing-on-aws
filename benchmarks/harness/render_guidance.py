@@ -34,6 +34,11 @@ scatter then draws one chart per metric, side by side in the same image. A metri
 with a `baseline` in the registry gets it as a dashed line, and an ablation marked
 `families` colors its points by model family and gives each family its own chart.
 
+An ablation with a `by_size` key also gets a chart of one per-document score against
+the document's own size, drawn from the results file's `per_doc` block, which leads
+its FAQ entry: a mean over a dataset says which value wins, and this says at what size
+it starts winning.
+
 `models` is optional: the model in force at each step of the pipeline. Every chart,
 caption and details table states it, and a step whose model differs across the values
 on the chart reads "varies (the setting under test)".
@@ -75,6 +80,7 @@ import yaml
 from guidance_plots import (
     ERROR_RATE_METRICS,
     MAX_LABELLED,
+    draw_by_size,
     draw_plot,
     draw_scatter,
     family,
@@ -498,6 +504,153 @@ def dataset_label(key: str, datasets: dict[str, Any], short: bool = False) -> st
     return f"[{text}]({dataset_anchor(key, datasets)})"
 
 
+LIST_SCORE_CAPTION = (
+    "A list score is Stickler's score for the list: matched rows over the larger of "
+    "the true and returned row counts."
+)
+BY_SIZE_CAPTION = (
+    "One point per document per {changes}, on a log scale; the line is that value's "
+    "running median over log-spaced bins of the x axis."
+)
+
+
+def dataset_pools(ds_keys: list[str]) -> list[list[str]]:
+    """Dataset keys grouped into pools that draw one chart between them.
+
+    Keys whose first word is the same are the same pool of documents: realkie,
+    realkie_short and realkie_long are three test sets over one set of invoices, and
+    three charts of 20 documents each say less than one chart of all of them.
+    """
+    pools: dict[str, list[str]] = {}
+    for key in ds_keys:
+        pools.setdefault(key.split("_", 1)[0], []).append(key)
+    return list(pools.values())
+
+
+def by_size_owners(
+    pool: list[str],
+    values: list[str],
+    per_doc: dict[str, dict[str, dict[str, float]]],
+    sample: dict[str, dict[str, Any]],
+) -> dict[str, str]:
+    """The test set each document of the pool is counted under.
+
+    A document in more than one of the pool's test sets belongs to the one that ran
+    it most often, so the same invoice is one point per value rather than three.
+    """
+
+    def runs(ds_key: str) -> int:
+        return sum(
+            int((sample.get(f"{ds_key}|{value}") or {}).get("runs") or 0)
+            for value in values
+        )
+
+    owner: dict[str, str] = {}
+    for ds_key in sorted(pool, key=lambda k: (-runs(k), pool.index(k))):
+        for value in values:
+            for doc in per_doc.get(f"{ds_key}|{value}") or {}:
+                owner.setdefault(doc, ds_key)
+    return owner
+
+
+def by_size_series(
+    owner: dict[str, str],
+    values: list[str],
+    per_doc: dict[str, dict[str, dict[str, float]]],
+    metric: str,
+    x_metric: str,
+) -> list[tuple[str, list[tuple[str, float, float]]]]:
+    """One series per value: every document that has both scores, smallest first."""
+    out = []
+    for value in values:
+        pts = []
+        for doc, ds_key in owner.items():
+            entry = (per_doc.get(f"{ds_key}|{value}") or {}).get(doc) or {}
+            x, y = entry.get(x_metric), entry.get(metric)
+            # A log axis has no room for a document whose list is empty.
+            if x is not None and y is not None and x >= 1:
+                pts.append((doc, float(x), float(y)))
+        if pts:
+            out.append((value, sorted(pts, key=lambda p: p[1])))
+    return out
+
+
+def render_by_size(
+    ab: dict[str, Any], reg: dict[str, Any], results: dict[str, Any]
+) -> tuple[list[str], dict[str, str]]:
+    """The by-size chart of an ablation that has one, and its markdown.
+
+    One chart per pool of datasets (dataset_pools), drawn from the results file's
+    per-document scores: where a mean over a dataset says which value wins, this says
+    at what size it starts winning.
+    """
+    spec = ab.get("by_size") or {}
+    per_doc = results.get("per_doc") or {}
+    if not spec or not per_doc:
+        return [], {}
+    datasets: dict[str, Any] = reg["datasets"]
+    metrics: dict[str, Any] = reg["metrics"]
+    metric, x_metric = str(spec["metric"]), str(spec["x"])
+    models = results.get("models") or {}
+    sample = results.get("sample") or {}
+    md: list[str] = []
+    plots: dict[str, str] = {}
+    for pool in dataset_pools(ab["datasets"]):
+        owner = by_size_owners(pool, ab["values"], per_doc, sample)
+        series = by_size_series(owner, ab["values"], per_doc, metric, x_metric)
+        if not series:
+            continue
+        used = sorted(set(owner.values()), key=pool.index)
+        drawn = sorted({doc for _, pts in series for doc, _, _ in pts})
+        steps = model_steps(models, used, ab["values"])
+        runs = span(
+            [
+                int((sample.get(f"{k}|{v}") or {}).get("runs") or 0)
+                for k in used
+                for v in ab["values"]
+                if (sample.get(f"{k}|{v}") or {}).get("runs")
+            ]
+            or [ab.get("runs", 0)]
+        )
+        n_text = f"N = {len(drawn)} documents × {runs} runs"
+        y_name = metrics[metric]["name"]
+        x_name = f"{metrics[x_metric]['name']}, log scale"
+        name = f"{ab['id']}-by-size-{pool[0].replace('_', '-')}.svg"
+        plots[name] = draw_by_size(
+            x_name,
+            y_name,
+            series,
+            title=" · ".join(
+                datasets[k].get("short", datasets[k]["name"]) for k in used
+            ),
+            models=(
+                lead_line(ab["page"], models, used[0], ab["values"]),
+                " · ".join(
+                    p for p in (models_text(steps.get(used[0], {})), n_text) if p
+                ),
+            ),
+        )
+        alt = (
+            f"{y_name} against {lower_first(metrics[x_metric]['name'])} "
+            f"for each {ab['changes']}"
+        )
+        caption = (
+            f"*{y_name} per document, against {lower_first(metrics[x_metric]['name'])}. "
+            + BY_SIZE_CAPTION.format(changes=lower_first(ab["changes"]))
+            + (f" {LIST_SCORE_CAPTION}" if metric == "list_score" else "")
+            + "*"
+            + " Datasets: "
+            + ", ".join(dataset_label(k, datasets, short=True) for k in used)
+            + "."
+        )
+        plot_models = models_sentence(steps, used, datasets)
+        if plot_models:
+            caption += f" {plot_models}"
+        caption += f" {n_text}."
+        md += [f"![{alt}]({PLOTS_FROM_PAGES}/{name})", "", caption, ""]
+    return md, plots
+
+
 def details_heading(ab: dict[str, Any]) -> str:
     return f"{ab['id']}: {ab['question']}"
 
@@ -839,6 +992,10 @@ def render_ablation(
 
     # FAQ entry: the question, the answer, the headline plot, a link to details.
     out.faq += [f"### {ab['question']}", "", f"**Answer:** {answer} {details_link}", ""]
+    if results:
+        by_size, by_size_plots = render_by_size(ab, reg, results)
+        out.faq += by_size
+        out.plots.update(by_size_plots)
     if ab.get("grid") and results:
         # The grid's tables answer the question; the chart, when there is one,
         # follows them.

@@ -65,6 +65,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "realkie|Single pass, Simple (default)|boundary_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Single pass, Simple (default)|label_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "realkie|Iterative, Advanced|weighted_accuracy": {
       "mean": 0.801252,
       "se": 0.038957
@@ -125,6 +133,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "realkie|Iterative, Advanced|boundary_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie|Iterative, Advanced|label_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "fake_w2|Single pass, Simple (default)|weighted_accuracy": {
       "mean": 0.952609,
       "se": 0.009158
@@ -177,6 +193,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "fake_w2|Single pass, Simple (default)|boundary_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Single pass, Simple (default)|label_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "fake_w2|Iterative, Advanced|weighted_accuracy": {
       "mean": 0.968241,
       "se": 0.004465
@@ -226,6 +250,14 @@
       "se": 0.0
     },
     "fake_w2|Iterative, Advanced|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Iterative, Advanced|boundary_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "fake_w2|Iterative, Advanced|label_accuracy": {
       "mean": 1.0,
       "se": 0.0
     },
@@ -289,6 +321,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "realkie_short|Single pass, Simple (default)|boundary_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_short|Single pass, Simple (default)|label_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "realkie_short|Iterative, Advanced|weighted_accuracy": {
       "mean": 0.81691,
       "se": 0.032181
@@ -346,6 +386,14 @@
       "se": 0.0
     },
     "realkie_short|Iterative, Advanced|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_short|Iterative, Advanced|boundary_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_short|Iterative, Advanced|label_accuracy": {
       "mean": 1.0,
       "se": 0.0
     },
@@ -409,6 +457,14 @@
       "mean": 1.0,
       "se": 0.0
     },
+    "realkie_long|Single pass, Simple (default)|boundary_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_long|Single pass, Simple (default)|label_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
     "realkie_long|Iterative, Advanced|weighted_accuracy": {
       "mean": 0.796447,
       "se": 0.041856
@@ -466,6 +522,14 @@
       "se": 0.0
     },
     "realkie_long|Iterative, Advanced|grouping_score": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_long|Iterative, Advanced|boundary_accuracy": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "realkie_long|Iterative, Advanced|label_accuracy": {
       "mean": 1.0,
       "se": 0.0
     }
@@ -1017,6 +1081,928 @@
       "mode": "cold-run",
       "run": "realkie-fcc-long-20261113-202336",
       "index": 0
+    }
+  },
+  "per_doc": {
+    "realkie|Single pass, Simple (default)": {
+      "033f718b16cb597c065930410752c294.pdf": {
+        "list_score": 0.99619,
+        "list_rows": 10,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "03f65053aea282ad8d5e759a9f18bdbb.pdf": {
+        "list_score": 0.3,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "08e2649c3291ee569a116260d46e9866.pdf": {
+        "list_score": 1.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "0d0fc87f34a2263cdd4b96cdac891240.pdf": {
+        "list_score": 0.651409,
+        "list_rows": 57,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1220d048d2a75d910c52e7f290e32ca0.pdf": {
+        "list_score": 0.262597,
+        "list_rows": 11,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1449e9c1e67662cb3c806eea0b1771e1.pdf": {
+        "list_score": 0.670588,
+        "list_rows": 20,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1b238269de30dec67297e7ad8630116e.pdf": {
+        "list_score": 0.6,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1b26192b674944e82347df9cfa3288ff.pdf": {
+        "list_score": 0.575638,
+        "list_rows": 80,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "21762bcc61029b7a5020647d7ced6aa5.pdf": {
+        "list_score": 0.866667,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "26372a567adab41e404cab267067d73f.pdf": {
+        "list_score": 0.866667,
+        "list_rows": 6,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "2de731d64adfecacda0bf2e4d9a8fcfe.pdf": {
+        "list_score": 0.4,
+        "list_rows": 11,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "33fe0051cbf2e777e47a1e717091c61f.pdf": {
+        "list_score": 0.266667,
+        "list_rows": 12,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3aac2d4d386a203e8d6419043f1adfa1.pdf": {
+        "list_score": 0.797436,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3b768c37cd4670c0f28b0e89d7507e05.pdf": {
+        "list_score": 0.621212,
+        "list_rows": 22,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3b9f33e058641d47cf2ebe76b9382648.pdf": {
+        "list_score": 0.333333,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3d239b34e970a6f5ad4d1417352cf82e.pdf": {
+        "list_score": 0.913197,
+        "list_rows": 17,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3dabc131205d3a2c74a73eb545494d3f.pdf": {
+        "list_score": 0.945238,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "4d96667dff249bbfb513294f95313b71.pdf": {
+        "list_score": 0.005797,
+        "list_rows": 69,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "52f1588f1bedc25f07c5cb6981e5f7dd.pdf": {
+        "list_score": 0.6,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "536c5c90c803552970cad769b6caef45.pdf": {
+        "list_score": 0.5375,
+        "list_rows": 16,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "realkie|Iterative, Advanced": {
+      "033f718b16cb597c065930410752c294.pdf": {
+        "list_score": 0.8,
+        "list_rows": 10,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "03f65053aea282ad8d5e759a9f18bdbb.pdf": {
+        "list_score": 0.2,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "08e2649c3291ee569a116260d46e9866.pdf": {
+        "list_score": 0.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "0d0fc87f34a2263cdd4b96cdac891240.pdf": {
+        "list_score": 0.718075,
+        "list_rows": 57,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1220d048d2a75d910c52e7f290e32ca0.pdf": {
+        "list_score": 0.194805,
+        "list_rows": 11,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1449e9c1e67662cb3c806eea0b1771e1.pdf": {
+        "list_score": 0.394687,
+        "list_rows": 20,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1b238269de30dec67297e7ad8630116e.pdf": {
+        "list_score": 0.6,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1b26192b674944e82347df9cfa3288ff.pdf": {
+        "list_score": 0.558018,
+        "list_rows": 80,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "21762bcc61029b7a5020647d7ced6aa5.pdf": {
+        "list_score": 0.173333,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "26372a567adab41e404cab267067d73f.pdf": {
+        "list_score": 0.8,
+        "list_rows": 6,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "2de731d64adfecacda0bf2e4d9a8fcfe.pdf": {
+        "list_score": 0.4,
+        "list_rows": 11,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "33fe0051cbf2e777e47a1e717091c61f.pdf": {
+        "list_score": 0.151724,
+        "list_rows": 12,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3aac2d4d386a203e8d6419043f1adfa1.pdf": {
+        "list_score": 0.6,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3b768c37cd4670c0f28b0e89d7507e05.pdf": {
+        "list_score": 0.567558,
+        "list_rows": 22,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3b9f33e058641d47cf2ebe76b9382648.pdf": {
+        "list_score": 0.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3d239b34e970a6f5ad4d1417352cf82e.pdf": {
+        "list_score": 0.732804,
+        "list_rows": 17,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3dabc131205d3a2c74a73eb545494d3f.pdf": {
+        "list_score": 1.0,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "4d96667dff249bbfb513294f95313b71.pdf": {
+        "list_score": 0.005797,
+        "list_rows": 69,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "52f1588f1bedc25f07c5cb6981e5f7dd.pdf": {
+        "list_score": 0.666667,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "536c5c90c803552970cad769b6caef45.pdf": {
+        "list_score": 0.392377,
+        "list_rows": 16,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "fake_w2|Single pass, Simple (default)": {
+      "w2_test_0000.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0001.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0002.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0003.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0004.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0005.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0006.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0007.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0008.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0009.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0010.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0011.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0012.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0013.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0014.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0015.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0016.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0017.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0018.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0019.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "fake_w2|Iterative, Advanced": {
+      "w2_test_0000.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0001.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0002.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0003.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0004.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0005.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0006.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0007.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0008.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0009.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0010.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0011.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0012.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0013.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0014.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0015.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0016.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0017.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0018.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "w2_test_0019.jpg": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "realkie_short|Single pass, Simple (default)": {
+      "033f718b16cb597c065930410752c294.pdf": {
+        "list_score": 1.0,
+        "list_rows": 10,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "03f65053aea282ad8d5e759a9f18bdbb.pdf": {
+        "list_score": 0.2,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "08e2649c3291ee569a116260d46e9866.pdf": {
+        "list_score": 1.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "0d0fc87f34a2263cdd4b96cdac891240.pdf": {
+        "list_score": 0.584742,
+        "list_rows": 57,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1b238269de30dec67297e7ad8630116e.pdf": {
+        "list_score": 0.6,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "26372a567adab41e404cab267067d73f.pdf": {
+        "list_score": 0.866667,
+        "list_rows": 6,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3aac2d4d386a203e8d6419043f1adfa1.pdf": {
+        "list_score": 0.8,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3b9f33e058641d47cf2ebe76b9382648.pdf": {
+        "list_score": 0.666667,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3dabc131205d3a2c74a73eb545494d3f.pdf": {
+        "list_score": 1.0,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "52f1588f1bedc25f07c5cb6981e5f7dd.pdf": {
+        "list_score": 0.6,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "75986ca8ed4b97420672b7782390c742.pdf": {
+        "list_score": 0.318667,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "77e4c8dfae992bc561e181c9a0fb4251.pdf": {
+        "list_score": 0.933333,
+        "list_rows": 2,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "7bc4cc14d20c04204f81948012da50c9.pdf": {
+        "list_score": 0.6375,
+        "list_rows": 16,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "7c4e113ac908349db24caff741a89313.pdf": {
+        "list_score": 1.0,
+        "list_rows": 6,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "7ec895784100dd7287978ab5cac9f283.pdf": {
+        "list_score": 0.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "8ecb95435a6eeb3dd384d6eb2f007c3c.pdf": {
+        "list_score": 0.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "a501c2b139c99cc56e6d41a8f9df17a1.pdf": {
+        "list_score": 0.666667,
+        "list_rows": 2,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "aac03825090fe7c0a55c2dffce4605cc.pdf": {
+        "list_score": 0.797054,
+        "list_rows": 46,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "b55d327a4141362f2b2c9a3eab1a6ba2.pdf": {
+        "list_score": 0.133333,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "cd3fc7791eda2953c2ef8364bd17418c.pdf": {
+        "list_score": 0.6,
+        "list_rows": 23,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "dc1df85e4e29cc5406286fc8d909f17c.pdf": {
+        "list_score": 0.8,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "e0e8f4257b2fc8144b5d1d30d7bfb2ae.pdf": {
+        "list_score": 0.821958,
+        "list_rows": 8,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "f07820a290eb3f3ff606b0153c9f38f1.pdf": {
+        "list_score": 0.8,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "fa1d6b17927c2218ccd0abc33e001c3f.pdf": {
+        "list_score": 0.4,
+        "list_rows": 8,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "realkie_short|Iterative, Advanced": {
+      "033f718b16cb597c065930410752c294.pdf": {
+        "list_score": 0.8,
+        "list_rows": 10,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "03f65053aea282ad8d5e759a9f18bdbb.pdf": {
+        "list_score": 0.2,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "08e2649c3291ee569a116260d46e9866.pdf": {
+        "list_score": 0.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "0d0fc87f34a2263cdd4b96cdac891240.pdf": {
+        "list_score": 0.584742,
+        "list_rows": 57,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1b238269de30dec67297e7ad8630116e.pdf": {
+        "list_score": 0.6,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "26372a567adab41e404cab267067d73f.pdf": {
+        "list_score": 0.8,
+        "list_rows": 6,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3aac2d4d386a203e8d6419043f1adfa1.pdf": {
+        "list_score": 0.733333,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3b9f33e058641d47cf2ebe76b9382648.pdf": {
+        "list_score": 0.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "3dabc131205d3a2c74a73eb545494d3f.pdf": {
+        "list_score": 1.0,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "52f1588f1bedc25f07c5cb6981e5f7dd.pdf": {
+        "list_score": 0.6,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "75986ca8ed4b97420672b7782390c742.pdf": {
+        "list_score": 0.318667,
+        "list_rows": 4,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "77e4c8dfae992bc561e181c9a0fb4251.pdf": {
+        "list_score": 0.666667,
+        "list_rows": 2,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "7bc4cc14d20c04204f81948012da50c9.pdf": {
+        "list_score": 0.6375,
+        "list_rows": 16,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "7c4e113ac908349db24caff741a89313.pdf": {
+        "list_score": 1.0,
+        "list_rows": 6,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "7ec895784100dd7287978ab5cac9f283.pdf": {
+        "list_score": 0.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "8ecb95435a6eeb3dd384d6eb2f007c3c.pdf": {
+        "list_score": 0.0,
+        "list_rows": 0,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "a501c2b139c99cc56e6d41a8f9df17a1.pdf": {
+        "list_score": 0.466667,
+        "list_rows": 2,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "aac03825090fe7c0a55c2dffce4605cc.pdf": {
+        "list_score": 0.929385,
+        "list_rows": 46,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "b55d327a4141362f2b2c9a3eab1a6ba2.pdf": {
+        "list_score": 0.088889,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "cd3fc7791eda2953c2ef8364bd17418c.pdf": {
+        "list_score": 0.228986,
+        "list_rows": 23,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "dc1df85e4e29cc5406286fc8d909f17c.pdf": {
+        "list_score": 0.8,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "e0e8f4257b2fc8144b5d1d30d7bfb2ae.pdf": {
+        "list_score": 0.870238,
+        "list_rows": 8,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "f07820a290eb3f3ff606b0153c9f38f1.pdf": {
+        "list_score": 0.8,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "fa1d6b17927c2218ccd0abc33e001c3f.pdf": {
+        "list_score": 0.4,
+        "list_rows": 8,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "realkie_long|Single pass, Simple (default)": {
+      "1449e9c1e67662cb3c806eea0b1771e1.pdf": {
+        "list_score": 0.670588,
+        "list_rows": 20,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1b26192b674944e82347df9cfa3288ff.pdf": {
+        "list_score": 0.515446,
+        "list_rows": 80,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "21762bcc61029b7a5020647d7ced6aa5.pdf": {
+        "list_score": 0.866667,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "33fe0051cbf2e777e47a1e717091c61f.pdf": {
+        "list_score": 0.309989,
+        "list_rows": 12,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "5b79d718c8ac073a5b3c3ba2162173cb.pdf": {
+        "list_score": 0.866667,
+        "list_rows": 85,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "64e40cb2f126bad63679f19505e8b0bf.pdf": {
+        "list_score": 0.796667,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "74c8d84d79f73e08eb87fdd673193ba8.pdf": {
+        "list_score": 0.023077,
+        "list_rows": 182,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "99bcbdbef0480727179f27eb4899b8f8.pdf": {
+        "list_score": 0.5625,
+        "list_rows": 16,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "9bb60d3c7732561e0576613f0ea97ea2.pdf": {
+        "list_score": 0.00102,
+        "list_rows": 392,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "ad34d418249cfeb23d1986824160016d.pdf": {
+        "list_score": 0.266667,
+        "list_rows": 22,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "b798ae73d6da562122e7d2f94e29571e.pdf": {
+        "list_score": 0.657966,
+        "list_rows": 67,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "beedfe6996eb6c310858b05c7df6bea3.pdf": {
+        "list_score": 0.497703,
+        "list_rows": 247,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "c840a967e02f2119ff0ec15a7b782b7e.pdf": {
+        "list_score": 0.6,
+        "list_rows": 16,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "d1a83bbb1eeb256a325dab9e0ce6235b.pdf": {
+        "list_score": 0.001294,
+        "list_rows": 309,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "d5db82c9c27ffcb1fcf25583fab2feaa.pdf": {
+        "list_score": 0.993141,
+        "list_rows": 54,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "e519085a4bfc0211f4139c332bc3d60c.pdf": {
+        "list_score": 0.799092,
+        "list_rows": 15,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "e8dda1aad4be9ddf95ced75e544fec69.pdf": {
+        "list_score": 0.706137,
+        "list_rows": 61,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "fa565ac45dba24366c6da8b86c775691.pdf": {
+        "list_score": 0.475834,
+        "list_rows": 34,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "realkie_long|Iterative, Advanced": {
+      "1449e9c1e67662cb3c806eea0b1771e1.pdf": {
+        "list_score": 0.405262,
+        "list_rows": 20,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "1b26192b674944e82347df9cfa3288ff.pdf": {
+        "list_score": 0.530878,
+        "list_rows": 80,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "21762bcc61029b7a5020647d7ced6aa5.pdf": {
+        "list_score": 0.194771,
+        "list_rows": 1,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "33fe0051cbf2e777e47a1e717091c61f.pdf": {
+        "list_score": 0.151724,
+        "list_rows": 12,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "5b79d718c8ac073a5b3c3ba2162173cb.pdf": {
+        "list_score": 0.733333,
+        "list_rows": 85,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "64e40cb2f126bad63679f19505e8b0bf.pdf": {
+        "list_score": 0.755263,
+        "list_rows": 3,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "74c8d84d79f73e08eb87fdd673193ba8.pdf": {
+        "list_score": 0.315385,
+        "list_rows": 182,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "99bcbdbef0480727179f27eb4899b8f8.pdf": {
+        "list_score": 0.457143,
+        "list_rows": 16,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "9bb60d3c7732561e0576613f0ea97ea2.pdf": {
+        "list_score": 0.904851,
+        "list_rows": 392,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "ad34d418249cfeb23d1986824160016d.pdf": {
+        "list_score": 0.211472,
+        "list_rows": 22,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "b798ae73d6da562122e7d2f94e29571e.pdf": {
+        "list_score": 0.73786,
+        "list_rows": 67,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "beedfe6996eb6c310858b05c7df6bea3.pdf": {
+        "list_score": 0.63297,
+        "list_rows": 247,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "c840a967e02f2119ff0ec15a7b782b7e.pdf": {
+        "list_score": 0.470855,
+        "list_rows": 16,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "d1a83bbb1eeb256a325dab9e0ce6235b.pdf": {
+        "list_score": 0.521287,
+        "list_rows": 309,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "d5db82c9c27ffcb1fcf25583fab2feaa.pdf": {
+        "list_score": 0.768469,
+        "list_rows": 54,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "e519085a4bfc0211f4139c332bc3d60c.pdf": {
+        "list_score": 0.792062,
+        "list_rows": 15,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "e8dda1aad4be9ddf95ced75e544fec69.pdf": {
+        "list_score": 0.133333,
+        "list_rows": 61,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "fa565ac45dba24366c6da8b86c775691.pdf": {
+        "list_score": 0.411797,
+        "list_rows": 34,
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
     }
   }
 }

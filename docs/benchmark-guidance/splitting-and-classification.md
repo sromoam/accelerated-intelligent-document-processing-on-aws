@@ -80,6 +80,24 @@ find where a document starts.
 | Detect sections first, page by page | 0.80 | 0.88 | 0.87 |
 | Detect sections first, holistic | 0.90 | 0.91 | 0.92 |
 
+**Boundary accuracy**
+
+| | Amazon Nova 2 Lite (default) | Claude Haiku 5.5 | Claude Sonnet 5 |
+|---|---|---|---|
+| Page by page | 0.51 | 0.71 | 0.66 |
+| Holistic | 0.67 | 0.84 | **0.93** |
+| Detect sections first, page by page | 0.68 | 0.75 | 0.77 |
+| Detect sections first, holistic | 0.62 | 0.78 | 0.91 |
+
+**Label accuracy**
+
+| | Amazon Nova 2 Lite (default) | Claude Haiku 5.5 | Claude Sonnet 5 |
+|---|---|---|---|
+| Page by page | 0.92 | 0.98 | **0.99** |
+| Holistic | 0.86 | 0.95 | 0.96 |
+| Detect sections first, page by page | 0.92 | 0.94 | 0.93 |
+| Detect sections first, holistic | 0.91 | 0.95 | 0.97 |
+
 **Cost per 1,000 documents (USD)**
 
 | | Amazon Nova 2 Lite (default) | Claude Haiku 5.5 | Claude Sonnet 5 |
@@ -120,6 +138,10 @@ find where a document starts.
 ### Does neighboring-page context help page-by-page classification?
 
 **Answer:** Leave it at 0. One neighboring page got more sections exactly right (0.64 against 0.51) but gave fewer pages the right class (0.78 against 0.82), for 67% more classification tokens; two neighboring pages did no better than none. [Details: SC-05](#sc-05-does-neighboring-page-context-help-page-by-page-classification)
+
+![Boundary accuracy against cost per 1,000 documents (USD) for each `contextPagesCount`](../../images/benchmark-guidance/SC-05-packet.svg)
+
+*Boundary accuracy against cost per 1,000 documents (USD). Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better.* Datasets: [DocSplit](datasets.md#docsplit-poly-seq-20-packets). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page · Extraction: Claude Sonnet 5, single pass · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. N = 19–20 documents × 3 runs, 1 failed document per run left out. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### Do few-shot examples help classification?
 
@@ -180,10 +202,10 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 
 | Dataset | Granularity and strategy | Page accuracy | Section accuracy | Grouping score | Boundary accuracy | Label accuracy | Classification tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | MCoE vs Holistic, one call |
 |---|---|---|---|---|---|---|---|---|---|---|
-| DocSplit | Page by page, one call (default) | 0.82 ± 0.02 | 0.52 ± 0.02 | 0.66 ± 0.02 | — | — | 2,859 ± 16 | 14,822 ± 58 | $493 | — |
-| DocSplit | Holistic, one call | 0.7 ± 0.03 | 0.55 ± 0.05 | 0.9 ± 0.01 | — | — | 1,133 ± 0.65 | 11,857 ± 96 | $454 | — |
-| DocSplit | Detect sections first (page by page), then classify | 0.81 ± 0.02 | 0.65 ± 0.01 | 0.8 ± 0.01 | — | — | 2,821 ± 28 | 14,408 ± 116 | $484 | $0.29 per error prevented |
-| DocSplit | Detect sections first (holistic), then classify | 0.76 ± 0.02 | 0.55 ± 0.04 | 0.9 ± 0.01 | — | — | 1,741 ± 26 | 12,350 ± 42 | $463 | — |
+| DocSplit | Page by page, one call (default) | 0.82 ± 0.02 | 0.52 ± 0.02 | 0.66 ± 0.02 | 0.51 ± 0.02 | 0.92 ± 0.01 | 2,859 ± 16 | 14,822 ± 58 | $493 | — |
+| DocSplit | Holistic, one call | 0.7 ± 0.03 | 0.55 ± 0.05 | 0.9 ± 0.01 | 0.67 ± 0.05 | 0.86 ± 0.05 | 1,133 ± 0.65 | 11,857 ± 96 | $454 | — |
+| DocSplit | Detect sections first (page by page), then classify | 0.81 ± 0.02 | 0.65 ± 0.01 | 0.8 ± 0.01 | 0.68 ± 0.01 | 0.92 ± 0 | 2,821 ± 28 | 14,408 ± 116 | $484 | $0.29 per error prevented |
+| DocSplit | Detect sections first (holistic), then classify | 0.76 ± 0.02 | 0.55 ± 0.04 | 0.9 ± 0.01 | 0.62 ± 0.05 | 0.91 ± 0.01 | 1,741 ± 26 | 12,350 ± 42 | $463 | — |
 | Two statements in one file | Page by page, one call (default) | — | — | — | — | — | — | — | — | — |
 | Two statements in one file | Holistic, one call | — | — | — | — | — | — | — | — | — |
 | Two statements in one file | Detect sections first (page by page), then classify | — | — | — | — | — | — | — | — | — |
@@ -212,20 +234,20 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | **Models** | OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: varies (the setting under test) · Extraction: Claude Sonnet 5, single pass · Confidence: Amazon Nova Lite, escalating to Claude Sonnet 5. |
 | **Runs** | 3 per document, per value; N = 19–20 documents × 3 runs, 1 failed document per run left out |
 
-| Dataset | Granularity and strategy, by classification model | Page accuracy | Section accuracy | Grouping score | Classification tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | MCoE vs Holistic · Amazon Nova 2 Lite (default) |
-|---|---|---|---|---|---|---|---|---|
-| DocSplit | Page by page · Amazon Nova 2 Lite (default) | 0.82 ± 0.02 | 0.52 ± 0.02 | 0.66 ± 0.02 | 2,859 ± 16 | 14,822 ± 58 | $493 | — |
-| DocSplit | Holistic · Amazon Nova 2 Lite (default) | 0.7 ± 0.03 | 0.55 ± 0.05 | 0.9 ± 0.01 | 1,133 ± 0.65 | 11,857 ± 96 | $454 | — |
-| DocSplit | Detect sections first, page by page · Amazon Nova 2 Lite (default) | 0.81 ± 0.02 | 0.65 ± 0.01 | 0.8 ± 0.01 | 2,821 ± 28 | 14,408 ± 116 | $484 | $0.29 per error prevented |
-| DocSplit | Detect sections first, holistic · Amazon Nova 2 Lite (default) | 0.76 ± 0.02 | 0.55 ± 0.04 | 0.9 ± 0.01 | 1,741 ± 26 | 12,350 ± 42 | $463 | — |
-| DocSplit | Page by page · Claude Haiku 5.5 | 0.87 ± 0.01 | 0.71 ± 0.01 | 0.81 ± 0.01 | 8,987 ± 40 | 20,563 ± 110 | $488 | $0.21 per error prevented |
-| DocSplit | Holistic · Claude Haiku 5.5 | 0.91 ± 0.01 | 0.8 ± 0.03 | 0.9 ± 0.01 | 6,297 ± 19 | 17,392 ± 120 | $470 | $0.06 per error prevented |
-| DocSplit | Detect sections first, page by page · Claude Haiku 5.5 | 0.84 ± 0.02 | 0.73 ± 0.02 | 0.88 ± 0 | 11,297 ± 36 | 22,632 ± 14 | $477 | $0.13 per error prevented |
-| DocSplit | Detect sections first, holistic · Claude Haiku 5.5 | 0.87 ± 0.02 | 0.76 ± 0.05 | 0.91 ± 0.01 | 10,295 ± 96 | 21,614 ± 412 | $475 | $0.10 per error prevented |
-| DocSplit | Page by page · Claude Sonnet 5 | 0.88 ± 0.01 | 0.7 ± 0.01 | 0.78 ± 0.01 | 8,673 ± 15 | 20,344 ± 26 | $723 | $1.76 per error prevented |
-| DocSplit | Holistic · Claude Sonnet 5 | 0.89 ± 0.03 | 0.89 ± 0.01 | 0.93 ± 0 | 6,254 ± 13 | 17,324 ± 44 | $669 | $0.62 per error prevented |
-| DocSplit | Detect sections first, page by page · Claude Sonnet 5 | 0.89 ± 0.02 | 0.78 ± 0.02 | 0.87 ± 0.01 | 11,382 ± 25 | 22,703 ± 5.99 | $844 | $1.65 per error prevented |
-| DocSplit | Detect sections first, holistic · Claude Sonnet 5 | 0.92 ± 0.04 | 0.89 ± 0.02 | 0.92 ± 0.01 | 10,206 ± 93 | 21,311 ± 102 | $800 | $1.01 per error prevented |
+| Dataset | Granularity and strategy, by classification model | Page accuracy | Section accuracy | Grouping score | Boundary accuracy | Label accuracy | Classification tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | MCoE vs Holistic · Amazon Nova 2 Lite (default) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| DocSplit | Page by page · Amazon Nova 2 Lite (default) | 0.82 ± 0.02 | 0.52 ± 0.02 | 0.66 ± 0.02 | 0.51 ± 0.02 | 0.92 ± 0.01 | 2,859 ± 16 | 14,822 ± 58 | $493 | — |
+| DocSplit | Holistic · Amazon Nova 2 Lite (default) | 0.7 ± 0.03 | 0.55 ± 0.05 | 0.9 ± 0.01 | 0.67 ± 0.05 | 0.86 ± 0.05 | 1,133 ± 0.65 | 11,857 ± 96 | $454 | — |
+| DocSplit | Detect sections first, page by page · Amazon Nova 2 Lite (default) | 0.81 ± 0.02 | 0.65 ± 0.01 | 0.8 ± 0.01 | 0.68 ± 0.01 | 0.92 ± 0 | 2,821 ± 28 | 14,408 ± 116 | $484 | $0.29 per error prevented |
+| DocSplit | Detect sections first, holistic · Amazon Nova 2 Lite (default) | 0.76 ± 0.02 | 0.55 ± 0.04 | 0.9 ± 0.01 | 0.62 ± 0.05 | 0.91 ± 0.01 | 1,741 ± 26 | 12,350 ± 42 | $463 | — |
+| DocSplit | Page by page · Claude Haiku 5.5 | 0.87 ± 0.01 | 0.71 ± 0.01 | 0.81 ± 0.01 | 0.71 ± 0.01 | 0.98 ± 0.01 | 8,987 ± 40 | 20,563 ± 110 | $488 | $0.21 per error prevented |
+| DocSplit | Holistic · Claude Haiku 5.5 | 0.91 ± 0.01 | 0.8 ± 0.03 | 0.9 ± 0.01 | 0.84 ± 0.02 | 0.95 ± 0.01 | 6,297 ± 19 | 17,392 ± 120 | $470 | $0.06 per error prevented |
+| DocSplit | Detect sections first, page by page · Claude Haiku 5.5 | 0.84 ± 0.02 | 0.73 ± 0.02 | 0.88 ± 0 | 0.75 ± 0.02 | 0.94 ± 0.03 | 11,297 ± 36 | 22,632 ± 14 | $477 | $0.13 per error prevented |
+| DocSplit | Detect sections first, holistic · Claude Haiku 5.5 | 0.87 ± 0.02 | 0.76 ± 0.05 | 0.91 ± 0.01 | 0.78 ± 0.06 | 0.95 ± 0.02 | 10,295 ± 96 | 21,614 ± 412 | $475 | $0.10 per error prevented |
+| DocSplit | Page by page · Claude Sonnet 5 | 0.88 ± 0.01 | 0.7 ± 0.01 | 0.78 ± 0.01 | 0.66 ± 0.01 | 0.99 ± 0 | 8,673 ± 15 | 20,344 ± 26 | $723 | $1.76 per error prevented |
+| DocSplit | Holistic · Claude Sonnet 5 | 0.89 ± 0.03 | 0.89 ± 0.01 | 0.93 ± 0 | 0.93 ± 0.01 | 0.96 ± 0.02 | 6,254 ± 13 | 17,324 ± 44 | $669 | $0.62 per error prevented |
+| DocSplit | Detect sections first, page by page · Claude Sonnet 5 | 0.89 ± 0.02 | 0.78 ± 0.02 | 0.87 ± 0.01 | 0.77 ± 0.03 | 0.93 ± 0 | 11,382 ± 25 | 22,703 ± 5.99 | $844 | $1.65 per error prevented |
+| DocSplit | Detect sections first, holistic · Claude Sonnet 5 | 0.92 ± 0.04 | 0.89 ± 0.02 | 0.92 ± 0.01 | 0.91 ± 0.02 | 0.97 ± 0.02 | 10,206 ± 93 | 21,311 ± 102 | $800 | $1.01 per error prevented |
 
 *Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13. Amazon Bedrock and Amazon Textract only; Lambda and other AWS charges are not included.*
 
@@ -248,9 +270,9 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 
 | Dataset | What the classification model reads | Page accuracy | Boundary accuracy | Label accuracy | Classification tokens per page | Cost per 1,000 documents (USD) | MCoE vs Images only |
 |---|---|---|---|---|---|---|---|
-| DocSplit | Text and images (default) | 0.82 ± 0.01 | — | — | 2,842 ± 1 | $498 | — |
-| DocSplit | Text only | 0.79 ± 0 | — | — | 2,612 ± 16 | $499 | — |
-| DocSplit | Images only | 0.84 ± 0 | — | — | 2,126 ± 1.9 | $484 | — |
+| DocSplit | Text and images (default) | 0.82 ± 0.01 | 0.5 ± 0.05 | 0.93 ± 0.01 | 2,842 ± 1 | $498 | — |
+| DocSplit | Text only | 0.79 ± 0 | 0.47 ± 0.03 | 0.9 ± 0 | 2,612 ± 16 | $499 | — |
+| DocSplit | Images only | 0.84 ± 0 | 0.54 ± 0.03 | 0.97 ± 0 | 2,126 ± 1.9 | $484 | — |
 
 *Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13. Amazon Bedrock and Amazon Textract only; Lambda and other AWS charges are not included.*
 
@@ -273,10 +295,10 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 
 | Dataset | Classification model | Page accuracy | Section accuracy | Grouping score | Boundary accuracy | Label accuracy | Classification tokens per page | Total tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs Claude Haiku 5.5 |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| DocSplit | Amazon Nova 2 Lite (default) | 0.82 ± 0.01 | 0.51 ± 0.02 | 0.65 ± 0.02 | — | — | 2,850 ± 15 | 14,865 ± 38 | $494 | 114 ± 11 | — |
-| DocSplit | Amazon Nova Pro | 0.76 ± 0 | 0.48 ± 0 | 0.6 ± 0.02 | — | — | 4,357 ± 9.85 | 16,630 ± 60 | $513 | 112 ± 8.2 | — |
-| DocSplit | Claude Haiku 5.5 | 0.86 ± 0.01 | 0.71 ± 0.03 | 0.8 ± 0.02 | — | — | 8,987 ± 21 | 20,667 ± 124 | $488 | 144 ± 15 | — |
-| DocSplit | Claude Sonnet 5 | 0.89 ± 0 | 0.71 ± 0.02 | 0.79 ± 0.02 | — | — | 8,671 ± 15 | 20,274 ± 67 | $738 | 120 ± 37 | no measurable gain |
+| DocSplit | Amazon Nova 2 Lite (default) | 0.82 ± 0.01 | 0.51 ± 0.02 | 0.65 ± 0.02 | 0.5 ± 0.03 | 0.92 ± 0.01 | 2,850 ± 15 | 14,865 ± 38 | $494 | 114 ± 11 | — |
+| DocSplit | Amazon Nova Pro | 0.76 ± 0 | 0.48 ± 0 | 0.6 ± 0.02 | 0.5 ± 0 | 0.85 ± 0.01 | 4,357 ± 9.85 | 16,630 ± 60 | $513 | 112 ± 8.2 | — |
+| DocSplit | Claude Haiku 5.5 | 0.86 ± 0.01 | 0.71 ± 0.03 | 0.8 ± 0.02 | 0.7 ± 0.02 | 0.98 ± 0.01 | 8,987 ± 21 | 20,667 ± 124 | $488 | 144 ± 15 | — |
+| DocSplit | Claude Sonnet 5 | 0.89 ± 0 | 0.71 ± 0.02 | 0.79 ± 0.02 | 0.67 ± 0.03 | 0.99 ± 0 | 8,671 ± 15 | 20,274 ± 67 | $738 | 120 ± 37 | no measurable gain |
 
 *Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13. Amazon Bedrock and Amazon Textract only; Lambda and other AWS charges are not included.*
 
@@ -324,9 +346,9 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 
 | Dataset | `contextPagesCount` | Boundary accuracy | Label accuracy | Over-splits | Merges | Classification tokens per page | Cost per 1,000 documents (USD) |
 |---|---|---|---|---|---|---|---|
-| DocSplit | 0 (default) | — | — | — | — | 2,859 ± 14 | $496 |
-| DocSplit | 1 | — | — | — | — | 4,762 ± 67 | $496 |
-| DocSplit | 2 | — | — | — | — | 6,381 ± 76 | $505 |
+| DocSplit | 0 (default) | 0.49 ± 0.02 | 0.92 ± 0.01 | — | — | 2,859 ± 14 | $496 |
+| DocSplit | 1 | 0.63 ± 0.07 | 0.96 ± 0 | — | — | 4,762 ± 67 | $496 |
+| DocSplit | 2 | 0.53 ± 0 | 0.94 ± 0.02 | — | — | 6,381 ± 76 | $505 |
 | Same-class packets | 0 (default) | — | — | — | — | — | — |
 | Same-class packets | 1 | — | — | — | — | — | — |
 | Same-class packets | 2 | — | — | — | — | — | — |

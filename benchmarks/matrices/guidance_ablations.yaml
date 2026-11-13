@@ -26,6 +26,11 @@
 #   plot_x    the tokens metric for the x-axis when cost is not available (default:
 #             total tokens when measured). Cost per 1,000 documents is used whenever
 #             every plotted value has usage in its results file.
+#   by_size   optional {metric, x}: a chart of one per-document metric of the results
+#             file's `per_doc` against a per-document size, one point per document per
+#             value, on a log x axis, with a running median per value. Datasets whose
+#             keys share a prefix (realkie, realkie_short, realkie_long) are one pool
+#             and share one chart, deduplicated by document name.
 #   grid      optional {rows, cols}: values are named "<row> · <col>" and render as a grid
 #   set       per value, the configuration overrides that produce it (dotted paths),
 #             in the order of `values`; run_guidance_ablation.py applies them
@@ -75,6 +80,8 @@ metrics:
   boundary_accuracy: {name: "Boundary accuracy", kinds: [packet, packet_fields]}
   label_accuracy: {name: "Label accuracy", kinds: [packet, packet_fields]}
   list_recall: {name: "List recall", kinds: [list]}
+  list_score: {name: "List score", short: "List score", kinds: [list, fields]}
+  list_rows: {name: "Rows in the list (ground truth)", short: "Rows in the list", kinds: [list, fields]}
   list_precision: {name: "List precision", kinds: [list]}
   section_accuracy: {name: "Section accuracy", kinds: [packet, packet_fields]}
   grouping_score: {name: "Grouping score", kinds: [packet, packet_fields]}
@@ -208,7 +215,7 @@ ablations:
     grid: {rows: ["Page by page", "Holistic", "Detect sections first, page by page", "Detect sections first, holistic"], cols: ["Amazon Nova 2 Lite (default)", "Claude Haiku 5.5", "Claude Sonnet 5"]}
     datasets: [docsplit]
     runs: 3
-    metrics: [page_accuracy, section_accuracy, grouping_score, classification_tokens, total_tokens]
+    metrics: [page_accuracy, section_accuracy, grouping_score, boundary_accuracy, label_accuracy, classification_tokens, total_tokens]
     plot: section_accuracy
     families: true
   - id: SC-02
@@ -303,6 +310,7 @@ ablations:
     runs: 3
     metrics: [list_recall, list_precision, weighted_accuracy, extraction_tokens, total_tokens, median_seconds]
     plot: list_recall
+    by_size: {metric: list_score, x: list_rows}
   - id: EX-02
     page: extraction
     question: "Which extraction model should I use?"

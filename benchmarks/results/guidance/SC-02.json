@@ -61,6 +61,14 @@
       "mean": 0.648413,
       "se": 0.011482
     },
+    "docsplit|Text and images (default)|boundary_accuracy": {
+      "mean": 0.49553,
+      "se": 0.023849
+    },
+    "docsplit|Text and images (default)|label_accuracy": {
+      "mean": 0.926716,
+      "se": 0.004938
+    },
     "docsplit|Text only|weighted_accuracy": {
       "mean": 0.332765,
       "se": 0.044034
@@ -117,6 +125,14 @@
       "mean": 0.617822,
       "se": 0.013615
     },
+    "docsplit|Text only|boundary_accuracy": {
+      "mean": 0.468934,
+      "se": 0.014394
+    },
+    "docsplit|Text only|label_accuracy": {
+      "mean": 0.898002,
+      "se": 0.002044
+    },
     "docsplit|Images only|weighted_accuracy": {
       "mean": 0.330377,
       "se": 0.034648
@@ -172,6 +188,14 @@
     "docsplit|Images only|grouping_score": {
       "mean": 0.667912,
       "se": 0.007274
+    },
+    "docsplit|Images only|boundary_accuracy": {
+      "mean": 0.54405,
+      "se": 0.012919
+    },
+    "docsplit|Images only|label_accuracy": {
+      "mean": 0.975,
+      "se": 0.0
     }
   },
   "sample": {
@@ -426,6 +450,236 @@
       "mode": "cold-run",
       "run": "DocSplit-Poly-Seq-20261113-204831",
       "index": 1
+    }
+  },
+  "per_doc": {
+    "docsplit|Text and images (default)": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 0.6667
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.1111,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 0.866667
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.666667
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.4,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.333333,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.5714,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 0.583333,
+        "label_accuracy": 0.555567
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 0.7778,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 0.904733,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Text only": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 0.6667
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 0.622233
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.5
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.4,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.466667,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 0.611133
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.5714,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 0.583333,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 0.444433,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.416667,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 0.8095,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Images only": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.3333,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.75
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.4286,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 0.583333,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.416667,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 0.952367,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 0.833333,
+        "label_accuracy": 1.0
+      }
     }
   }
 }

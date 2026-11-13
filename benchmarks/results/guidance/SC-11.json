@@ -61,6 +61,14 @@
       "mean": 0.657715,
       "se": 0.008834
     },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|boundary_accuracy": {
+      "mean": 0.509069,
+      "se": 0.009578
+    },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|label_accuracy": {
+      "mean": 0.921297,
+      "se": 0.005426
+    },
     "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|weighted_accuracy": {
       "mean": 0.323336,
       "se": 0.039484
@@ -116,6 +124,14 @@
     "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|grouping_score": {
       "mean": 0.904113,
       "se": 0.005003
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|boundary_accuracy": {
+      "mean": 0.668295,
+      "se": 0.025671
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|label_accuracy": {
+      "mean": 0.863196,
+      "se": 0.027333
     },
     "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|weighted_accuracy": {
       "mean": 0.300136,
@@ -173,6 +189,14 @@
       "mean": 0.804378,
       "se": 0.004515
     },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|boundary_accuracy": {
+      "mean": 0.675373,
+      "se": 0.007099
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|label_accuracy": {
+      "mean": 0.91695,
+      "se": 0.002162
+    },
     "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|weighted_accuracy": {
       "mean": 0.313503,
       "se": 0.030853
@@ -228,6 +252,14 @@
     "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|grouping_score": {
       "mean": 0.897914,
       "se": 0.005276
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|boundary_accuracy": {
+      "mean": 0.623976,
+      "se": 0.023499
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|label_accuracy": {
+      "mean": 0.912559,
+      "se": 0.004997
     },
     "docsplit|Page by page \u00b7 Claude Haiku 5.5|weighted_accuracy": {
       "mean": 0.280003,
@@ -285,6 +317,14 @@
       "mean": 0.808543,
       "se": 0.004982
     },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|boundary_accuracy": {
+      "mean": 0.707891,
+      "se": 0.003811
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|label_accuracy": {
+      "mean": 0.979142,
+      "se": 0.003505
+    },
     "docsplit|Holistic \u00b7 Claude Haiku 5.5|weighted_accuracy": {
       "mean": 0.275624,
       "se": 0.027219
@@ -340,6 +380,14 @@
     "docsplit|Holistic \u00b7 Claude Haiku 5.5|grouping_score": {
       "mean": 0.897163,
       "se": 0.003872
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|boundary_accuracy": {
+      "mean": 0.836648,
+      "se": 0.008314
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|label_accuracy": {
+      "mean": 0.951127,
+      "se": 0.005132
     },
     "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|weighted_accuracy": {
       "mean": 0.262132,
@@ -397,6 +445,14 @@
       "mean": 0.881986,
       "se": 0.00048
     },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|boundary_accuracy": {
+      "mean": 0.74542,
+      "se": 0.010715
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|label_accuracy": {
+      "mean": 0.935963,
+      "se": 0.017122
+    },
     "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|weighted_accuracy": {
       "mean": 0.291902,
       "se": 0.026014
@@ -452,6 +508,14 @@
     "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|grouping_score": {
       "mean": 0.906414,
       "se": 0.006492
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|boundary_accuracy": {
+      "mean": 0.780343,
+      "se": 0.028869
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|label_accuracy": {
+      "mean": 0.95267,
+      "se": 0.009562
     },
     "docsplit|Holistic \u00b7 Claude Sonnet 5|weighted_accuracy": {
       "mean": 0.280413,
@@ -509,6 +573,14 @@
       "mean": 0.934134,
       "se": 0.002241
     },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|boundary_accuracy": {
+      "mean": 0.926168,
+      "se": 0.004161
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|label_accuracy": {
+      "mean": 0.962528,
+      "se": 0.008439
+    },
     "docsplit|Page by page \u00b7 Claude Sonnet 5|weighted_accuracy": {
       "mean": 0.285277,
       "se": 0.033454
@@ -564,6 +636,14 @@
     "docsplit|Page by page \u00b7 Claude Sonnet 5|grouping_score": {
       "mean": 0.779723,
       "se": 0.004071
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|boundary_accuracy": {
+      "mean": 0.661796,
+      "se": 0.003906
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|label_accuracy": {
+      "mean": 0.985839,
+      "se": 0.000272
     },
     "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|weighted_accuracy": {
       "mean": 0.260951,
@@ -621,6 +701,14 @@
       "mean": 0.874428,
       "se": 0.007281
     },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|boundary_accuracy": {
+      "mean": 0.774506,
+      "se": 0.015101
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|label_accuracy": {
+      "mean": 0.930847,
+      "se": 0.001682
+    },
     "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|weighted_accuracy": {
       "mean": 0.280202,
       "se": 0.02314
@@ -676,6 +764,14 @@
     "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|grouping_score": {
       "mean": 0.923598,
       "se": 0.004323
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|boundary_accuracy": {
+      "mean": 0.906052,
+      "se": 0.009465
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|label_accuracy": {
+      "mean": 0.968304,
+      "se": 0.010992
     }
   },
   "sample": {
@@ -1638,6 +1734,936 @@
       "mode": "cold-run",
       "run": "DocSplit-Poly-Seq-20261113-210800",
       "index": 1
+    }
+  },
+  "per_doc": {
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 0.6667
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.708333,
+        "label_accuracy": 0.888867
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.583333
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.466667,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.333333,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 0.583333,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.5714,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 0.5
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 0.952367,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 0.75
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.3333,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.666667
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.133333,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.4,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 0.5
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.619067,
+        "label_accuracy": 0.5111
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.75
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 0.277767,
+        "label_accuracy": 0.666667
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 0.619067,
+        "label_accuracy": 0.952367
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.555567,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.791667,
+        "label_accuracy": 0.841233
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.75
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.466667,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 0.0
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.166667,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.5714,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 0.833333,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.8333
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.583333,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.555567,
+        "label_accuracy": 0.833333
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.3333,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 0.8333
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.6
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.4,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.333333,
+        "label_accuracy": 0.5
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.7143,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 0.5
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 0.944433
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 0.4286,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.3333,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.75
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.166667,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 0.866667
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 0.8333,
+        "label_accuracy": 1.0
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 0.833333,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.555567,
+        "label_accuracy": 0.833333
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.916667,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.75
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 0.833333,
+        "label_accuracy": 0.833333
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.733333,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.666667
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.904767,
+        "label_accuracy": 0.952367
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 0.857133,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 0.833333,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 0.75
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.875,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.75
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 0.666667
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 0.783333
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.8333
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.583333,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.777767,
+        "label_accuracy": 0.783333
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.75
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 0.75
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.8571
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 0.333333,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.888867
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 0.5714,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.8333,
+        "label_accuracy": 1.0
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.866667,
+        "label_accuracy": 0.766667
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.666667
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.8333
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.3333,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.75
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.733333,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 0.7143,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 0.666667,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 0.6667,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.875,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 0.75
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.6,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 0.0
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 0.916667,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.25,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.888867
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      }
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5": {
+      "packet_0001.pdf": {
+        "boundary_accuracy": 0.777767,
+        "label_accuracy": 1.0
+      },
+      "packet_0002.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0003.pdf": {
+        "boundary_accuracy": 0.958333,
+        "label_accuracy": 1.0
+      },
+      "packet_0004.pdf": {
+        "boundary_accuracy": 0.933333,
+        "label_accuracy": 0.783333
+      },
+      "packet_0005.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0006.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 1.0
+      },
+      "packet_0007.pdf": {
+        "boundary_accuracy": 0.8,
+        "label_accuracy": 1.0
+      },
+      "packet_0008.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.666667
+      },
+      "packet_0009.pdf": {
+        "boundary_accuracy": 0.5,
+        "label_accuracy": 1.0
+      },
+      "packet_0010.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0011.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0012.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0013.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0014.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0015.pdf": {
+        "boundary_accuracy": 0.916667,
+        "label_accuracy": 1.0
+      },
+      "packet_0016.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 0.944433
+      },
+      "packet_0017.pdf": {
+        "boundary_accuracy": 0.75,
+        "label_accuracy": 1.0
+      },
+      "packet_0019.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      },
+      "packet_0020.pdf": {
+        "boundary_accuracy": 1.0,
+        "label_accuracy": 1.0
+      }
     }
   }
 }
