@@ -39,6 +39,8 @@ ERROR_RATE_METRICS = frozenset(
         "section_accuracy",
         "completeness",
         "cell_accuracy",
+        "list_recall",
+        "list_precision",
     }
 )
 
@@ -76,7 +78,8 @@ STYLE = """
   .viz { max-width: 100%; height: auto; }
   text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
   .panel { font-size: 13px; font-weight: 600; fill: var(--ink); }
-  .sub { font-size: 11px; fill: var(--ink-2); }
+  .sub { font-size: 11px; fill: var(--muted); }
+  .viz .lead { font-size: 12px; fill: var(--ink); }
   .label { font-size: 12px; fill: var(--ink-2); }
   .tick { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
   .none { font-size: 12px; fill: var(--muted); }
@@ -167,10 +170,11 @@ def marginal_cost_of_error(
     return ref, out
 
 
-def mcoe_text(cost: float | None) -> str:
-    return (
-        "no measurable gain" if cost is None else f"{money(cost)} per error prevented"
-    )
+def mcoe_text(cost: float | None, *, short: bool = False) -> str:
+    """The marginal cost of error in words; `short` for a label on a chart's line."""
+    if cost is None:
+        return "no measurable gain"
+    return f"{money(cost)} per error" + ("" if short else " prevented")
 
 
 def wrap(text: str) -> list[str]:
@@ -217,6 +221,23 @@ def wrap_subtitle(text: str, width: float = WIDTH) -> list[str]:
     return out
 
 
+#: The models under a panel title: (lead, subtitle). The lead is one line in primary
+#: ink naming the model for the page's own step; the subtitle names every step and N.
+Models = str | tuple[str, str]
+LEAD_H = 15
+
+
+def models_svg(models: Models, baseline: float) -> tuple[str, float]:
+    """Render the lead line and the wrapped subtitle; return the SVG and its height."""
+    lead, sub = models if isinstance(models, tuple) else ("", models)
+    out, height = "", 0.0
+    if lead:
+        out = f'<text class="lead" x="0" y="{baseline + 15:.1f}">{escape(lead)}</text>'
+        height = LEAD_H
+    sub_svg, sub_h = subtitle_svg(wrap_subtitle(sub), baseline + height)
+    return out + sub_svg, height + sub_h
+
+
 def subtitle_svg(lines: list[str], baseline: float) -> tuple[str, float]:
     """Render the models line under a panel title; return the SVG and its height."""
     if not lines:
@@ -238,7 +259,7 @@ def prices_svg(prices: str, y: float) -> str:
 
 def draw_plot(
     metric_name: str,
-    panels: list[tuple[str, str, list[tuple[str, dict[str, float] | None]]]],
+    panels: list[tuple[str, Models, list[tuple[str, dict[str, float] | None]]]],
     runs: int,
     *,
     prices: str = "",
@@ -267,7 +288,7 @@ def draw_plot(
     y = TOP
     for ds_name, models, rows in panels:
         body.append(f'<text class="panel" x="0" y="{y + 18}">{escape(ds_name)}</text>')
-        sub, sub_h = subtitle_svg(wrap_subtitle(models), y + 18)
+        sub, sub_h = models_svg(models, y + 18)
         body.append(sub)
         y += PANEL_TITLE_H + sub_h
         top = y
@@ -525,7 +546,7 @@ CONTEXT_R = 3.5
 #: A scatter point: (value, x {"mean", "se"}, {metric key: y {"mean", "se"}}).
 Point = tuple[str, dict[str, float], dict[str, dict[str, float]]]
 #: A dataset's points: (title, models line, points, {metric key: (baseline y, name)}).
-Group = tuple[str, str, list[Point], dict[str, tuple[float, str]]]
+Group = tuple[str, Models, list[Point], dict[str, tuple[float, str]]]
 #: A plotted metric: (key, name, short name for an axis or a key entry).
 YMetric = tuple[str, str, str]
 
@@ -760,6 +781,90 @@ def _scatter_panel(
     return "".join(body + tail), clean
 
 
+#: Characters per key line: 12px text averages about 6.2px a character.
+KEY_CHARS = int((WIDTH - SC_LEFT) / 6.2) - 2
+
+
+def _key(
+    points: list[Point],
+    numbers: dict[str, int],
+    y_axes: dict[str, tuple[list[float], int]],
+    names: dict[str, str],
+    shorts: dict[str, str],
+    gains_by: dict[str, tuple[str, dict[str, float | None]]],
+    x_name: str,
+    x_text: Any,
+    bottom: float,
+) -> tuple[str, float]:
+    """The key under numbered charts: a header line, then one entry per value.
+
+    With a marginal cost of error, the header names the cheapest value and every
+    entry says how it compares with it; otherwise the header says what each entry
+    holds. Entries too long for the width continue on an indented line.
+    """
+    multi = len(y_axes) > 1
+    measured = next(((k, g) for k, g in gains_by.items() if g[1]), None)
+
+    def acc(k: str, y: dict[str, float]) -> str:
+        return f"{y['mean']:.{max(2, y_axes[k][1])}f}"
+
+    def values(yy: dict[str, dict[str, float]], first: str | None) -> str:
+        order = ([first] if first else []) + [k for k in y_axes if k != first]
+        return ", ".join(
+            (f"{shorts[k]} " if multi else "") + acc(k, yy[k]) for k in order if k in yy
+        )
+
+    by_value = {v: (x, yy) for v, x, yy in points}
+    if measured:
+        metric, (ref, gains) = measured
+        rx, ryy = by_value[ref]
+        head = (
+            f"Compared with {ref}, the cheapest ({acc(metric, ryy[metric])}, "
+            f"{x_text(rx['mean'])}). One error = one document's worth of wrong fields."
+        )
+    else:
+        metric, ref, gains = None, "", {}
+        y_part = ", ".join((shorts if multi else names)[k] for k in y_axes)
+        head = f"Key. Each line: value: {y_part}, {lower_name(x_name)}."
+    out: list[str] = []
+    y = bottom + 14
+    for line in textwrap.wrap(head, int((WIDTH - SC_LEFT) / SUB_CHAR_W) - 2):
+        out.append(
+            f'<text class="keyhead" x="{SC_LEFT}" y="{y:.1f}">{escape(line)}</text>'
+        )
+        y += SUB_LINE_H
+    y += KEY_LINE_H - SUB_LINE_H
+    for value, x, yy in points:
+        entry = f"{value}: {values(yy, metric)}, {x_text(x['mean'])}"
+        if metric and value == ref:
+            entry += " (cheapest)"
+        elif metric and value in gains:
+            cost = gains[value]
+            if cost is None:
+                entry += f" — no measurable gain over {ref}"
+            else:
+                rx, ryy = by_value[ref]
+                fewer = round(1000 * (yy[metric]["mean"] - ryy[metric]["mean"]))
+                entry += (
+                    f" — +{money(x['mean'] - rx['mean'])} per 1,000 documents for "
+                    f"{fewer:,} fewer errors per 1,000: {mcoe_text(cost)}"
+                )
+        n = numbers[value]
+        lines = textwrap.wrap(entry, KEY_CHARS - len(str(n)) - 2)
+        out.append(
+            f'<text class="label" x="{SC_LEFT}" y="{y:.1f}">'
+            f'<tspan class="num">{n}</tspan>  {escape(lines[0])}</text>'
+        )
+        for more in lines[1:]:
+            y += KEY_LINE_H
+            out.append(
+                f'<text class="label" x="{SC_LEFT + 18}" y="{y:.1f}">'
+                f"{escape(more)}</text>"
+            )
+        y += KEY_LINE_H
+    return "".join(out), y - bottom - KEY_LINE_H + 14
+
+
 def lower_name(name: str) -> str:
     """Lower-case a metric name mid-sentence, leaving an acronym such as AUROC alone."""
     return name if name[:2].isupper() else name[:1].lower() + name[1:]
@@ -808,7 +913,7 @@ def draw_scatter(
         body.append(
             f'<text class="panel" x="0" y="{top + 18}">{escape(ds_name)}</text>'
         )
-        sub, sub_h = subtitle_svg(wrap_subtitle(models), top + 18)
+        sub, sub_h = models_svg(models, top + 18)
         body.append(sub)
         start = top + PANEL_TITLE_H + sub_h
         present = [f for f in FAMILY_ORDER if any(family(v) == f for v, _, _ in points)]
@@ -870,7 +975,7 @@ def draw_scatter(
                 ref, gains = gains_by.get(key, ("", {}))
                 own_values = {v for v, *_ in own}
                 lines = [
-                    (mcoe_text(c), ref, v, c is not None)
+                    (mcoe_text(c, short=True), ref, v, c is not None)
                     for v, c in gains.items()
                     if v in own_values
                 ]
@@ -930,49 +1035,10 @@ def draw_scatter(
         bottom = start + math.ceil(len(specs) / cols) * panel_h
         key_h = 0
         if not clean:
-            # Number the dots and list each value, with its marginal cost of error,
-            # in a key under the charts: a header saying what each line holds, then
-            # one line per value.
-            y_part = ", ".join(
-                (shorts if len(y_axes) > 1 else names)[k] for k in y_axes
+            key_svg, key_h = _key(
+                points, numbers, y_axes, names, shorts, gains_by, x_name, x_text, bottom
             )
-            ref_names = {gains_by[k][0] for k in gains_by if gains_by[k][1]}
-            head = f"Key. Each line: value: {y_part}, {lower_name(x_name)}"
-            if ref_names:
-                head += (
-                    " · extra cost per error prevented, against the cheapest value, "
-                    + " and ".join(sorted(ref_names))
-                )
-            head_lines = textwrap.wrap(
-                head + ".", int((WIDTH - SC_LEFT) / SUB_CHAR_W) - 2
-            )
-            for j, line in enumerate(head_lines):
-                body.append(
-                    f'<text class="keyhead" x="{SC_LEFT}" '
-                    f'y="{bottom + 14 + j * SUB_LINE_H}">{escape(line)}</text>'
-                )
-            first = bottom + 14 + (len(head_lines) - 1) * SUB_LINE_H
-            for value, x, yy in points:
-                ys_text = ", ".join(
-                    (f"{shorts[k]} " if len(y_axes) > 1 else "")
-                    + f"{yy[k]['mean']:.{max(2, y_axes[k][1])}f}"
-                    for k in y_axes
-                    if k in yy
-                )
-                entry = f"{value}: {ys_text}, {x_text(x['mean'])}"
-                for k, (_, gains) in gains_by.items():
-                    if value in gains:
-                        prefix = f"{shorts[k]}: " if len(gains_by) > 1 else ""
-                        entry += f" · {prefix}{mcoe_text(gains[value])}"
-                n = numbers[value]
-                body.append(
-                    f'<text class="label" x="{SC_LEFT}" '
-                    f'y="{first + n * KEY_LINE_H}">'
-                    f'<tspan class="num">{n}</tspan>  {escape(entry)}</text>'
-                )
-            key_h = (
-                12 + KEY_LINE_H * (len(points) + 1) + SUB_LINE_H * (len(head_lines) - 1)
-            )
+            body.append(key_svg)
         for key, (value, name) in baselines.items():
             if key in y_axes:
                 desc_parts.append(f"{ds_name}, {names[key]}, {name}: {fmt(value)}")

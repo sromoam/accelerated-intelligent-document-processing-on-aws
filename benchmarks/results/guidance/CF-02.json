@@ -25,6 +25,14 @@
       "mean": 51.743105,
       "se": 5.700783
     },
+    "realkie|Amazon Nova Lite (default)|list_recall": {
+      "mean": 0.516853,
+      "se": 0.037141
+    },
+    "realkie|Amazon Nova Lite (default)|list_precision": {
+      "mean": 0.2781,
+      "se": 0.040467
+    },
     "realkie|Amazon Nova Lite (default)|all_fields_right": {
       "mean": 0.05,
       "se": 0.028868
@@ -76,6 +84,14 @@
     "realkie|Amazon Nova 2 Lite|median_seconds": {
       "mean": 32.406119,
       "se": 1.048286
+    },
+    "realkie|Amazon Nova 2 Lite|list_recall": {
+      "mean": 0.457024,
+      "se": 0.033231
+    },
+    "realkie|Amazon Nova 2 Lite|list_precision": {
+      "mean": 0.215041,
+      "se": 0.026156
     },
     "realkie|Amazon Nova 2 Lite|all_fields_right": {
       "mean": 0.05,
@@ -129,6 +145,14 @@
       "mean": 38.505521,
       "se": 0.652145
     },
+    "realkie|Claude Haiku 5.5|list_recall": {
+      "mean": 0.504458,
+      "se": 0.038402
+    },
+    "realkie|Claude Haiku 5.5|list_precision": {
+      "mean": 0.266692,
+      "se": 0.04073
+    },
     "realkie|Claude Haiku 5.5|all_fields_right": {
       "mean": 0.083333,
       "se": 0.016667
@@ -180,6 +204,14 @@
     "realkie|Claude Sonnet 5|median_seconds": {
       "mean": 37.22216,
       "se": 2.168578
+    },
+    "realkie|Claude Sonnet 5|list_recall": {
+      "mean": 0.539926,
+      "se": 0.033158
+    },
+    "realkie|Claude Sonnet 5|list_precision": {
+      "mean": 0.309265,
+      "se": 0.045383
     },
     "realkie|Claude Sonnet 5|all_fields_right": {
       "mean": 0.083333,

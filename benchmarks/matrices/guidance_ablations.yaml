@@ -39,9 +39,9 @@
 
 datasets:
   synth_100: {name: "Synthetic statement, 100 rows (3 pages)", short: "Statement, 100 rows", kind: list, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bank-statement-sample}
-  synth_400: {name: "Synthetic statement, 400 rows (9 pages)", short: "Statement, 400 rows", kind: list, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bank-statement-sample}
-  synth_800: {name: "Synthetic statement, 800 rows (17 pages)", short: "Statement, 800 rows", kind: list, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bank-statement-sample}
-  synth_1600: {name: "Synthetic statement, 1,600 rows (33 pages)", short: "Statement, 1,600 rows", kind: list, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bank-statement-sample}
+  synth_400: {name: "Synthetic statement, 400 rows (9 pages)", short: "Statement, 400 rows", kind: list, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bench-synth-statements, testset: synth-statements-400, docs: 5}
+  synth_800: {name: "Synthetic statement, 800 rows (17 pages)", short: "Statement, 800 rows", kind: list, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bench-synth-statements, testset: synth-statements-800, docs: 5}
+  synth_1600: {name: "Synthetic statement, 1,600 rows (33 pages)", short: "Statement, 1,600 rows", kind: list, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bench-synth-statements, testset: synth-statements-1600, docs: 5}
   synth_3200: {name: "Synthetic statement, 3,200 rows (66 pages)", short: "Statement, 3,200 rows", kind: list, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bank-statement-sample}
   synth_two_docs: {name: "Synthetic file holding two statements", short: "Two statements in one file", kind: packet, link: "../idp-fundamentals/benchmark-datasets.md#synthetic-bank-statements", preset: bank-statement-sample}
   realkie: {name: "RealKIE-FCC-Verified (20 invoices)", short: "RealKIE", kind: fields, link: "../idp-fundamentals/benchmark-datasets.md#realkie-fcc-verified", preset: realkie-fcc-verified, testset: realkie-fcc-verified, docs: 20}
@@ -74,6 +74,8 @@ metrics:
   page_accuracy: {name: "Page accuracy", kinds: [packet, packet_fields]}
   boundary_accuracy: {name: "Boundary accuracy", kinds: [packet, packet_fields]}
   label_accuracy: {name: "Label accuracy", kinds: [packet, packet_fields]}
+  list_recall: {name: "List recall", kinds: [list]}
+  list_precision: {name: "List precision", kinds: [list]}
   section_accuracy: {name: "Section accuracy", kinds: [packet, packet_fields]}
   grouping_score: {name: "Grouping score", kinds: [packet, packet_fields]}
   over_splits: {name: "Over-splits", kinds: [packet, packet_fields]}
@@ -106,7 +108,7 @@ ablations:
     values: ["Preset"]
     datasets: [realkie, docsplit, synth_400]
     runs: 10
-    metrics: [weighted_accuracy, boundary_accuracy, completeness, total_tokens]
+    metrics: [weighted_accuracy, boundary_accuracy, list_recall, total_tokens]
   - id: TR-02
     page: index
     question: "How long does a document take, and how many documents an hour?"
@@ -125,7 +127,7 @@ ablations:
     set: [{"ocr.backend": "textract", "ocr.features": [{"name": "TABLES"}, {"name": "LAYOUT"}, {"name": "SIGNATURES"}]}, {"ocr.backend": "textract", "ocr.features": [{"name": "LAYOUT"}]}, {"ocr.backend": "bedrock", "ocr.model_id": "us.amazon.nova-2-lite-v1:0", "ocr.task_prompt": "Extract all text from this document image. Preserve the layout, including paragraphs, tables, and formatting.\n<document-image>\n{DOCUMENT_IMAGE}\n</document-image>"}]
     datasets: [realkie, confbench, omniai, synth_400]
     runs: 3
-    metrics: [weighted_accuracy, completeness, cell_accuracy, ocr_tokens, total_tokens]
+    metrics: [weighted_accuracy, list_recall, list_precision, ocr_tokens, total_tokens]
   - id: DG-02
     page: digitization
     question: "If I read pages with a vision model, which model?"
@@ -134,7 +136,7 @@ ablations:
     holds: "OCR reader set to the Bedrock vision model"
     datasets: [realkie, confbench, synth_400]
     runs: 3
-    metrics: [weighted_accuracy, cell_accuracy, ocr_tokens, total_tokens]
+    metrics: [weighted_accuracy, list_precision, ocr_tokens, total_tokens]
   - id: DG-03
     page: digitization
     question: "Does a specialized OCR model beat Textract?"
@@ -151,7 +153,7 @@ ablations:
     set: [{"ocr.image.dpi": 300}, {"ocr.image.dpi": 200}, {"ocr.image.dpi": 150}]
     datasets: [realkie, confbench, synth_400]
     runs: 3
-    metrics: [weighted_accuracy, cell_accuracy, total_tokens]
+    metrics: [weighted_accuracy, list_precision, total_tokens]
   - id: DG-05
     page: digitization
     question: "Does image preprocessing help on poor scans?"
@@ -168,7 +170,7 @@ ablations:
     set: [{"ocr.features": [{"name": "TABLES"}, {"name": "LAYOUT"}, {"name": "SIGNATURES"}]}, {"ocr.features": [{"name": "LAYOUT"}]}, {"ocr.features": [{"name": "TABLES"}]}, {"ocr.features": [{"name": "TABLES"}, {"name": "LAYOUT"}, {"name": "SIGNATURES"}, {"name": "FORMS"}]}]
     datasets: [realkie, fake_w2, synth_400]
     runs: 3
-    metrics: [weighted_accuracy, completeness, cell_accuracy, total_tokens]
+    metrics: [weighted_accuracy, list_recall, list_precision, total_tokens]
   - id: DG-07
     page: digitization
     question: "How much accuracy does scan quality cost?"
@@ -288,7 +290,7 @@ ablations:
     values: ["Model decides (default)", "One section"]
     datasets: [realkie, synth_400, synth_800]
     runs: 3
-    metrics: [weighted_accuracy, completeness, classification_tokens]
+    metrics: [weighted_accuracy, list_recall, classification_tokens]
 
   # ------------------------------------------------------------------- extraction
   - id: EX-01
@@ -299,7 +301,8 @@ ablations:
     set: [{"extraction.mode": "simple"}, {"extraction.mode": "advanced"}]
     datasets: [synth_100, synth_400, synth_800, synth_1600, synth_3200, realkie, realkie_short, realkie_long, fake_w2]
     runs: 3
-    metrics: [completeness, cell_accuracy, weighted_accuracy, extraction_tokens, total_tokens, median_seconds]
+    metrics: [list_recall, list_precision, weighted_accuracy, extraction_tokens, total_tokens, median_seconds]
+    plot: list_recall
   - id: EX-02
     page: extraction
     question: "Which extraction model should I use?"
@@ -308,7 +311,7 @@ ablations:
     set: [{"extraction.model": "us.anthropic.claude-sonnet-5"}, {"extraction.model": "us.amazon.nova-lite-v1:0"}, {"extraction.model": "us.amazon.nova-pro-v1:0"}, {"extraction.model": "us.amazon.nova-2-lite-v1:0"}, {"extraction.model": "us.anthropic.claude-haiku-5-5"}, {"extraction.model": "us.anthropic.claude-sonnet-4-6"}, {"extraction.model": "us.anthropic.claude-sonnet-5-5"}, {"extraction.model": "us.anthropic.claude-opus-5"}, {"extraction.model": "us.anthropic.claude-opus-5-5"}, {"extraction.model": "us.openai.gpt-6-astra"}, {"extraction.model": "us.xai.grok-4.6"}]
     datasets: [realkie, fake_w2, synth_400]
     runs: 3
-    metrics: [weighted_accuracy, completeness, cell_accuracy, extraction_tokens, total_tokens, median_seconds]
+    metrics: [weighted_accuracy, list_recall, list_precision, extraction_tokens, total_tokens, median_seconds]
     families: true
   - id: EX-03
     page: extraction
@@ -318,7 +321,7 @@ ablations:
     set: [{"extraction.reasoning_effort": "low"}, {"extraction.reasoning_effort": "medium"}, {"extraction.reasoning_effort": "high"}]
     datasets: [realkie, fake_w2, synth_400]
     runs: 3
-    metrics: [weighted_accuracy, completeness, extraction_tokens, total_tokens, median_seconds]
+    metrics: [weighted_accuracy, list_recall, extraction_tokens, total_tokens, median_seconds]
   - id: EX-04
     page: extraction
     question: "How much do field descriptions matter?"
@@ -351,7 +354,7 @@ ablations:
     holds: "Iterative (Advanced) extraction"
     datasets: [synth_400, synth_800, synth_3200]
     runs: 3
-    metrics: [completeness, cell_accuracy, extraction_tokens, median_seconds]
+    metrics: [list_recall, list_precision, extraction_tokens, median_seconds]
   - id: EX-08
     page: extraction
     question: "What shard size should iterative extraction use?"
@@ -360,7 +363,7 @@ ablations:
     holds: "Iterative (Advanced) extraction"
     datasets: [synth_800, synth_3200]
     runs: 3
-    metrics: [completeness, cell_accuracy, extraction_tokens, median_seconds]
+    metrics: [list_recall, list_precision, extraction_tokens, median_seconds]
   - id: EX-09
     page: extraction
     question: "Should iterative extraction load page images only when it needs them?"
@@ -369,7 +372,7 @@ ablations:
     holds: "Iterative (Advanced) extraction"
     datasets: [synth_400, synth_800, realkie]
     runs: 3
-    metrics: [completeness, cell_accuracy, weighted_accuracy, extraction_tokens]
+    metrics: [list_recall, list_precision, weighted_accuracy, extraction_tokens]
   - id: EX-10
     page: extraction
     question: "Do schema validation and value coercion improve the output?"
@@ -403,7 +406,7 @@ ablations:
     values: ["Off (default)", "On"]
     datasets: [synth_two_docs, fake_w2]
     runs: 3
-    metrics: [completeness, weighted_accuracy, extraction_tokens]
+    metrics: [list_recall, weighted_accuracy, extraction_tokens]
   - id: EX-14
     page: extraction
     question: "How accurate is extraction across many document formats?"
@@ -450,8 +453,8 @@ ablations:
     holds: "Single-pass (Simple) extraction"
     datasets: [confbench, realkie, synth_800, fake_w2]
     runs: 3
-    metrics: [weighted_accuracy, completeness, auroc, errors_caught_30, scoring_tokens, median_seconds]
-    plot: [auroc, errors_caught_30]
+    metrics: [weighted_accuracy, list_recall, auroc, errors_caught_30, scoring_tokens, median_seconds]
+    plot: [weighted_accuracy, errors_caught_30]
   - id: CF-04
     page: confidence-assessment
     question: "What confidence threshold should I set?"
@@ -485,7 +488,7 @@ ablations:
     values: ["25 (default)", "12", "50"]
     datasets: [synth_400, synth_800, synth_1600]
     runs: 3
-    metrics: [completeness, auroc, scoring_tokens, median_seconds]
+    metrics: [list_recall, auroc, scoring_tokens, median_seconds]
 
   # -------------------------------------------------------------- rule validation
   - id: RV-01

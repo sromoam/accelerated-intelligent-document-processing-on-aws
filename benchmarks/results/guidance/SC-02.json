@@ -29,6 +29,10 @@
       "mean": 119.705533,
       "se": 2.027295
     },
+    "docsplit|Text and images (default)|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Text and images (default)|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -81,6 +85,10 @@
       "mean": 129.531909,
       "se": 6.892698
     },
+    "docsplit|Text only|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Text only|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -132,6 +140,10 @@
     "docsplit|Images only|median_seconds": {
       "mean": 107.875583,
       "se": 2.986174
+    },
+    "docsplit|Images only|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|Images only|all_fields_right": {
       "mean": 0.0,

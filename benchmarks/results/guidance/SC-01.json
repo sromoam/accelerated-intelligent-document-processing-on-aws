@@ -29,6 +29,10 @@
       "mean": 137.330155,
       "se": 5.088025
     },
+    "docsplit|Page by page, one call (default)|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Page by page, one call (default)|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -80,6 +84,10 @@
     "docsplit|Holistic, one call|median_seconds": {
       "mean": 155.417978,
       "se": 4.475631
+    },
+    "docsplit|Holistic, one call|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|Holistic, one call|all_fields_right": {
       "mean": 0.0,
@@ -133,6 +141,10 @@
       "mean": 135.778208,
       "se": 7.568354
     },
+    "docsplit|Detect sections first (page by page), then classify|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Detect sections first (page by page), then classify|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -184,6 +196,10 @@
     "docsplit|Detect sections first (holistic), then classify|median_seconds": {
       "mean": 159.055463,
       "se": 13.793637
+    },
+    "docsplit|Detect sections first (holistic), then classify|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|Detect sections first (holistic), then classify|all_fields_right": {
       "mean": 0.0,

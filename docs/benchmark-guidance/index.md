@@ -96,7 +96,7 @@ Defaults differ from preset to preset. To configure your own stack, start from t
 |---|---|---|---|
 | DocSplit | Preset | — | — |
 
-| Dataset | Nothing: the preset, run 10 times | Completeness | Total tokens per page |
+| Dataset | Nothing: the preset, run 10 times | List recall | Total tokens per page |
 |---|---|---|---|
 | Statement, 400 rows | Preset | — | — |
 

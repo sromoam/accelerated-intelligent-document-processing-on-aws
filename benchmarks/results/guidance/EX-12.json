@@ -25,6 +25,14 @@
       "mean": 41.233336,
       "se": 3.465633
     },
+    "realkie|Off: schema in the prompt (default)|list_recall": {
+      "mean": 0.482115,
+      "se": 0.011505
+    },
+    "realkie|Off: schema in the prompt (default)|list_precision": {
+      "mean": 0.231156,
+      "se": 0.010946
+    },
     "realkie|Off: schema in the prompt (default)|all_fields_right": {
       "mean": 0.05,
       "se": 0.0
@@ -77,6 +85,14 @@
       "mean": 30.580896,
       "se": 1.744843
     },
+    "realkie|Structured output|list_recall": {
+      "mean": 0.551423,
+      "se": 0.024175
+    },
+    "realkie|Structured output|list_precision": {
+      "mean": 0.310509,
+      "se": 0.036386
+    },
     "realkie|Structured output|all_fields_right": {
       "mean": 0.083333,
       "se": 0.016667
@@ -128,6 +144,14 @@
     "realkie|Forced tool|median_seconds": {
       "mean": 35.576984,
       "se": 1.681942
+    },
+    "realkie|Forced tool|list_recall": {
+      "mean": 0.53615,
+      "se": 0.009885
+    },
+    "realkie|Forced tool|list_precision": {
+      "mean": 0.286946,
+      "se": 0.012298
     },
     "realkie|Forced tool|all_fields_right": {
       "mean": 0.066667,
@@ -337,6 +361,14 @@
       "mean": 142.062008,
       "se": 7.706828
     },
+    "realkie_long|Structured output|list_recall": {
+      "mean": 0.142433,
+      "se": 0.007217
+    },
+    "realkie_long|Structured output|list_precision": {
+      "mean": 0.505035,
+      "se": 0.029796
+    },
     "realkie_long|Structured output|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -381,6 +413,14 @@
       "mean": 148.872554,
       "se": 1.250688
     },
+    "realkie_long|Off: schema in the prompt (default)|list_recall": {
+      "mean": 0.121419,
+      "se": 0.017352
+    },
+    "realkie_long|Off: schema in the prompt (default)|list_precision": {
+      "mean": 0.552961,
+      "se": 0.017912
+    },
     "realkie_long|Off: schema in the prompt (default)|all_fields_right": {
       "mean": 0.035088,
       "se": 0.017544
@@ -424,6 +464,14 @@
     "realkie_long|Forced tool|median_seconds": {
       "mean": 98.788397,
       "se": 3.014273
+    },
+    "realkie_long|Forced tool|list_recall": {
+      "mean": 0.135468,
+      "se": 0.010901
+    },
+    "realkie_long|Forced tool|list_precision": {
+      "mean": 0.535676,
+      "se": 0.00618
     },
     "realkie_long|Forced tool|all_fields_right": {
       "mean": 0.0,

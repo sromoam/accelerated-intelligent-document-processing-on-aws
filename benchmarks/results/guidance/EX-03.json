@@ -25,6 +25,14 @@
       "mean": 39.414947,
       "se": 1.574581
     },
+    "realkie|Low (default)|list_recall": {
+      "mean": 0.49225,
+      "se": 0.044169
+    },
+    "realkie|Low (default)|list_precision": {
+      "mean": 0.253032,
+      "se": 0.047676
+    },
     "realkie|Low (default)|all_fields_right": {
       "mean": 0.033333,
       "se": 0.033333
@@ -77,6 +85,14 @@
       "mean": 36.781644,
       "se": 2.009673
     },
+    "realkie|Medium|list_recall": {
+      "mean": 0.519734,
+      "se": 0.054895
+    },
+    "realkie|Medium|list_precision": {
+      "mean": 0.289187,
+      "se": 0.065657
+    },
     "realkie|Medium|all_fields_right": {
       "mean": 0.05,
       "se": 0.0
@@ -128,6 +144,14 @@
     "realkie|High|median_seconds": {
       "mean": 42.10184,
       "se": 3.136011
+    },
+    "realkie|High|list_recall": {
+      "mean": 0.453819,
+      "se": 0.041236
+    },
+    "realkie|High|list_precision": {
+      "mean": 0.219528,
+      "se": 0.032427
     },
     "realkie|High|all_fields_right": {
       "mean": 0.033333,

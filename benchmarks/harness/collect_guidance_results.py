@@ -352,9 +352,43 @@ def run_usage(result: dict[str, Any]) -> dict[str, float]:
     return {k: round(v / docs, 4) for k, v in sorted(totals.items())}
 
 
+def list_cells(result: dict[str, Any]) -> tuple[int, int, int] | None:
+    """Cell counts (tp, fn, fp) over the leaf fields of the largest list field.
+
+    Test Studio scores a list cell by cell under `fieldMetrics["<List>.<Field>"]`.
+    The weighted score counts a whole list as one field, so it barely moves when
+    rows go missing; these counts are what show a lost row.
+    """
+    fields = result.get("fieldMetrics") or {}
+    parents: dict[str, int] = {}
+    for name, m in fields.items():
+        if "." in name:
+            parent = name.split(".", 1)[0]
+            parents[parent] = parents.get(parent, 0) + int(
+                m.get("accuracy_observations") or 0
+            )
+    if not parents:
+        return None
+    parent = max(parents, key=lambda p: parents[p])
+    tp = fn = fp = 0
+    for name, m in fields.items():
+        if name.startswith(parent + "."):
+            tp += int(m.get("tp") or 0)
+            fn += int(m.get("fn") or 0)
+            fp += int(m.get("fp") or 0)
+    return tp, fn, fp
+
+
 def run_metrics(result: dict[str, Any]) -> dict[str, float]:
     """Per-run metrics that Test Studio reports directly, when present."""
     out: dict[str, float] = {}
+    cells = list_cells(result)
+    if cells:
+        tp, fn, fp = cells
+        if tp + fn:
+            out["list_recall"] = tp / (tp + fn)
+        if tp + fp:
+            out["list_precision"] = tp / (tp + fp)
     scores = [float(v) for v in result.get("weightedOverallScores", {}).values()]
     if scores:
         out["all_fields_right"] = sum(v >= 0.9999 for v in scores) / len(scores)

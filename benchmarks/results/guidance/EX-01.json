@@ -3,7 +3,7 @@
   "measured": "November 2026",
   "region": "us-east-1",
   "source": "Test Studio runs RealKIE-FCC-Verified-20261113-173220, RealKIE-FCC-Verified-20261113-173644, RealKIE-FCC-Verified-20261113-173641, RealKIE-FCC-Verified-20261113-173219, RealKIE-FCC-Verified-20261113-173642, RealKIE-FCC-Verified-20261113-173643, Fake-W2-Tax-Forms-20261113-181721, Fake-W2-Tax-Forms-20261113-181722, Fake-W2-Tax-Forms-20261113-181723, Fake-W2-Tax-Forms-20261113-181901, Fake-W2-Tax-Forms-20261113-182002, Fake-W2-Tax-Forms-20261113-182011, realkie-fcc-short-20261113-201254, realkie-fcc-short-20261113-201252, realkie-fcc-short-20261113-201253, realkie-fcc-short-20261113-201713, realkie-fcc-short-20261113-201703, realkie-fcc-short-20261113-201714, realkie-fcc-long-20261113-201929, realkie-fcc-long-20261113-201928, realkie-fcc-long-20261113-202020, realkie-fcc-long-20261113-202336, realkie-fcc-long-20261113-202804, realkie-fcc-long-20261113-202644 (3 failed documents left out of the scores)",
-  "verdict": "Not on invoices or forms, including long ones. On RealKIE invoices both modes scored 0.80; on invoices of 8 to 33 pages iterative scored 0.80 against 0.77, a difference within the noise, and on W-2 forms 0.97 against 0.95, also within the noise. Iterative cost more on every dataset: 17% more on RealKIE invoices, 50% more on short invoices, 86% more on W-2s and about three times as much on long invoices. On the longest invoice, 33 pages with 1,490 line items, iterative ran for 40 minutes and missed Test Studio's time limit in every run; single pass finished it.",
+  "verdict": "For invoices with more than about 150 to 200 line items. Single pass got almost none of the line items right on the RealKIE invoices with 182 or more items (line-item score 0.00 to 0.50, and 0 on the invoices with 309, 392 and 1,490 items); iterative extraction got 0.32 to 0.90 on the same invoices. Below that size single pass did better and cost less: across all 20 RealKIE invoices its line-item score was 0.61 against 0.45. Iterative extraction did not finish the 1,490-item invoice within Test Studio's time limit.",
   "cells": {
     "realkie|Single pass, Simple (default)|weighted_accuracy": {
       "mean": 0.802328,
@@ -24,6 +24,14 @@
     "realkie|Single pass, Simple (default)|median_seconds": {
       "mean": 58.401598,
       "se": 18.290965
+    },
+    "realkie|Single pass, Simple (default)|list_recall": {
+      "mean": 0.511975,
+      "se": 0.01772
+    },
+    "realkie|Single pass, Simple (default)|list_precision": {
+      "mean": 0.272996,
+      "se": 0.025507
     },
     "realkie|Single pass, Simple (default)|all_fields_right": {
       "mean": 0.033333,
@@ -76,6 +84,14 @@
     "realkie|Iterative, Advanced|median_seconds": {
       "mean": 64.764973,
       "se": 14.709939
+    },
+    "realkie|Iterative, Advanced|list_recall": {
+      "mean": 0.517971,
+      "se": 0.033694
+    },
+    "realkie|Iterative, Advanced|list_precision": {
+      "mean": 0.240984,
+      "se": 0.032529
     },
     "realkie|Iterative, Advanced|all_fields_right": {
       "mean": 0.05,
@@ -233,6 +249,14 @@
       "mean": 22.406956,
       "se": 0.327065
     },
+    "realkie_short|Single pass, Simple (default)|list_recall": {
+      "mean": 0.966802,
+      "se": 0.000455
+    },
+    "realkie_short|Single pass, Simple (default)|list_precision": {
+      "mean": 0.411749,
+      "se": 0.008894
+    },
     "realkie_short|Single pass, Simple (default)|all_fields_right": {
       "mean": 0.111111,
       "se": 0.013889
@@ -284,6 +308,14 @@
     "realkie_short|Iterative, Advanced|median_seconds": {
       "mean": 28.368043,
       "se": 0.817048
+    },
+    "realkie_short|Iterative, Advanced|list_recall": {
+      "mean": 0.852055,
+      "se": 0.056337
+    },
+    "realkie_short|Iterative, Advanced|list_precision": {
+      "mean": 0.391428,
+      "se": 0.016355
     },
     "realkie_short|Iterative, Advanced|all_fields_right": {
       "mean": 0.041667,
@@ -337,6 +369,14 @@
       "mean": 104.549164,
       "se": 10.686632
     },
+    "realkie_long|Single pass, Simple (default)|list_recall": {
+      "mean": 0.140197,
+      "se": 0.012855
+    },
+    "realkie_long|Single pass, Simple (default)|list_precision": {
+      "mean": 0.554671,
+      "se": 0.016775
+    },
     "realkie_long|Single pass, Simple (default)|all_fields_right": {
       "mean": 0.017544,
       "se": 0.017544
@@ -388,6 +428,14 @@
     "realkie_long|Iterative, Advanced|median_seconds": {
       "mean": 100.643912,
       "se": 3.437233
+    },
+    "realkie_long|Iterative, Advanced|list_recall": {
+      "mean": 0.701957,
+      "se": 0.033267
+    },
+    "realkie_long|Iterative, Advanced|list_precision": {
+      "mean": 0.521803,
+      "se": 0.011989
     },
     "realkie_long|Iterative, Advanced|all_fields_right": {
       "mean": 0.037037,

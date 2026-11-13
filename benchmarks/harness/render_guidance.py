@@ -63,6 +63,7 @@ import argparse
 import datetime
 import json
 import math
+import re
 import statistics
 import subprocess
 import sys
@@ -123,6 +124,14 @@ SCATTER_CAPTION = (
 #: Pipeline steps named on every chart, in order.
 MODEL_STEPS = ("OCR", "Classification", "Extraction", "Confidence")
 VARIES = "varies (the setting under test)"
+#: The pipeline step each page is about, and how its lead line names that step's model.
+PAGE_STEPS = {
+    "digitization": ("OCR", "OCR"),
+    "splitting-and-classification": ("Classification", "Classification model"),
+    "extraction": ("Extraction", "Extraction model"),
+    "token-use": ("Extraction", "Extraction model"),
+    "confidence-assessment": ("Confidence", "Scoring model"),
+}
 
 sys.path.insert(0, str(REPO / "scripts"))
 from check_markdown_links import slugify  # noqa: E402  (github-slugger rules)
@@ -394,12 +403,63 @@ def sample_sentence(
     )
 
 
-def panel_subtitle(steps: dict[str, str], size: tuple[str, str, int] | None) -> str:
-    """The line under a panel title: the models, then the sample size."""
+#: Model names as the collector writes them into a step's line.
+MODEL_NAME = re.compile(
+    r"Amazon Nova(?: \d+)? (?:Lite|Pro|Premier|Micro)"
+    r"|Claude (?:Haiku|Sonnet|Opus) \d+(?:\.\d+)?"
+    r"|OpenAI GPT-[\w.]+(?: [A-Z]\w+)?"
+    r"|xAI Grok \d+(?:\.\d+)?"
+)
+
+
+def short_model(text: str) -> str:
+    """A step's models without its settings: "Claude Sonnet 5, single pass" to the model.
+
+    One model reads as its name, wherever the line mentions it ("Amazon Nova 2 Lite
+    finds the sections, then Amazon Nova 2 Lite classifies them" is Amazon Nova 2
+    Lite). An escalation keeps its second model, because the step runs it too. A line
+    naming no model ("Off") is returned as it is.
+    """
+    names = list(dict.fromkeys(MODEL_NAME.findall(text)))
+    if not names:
+        return text
+    if len(names) == 2 and "escalating to" in text:
+        return f"{names[0]}, escalating to {names[1]}"
+    return " and ".join(names)
+
+
+def lead_line(
+    page: str, models: dict[str, dict[str, Any]], ds_key: str, values: list[str]
+) -> str:
+    """The model for the page's own step, which a chart names before anything else.
+
+    A reader of a classification chart looks for the classification model; without
+    this line the first model they find in the subtitle may be another step's. It
+    names the model alone, so a setting of the step that varies (page by page or
+    holistic) still leaves one model to name; it reads "varies" only when the model
+    itself does.
+    """
+    step, label = PAGE_STEPS.get(page, ("", ""))
+    texts = {
+        str(text) if step == "OCR" else short_model(str(text))
+        for value in values
+        if (text := (models.get(f"{ds_key}|{value}") or {}).get(step))
+    }
+    if not texts:
+        return ""
+    if len(texts) > 1:
+        return f"{label}: varies — see the key"
+    return f"{label}: {texts.pop()}"
+
+
+def panel_subtitle(
+    steps: dict[str, str], size: tuple[str, str, int] | None, lead: str = ""
+) -> tuple[str, str]:
+    """The lines under a panel title: the page's own model, then every step and N."""
     parts = [models_text(steps)] if steps else []
     if size:
         parts.append(f"N = {n_short(size)}")
-    return " · ".join(p for p in parts if p)
+    return lead, " · ".join(p for p in parts if p)
 
 
 def cell_text(cell: Cell | None, metric: str = "") -> str:
@@ -549,7 +609,11 @@ def render_ablation(
             panels.append(
                 (
                     datasets[ds_key].get("short", datasets[ds_key]["name"]),
-                    panel_subtitle(steps.get(ds_key, {}), sizes.get(ds_key)),
+                    panel_subtitle(
+                        steps.get(ds_key, {}),
+                        sizes.get(ds_key),
+                        lead_line(ab["page"], models, ds_key, ab["values"]),
+                    ),
                     rows,
                 )
             )
@@ -624,7 +688,11 @@ def render_ablation(
                 scatter.append(
                     (
                         datasets[ds_key].get("short", datasets[ds_key]["name"]),
-                        panel_subtitle(steps.get(ds_key, {}), sizes.get(ds_key)),
+                        panel_subtitle(
+                            steps.get(ds_key, {}),
+                            sizes.get(ds_key),
+                            lead_line(ab["page"], models, ds_key, ab["values"]),
+                        ),
                         pts,
                         baselines,
                     )

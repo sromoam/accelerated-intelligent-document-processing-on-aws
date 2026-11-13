@@ -25,6 +25,14 @@
       "mean": 51.300827,
       "se": 6.640855
     },
+    "realkie|Textract, tables and layout (default)|list_recall": {
+      "mean": 0.500861,
+      "se": 0.066461
+    },
+    "realkie|Textract, tables and layout (default)|list_precision": {
+      "mean": 0.274661,
+      "se": 0.076026
+    },
     "realkie|Textract, tables and layout (default)|all_fields_right": {
       "mean": 0.05,
       "se": 0.028868
@@ -76,6 +84,14 @@
     "realkie|Textract, layout only|median_seconds": {
       "mean": 40.039488,
       "se": 5.484378
+    },
+    "realkie|Textract, layout only|list_recall": {
+      "mean": 0.613716,
+      "se": 0.01027
+    },
+    "realkie|Textract, layout only|list_precision": {
+      "mean": 0.411306,
+      "se": 0.01405
     },
     "realkie|Textract, layout only|all_fields_right": {
       "mean": 0.05,
@@ -133,6 +149,14 @@
       "mean": 42.837487,
       "se": 1.87179
     },
+    "realkie|Bedrock vision model (Nova 2 Lite)|list_recall": {
+      "mean": 0.577589,
+      "se": 0.041914
+    },
+    "realkie|Bedrock vision model (Nova 2 Lite)|list_precision": {
+      "mean": 0.384229,
+      "se": 0.072227
+    },
     "realkie|Bedrock vision model (Nova 2 Lite)|all_fields_right": {
       "mean": 0.016667,
       "se": 0.016667
@@ -189,6 +213,14 @@
       "mean": 18.354036,
       "se": 0.416297
     },
+    "omniai|Textract, tables and layout (default)|list_recall": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "omniai|Textract, tables and layout (default)|list_precision": {
+      "mean": 0.827404,
+      "se": 0.0
+    },
     "omniai|Textract, tables and layout (default)|all_fields_right": {
       "mean": 0.15,
       "se": 0.028868
@@ -228,6 +260,14 @@
     "omniai|Textract, layout only|median_seconds": {
       "mean": 17.370237,
       "se": 0.069637
+    },
+    "omniai|Textract, layout only|list_recall": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "omniai|Textract, layout only|list_precision": {
+      "mean": 0.813351,
+      "se": 0.007388
     },
     "omniai|Textract, layout only|all_fields_right": {
       "mean": 0.366667,
@@ -272,6 +312,14 @@
     "omniai|Bedrock vision model (Nova 2 Lite)|median_seconds": {
       "mean": 17.913838,
       "se": 0.689772
+    },
+    "omniai|Bedrock vision model (Nova 2 Lite)|list_recall": {
+      "mean": 1.0,
+      "se": 0.0
+    },
+    "omniai|Bedrock vision model (Nova 2 Lite)|list_precision": {
+      "mean": 0.738911,
+      "se": 0.014319
     },
     "omniai|Bedrock vision model (Nova 2 Lite)|all_fields_right": {
       "mean": 0.116667,

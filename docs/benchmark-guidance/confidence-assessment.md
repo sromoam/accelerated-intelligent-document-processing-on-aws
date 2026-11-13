@@ -54,9 +54,9 @@ which adds scan noise to real invoices.
 
 **Answer:** Separate, with a scoring model that works, or off. On W-2 forms integrated scoring separated right from wrong values better than the default separate pass with Amazon Nova Lite (AUROC 0.76 against 0.47) and used 36% fewer tokens per page, but it lowered extraction accuracy from 0.96 to 0.92. Turning confidence off changed no extracted value and cut tokens per page by 55% to 65%. On RealKIE invoices integrated ran as a separate pass, because in single-pass extraction the accelerator scores a class with list fields separately. For confidence you can act on, use a separate pass with Claude Haiku 5.5 or Claude Sonnet 5 (see CF-02). [Details: CF-03](#cf-03-separate-scoring-pass-or-integrated-into-extraction)
 
-![AUROC and errors caught reviewing 30% of values against cost per 1,000 documents (USD) for each Confidence mode](../../images/benchmark-guidance/CF-03-fields.svg)
+![Weighted accuracy and errors caught reviewing 30% of values against cost per 1,000 documents (USD) for each Confidence mode](../../images/benchmark-guidance/CF-03-fields.svg)
 
-*AUROC and errors caught reviewing 30% of values against cost per 1,000 documents (USD), one chart each. Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. The dashed line is random review: the share of wrong values a review of 30% of values finds when it picks them at random.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
+*Weighted accuracy and errors caught reviewing 30% of values against cost per 1,000 documents (USD), one chart each. Each point is one value of the setting; shaded bands span two standard errors either side. Up and to the left is better. Lines run from the cheapest value to each more accurate one, labeled with the marginal cost of error: the extra cost per error prevented ([Marginal Cost of Error](marginal-cost-of-error.md)). The dashed line is random review: the share of wrong values a review of 30% of values finds when it picks them at random.* Datasets: [RealKIE](datasets.md#realkie-fcc-verified-20-invoices), [Fake-W2](datasets.md#fake-w2-tax-forms-w-2-forms-45-fields). Models: OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). N = 20 documents × 3 runs. Costs use on-demand prices for us-east-1 from [config_library/pricing.yaml](../../config_library/pricing.yaml) as of 2026-11-13.
 
 ### What confidence threshold should I set?
 
@@ -164,19 +164,19 @@ which adds scan noise to real invoices.
 | **Models** | OCR: Amazon Textract (Tables, Layout, Signatures) · Classification: Amazon Nova 2 Lite, page by page (no calls billed) · Extraction: Claude Sonnet 5, single pass · Confidence: varies (the setting under test). |
 | **Runs** | 3 per document, per value; N = 20 documents × 3 runs |
 
-| Dataset | Confidence mode | Weighted accuracy | AUROC | Errors caught reviewing 30% of values | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
-|---|---|---|---|---|---|---|---|
-| ConfBench | Separate (default) | — | — | — | — | — | — |
-| ConfBench | Integrated | — | — | — | — | — | — |
-| ConfBench | Off | — | — | — | — | — | — |
-| RealKIE | Separate (default) | 0.81 ± 0.07 | 0.42 ± 0.02 | 0.18 ± 0.03 | 13,240 ± 1,063 | $137 | 36 ± 4.47 |
-| RealKIE | Integrated | 0.81 ± 0.06 | 0.41 ± 0.04 | 0.18 ± 0.09 | 13,206 ± 600 | $135 | 32 ± 3.84 |
-| RealKIE | Off | 0.8 ± 0.06 | — | — | — | $134 | 23 ± 0.76 |
-| Fake-W2 | Separate (default) | 0.96 ± 0.02 | 0.47 ± 0.03 | 0.13 ± 0.05 | 8,319 ± 1.49 | $35.3 | 28 ± 0.71 |
-| Fake-W2 | Integrated | 0.92 ± 0.02 | 0.76 ± 0.01 | 0.47 ± 0.05 | — | $61.5 | 33 ± 0.67 |
-| Fake-W2 | Off | 0.96 ± 0.02 | — | — | — | $31.8 | 17 ± 0.23 |
+| Dataset | Confidence mode | Weighted accuracy | AUROC | Errors caught reviewing 30% of values | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document | MCoE vs Off |
+|---|---|---|---|---|---|---|---|---|
+| ConfBench | Separate (default) | — | — | — | — | — | — | — |
+| ConfBench | Integrated | — | — | — | — | — | — | — |
+| ConfBench | Off | — | — | — | — | — | — | — |
+| RealKIE | Separate (default) | 0.81 ± 0.07 | 0.42 ± 0.02 | 0.18 ± 0.03 | 13,240 ± 1,063 | $137 | 36 ± 4.47 | no measurable gain |
+| RealKIE | Integrated | 0.81 ± 0.06 | 0.41 ± 0.04 | 0.18 ± 0.09 | 13,206 ± 600 | $135 | 32 ± 3.84 | no measurable gain |
+| RealKIE | Off | 0.8 ± 0.06 | — | — | — | $134 | 23 ± 0.76 | — |
+| Fake-W2 | Separate (default) | 0.96 ± 0.02 | 0.47 ± 0.03 | 0.13 ± 0.05 | 8,319 ± 1.49 | $35.3 | 28 ± 0.71 | no measurable gain |
+| Fake-W2 | Integrated | 0.92 ± 0.02 | 0.76 ± 0.01 | 0.47 ± 0.05 | — | $61.5 | 33 ± 0.67 | — |
+| Fake-W2 | Off | 0.96 ± 0.02 | — | — | — | $31.8 | 17 ± 0.23 | — |
 
-| Dataset | Confidence mode | Completeness | AUROC | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
+| Dataset | Confidence mode | List recall | AUROC | Scoring tokens per page | Cost per 1,000 documents (USD) | Median seconds per document |
 |---|---|---|---|---|---|---|
 | Statement, 800 rows | Separate (default) | — | — | — | — | — |
 | Statement, 800 rows | Integrated | — | — | — | — | — |
@@ -260,7 +260,7 @@ which adds scan noise to real invoices.
 | **Datasets** | [Synthetic statement, 400 rows (9 pages)](datasets.md#synthetic-statement-400-rows-9-pages); [Synthetic statement, 800 rows (17 pages)](datasets.md#synthetic-statement-800-rows-17-pages); [Synthetic statement, 1,600 rows (33 pages)](datasets.md#synthetic-statement-1600-rows-33-pages) |
 | **Runs** | 3 per document, per value |
 
-| Dataset | `extraction.confidence.list_batch_size` | Completeness | AUROC | Scoring tokens per page | Median seconds per document |
+| Dataset | `extraction.confidence.list_batch_size` | List recall | AUROC | Scoring tokens per page | Median seconds per document |
 |---|---|---|---|---|---|
 | Statement, 400 rows | 25 (default) | — | — | — | — |
 | Statement, 400 rows | 12 | — | — | — | — |

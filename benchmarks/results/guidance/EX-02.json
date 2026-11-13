@@ -25,6 +25,14 @@
       "mean": 44.072482,
       "se": 1.953507
     },
+    "realkie|Claude Sonnet 5 (default)|list_recall": {
+      "mean": 0.480782,
+      "se": 0.027167
+    },
+    "realkie|Claude Sonnet 5 (default)|list_precision": {
+      "mean": 0.232846,
+      "se": 0.025185
+    },
     "realkie|Claude Sonnet 5 (default)|all_fields_right": {
       "mean": 0.05,
       "se": 0.028868
@@ -76,6 +84,14 @@
     "realkie|Amazon Nova Lite|median_seconds": {
       "mean": 40.993088,
       "se": 0.639467
+    },
+    "realkie|Amazon Nova Lite|list_recall": {
+      "mean": 0.654755,
+      "se": 0.14119
+    },
+    "realkie|Amazon Nova Lite|list_precision": {
+      "mean": 0.174175,
+      "se": 0.044802
     },
     "realkie|Amazon Nova Lite|all_fields_right": {
       "mean": 0.0,
@@ -129,6 +145,14 @@
       "mean": 40.919655,
       "se": 0.996859
     },
+    "realkie|Amazon Nova Pro|list_recall": {
+      "mean": 0.543348,
+      "se": 0.032681
+    },
+    "realkie|Amazon Nova Pro|list_precision": {
+      "mean": 0.387444,
+      "se": 0.050026
+    },
     "realkie|Amazon Nova Pro|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -180,6 +204,14 @@
     "realkie|Amazon Nova 2 Lite|median_seconds": {
       "mean": 56.194341,
       "se": 7.770333
+    },
+    "realkie|Amazon Nova 2 Lite|list_recall": {
+      "mean": 0.947036,
+      "se": 0.003716
+    },
+    "realkie|Amazon Nova 2 Lite|list_precision": {
+      "mean": 0.398741,
+      "se": 4e-06
     },
     "realkie|Amazon Nova 2 Lite|all_fields_right": {
       "mean": 0.05,
@@ -233,6 +265,14 @@
       "mean": 57.657491,
       "se": 13.831714
     },
+    "realkie|Claude Haiku 5.5|list_recall": {
+      "mean": 0.637373,
+      "se": 0.141439
+    },
+    "realkie|Claude Haiku 5.5|list_precision": {
+      "mean": 0.225816,
+      "se": 0.034178
+    },
     "realkie|Claude Haiku 5.5|all_fields_right": {
       "mean": 0.033333,
       "se": 0.016667
@@ -284,6 +324,14 @@
     "realkie|Claude Sonnet 4.6|median_seconds": {
       "mean": 57.490953,
       "se": 4.822253
+    },
+    "realkie|Claude Sonnet 4.6|list_recall": {
+      "mean": 0.960176,
+      "se": 0.001583
+    },
+    "realkie|Claude Sonnet 4.6|list_precision": {
+      "mean": 0.299768,
+      "se": 0.002135
     },
     "realkie|Claude Sonnet 4.6|all_fields_right": {
       "mean": 0.05,
@@ -337,6 +385,14 @@
       "mean": 62.772493,
       "se": 2.291163
     },
+    "realkie|Claude Sonnet 5.5|list_recall": {
+      "mean": 0.51504,
+      "se": 0.000869
+    },
+    "realkie|Claude Sonnet 5.5|list_precision": {
+      "mean": 0.264957,
+      "se": 0.000805
+    },
     "realkie|Claude Sonnet 5.5|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -388,6 +444,14 @@
     "realkie|Claude Opus 5|median_seconds": {
       "mean": 61.242301,
       "se": 10.908302
+    },
+    "realkie|Claude Opus 5|list_recall": {
+      "mean": 0.678096,
+      "se": 0.130903
+    },
+    "realkie|Claude Opus 5|list_precision": {
+      "mean": 0.267589,
+      "se": 0.030099
     },
     "realkie|Claude Opus 5|all_fields_right": {
       "mean": 0.133333,
@@ -441,6 +505,14 @@
       "mean": 43.158494,
       "se": 5.954144
     },
+    "realkie|Claude Opus 5.5|list_recall": {
+      "mean": 0.857318,
+      "se": 0.108505
+    },
+    "realkie|Claude Opus 5.5|list_precision": {
+      "mean": 0.402439,
+      "se": 0.030283
+    },
     "realkie|Claude Opus 5.5|all_fields_right": {
       "mean": 0.066667,
       "se": 0.016667
@@ -493,6 +565,14 @@
       "mean": 62.371236,
       "se": 11.904011
     },
+    "realkie|OpenAI GPT-6 Astra|list_recall": {
+      "mean": 0.969752,
+      "se": 0.000308
+    },
+    "realkie|OpenAI GPT-6 Astra|list_precision": {
+      "mean": 0.392577,
+      "se": 0.004261
+    },
     "realkie|OpenAI GPT-6 Astra|all_fields_right": {
       "mean": 0.133333,
       "se": 0.016667
@@ -544,6 +624,14 @@
     "realkie|xAI Grok 4.6|median_seconds": {
       "mean": 87.015376,
       "se": 20.425666
+    },
+    "realkie|xAI Grok 4.6|list_recall": {
+      "mean": 0.508746,
+      "se": 0.023904
+    },
+    "realkie|xAI Grok 4.6|list_precision": {
+      "mean": 0.26503,
+      "se": 0.021922
     },
     "realkie|xAI Grok 4.6|all_fields_right": {
       "mean": 0.066667,

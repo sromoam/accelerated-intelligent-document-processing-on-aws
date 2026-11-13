@@ -424,7 +424,7 @@ Needs a dataset we haven't built yet: Same-class documents back to back (to be b
 | RealKIE | Model decides (default) | — | — |
 | RealKIE | One section | — | — |
 
-| Dataset | Section splitting | Completeness | Classification tokens per page |
+| Dataset | Section splitting | List recall | Classification tokens per page |
 |---|---|---|---|
 | Statement, 400 rows | Model decides (default) | — | — |
 | Statement, 400 rows | One section | — | — |

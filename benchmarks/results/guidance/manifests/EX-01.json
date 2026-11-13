@@ -1,6 +1,6 @@
 {
   "ablation": "EX-01",
-  "verdict": "Not on invoices or forms, including long ones. On RealKIE invoices both modes scored 0.80; on invoices of 8 to 33 pages iterative scored 0.80 against 0.77, a difference within the noise, and on W-2 forms 0.97 against 0.95, also within the noise. Iterative cost more on every dataset: 17% more on RealKIE invoices, 50% more on short invoices, 86% more on W-2s and about three times as much on long invoices. On the longest invoice, 33 pages with 1,490 line items, iterative ran for 40 minutes and missed Test Studio's time limit in every run; single pass finished it.",
+  "verdict": "For invoices with more than about 150 to 200 line items. Single pass got almost none of the line items right on the RealKIE invoices with 182 or more items (line-item score 0.00 to 0.50, and 0 on the invoices with 309, 392 and 1,490 items); iterative extraction got 0.32 to 0.90 on the same invoices. Below that size single pass did better and cost less: across all 20 RealKIE invoices its line-item score was 0.61 against 0.45. Iterative extraction did not finish the 1,490-item invoice within Test Studio's time limit.",
   "runs": {
     "realkie": {
       "Single pass, Simple (default)": [

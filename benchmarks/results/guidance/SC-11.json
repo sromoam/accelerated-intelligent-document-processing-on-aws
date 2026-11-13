@@ -29,6 +29,10 @@
       "mean": 137.330155,
       "se": 5.088025
     },
+    "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Page by page \u00b7 Amazon Nova 2 Lite (default)|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -80,6 +84,10 @@
     "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|median_seconds": {
       "mean": 155.417978,
       "se": 4.475631
+    },
+    "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|Holistic \u00b7 Amazon Nova 2 Lite (default)|all_fields_right": {
       "mean": 0.0,
@@ -133,6 +141,10 @@
       "mean": 135.778208,
       "se": 7.568354
     },
+    "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Detect sections first, page by page \u00b7 Amazon Nova 2 Lite (default)|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -184,6 +196,10 @@
     "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|median_seconds": {
       "mean": 159.055463,
       "se": 13.793637
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|Detect sections first, holistic \u00b7 Amazon Nova 2 Lite (default)|all_fields_right": {
       "mean": 0.0,
@@ -237,6 +253,10 @@
       "mean": 121.348756,
       "se": 9.900617
     },
+    "docsplit|Page by page \u00b7 Claude Haiku 5.5|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Page by page \u00b7 Claude Haiku 5.5|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -288,6 +308,10 @@
     "docsplit|Holistic \u00b7 Claude Haiku 5.5|median_seconds": {
       "mean": 158.233499,
       "se": 5.5577
+    },
+    "docsplit|Holistic \u00b7 Claude Haiku 5.5|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|Holistic \u00b7 Claude Haiku 5.5|all_fields_right": {
       "mean": 0.0,
@@ -341,6 +365,10 @@
       "mean": 76.789477,
       "se": 10.073402
     },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Detect sections first, page by page \u00b7 Claude Haiku 5.5|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -392,6 +420,10 @@
     "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|median_seconds": {
       "mean": 128.046508,
       "se": 10.579728
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|Detect sections first, holistic \u00b7 Claude Haiku 5.5|all_fields_right": {
       "mean": 0.0,
@@ -445,6 +477,10 @@
       "mean": 104.614224,
       "se": 12.920829
     },
+    "docsplit|Holistic \u00b7 Claude Sonnet 5|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Holistic \u00b7 Claude Sonnet 5|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -496,6 +532,10 @@
     "docsplit|Page by page \u00b7 Claude Sonnet 5|median_seconds": {
       "mean": 163.116589,
       "se": 18.094223
+    },
+    "docsplit|Page by page \u00b7 Claude Sonnet 5|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|Page by page \u00b7 Claude Sonnet 5|all_fields_right": {
       "mean": 0.0,
@@ -549,6 +589,10 @@
       "mean": 215.508919,
       "se": 58.490959
     },
+    "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|Detect sections first, page by page \u00b7 Claude Sonnet 5|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -600,6 +644,10 @@
     "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|median_seconds": {
       "mean": 160.896905,
       "se": 39.123708
+    },
+    "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|Detect sections first, holistic \u00b7 Claude Sonnet 5|all_fields_right": {
       "mean": 0.0,

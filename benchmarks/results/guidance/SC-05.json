@@ -29,6 +29,10 @@
       "mean": 86.538401,
       "se": 4.281555
     },
+    "docsplit|0 (default)|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|0 (default)|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -81,6 +85,10 @@
       "mean": 117.02855,
       "se": 2.837209
     },
+    "docsplit|1|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
+    },
     "docsplit|1|all_fields_right": {
       "mean": 0.0,
       "se": 0.0
@@ -132,6 +140,10 @@
     "docsplit|2|median_seconds": {
       "mean": 85.11071,
       "se": 12.553374
+    },
+    "docsplit|2|list_precision": {
+      "mean": 0.0,
+      "se": 0.0
     },
     "docsplit|2|all_fields_right": {
       "mean": 0.0,

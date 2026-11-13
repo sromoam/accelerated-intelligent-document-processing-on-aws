@@ -25,6 +25,14 @@
       "mean": 37.704207,
       "se": 1.69449
     },
+    "realkie|Default|list_recall": {
+      "mean": 0.483191,
+      "se": 0.01201
+    },
+    "realkie|Default|list_precision": {
+      "mean": 0.233813,
+      "se": 0.012096
+    },
     "realkie|Default|all_fields_right": {
       "mean": 0.033333,
       "se": 0.016667
@@ -65,6 +73,14 @@
       "mean": 22.863261,
       "se": 0.292006
     },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off|list_recall": {
+      "mean": 0.906078,
+      "se": 0.009466
+    },
+    "realkie|Claude Haiku 5.5, Layout only, confidence off|list_precision": {
+      "mean": 0.278963,
+      "se": 0.043568
+    },
     "realkie|Claude Haiku 5.5, Layout only, confidence off|all_fields_right": {
       "mean": 0.033333,
       "se": 0.016667
@@ -92,6 +108,14 @@
     "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|median_seconds": {
       "mean": 38.607135,
       "se": 0.257231
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|list_recall": {
+      "mean": 0.659726,
+      "se": 0.11939
+    },
+    "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|list_precision": {
+      "mean": 0.294374,
+      "se": 0.019087
     },
     "realkie|Claude Haiku 5.5, Layout only, Claude Haiku 5.5 scoring|all_fields_right": {
       "mean": 0.1,

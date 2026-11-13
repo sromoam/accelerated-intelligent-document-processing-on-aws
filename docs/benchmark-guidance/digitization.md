@@ -122,7 +122,7 @@ right in the page text, the fix is in your classification or extraction definiti
 | OmniAI, bank checks | Textract, layout only | 0.94 ± 0.04 | — | 9,225 ± 1.45 | $6.46 | no measurable gain |
 | OmniAI, bank checks | Bedrock vision model (Nova 2 Lite) | 0.9 ± 0.06 | 727 ± 31 | 9,710 ± 111 | $3.74 | — |
 
-| Dataset | OCR reader | Completeness | Cell accuracy | OCR tokens per page | Total tokens per page | Cost per 1,000 documents (USD) |
+| Dataset | OCR reader | List recall | List precision | OCR tokens per page | Total tokens per page | Cost per 1,000 documents (USD) |
 |---|---|---|---|---|---|---|
 | Statement, 400 rows | Textract, tables and layout (default) | — | — | — | — | — |
 | Statement, 400 rows | Textract, layout only | — | — | — | — | — |
@@ -153,7 +153,7 @@ right in the page text, the fix is in your classification or extraction definiti
 | ConfBench | Claude Haiku 5.5 | — | — | — |
 | ConfBench | Claude Sonnet 5 | — | — | — |
 
-| Dataset | Model used for Bedrock vision OCR | Cell accuracy | OCR tokens per page | Total tokens per page |
+| Dataset | Model used for Bedrock vision OCR | List precision | OCR tokens per page | Total tokens per page |
 |---|---|---|---|---|
 | Statement, 400 rows | Amazon Nova 2 Lite | — | — | — |
 | Statement, 400 rows | Claude Haiku 5.5 | — | — | — |
@@ -210,7 +210,7 @@ right in the page text, the fix is in your classification or extraction definiti
 | ConfBench | 200 | — | — | — | — |
 | ConfBench | 150 | — | — | — | — |
 
-| Dataset | `ocr.image.dpi` | Cell accuracy | Total tokens per page | Cost per 1,000 documents (USD) |
+| Dataset | `ocr.image.dpi` | List precision | Total tokens per page | Cost per 1,000 documents (USD) |
 |---|---|---|---|---|
 | Statement, 400 rows | 300 (default) | — | — | — |
 | Statement, 400 rows | 200 | — | — | — |
@@ -265,7 +265,7 @@ right in the page text, the fix is in your classification or extraction definiti
 | Fake-W2 | TABLES only | 0.97 ± 0.01 | 15,178 ± 3.93 | $32.2 | no measurable gain |
 | Fake-W2 | TABLES, LAYOUT, SIGNATURES, FORMS | 0.97 ± 0.02 | 15,197 ± 1.59 | $82.2 | no measurable gain |
 
-| Dataset | `ocr.features` | Completeness | Cell accuracy | Total tokens per page | Cost per 1,000 documents (USD) |
+| Dataset | `ocr.features` | List recall | List precision | Total tokens per page | Cost per 1,000 documents (USD) |
 |---|---|---|---|---|---|
 | Statement, 400 rows | TABLES, LAYOUT, SIGNATURES (default) | — | — | — | — |
 | Statement, 400 rows | LAYOUT only | — | — | — | — |
