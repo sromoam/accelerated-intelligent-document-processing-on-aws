@@ -24,7 +24,9 @@
 #             in the order of `values`; run_guidance_ablation.py applies them
 #
 # A dataset's `testset` is its Test Studio test set ID and `docs` the number of its
-# documents a run uses.
+# documents a run uses. `max_failed` is how many failed documents a run may have and
+# still count (default 0): one DocSplit packet trips a Bedrock content filter during
+# extraction, after classification has finished, and fails the document.
 #
 # A dataset's `preset` names the config_library/unified preset its runs start from.
 
@@ -39,7 +41,7 @@ datasets:
   confbench: {name: "ConfBench (RealKIE invoices with scan noise)", short: "ConfBench", kind: fields, link: "../extensions/confbench-testset.md", preset: realkie-fcc-verified}
   omniai: {name: "OmniAI-OCR-Benchmark, all 9 formats", short: "OmniAI", kind: fields, link: "../idp-fundamentals/benchmark-datasets.md#omniai-ocr-benchmark", preset: ocr-benchmark, testset: ocr-benchmark, docs: 20}
   fake_w2: {name: "Fake-W2-Tax-Forms (W-2 forms, 45 fields)", short: "Fake-W2", kind: fields, link: "../idp-fundamentals/benchmark-datasets.md#fake-w2-tax-forms", preset: fake-w2, testset: fake-w2, docs: 20}
-  docsplit: {name: "DocSplit-Poly-Seq (20 packets)", short: "DocSplit", kind: packet, link: "../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq", preset: docsplit, testset: docsplit, docs: 20}
+  docsplit: {name: "DocSplit-Poly-Seq (20 packets)", short: "DocSplit", kind: packet, link: "../idp-fundamentals/benchmark-datasets.md#docsplit-poly-seq", preset: docsplit, testset: docsplit, docs: 20, max_failed: 1}
   long_packets: {name: "Long packets, 30-60 pages (to be built)", short: "Long packets", kind: packet, new: true}
   same_class_packets: {name: "Same-class documents back to back (to be built)", short: "Same-class packets", kind: packet, new: true}
   packets_with_fields: {name: "Packets with section and field ground truth (to be built)", short: "Packets with fields", kind: packet_fields, new: true}

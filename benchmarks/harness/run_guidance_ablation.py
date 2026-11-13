@@ -172,7 +172,12 @@ def one_run(
         print(f"  ! no result for {run_id} ({label}):\n{out[-1500:]}", flush=True)
         return None
     data = json.loads((results / f"{run_id}-result.json").read_text(encoding="utf-8"))
-    if data.get("status") != "COMPLETE" or data.get("failedFiles"):
+    max_failed = int(ds.get("max_failed", 0))
+    failed = int(data.get("failedFiles") or 0)
+    ok_status = data.get("status") == "COMPLETE" or (
+        data.get("status") == "PARTIAL_COMPLETE" and failed <= max_failed
+    )
+    if not ok_status or failed > max_failed:
         print(
             f"  ! {run_id} ({label}) is {data.get('status')} with "
             f"{data.get('failedFiles')} failed files; not counted",
@@ -214,6 +219,11 @@ def main() -> int:
         if mpath.exists()
         else {"ablation": ab["id"], "verdict": "Measured; see the table.", "runs": {}}
     )
+    manifest["max_failed"] = {
+        k: int(reg["datasets"][k].get("max_failed", 0))
+        for k in keys
+        if reg["datasets"][k].get("max_failed")
+    } or manifest.get("max_failed", {})
     manifest.update(
         stack=args.stack,
         region=args.region,
