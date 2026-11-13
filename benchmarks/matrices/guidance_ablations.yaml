@@ -100,7 +100,7 @@ ablations:
     question: "Does the OCR reader make a difference to extraction accuracy?"
     changes: "OCR reader"
     values: ["Textract, tables and layout (default)", "Textract, layout only", "Bedrock vision model (Nova 2 Lite)"]
-    set: [{"ocr.backend": "textract", "ocr.features": [{"name": "TABLES"}, {"name": "LAYOUT"}, {"name": "SIGNATURES"}]}, {"ocr.backend": "textract", "ocr.features": [{"name": "LAYOUT"}]}, {"ocr.backend": "bedrock", "ocr.model_id": "us.amazon.nova-2-lite-v1:0"}]
+    set: [{"ocr.backend": "textract", "ocr.features": [{"name": "TABLES"}, {"name": "LAYOUT"}, {"name": "SIGNATURES"}]}, {"ocr.backend": "textract", "ocr.features": [{"name": "LAYOUT"}]}, {"ocr.backend": "bedrock", "ocr.model_id": "us.amazon.nova-2-lite-v1:0", "ocr.task_prompt": "Extract all text from this document image. Preserve the layout, including paragraphs, tables, and formatting.\n<document-image>\n{DOCUMENT_IMAGE}\n</document-image>"}]
     datasets: [realkie, confbench, omniai, synth_400]
     runs: 3
     metrics: [weighted_accuracy, completeness, cell_accuracy, ocr_tokens, total_tokens]
