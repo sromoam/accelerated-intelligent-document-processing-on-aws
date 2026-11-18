@@ -72,14 +72,1074 @@
 		})();
 	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">GitHub</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
 	StarlightThemeProvider.updatePickers();
-</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-to-improve-splitting-and-classification-on-your-documents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How to improve splitting and classification on your documents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#questions" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Questions</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#does-holistic-classification-beat-page-by-page-classification" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Does holistic classification beat page-by-page classification?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#do-i-need-page-images-in-the-classification-prompt" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Do I need page images in the classification prompt?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#can-a-decision-model-classify-the-sections" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Can a decision model classify the sections?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#which-way-of-splitting-and-classifying-should-i-use" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Which way of splitting and classifying should I use?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#planned" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Planned</span></a></li></ul></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-to-improve-splitting-and-classification-on-your-documents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How to improve splitting and classification on your documents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#questions" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Questions</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#does-holistic-classification-beat-page-by-page-classification" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Does holistic classification beat page-by-page classification?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#do-i-need-page-images-in-the-classification-prompt" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Do I need page images in the classification prompt?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#can-a-decision-model-classify-the-sections" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Can a decision model classify the sections?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#which-way-of-splitting-and-classifying-should-i-use" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Which way of splitting and classifying should I use?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#planned" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Planned</span></a></li></ul></li></ul></nav></starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">Splitting and Section Classification Benchmarks</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><p>Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#which-approach-should-i-use" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Which approach should I use?</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#page-by-page" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Page by page</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#holistic" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Holistic</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#split-then-an-llm-classifies-each-section" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Split, then an LLM classifies each section</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#split-then-a-decision-model-classifies-each-section" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Split, then a decision model classifies each section</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#long-packets" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Long packets</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-to-improve-splitting-and-classification-on-your-documents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How to improve splitting and classification on your documents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#questions" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Questions</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#does-holistic-classification-beat-page-by-page-classification" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Does holistic classification beat page-by-page classification?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#do-i-need-page-images-in-the-classification-prompt" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Do I need page images in the classification prompt?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#can-a-decision-model-classify-the-sections" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Can a decision model classify the sections?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#which-way-of-splitting-and-classifying-should-i-use" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Which way of splitting and classifying should I use?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#do-long-packets-change-which-approach-to-use" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Do long packets change which approach to use?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#planned" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Planned</span></a></li></ul></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#which-approach-should-i-use" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Which approach should I use?</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#page-by-page" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Page by page</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#holistic" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Holistic</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#split-then-an-llm-classifies-each-section" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Split, then an LLM classifies each section</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#split-then-a-decision-model-classifies-each-section" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Split, then a decision model classifies each section</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#long-packets" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Long packets</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-to-improve-splitting-and-classification-on-your-documents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How to improve splitting and classification on your documents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#questions" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Questions</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#does-holistic-classification-beat-page-by-page-classification" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Does holistic classification beat page-by-page classification?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#do-i-need-page-images-in-the-classification-prompt" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Do I need page images in the classification prompt?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#can-a-decision-model-classify-the-sections" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Can a decision model classify the sections?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#which-way-of-splitting-and-classifying-should-i-use" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Which way of splitting and classifying should I use?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#do-long-packets-change-which-approach-to-use" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Do long packets change which approach to use?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#planned" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Planned</span></a></li></ul></li></ul></nav></starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">Splitting and Section Classification Benchmarks</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><p>Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: MIT-0</p>
 <div class="sl-heading-wrapper level-h1"><h1 id="splitting-and-section-classification-benchmarks">Splitting and Section Classification Benchmarks</h1><a class="sl-anchor-link" href="#splitting-and-section-classification-benchmarks"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Splitting and Section Classification Benchmarks”</span></a></div>
 <p>Splitting finds where each document in a file starts and ends, and classification gives each
 of those sections a document class.
 <a href="../../idp-fundamentals/splitting-and-classification/">Splitting and Section Classification</a> explains how it
 works.</p>
-<p><img alt="Four ways to find the documents in a packet and classify each one: page by page, holistic, split then an LLM classifies each section, and split then a decision model classifies each section" loading="lazy" decoding="async" width="792" height="666" src="/accelerated-intelligent-document-processing-on-aws/_astro/splitting-approaches.BMY_bED__2eTUYn.svg"></p>
+<!-- BEGIN GENERATED APPROACHES -->
+<div class="sl-heading-wrapper level-h2"><h2 id="which-approach-should-i-use">Which approach should I use?</h2><a class="sl-anchor-link" href="#which-approach-should-i-use"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Which approach should I use?”</span></a></div>
+<p><img alt="Four ways to find the documents in a packet and classify each one: page by page, holistic, split then an LLM classifies each section, and split then a decision model classifies each section" loading="lazy" decoding="async" width="792" height="666" src="/accelerated-intelligent-document-processing-on-aws/_astro/splitting-approaches.7ZI_tqqj_2eTUYn.svg"></p>
+<p><strong>Answer:</strong> Holistic classification with Claude Haiku 5.5 is a good place to start: on DocSplit packets it got 0.74 of sections exactly right for $25.6 of classification per 1,000 packets, and no approach under $200 got measurably more right. With Claude Sonnet 5.5 it got the most right, 0.91, for $200, 7.8 times as much. Test it on your own packets.</p>
+<p><strong>The economics:</strong> On DocSplit packets, Claude Sonnet 5.5 instead of Claude Haiku 5.5 adds $175 of classification per 1,000 packets and gets 671 more sections right, so it costs $0.26 per section it saves. Choose it when finding and fixing a misfiled or mis-split document costs you more than $0.26.</p>
+<p><img alt="The model matters more than the approach: sections exactly right against classification cost per 1,000 packets, one point per approach and model, on DocSplit packets and same-class packets" loading="lazy" decoding="async" width="792" height="748" src="/accelerated-intelligent-document-processing-on-aws/_astro/sections-against-cost.BxFjyqs0_2eTUYn.svg"></p>
+<p><em>Bands show ±2 standard errors. The cost axis jumps from $40 to $150.</em></p>
+<p><img alt="Where each approach loses sections: for each approach and model, the share of true sections lost to each kind of error (wrong class, merged with a neighbour and split into pieces), on DocSplit packets" loading="lazy" decoding="async" width="792" height="464" src="/accelerated-intelligent-document-processing-on-aws/_astro/where-sections-are-lost.By5i5jdH_2eTUYn.svg"></p>
+<p><em>Measured on the 80 DocSplit packets every run scored, as are the error, sections-per-packet and confidence figures below.</em></p>
+<div class="sl-heading-wrapper level-h3"><h3 id="page-by-page">Page by page</h3><a class="sl-anchor-link" href="#page-by-page"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Page by page”</span></a></div>
+<p>One call per page picks its class; neighbouring pages of the same class become one section.</p>
+<ul>
+<li>It never merged two documents into one.</li>
+<li>With documents of the same class back to back, it got the most sections right with Amazon Nova 2 Lite (0.51).</li>
+<li>It cuts documents into pieces: with Claude Haiku 5.5 it predicted 6.4 sections per packet against 3.95 true, so 28% of sections were split.</li>
+<li>Classification costs $13.2 with Amazon Nova 2 Lite, $14.5 with Claude Haiku 5.5 and $252 with Claude Sonnet 5.5 per 1,000 packets.</li>
+</ul>
+<p>Use it when most of your documents are a single page, or with Amazon Nova 2 Lite when documents of the same class sit back to back.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="holistic">Holistic</h3><a class="sl-anchor-link" href="#holistic"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Holistic”</span></a></div>
+<p>One call reads the whole packet and returns each document’s pages and class.</p>
+<ul>
+<li>No other approach got measurably more sections right with any model.</li>
+<li>It can merge neighbouring documents: Amazon Nova 2 Lite merged 28% of sections into a neighbour, Claude Haiku 5.5 7% and Claude Sonnet 5.5 none.</li>
+<li>With documents of the same class back to back, Amazon Nova 2 Lite merged 40% of those pairs into one, against 28% of other pairs.</li>
+<li>It often returns no confidence: none for 166 of 740 sections with Claude Haiku 5.5 and 715 of 875 sections with Claude Sonnet 5.5 (<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/2039">#2039</a>).</li>
+<li>With Claude Haiku 5.5 it costs more than page by page ($25.6 against $14.5 per 1,000 packets): a 15-to-20-page packet with its page images is one request of more than 100,000 tokens, which Claude Haiku 5.5 bills at its long-context rate. Reading text only keeps the call under that.</li>
+<li>Classification costs $5.39 with Amazon Nova 2 Lite, $25.6 with Claude Haiku 5.5 and $200 with Claude Sonnet 5.5 per 1,000 packets.</li>
+</ul>
+<p>Use it to start, with Claude Sonnet 5.5 where you need the most sections right.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="split-then-an-llm-classifies-each-section">Split, then an LLM classifies each section</h3><a class="sl-anchor-link" href="#split-then-an-llm-classifies-each-section"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Split, then an LLM classifies each section”</span></a></div>
+<p>One call finds where each document starts, then one call per section picks its class.</p>
+<ul>
+<li>Its confidence separates right classes from wrong ones well: AUROC 0.96 with Claude Haiku 5.5 and 0.96 with Claude Sonnet 5.5, the highest of any approach with Claude Sonnet 5.5.</li>
+<li>With every model it cost more than holistic, for no measurable gain in sections right.</li>
+<li>Classification costs $7.83 with Amazon Nova 2 Lite, $31.5 with Claude Haiku 5.5 and $315 with Claude Sonnet 5.5 per 1,000 packets.</li>
+</ul>
+<p>Use it when you send low-confidence sections to a person for review.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="split-then-a-decision-model-classifies-each-section">Split, then a decision model classifies each section</h3><a class="sl-anchor-link" href="#split-then-a-decision-model-classifies-each-section"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Split, then a decision model classifies each section”</span></a></div>
+<p>One call finds where each document starts, then the Strands Decider 2B picks each section’s class from its first two page images.</p>
+<ul>
+<li>Its confidence separates right classes from wrong ones well: AUROC 0.93 with Amazon Nova 2 Lite finding the sections, 0.91 with Claude Haiku 5.5 finding the sections and 0.90 with Claude Sonnet 5.5 finding the sections, the highest of any approach with Amazon Nova 2 Lite.</li>
+<li>It keeps the section detector’s mistakes: with Amazon Nova 2 Lite, 36% of sections were merged into a neighbour.</li>
+<li>Classification costs $9.30 with Amazon Nova 2 Lite, $31.9 with Claude Haiku 5.5 and $204 with Claude Sonnet 5.5 per 1,000 packets.</li>
+</ul>
+<p>Use it when you want a small model on AWS Lambda to classify each section; give it one-line class descriptions (<a href="#can-a-decision-model-classify-the-sections">SC-12</a>).</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="long-packets">Long packets</h3><a class="sl-anchor-link" href="#long-packets"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Long packets”</span></a></div>
+<p>Holistic stays a good place to start on long packets: there its advantage is in grouping pages, not in getting every boundary exactly right. On Claude Haiku 5.5 it costs 2.3 times as much as page by page ($103 against $44.6 of classification per 1,000 long packets), because a 20-page window with page images goes over the 100,000 tokens above which Claude Haiku 5.5 bills its long-context rate; reading text only, or a window of about 15 pages, keeps each call under it.</p>
+<p>Long packets are harder, clearly so for holistic: on 30–60 pages both got 0.62 of sections exactly right, against 0.76 for holistic and 0.68 for page by page on 5–20 pages. On that strict measure, holistic’s lead on short packets (+0.08 ± 0.05) isn’t measurable on long ones (0.00 ± 0.06). But on the grouping score, which gives credit for nearly right sections, holistic still leads clearly on long packets (+0.06 ± 0.02), as it does on V-measure, Rand index and ordering. Page accuracy is the same, and page by page labels the sections it gets right slightly better (label accuracy −0.05 ± 0.02).</p>
+<p>Splitting first, then having an LLM classify each section, got no measurably more sections exactly right than holistic on long packets, nor a measurably better grouping score; it was narrowly ahead on ordering (+0.04 ± 0.04) and page accuracy (+0.03 ± 0.03), at 1.2 times the cost ($125 against $103).</p>
+<p><img alt="With Claude Haiku 5.5, long packets are harder, clearly so for holistic, and holistic&#39;s lead on long packets is unclear: section accuracy per packet for holistic and page by page on 5–20 pages and 30–60 pages, and the paired difference per packet, as boxes with the mean and two standard errors" loading="lazy" decoding="async" width="792" height="430" src="/accelerated-intelligent-document-processing-on-aws/_astro/long-packets.MMH8VlQA_2eTUYn.svg"></p>
+<p><em>Boxes span the middle half of the packets, with a line at the median; whiskers reach the 5th and 95th percentiles; the dot is the mean, with a bar of ±2 standard errors.</em></p>
+<p><img alt="With Claude Haiku 5.5, holistic still groups long packets better than page by page: holistic minus page by page on each packet-splitting metric, with two standard errors either side, on 5–20 pages and 30–60 pages" loading="lazy" decoding="async" width="792" height="390" src="/accelerated-intelligent-document-processing-on-aws/_astro/long-packets-metrics.Bg63E1UQ_2eTUYn.svg"></p>
+<p><em>Each dot is the mean of the packets’ paired differences, with a bar of ±2 standard errors; a bar that crosses the zero line is no measurable difference.</em></p>
+<details>
+<summary>What these metrics mean</summary>
+<ul>
+<li><em>Sections exactly right:</em> the share of true sections returned with exactly the right pages and class (section accuracy).</li>
+<li><em>Grouping score:</em> DocSplit’s packet score, from 0 to 1: how pages are grouped (V-measure and Rand index) and ordered, so a nearly right section still earns credit.</li>
+<li><em>Boundary accuracy:</em> the share of sections with exactly the right page range, whatever their class.</li>
+<li><em>V-measure:</em> how well pages are grouped into the true documents, from 0 to 1: each section should hold one document, and each document should sit in one section.</li>
+<li><em>Rand index:</em> the share of pairs of pages put together, or kept apart, as in the true documents.</li>
+<li><em>Ordering:</em> how close each document’s pages are to their true order, from 0 to 1 (Kendall’s tau, averaged over documents).</li>
+<li><em>Page accuracy:</em> the share of pages with the right class.</li>
+<li><em>Label accuracy:</em> of the sections with the right page range, the share with the right class.</li>
+</ul>
+<p>The page’s <a href="#questions">metric definitions</a> and Stickler’s <a href="https://awslabs.github.io/stickler/Guides/Document_Packet_Splitting/">Document Packet Splitting Evaluation</a> have more.</p>
+</details>
+<p><strong>How much one holistic call can hold.</strong> A holistic call sends every page of the packet in one request, so its size is set by service limits, not by accuracy:</p>
+<ul>
+<li><strong>Images:</strong> Amazon Bedrock sets no limit of its own on how many images a request carries; each model’s limits apply (<a href="https://docs.aws.amazon.com/bedrock/latest/userguide/inference-api-restrictions.html">Bedrock API restrictions</a>). For Claude that is a request of up to 32 MB with images up to 8,000 pixels, and in a request with more than 20 images every image must be 2,000 pixels or smaller (<a href="https://platform.claude.com/docs/en/build-with-claude/vision#request-limits">Claude vision limits</a>). The accelerator’s packet window is 20 pages by default so pages keep their full resolution; a wider window works, at 2,000 pixels a page.</li>
+<li><strong>Tokens:</strong> in our runs a page cost about 6,100 tokens with its image and 1,200 as text alone on the Claude models, and about 1,050 with its image on Amazon Nova 2 Lite. <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-haiku-5-5.html">Claude Haiku 5.5</a>, <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-sonnet-5-5.html">Claude Sonnet 5.5</a> and <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-amazon-nova-2-lite.html">Amazon Nova 2 Lite</a> each read up to 1 million tokens, so text alone fits hundreds of pages.</li>
+<li><strong>Price:</strong> Claude Haiku 5.5 bills a prompt of more than 100,000 tokens at higher long-context rates (<a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-haiku-5-5.html#model-card-anthropic-claude-haiku-5-5-pricing">model card</a>); in the Bedrock price list they are five times the standard rates. That is about 16 pages with images, or about 80 pages of text alone.</li>
+</ul>
+<p>A packet longer than that is not a reason to switch to page by page: the accelerator reads it in overlapping 20-page windows and merges them (<a href="../../classification/#packet-granularity-images-few-shot-examples-and-windowing">Packet granularity and windowing</a>). Prefer page by page when a single document in your packets is longer than the window and its pages need images.</p>
+<details>
+<summary>All the numbers</summary>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Instead of Holistic · Haiku 5.5</th><th>Extra classification cost per 1,000 packets</th><th>Extra sections right per 1,000 packets</th><th><a href="../../benchmark-guidance/marginal-cost-of-error/">Cost per section it saves</a></th></tr></thead><tbody><tr><td>Page by page · Nova 2 Lite</td><td>−$12.4</td><td>−1,017</td><td>saves $0.01 per extra wrong section</td></tr><tr><td>Holistic · Nova 2 Lite</td><td>−$20.3</td><td>−938</td><td>saves $0.02 per extra wrong section</td></tr><tr><td>Split, LLM classifies · Nova 2 Lite</td><td>−$17.8</td><td>−1,092</td><td>saves $0.02 per extra wrong section</td></tr><tr><td>Split, Decider 2B classifies · Nova 2 Lite</td><td>−$16.3</td><td>−1,104</td><td>saves $0.01 per extra wrong section</td></tr><tr><td>Page by page · Haiku 5.5</td><td>−$11.2</td><td>no measurable difference</td><td>cheaper, no measurable loss</td></tr><tr><td>Split, LLM classifies · Haiku 5.5</td><td>+$5.83</td><td>no measurable difference</td><td>no measurable gain</td></tr><tr><td>Split, Decider 2B classifies · Haiku 5.5</td><td>+$6.21</td><td>no measurable difference</td><td>no measurable gain</td></tr><tr><td>Page by page · Sonnet 5.5</td><td>+$227</td><td>no measurable difference</td><td>no measurable gain</td></tr><tr><td>Holistic · Sonnet 5.5</td><td>+$175</td><td>+671</td><td>$0.26</td></tr><tr><td>Split, LLM classifies · Sonnet 5.5</td><td>+$290</td><td>+562</td><td>$0.51</td></tr><tr><td>Split, Decider 2B classifies · Sonnet 5.5</td><td>+$179</td><td>+429</td><td>$0.42</td></tr></tbody></table>
+<p><em>DocSplit packets, N = 90–100 packets × 3 runs. A difference within twice the combined standard error is no measurable difference. Costs use on-demand prices for us-east-1 from <a href="../../config_library/pricing.yaml">config_library/pricing.yaml</a> as of 2026-11-18.</em></p>
+<p><strong>DocSplit packets: where sections were lost</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Approach · model</th><th>Wrong class</th><th>Merged with a neighbour</th><th>Split into pieces</th><th>Pages left out</th><th>Predicted sections per packet</th><th>Confidence AUROC</th><th>Sections with no confidence</th></tr></thead><tbody><tr><td>Page by page · Amazon Nova 2 Lite</td><td>4%</td><td>0%</td><td>48%</td><td>0%</td><td>8.29</td><td>0.49 ± 0.02</td><td>0%</td></tr><tr><td>Page by page · Claude Haiku 5.5</td><td>2%</td><td>0%</td><td>28%</td><td>0%</td><td>6.39</td><td>0.92 ± 0.07</td><td>0%</td></tr><tr><td>Page by page · Claude Sonnet 5.5</td><td>1%</td><td>0%</td><td>25%</td><td>0%</td><td>6.05</td><td>0.87 ± 0.01</td><td>0%</td></tr><tr><td>Holistic · Amazon Nova 2 Lite</td><td>7%</td><td>28%</td><td>14%</td><td>1%</td><td>3.55</td><td>0.66 ± 0.09</td><td>0%</td></tr><tr><td>Holistic · Claude Haiku 5.5</td><td>4%</td><td>7%</td><td>13%</td><td>1%</td><td>4.65</td><td>0.91 ± 0.03</td><td>22%</td></tr><tr><td>Holistic · Claude Sonnet 5.5</td><td>1%</td><td>0%</td><td>8%</td><td>0%</td><td>4.76</td><td>—</td><td>82%</td></tr><tr><td>Split, then an LLM classifies each section · Amazon Nova 2 Lite</td><td>5%</td><td>34%</td><td>14%</td><td>0%</td><td>3.39</td><td>0.78 ± 0.01</td><td>0%</td></tr><tr><td>Split, then an LLM classifies each section · Claude Haiku 5.5</td><td>2%</td><td>7%</td><td>16%</td><td>0%</td><td>4.79</td><td>0.96 ± 0.02</td><td>0%</td></tr><tr><td>Split, then an LLM classifies each section · Claude Sonnet 5.5</td><td>2%</td><td>0%</td><td>10%</td><td>0%</td><td>4.84</td><td>0.96 ± 0.01</td><td>0%</td></tr><tr><td>Split, then a decision model classifies each section · Amazon Nova 2 Lite</td><td>3%</td><td>36%</td><td>14%</td><td>0%</td><td>3.31</td><td>0.93 ± 0.02</td><td>0%</td></tr><tr><td>Split, then a decision model classifies each section · Claude Haiku 5.5</td><td>4%</td><td>6%</td><td>15%</td><td>1%</td><td>4.80</td><td>0.91 ± 0</td><td>0%</td></tr><tr><td>Split, then a decision model classifies each section · Claude Sonnet 5.5</td><td>6%</td><td>0%</td><td>10%</td><td>0%</td><td>4.84</td><td>0.9 ± 0.01</td><td>0%</td></tr></tbody></table>
+<p><em>80 packets × 3 runs: the packets every run scored; 3.95 true sections per packet; AUROC is shown over two runs or more, for the sections whose pages were right.</em></p>
+<p><strong>Same class back to back: where sections were lost</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Approach · model</th><th>Wrong class</th><th>Merged with a neighbour</th><th>Split into pieces</th><th>Pages left out</th><th>Predicted sections per packet</th><th>Confidence AUROC</th><th>Sections with no confidence</th></tr></thead><tbody><tr><td>Page by page · Amazon Nova 2 Lite</td><td>3%</td><td>1%</td><td>45%</td><td>0%</td><td>9.97</td><td>0.47 ± 0.05</td><td>0%</td></tr><tr><td>Page by page · Claude Haiku 5.5</td><td>2%</td><td>2%</td><td>29%</td><td>0%</td><td>8.01</td><td>0.83 ± 0.02</td><td>0%</td></tr><tr><td>Page by page · Claude Sonnet 5.5</td><td>1%</td><td>2%</td><td>28%</td><td>0%</td><td>7.67</td><td>0.8 ± 0.04</td><td>0%</td></tr><tr><td>Holistic · Amazon Nova 2 Lite</td><td>8%</td><td>32%</td><td>14%</td><td>0%</td><td>4.47</td><td>0.61 ± 0.06</td><td>0%</td></tr><tr><td>Holistic · Claude Haiku 5.5</td><td>6%</td><td>8%</td><td>12%</td><td>1%</td><td>5.67</td><td>0.75 ± 0.07</td><td>21%</td></tr><tr><td>Holistic · Claude Sonnet 5.5</td><td>2%</td><td>0%</td><td>9%</td><td>0%</td><td>5.82</td><td>0.97 ± 0.02</td><td>73%</td></tr><tr><td>Split, then an LLM classifies each section · Amazon Nova 2 Lite</td><td>3%</td><td>41%</td><td>14%</td><td>0%</td><td>4.01</td><td>0.71 ± 0.09</td><td>0%</td></tr><tr><td>Split, then an LLM classifies each section · Claude Haiku 5.5</td><td>3%</td><td>6%</td><td>15%</td><td>0%</td><td>5.87</td><td>0.86 ± 0.05</td><td>0%</td></tr><tr><td>Split, then an LLM classifies each section · Claude Sonnet 5.5</td><td>1%</td><td>0%</td><td>10%</td><td>0%</td><td>5.88</td><td>0.91 ± 0.03</td><td>0%</td></tr><tr><td>Split, then a decision model classifies each section · Amazon Nova 2 Lite</td><td>3%</td><td>41%</td><td>14%</td><td>0%</td><td>4.04</td><td>0.94 ± 0</td><td>0%</td></tr><tr><td>Split, then a decision model classifies each section · Claude Haiku 5.5</td><td>5%</td><td>6%</td><td>14%</td><td>0%</td><td>5.85</td><td>0.95 ± 0.01</td><td>0%</td></tr><tr><td>Split, then a decision model classifies each section · Claude Sonnet 5.5</td><td>5%</td><td>0%</td><td>10%</td><td>0%</td><td>5.85</td><td>0.94 ± 0</td><td>0%</td></tr></tbody></table>
+<p><em>57 packets × 3 runs: the packets every run scored; 4.91 true sections per packet; AUROC is shown over two runs or more, for the sections whose pages were right.</em></p>
+<p><em>Measured on each dataset’s preset, not the baseline setup.</em></p>
+<p><em>Measured on release 0.6.15-develop-d1be93f+fixes-2034-2035-2036, November 2026, us-east-1. Source: 72 Test Studio runs (26 failed documents left out of the scores), listed in <code dir="auto">benchmarks/results/guidance/SC-13.json</code>.</em></p>
+<p>In the two split rows the model named in the column finds the section boundaries (reading the whole packet); the LLM row then has that same model classify each section, and the decision-model row has the Strands Decider 2B (StrandsAgents/strands-decider-2B-qwen3.5-v1-2610, 8-bit, on AWS Lambda, images at 448 pixels) classify it from the section’s first two page images, with one-line class descriptions (the setting SC-12 found works best for it; the section detection step in that row reads the same descriptions).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Changes</strong></td><td>How the packet is split and who classifies each section, by model</td></tr><tr><td><strong>Everything else</strong></td><td>The <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a></td></tr><tr><td><strong>Datasets</strong></td><td><a href="../../benchmark-guidance/datasets/#docsplit-poly-seq-100-packets">DocSplit-Poly-Seq (100 packets)</a>; <a href="../../benchmark-guidance/datasets/#docsplit-same-class-runs-60-packets">DocSplit same-class runs (60 packets)</a></td></tr><tr><td><strong>Models</strong></td><td>OCR: Amazon Textract (Layout) · Classification: varies (the setting under test) · Extraction: Claude Haiku 5.5, single-pass · Scoring: Claude Haiku 5.5.</td></tr><tr><td><strong>Runs</strong></td><td>3 per document, per value; N: DocSplit — 90–100 packets × 3 runs; up to 10 packets failed in a run and are left out of it; Same-class runs — 59–60 packets × 3 runs; a packet that failed in a run is left out of that run</td></tr></tbody></table>
+<p><strong>DocSplit: section accuracy</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.48 ± 0.01</td><td>0.70 ± 0.00</td><td>0.74 ± 0.00</td></tr><tr><td>Holistic</td><td>0.50 ± 0.01</td><td>0.74 ± 0.02</td><td><strong>0.91 ± 0.00</strong></td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.46 ± 0.00</td><td>0.75 ± 0.00</td><td>0.88 ± 0.01</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.46 ± 0.01</td><td>0.75 ± 0.01</td><td>0.85 ± 0.00</td></tr></tbody></table>
+<p><strong>DocSplit: boundary accuracy</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.48 ± 0.01</td><td>0.70 ± 0.01</td><td>0.75 ± 0.01</td></tr><tr><td>Holistic</td><td>0.62 ± 0.01</td><td>0.81 ± 0.02</td><td><strong>0.92 ± 0.00</strong></td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.56 ± 0.02</td><td>0.78 ± 0.00</td><td>0.90 ± 0.01</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.55 ± 0.01</td><td>0.79 ± 0.01</td><td>0.90 ± 0.00</td></tr></tbody></table>
+<p><strong>DocSplit: label accuracy</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.91 ± 0.01</td><td>0.98 ± 0.00</td><td><strong>0.99 ± 0.00</strong></td></tr><tr><td>Holistic</td><td>0.85 ± 0.00</td><td>0.94 ± 0.01</td><td>0.98 ± 0.00</td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.89 ± 0.01</td><td>0.96 ± 0.01</td><td>0.98 ± 0.00</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.94 ± 0.00</td><td>0.96 ± 0.00</td><td>0.94 ± 0.00</td></tr></tbody></table>
+<p><strong>DocSplit: page accuracy</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.85 ± 0.00</td><td>0.90 ± 0.00</td><td>0.92 ± 0.00</td></tr><tr><td>Holistic</td><td>0.80 ± 0.01</td><td>0.90 ± 0.01</td><td>0.97 ± 0.00</td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.76 ± 0.01</td><td>0.92 ± 0.01</td><td>0.98 ± 0.00</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.76 ± 0.01</td><td>0.87 ± 0.00</td><td>0.91 ± 0.00</td></tr></tbody></table>
+<p><strong>DocSplit: grouping score</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.66 ± 0.00</td><td>0.82 ± 0.01</td><td>0.85 ± 0.00</td></tr><tr><td>Holistic</td><td>0.90 ± 0.00</td><td>0.91 ± 0.01</td><td><strong>0.94 ± 0.00</strong></td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.88 ± 0.01</td><td>0.89 ± 0.00</td><td>0.94 ± 0.00</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.87 ± 0.00</td><td>0.90 ± 0.00</td><td>0.94 ± 0.00</td></tr></tbody></table>
+<p><strong>DocSplit: calibration error</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr><tr><td>Holistic</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.90 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr></tbody></table>
+<p><strong>DocSplit: median seconds per packet</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>207.78 ± 57.24</td><td>294.29 ± 54.02</td><td>144.31 ± 13.55</td></tr><tr><td>Holistic</td><td>122.26 ± 6.29</td><td>137.64 ± 4.05</td><td>128.63 ± 6.22</td></tr><tr><td>Split, then an LLM classifies each section</td><td><strong>106.08 ± 2.36</strong></td><td>188.74 ± 24.56</td><td>143.69 ± 5.90</td></tr><tr><td>Split, then a decision model classifies each section</td><td>174.45 ± 24.34</td><td>225.52 ± 15.35</td><td>158.02 ± 6.72</td></tr></tbody></table>
+<p><strong>DocSplit: classification cost per 1,000 packets (USD)</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>$13.2 ± $0.01</td><td>$14.5 ± $0.03</td><td>$252 ± $0.53</td></tr><tr><td>Holistic</td><td><strong>$5.39 ± $0.00</strong></td><td>$25.6 ± $0.26</td><td>$200 ± $0.37</td></tr><tr><td>Split, then an LLM classifies each section</td><td>$7.83 ± $0.03</td><td>$31.5 ± $0.69</td><td>$315 ± $0.46</td></tr><tr><td>Split, then a decision model classifies each section</td><td>$9.30 ± $0.27</td><td>$31.9 ± $0.20</td><td>$204 ± $0.10</td></tr></tbody></table>
+<p><strong>Same-class runs: section accuracy</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.51 ± 0.01</td><td>0.67 ± 0.01</td><td>0.68 ± 0.00</td></tr><tr><td>Holistic</td><td>0.46 ± 0.00</td><td>0.74 ± 0.02</td><td>0.90 ± 0.01</td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.43 ± 0.00</td><td>0.75 ± 0.02</td><td>0.89 ± 0.00</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.42 ± 0.01</td><td>0.74 ± 0.01</td><td>0.85 ± 0.01</td></tr></tbody></table>
+<p><strong>Same-class runs: boundary accuracy</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.54 ± 0.01</td><td>0.69 ± 0.01</td><td>0.70 ± 0.00</td></tr><tr><td>Holistic</td><td>0.55 ± 0.01</td><td>0.80 ± 0.02</td><td>0.92 ± 0.01</td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.47 ± 0.00</td><td>0.79 ± 0.02</td><td>0.91 ± 0.00</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.46 ± 0.01</td><td>0.80 ± 0.00</td><td>0.91 ± 0.01</td></tr></tbody></table>
+<p><strong>Same-class runs: label accuracy</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.94 ± 0.01</td><td>0.97 ± 0.00</td><td>0.98 ± 0.00</td></tr><tr><td>Holistic</td><td>0.85 ± 0.01</td><td>0.93 ± 0.01</td><td>0.98 ± 0.00</td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.95 ± 0.01</td><td>0.97 ± 0.00</td><td><strong>0.98</strong></td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.93 ± 0.01</td><td>0.93 ± 0.00</td><td>0.94 ± 0.00</td></tr></tbody></table>
+<p><strong>Same-class runs: page accuracy</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.79 ± 0.00</td><td>0.83 ± 0.00</td><td>0.86 ± 0.00</td></tr><tr><td>Holistic</td><td>0.77 ± 0.01</td><td>0.88 ± 0.01</td><td><strong>0.95 ± 0.00</strong></td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.79 ± 0.00</td><td>0.90 ± 0.01</td><td>0.95 ± 0.00</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.78 ± 0.00</td><td>0.86 ± 0.00</td><td>0.88 ± 0.00</td></tr></tbody></table>
+<p><strong>Same-class runs: grouping score</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.69 ± 0.00</td><td>0.81 ± 0.00</td><td>0.84 ± 0.00</td></tr><tr><td>Holistic</td><td>0.87 ± 0.00</td><td>0.92 ± 0.01</td><td>0.95 ± 0.00</td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.86 ± 0.00</td><td>0.90 ± 0.01</td><td>0.95 ± 0.00</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.86 ± 0.01</td><td>0.91 ± 0.01</td><td>0.95 ± 0.00</td></tr></tbody></table>
+<p><strong>Same-class runs: calibration error</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr><tr><td>Holistic</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr><tr><td>Split, then an LLM classifies each section</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr><tr><td>Split, then a decision model classifies each section</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr></tbody></table>
+<p><strong>Same-class runs: median seconds per packet</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>206.64 ± 55.01</td><td>338.17 ± 21.46</td><td>140.68 ± 45.25</td></tr><tr><td>Holistic</td><td>164.29 ± 44.03</td><td>199.71 ± 35.10</td><td>153.90 ± 26.99</td></tr><tr><td>Split, then an LLM classifies each section</td><td>145.10 ± 6.30</td><td>179.41 ± 27.80</td><td>179.36 ± 19.56</td></tr><tr><td>Split, then a decision model classifies each section</td><td>137.83 ± 23.62</td><td>176.47 ± 12.01</td><td>151.41 ± 30.72</td></tr></tbody></table>
+<p><strong>Same-class runs: classification cost per 1,000 packets (USD)</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>$12.8 ± $0.03</td><td>$14.4 ± $0.06</td><td>$249 ± $0.61</td></tr><tr><td>Holistic</td><td><strong>$5.47 ± $0.06</strong></td><td>$24.8 ± $0.02</td><td>$197 ± $0.43</td></tr><tr><td>Split, then an LLM classifies each section</td><td>$7.83 ± $0.03</td><td>$31.2 ± $0.25</td><td>$325 ± $0.29</td></tr><tr><td>Split, then a decision model classifies each section</td><td>$9.31 ± $0.41</td><td>$31.1 ± $0.19</td><td>$202 ± $0.27</td></tr></tbody></table>
+<p>Failed packets per run: DocSplit — Holistic · Claude Haiku 5.5: 1, 0, 1; DocSplit — Split, then an LLM classifies each section · Amazon Nova 2 Lite: 1, 1, 0; DocSplit — Split, then an LLM classifies each section · Claude Haiku 5.5: 8, 10, 0; DocSplit — Split, then a decision model classifies each section · Amazon Nova 2 Lite: 0, 1, 0; Same-class runs — Holistic · Claude Sonnet 5.5: 0, 1, 1; Same-class runs — Split, then a decision model classifies each section · Claude Haiku 5.5: 0, 1, 0.</p>
+<p><em>The <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a> is <em>Holistic</em> with <em>Claude Haiku 5.5</em>. A bold figure beats every other in its table by more than twice the combined standard error.</em></p>
+<p><em>Costs use on-demand prices for us-east-1 from <a href="../../config_library/pricing.yaml">config_library/pricing.yaml</a> as of 2026-11-18. Classification cost counts only the classification step: its Amazon Bedrock calls and a decision model’s AWS Lambda time. OCR, extraction, confidence scoring and other AWS charges are left out.</em></p>
+</details>
+<!-- END GENERATED APPROACHES -->
 <div class="sl-heading-wrapper level-h2"><h2 id="how-to-improve-splitting-and-classification-on-your-documents">How to improve splitting and classification on your documents</h2><a class="sl-anchor-link" href="#how-to-improve-splitting-and-classification-on-your-documents"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “How to improve splitting and classification on your documents”</span></a></div>
 <p><strong>Your definitions.</strong> The classification model picks a document class by comparing each
 section with the description of every document class. Name the features that tell a class
@@ -163,7 +1223,7 @@ document class.</li>
 </details>
 <!-- BEGIN GENERATED FAQ -->
 <div class="sl-heading-wrapper level-h3"><h3 id="does-holistic-classification-beat-page-by-page-classification">Does holistic classification beat page-by-page classification?</h3><a class="sl-anchor-link" href="#does-holistic-classification-beat-page-by-page-classification"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Does holistic classification beat page-by-page classification?”</span></a></div>
-<p><svg aria-label="Holistic classification with Claude Sonnet 5.5 beats page by page: section accuracy against classification cost per 1,000 packets, one point per granularity, strategy and model" xmlns="http://www.w3.org/2000/svg" class="viz" width="792" height="906" viewBox="0 0 792 906" role="img"><title>Holistic classification with Claude Sonnet 5.5 beats page by page</title><desc>DocSplit packets, 14–20 packets × 3 runs: Page by page · Nova 2 Lite 57% at $13.2 classification cost per 1,000 packets, Holistic · Nova 2 Lite 60% at $5.31 classification cost per 1,000 packets, Two steps, page by page · Nova 2 Lite 73% at $12.7 classification cost per 1,000 packets, Two steps, holistic · Nova 2 Lite 56% at $7.90 classification cost per 1,000 packets, Page by page · Haiku 5.5 69% at $14.9 classification cost per 1,000 packets, Holistic · Haiku 5.5 (baseline setup) 76% at $10.4 classification cost per 1,000 packets, Two steps, page by page · Haiku 5.5 70% at $18.0 classification cost per 1,000 packets, Two steps, holistic · Haiku 5.5 76% at $16.9 classification cost per 1,000 packets, Page by page · Sonnet 5.5 76% at $254 classification cost per 1,000 packets, Holistic · Sonnet 5.5 91% at $201 classification cost per 1,000 packets, Two steps, page by page · Sonnet 5.5 82% at $349 classification cost per 1,000 packets, Two steps, holistic · Sonnet 5.5 89% at $326 classification cost per 1,000 packets; Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction with structured output, and confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</desc><style>
+<p><svg aria-label="Holistic classification with Claude Sonnet 5.5 beats page by page: section accuracy against classification cost per 1,000 packets, one point per granularity, strategy and model" xmlns="http://www.w3.org/2000/svg" class="viz" width="792" height="906" viewBox="0 0 792 906" role="img"><title>Holistic classification with Claude Sonnet 5.5 beats page by page</title><desc>DocSplit packets, 14–20 packets × 3 runs: Page by page · Nova 2 Lite 57% at $13.2 classification cost per 1,000 packets, Holistic · Nova 2 Lite 60% at $5.31 classification cost per 1,000 packets, Two steps, page by page · Nova 2 Lite 73% at $12.7 classification cost per 1,000 packets, Two steps, holistic · Nova 2 Lite 56% at $7.90 classification cost per 1,000 packets, Page by page · Haiku 5.5 69% at $14.9 classification cost per 1,000 packets, Holistic · Haiku 5.5 (baseline setup) 76% at $23.8 classification cost per 1,000 packets, Two steps, page by page · Haiku 5.5 70% at $18.0 classification cost per 1,000 packets, Two steps, holistic · Haiku 5.5 76% at $29.1 classification cost per 1,000 packets, Page by page · Sonnet 5.5 76% at $254 classification cost per 1,000 packets, Holistic · Sonnet 5.5 91% at $201 classification cost per 1,000 packets, Two steps, page by page · Sonnet 5.5 82% at $349 classification cost per 1,000 packets, Two steps, holistic · Sonnet 5.5 89% at $326 classification cost per 1,000 packets; Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction with structured output, and confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</desc><style>
   .viz { --series: #2a78d6; --ring: #ffffff; --ink: #0b0b0b; --ink-2: #52514e;
          --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7;
          --fam-nova: #2a78d6; --fam-claude: #eb6834; --fam-other: #1baf7a; }
@@ -207,10 +1267,90 @@ document class.</li>
   .viz .fam-other { fill: var(--fam-other); }
   .viz .baseline { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 5 4; }
   .viz .baselinelabel { font-size: 11px; fill: var(--ink-2); }
-</style><text class="ctitle" x="0" y="18.0">Holistic classification with Claude Sonnet 5.5 beats page by page</text><text class="sub" x="0" y="38.0">DocSplit packets, 14–20 packets × 3 runs · Varies: granularity, strategy and model · Everything else: baseline setup</text><rect class="dot ref fam-claude" x="1.5" y="49.5" width="9.0" height="9.0" rx="1.5"></rect><text class="plabel dflt" x="16" y="58.0">Baseline setup</text><g transform="translate(0.0 72.0)"><text class="ptitle" x="0" y="14">Amazon Nova 2 Lite</text><text class="axislabel" x="42" y="33">Sections exactly right (%) ↑</text><line class="grid" x1="46" x2="365.0" y1="334.0" y2="334.0"></line><line class="axis" x1="42" x2="46" y1="334.0" y2="334.0"></line><text class="tick" x="39" y="338.0" text-anchor="end">40%</text><line class="grid" x1="46" x2="365.0" y1="237.3" y2="237.3"></line><line class="axis" x1="42" x2="46" y1="237.3" y2="237.3"></line><text class="tick" x="39" y="241.3" text-anchor="end">60%</text><line class="grid" x1="46" x2="365.0" y1="140.7" y2="140.7"></line><line class="axis" x1="42" x2="46" y1="140.7" y2="140.7"></line><text class="tick" x="39" y="144.7" text-anchor="end">80%</text><line class="grid" x1="46" x2="365.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="334" y2="338"></line><text class="tick" x="46.0" y="350" text-anchor="middle">$0</text><line class="axis" x1="125.8" x2="125.8" y1="334" y2="338"></line><text class="tick" x="125.8" y="350" text-anchor="middle">$100</text><line class="axis" x1="205.5" x2="205.5" y1="334" y2="338"></line><text class="tick" x="205.5" y="350" text-anchor="middle">$200</text><line class="axis" x1="285.2" x2="285.2" y1="334" y2="338"></line><text class="tick" x="285.2" y="350" text-anchor="middle">$300</text><line class="axis" x1="365.0" x2="365.0" y1="334" y2="338"></line><text class="tick" x="365.0" y="350" text-anchor="middle">$400</text><line class="axis" x1="46" x2="365.0" y1="334" y2="334"></line><line class="axis" x1="46" x2="46" y1="44" y2="334"></line><rect class="band fam-nova" x="51.6" y="245.6" width="10" height="14.5" rx="5"></rect><rect class="band fam-nova" x="45.2" y="232.0" width="10" height="7.2" rx="5"></rect><rect class="band fam-nova" x="51.1" y="161.8" width="10" height="25.9" rx="5"></rect><rect class="band fam-nova" x="47.3" y="223.5" width="10" height="65.1" rx="5"></rect><line class="leader" x1="56.5" y1="232.4" x2="58.2" y2="231.5"></line><g><title>Page by page · Nova 2 Lite: Section accuracy 57% ± 1%, $13.2 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="56.6" cy="252.9" r="5"></circle></g><g><title>Holistic · Nova 2 Lite: Section accuracy 60% ± 1%, $5.31 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="50.2" cy="235.5" r="5"></circle></g><g><title>Two steps, page by page · Nova 2 Lite: Section accuracy 73% ± 3%, $12.7 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="56.1" cy="174.7" r="5"></circle></g><g><title>Two steps, holistic · Nova 2 Lite: Section accuracy 56% ± 7%, $7.90 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="52.3" cy="256.1" r="5"></circle></g><text class="plabel halo" x="66.1" y="178.7" text-anchor="start">Two steps, page by page</text><text class="plabel halo" x="66.6" y="256.9" text-anchor="start">Page by page, Two steps, holistic</text><text class="plabel halo" x="60.2" y="227.5" text-anchor="start">Holistic</text></g><g transform="translate(405.0 72.0)"><text class="ptitle" x="0" y="14">Claude Haiku 5.5</text><line class="grid" x1="46" x2="365.0" y1="334.0" y2="334.0"></line><line class="axis" x1="42" x2="46" y1="334.0" y2="334.0"></line><text class="tick" x="39" y="338.0" text-anchor="end">40%</text><line class="grid" x1="46" x2="365.0" y1="237.3" y2="237.3"></line><line class="axis" x1="42" x2="46" y1="237.3" y2="237.3"></line><text class="tick" x="39" y="241.3" text-anchor="end">60%</text><line class="grid" x1="46" x2="365.0" y1="140.7" y2="140.7"></line><line class="axis" x1="42" x2="46" y1="140.7" y2="140.7"></line><text class="tick" x="39" y="144.7" text-anchor="end">80%</text><line class="grid" x1="46" x2="365.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="334" y2="338"></line><text class="tick" x="46.0" y="350" text-anchor="middle">$0</text><line class="axis" x1="125.8" x2="125.8" y1="334" y2="338"></line><text class="tick" x="125.8" y="350" text-anchor="middle">$100</text><line class="axis" x1="205.5" x2="205.5" y1="334" y2="338"></line><text class="tick" x="205.5" y="350" text-anchor="middle">$200</text><line class="axis" x1="285.2" x2="285.2" y1="334" y2="338"></line><text class="tick" x="285.2" y="350" text-anchor="middle">$300</text><line class="axis" x1="365.0" x2="365.0" y1="334" y2="338"></line><text class="tick" x="365.0" y="350" text-anchor="middle">$400</text><line class="axis" x1="46" x2="365.0" y1="334" y2="334"></line><line class="axis" x1="46" x2="46" y1="44" y2="334"></line><rect class="band fam-claude" x="52.9" y="182.6" width="10" height="22.3" rx="5"></rect><rect class="band fam-claude" x="49.3" y="149.7" width="10" height="24.8" rx="5"></rect><rect class="band fam-claude" x="55.4" y="167.7" width="10" height="43.7" rx="5"></rect><rect class="band fam-claude" x="54.5" y="132.1" width="10" height="54.1" rx="5"></rect><line class="leader" x1="61.3" y1="162.1" x2="72.3" y2="162.1"></line><g><title>Page by page · Haiku 5.5: Section accuracy 69% ± 2%, $14.9 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="53.4" y="189.2" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Holistic · Haiku 5.5 (baseline setup): Section accuracy 76% ± 3%, $10.4 classification cost per 1,000 packets</title><rect class="dot fam-claude ref" x="49.8" y="157.6" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Two steps, page by page · Haiku 5.5: Section accuracy 70% ± 5%, $18.0 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="55.9" y="185.0" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Two steps, holistic · Haiku 5.5: Section accuracy 76% ± 6%, $16.9 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="55.0" y="154.6" width="9.0" height="9.0" rx="1.5"></rect></g><text class="plabel halo" x="67.9" y="197.7" text-anchor="start">Page by page, Two steps, page by page</text><text class="plabel halo" x="74.3" y="166.1" text-anchor="start">Holistic, Two steps, holistic</text></g><text class="axislabel" x="396.0" y="442.0" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><g transform="translate(0.0 470.0)"><text class="ptitle" x="0" y="14">Claude Sonnet 5.5</text><text class="axislabel" x="42" y="33">Sections exactly right (%) ↑</text><line class="grid" x1="46" x2="365.0" y1="334.0" y2="334.0"></line><line class="axis" x1="42" x2="46" y1="334.0" y2="334.0"></line><text class="tick" x="39" y="338.0" text-anchor="end">40%</text><line class="grid" x1="46" x2="365.0" y1="237.3" y2="237.3"></line><line class="axis" x1="42" x2="46" y1="237.3" y2="237.3"></line><text class="tick" x="39" y="241.3" text-anchor="end">60%</text><line class="grid" x1="46" x2="365.0" y1="140.7" y2="140.7"></line><line class="axis" x1="42" x2="46" y1="140.7" y2="140.7"></line><text class="tick" x="39" y="144.7" text-anchor="end">80%</text><line class="grid" x1="46" x2="365.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="334" y2="338"></line><text class="tick" x="46.0" y="350" text-anchor="middle">$0</text><line class="axis" x1="125.8" x2="125.8" y1="334" y2="338"></line><text class="tick" x="125.8" y="350" text-anchor="middle">$100</text><line class="axis" x1="205.5" x2="205.5" y1="334" y2="338"></line><text class="tick" x="205.5" y="350" text-anchor="middle">$200</text><line class="axis" x1="285.2" x2="285.2" y1="334" y2="338"></line><text class="tick" x="285.2" y="350" text-anchor="middle">$300</text><line class="axis" x1="365.0" x2="365.0" y1="334" y2="338"></line><text class="tick" x="365.0" y="350" text-anchor="middle">$400</text><line class="axis" x1="46" x2="365.0" y1="334" y2="334"></line><line class="axis" x1="46" x2="46" y1="44" y2="334"></line><rect class="band fam-claude" x="243.7" y="154.4" width="10" height="7.7" rx="5"></rect><rect class="band fam-claude" x="201.5" y="73.3" width="10" height="25.2" rx="5"></rect><rect class="band fam-claude" x="319.7" y="118.9" width="10" height="24.7" rx="5"></rect><rect class="band fam-claude" x="301.1" y="87.0" width="10" height="21.5" rx="5"></rect><line class="leader" x1="299.9" y1="100.8" x2="298.1" y2="101.7"></line><line class="leader" x1="317.7" y1="131.3" x2="316.7" y2="131.3"></line><g><title>Page by page · Sonnet 5.5: Section accuracy 76% ± 1%, $254 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="244.2" y="153.8" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Holistic · Sonnet 5.5: Section accuracy 91% ± 3%, $201 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="202.0" y="81.4" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Two steps, page by page · Sonnet 5.5: Section accuracy 82% ± 3%, $349 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="320.2" y="126.8" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Two steps, holistic · Sonnet 5.5: Section accuracy 89% ± 2%, $326 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="301.6" y="93.2" width="9.0" height="9.0" rx="1.5"></rect></g><text class="plabel halo" x="216.5" y="89.9" text-anchor="start">Holistic</text><text class="plabel halo" x="238.7" y="162.3" text-anchor="end">Page by page</text><text class="plabel halo" x="296.1" y="113.7" text-anchor="end">Two steps, holistic</text><text class="plabel halo" x="314.7" y="135.3" text-anchor="end">Two steps, page by page</text></g><text class="axislabel" x="396.0" y="840.0" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><text class="prices" x="0" y="869.0">Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction with structured output, and</text><text class="prices" x="0" y="883.0">confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</text><text class="prices" x="0" y="901.0">Prices: on-demand, us-east-1, config_library/pricing.yaml as of 2026-11-18</text></svg>
+</style><text class="ctitle" x="0" y="18.0">Holistic classification with Claude Sonnet 5.5 beats page by page</text><text class="sub" x="0" y="38.0">DocSplit packets, 14–20 packets × 3 runs · Varies: granularity, strategy and model · Everything else: baseline setup</text><rect class="dot ref fam-claude" x="1.5" y="49.5" width="9.0" height="9.0" rx="1.5"></rect><text class="plabel dflt" x="16" y="58.0">Baseline setup</text><g transform="translate(0.0 72.0)"><text class="ptitle" x="0" y="14">Amazon Nova 2 Lite</text><text class="axislabel" x="42" y="33">Sections exactly right (%) ↑</text><line class="grid" x1="46" x2="365.0" y1="334.0" y2="334.0"></line><line class="axis" x1="42" x2="46" y1="334.0" y2="334.0"></line><text class="tick" x="39" y="338.0" text-anchor="end">40%</text><line class="grid" x1="46" x2="365.0" y1="237.3" y2="237.3"></line><line class="axis" x1="42" x2="46" y1="237.3" y2="237.3"></line><text class="tick" x="39" y="241.3" text-anchor="end">60%</text><line class="grid" x1="46" x2="365.0" y1="140.7" y2="140.7"></line><line class="axis" x1="42" x2="46" y1="140.7" y2="140.7"></line><text class="tick" x="39" y="144.7" text-anchor="end">80%</text><line class="grid" x1="46" x2="365.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="334" y2="338"></line><text class="tick" x="46.0" y="350" text-anchor="middle">$0</text><line class="axis" x1="125.8" x2="125.8" y1="334" y2="338"></line><text class="tick" x="125.8" y="350" text-anchor="middle">$100</text><line class="axis" x1="205.5" x2="205.5" y1="334" y2="338"></line><text class="tick" x="205.5" y="350" text-anchor="middle">$200</text><line class="axis" x1="285.2" x2="285.2" y1="334" y2="338"></line><text class="tick" x="285.2" y="350" text-anchor="middle">$300</text><line class="axis" x1="365.0" x2="365.0" y1="334" y2="338"></line><text class="tick" x="365.0" y="350" text-anchor="middle">$400</text><line class="axis" x1="46" x2="365.0" y1="334" y2="334"></line><line class="axis" x1="46" x2="46" y1="44" y2="334"></line><rect class="band fam-nova" x="51.6" y="245.6" width="10" height="14.5" rx="5"></rect><rect class="band fam-nova" x="45.2" y="232.0" width="10" height="7.2" rx="5"></rect><rect class="band fam-nova" x="51.1" y="161.8" width="10" height="25.9" rx="5"></rect><rect class="band fam-nova" x="47.3" y="223.5" width="10" height="65.1" rx="5"></rect><line class="leader" x1="56.5" y1="232.4" x2="58.2" y2="231.5"></line><g><title>Page by page · Nova 2 Lite: Section accuracy 57% ± 1%, $13.2 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="56.6" cy="252.9" r="5"></circle></g><g><title>Holistic · Nova 2 Lite: Section accuracy 60% ± 1%, $5.31 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="50.2" cy="235.5" r="5"></circle></g><g><title>Two steps, page by page · Nova 2 Lite: Section accuracy 73% ± 3%, $12.7 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="56.1" cy="174.7" r="5"></circle></g><g><title>Two steps, holistic · Nova 2 Lite: Section accuracy 56% ± 7%, $7.90 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="52.3" cy="256.1" r="5"></circle></g><text class="plabel halo" x="66.1" y="178.7" text-anchor="start">Two steps, page by page</text><text class="plabel halo" x="66.6" y="256.9" text-anchor="start">Page by page, Two steps, holistic</text><text class="plabel halo" x="60.2" y="227.5" text-anchor="start">Holistic</text></g><g transform="translate(405.0 72.0)"><text class="ptitle" x="0" y="14">Claude Haiku 5.5</text><line class="grid" x1="46" x2="365.0" y1="334.0" y2="334.0"></line><line class="axis" x1="42" x2="46" y1="334.0" y2="334.0"></line><text class="tick" x="39" y="338.0" text-anchor="end">40%</text><line class="grid" x1="46" x2="365.0" y1="237.3" y2="237.3"></line><line class="axis" x1="42" x2="46" y1="237.3" y2="237.3"></line><text class="tick" x="39" y="241.3" text-anchor="end">60%</text><line class="grid" x1="46" x2="365.0" y1="140.7" y2="140.7"></line><line class="axis" x1="42" x2="46" y1="140.7" y2="140.7"></line><text class="tick" x="39" y="144.7" text-anchor="end">80%</text><line class="grid" x1="46" x2="365.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="334" y2="338"></line><text class="tick" x="46.0" y="350" text-anchor="middle">$0</text><line class="axis" x1="125.8" x2="125.8" y1="334" y2="338"></line><text class="tick" x="125.8" y="350" text-anchor="middle">$100</text><line class="axis" x1="205.5" x2="205.5" y1="334" y2="338"></line><text class="tick" x="205.5" y="350" text-anchor="middle">$200</text><line class="axis" x1="285.2" x2="285.2" y1="334" y2="338"></line><text class="tick" x="285.2" y="350" text-anchor="middle">$300</text><line class="axis" x1="365.0" x2="365.0" y1="334" y2="338"></line><text class="tick" x="365.0" y="350" text-anchor="middle">$400</text><line class="axis" x1="46" x2="365.0" y1="334" y2="334"></line><line class="axis" x1="46" x2="46" y1="44" y2="334"></line><rect class="band fam-claude" x="52.9" y="182.6" width="10" height="22.3" rx="5"></rect><rect class="band fam-claude" x="60.0" y="149.7" width="10" height="24.8" rx="5"></rect><rect class="band fam-claude" x="55.4" y="167.7" width="10" height="43.7" rx="5"></rect><rect class="band fam-claude" x="64.2" y="132.1" width="10" height="54.1" rx="5"></rect><line class="leader" x1="72.0" y1="162.1" x2="83.0" y2="162.1"></line><g><title>Page by page · Haiku 5.5: Section accuracy 69% ± 2%, $14.9 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="53.4" y="189.2" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Holistic · Haiku 5.5 (baseline setup): Section accuracy 76% ± 3%, $23.8 classification cost per 1,000 packets</title><rect class="dot fam-claude ref" x="60.5" y="157.6" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Two steps, page by page · Haiku 5.5: Section accuracy 70% ± 5%, $18.0 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="55.9" y="185.0" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Two steps, holistic · Haiku 5.5: Section accuracy 76% ± 6%, $29.1 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="64.7" y="154.6" width="9.0" height="9.0" rx="1.5"></rect></g><text class="plabel halo" x="67.9" y="197.7" text-anchor="start">Page by page, Two steps, page by page</text><text class="plabel halo" x="85.0" y="166.1" text-anchor="start">Holistic, Two steps, holistic</text></g><text class="axislabel" x="396.0" y="442.0" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><g transform="translate(0.0 470.0)"><text class="ptitle" x="0" y="14">Claude Sonnet 5.5</text><text class="axislabel" x="42" y="33">Sections exactly right (%) ↑</text><line class="grid" x1="46" x2="365.0" y1="334.0" y2="334.0"></line><line class="axis" x1="42" x2="46" y1="334.0" y2="334.0"></line><text class="tick" x="39" y="338.0" text-anchor="end">40%</text><line class="grid" x1="46" x2="365.0" y1="237.3" y2="237.3"></line><line class="axis" x1="42" x2="46" y1="237.3" y2="237.3"></line><text class="tick" x="39" y="241.3" text-anchor="end">60%</text><line class="grid" x1="46" x2="365.0" y1="140.7" y2="140.7"></line><line class="axis" x1="42" x2="46" y1="140.7" y2="140.7"></line><text class="tick" x="39" y="144.7" text-anchor="end">80%</text><line class="grid" x1="46" x2="365.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="334" y2="338"></line><text class="tick" x="46.0" y="350" text-anchor="middle">$0</text><line class="axis" x1="125.8" x2="125.8" y1="334" y2="338"></line><text class="tick" x="125.8" y="350" text-anchor="middle">$100</text><line class="axis" x1="205.5" x2="205.5" y1="334" y2="338"></line><text class="tick" x="205.5" y="350" text-anchor="middle">$200</text><line class="axis" x1="285.2" x2="285.2" y1="334" y2="338"></line><text class="tick" x="285.2" y="350" text-anchor="middle">$300</text><line class="axis" x1="365.0" x2="365.0" y1="334" y2="338"></line><text class="tick" x="365.0" y="350" text-anchor="middle">$400</text><line class="axis" x1="46" x2="365.0" y1="334" y2="334"></line><line class="axis" x1="46" x2="46" y1="44" y2="334"></line><rect class="band fam-claude" x="243.7" y="154.4" width="10" height="7.7" rx="5"></rect><rect class="band fam-claude" x="201.5" y="73.3" width="10" height="25.2" rx="5"></rect><rect class="band fam-claude" x="319.7" y="118.9" width="10" height="24.7" rx="5"></rect><rect class="band fam-claude" x="301.1" y="87.0" width="10" height="21.5" rx="5"></rect><line class="leader" x1="299.9" y1="100.8" x2="298.1" y2="101.7"></line><line class="leader" x1="317.7" y1="131.3" x2="316.7" y2="131.3"></line><g><title>Page by page · Sonnet 5.5: Section accuracy 76% ± 1%, $254 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="244.2" y="153.8" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Holistic · Sonnet 5.5: Section accuracy 91% ± 3%, $201 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="202.0" y="81.4" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Two steps, page by page · Sonnet 5.5: Section accuracy 82% ± 3%, $349 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="320.2" y="126.8" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Two steps, holistic · Sonnet 5.5: Section accuracy 89% ± 2%, $326 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="301.6" y="93.2" width="9.0" height="9.0" rx="1.5"></rect></g><text class="plabel halo" x="216.5" y="89.9" text-anchor="start">Holistic</text><text class="plabel halo" x="238.7" y="162.3" text-anchor="end">Page by page</text><text class="plabel halo" x="296.1" y="113.7" text-anchor="end">Two steps, holistic</text><text class="plabel halo" x="314.7" y="135.3" text-anchor="end">Two steps, page by page</text></g><text class="axislabel" x="396.0" y="840.0" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><text class="prices" x="0" y="869.0">Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction with structured output, and</text><text class="prices" x="0" y="883.0">confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</text><text class="prices" x="0" y="901.0">Prices: on-demand, us-east-1, config_library/pricing.yaml as of 2026-11-18</text></svg>
 </p>
 <p><em>Bands show ±2 standard errors.</em></p>
-<p><strong>Answer:</strong> Holistic classification is a good place to start. With Claude Sonnet 5.5 it got 0.91 of sections exactly right, against 0.76 page by page, for $201 of classification per 1,000 packets; with Claude Haiku 5.5 reading text only it got 0.88 for $2.55 (SC-02). Test it on your own packets.</p>
+<p><strong>Answer:</strong> On 20 packets; <a href="#which-approach-should-i-use">Which approach should I use?</a> compares the same approaches on 100. Holistic classification is a good place to start. With Claude Sonnet 5.5 it got 0.91 of sections exactly right, against 0.76 page by page, for $201 of classification per 1,000 packets; with Claude Haiku 5.5 reading text only it got 0.88 for $2.55 (SC-02). Test it on your own packets.</p>
+<p><strong>The economics:</strong> Claude Sonnet 5.5 instead of Claude Haiku 5.5 adds $177 of classification per 1,000 packets and gets 710 more sections right, so it costs $0.25 per section it saves. Choose it when finding and fixing a misfiled or mis-split document costs you more than $0.25.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Instead of Holistic · Haiku 5.5</th><th>Extra classification cost per 1,000 packets</th><th>Extra sections right per 1,000 packets</th><th><a href="../../benchmark-guidance/marginal-cost-of-error/">Cost per section it saves</a></th></tr></thead><tbody><tr><td>Page by page · Nova 2 Lite</td><td>−$10.6</td><td>−845</td><td>saves $0.01 per extra wrong section</td></tr><tr><td>Holistic · Nova 2 Lite</td><td>−$18.5</td><td>−683</td><td>saves $0.03 per extra wrong section</td></tr><tr><td>Two steps, page by page · Nova 2 Lite</td><td>−$11.1</td><td>no measurable difference</td><td>cheaper, no measurable loss</td></tr><tr><td>Two steps, holistic · Nova 2 Lite</td><td>−$15.9</td><td>−874</td><td>saves $0.02 per extra wrong section</td></tr><tr><td>Page by page · Haiku 5.5</td><td>−$8.93</td><td>−294</td><td>saves $0.03 per extra wrong section</td></tr><tr><td>Two steps, page by page · Haiku 5.5</td><td>−$5.76</td><td>−255</td><td>saves $0.02 per extra wrong section</td></tr><tr><td>Two steps, holistic · Haiku 5.5</td><td>+$5.31</td><td>no measurable difference</td><td>no measurable gain</td></tr><tr><td>Page by page · Sonnet 5.5</td><td>+$230</td><td>no measurable difference</td><td>no measurable gain</td></tr><tr><td>Holistic · Sonnet 5.5</td><td>+$177</td><td>+710</td><td>$0.25</td></tr><tr><td>Two steps, page by page · Sonnet 5.5</td><td>+$326</td><td>+287</td><td>$1.13</td></tr><tr><td>Two steps, holistic · Sonnet 5.5</td><td>+$302</td><td>+600</td><td>$0.50</td></tr></tbody></table>
+<p><em>DocSplit packets, N = 14–20 packets × 3 runs. A difference within twice the combined standard error is no measurable difference. Costs use on-demand prices for us-east-1 from <a href="../../config_library/pricing.yaml">config_library/pricing.yaml</a> as of 2026-11-18.</em></p>
 <details>
 <summary>Details</summary>
 <p><em>Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: 36 Test Studio runs (28 failed documents left out of the scores), listed in <code dir="auto">benchmarks/results/guidance/SC-11.json</code>.</em></p>
@@ -465,13 +1605,13 @@ document class.</li>
 
 
 
-<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>$13.2 ± $0.03</td><td>$14.9 ± $0.10</td><td>$254 ± $1.72</td></tr><tr><td>Holistic</td><td><strong>$5.31 ± $0.02</strong></td><td>$10.4 ± $0.01</td><td>$201 ± $0.35</td></tr><tr><td>Two steps: split page by page, then classify</td><td>$12.7 ± $0.01</td><td>$18.0 ± $0.66</td><td>$349 ± $0.53</td></tr><tr><td>Two steps: split holistically, then classify</td><td>$7.90 ± $0.14</td><td>$16.9 ± $0.38</td><td>$326 ± $0.46</td></tr></tbody></table>
+<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>$13.2 ± $0.03</td><td>$14.9 ± $0.10</td><td>$254 ± $1.72</td></tr><tr><td>Holistic</td><td><strong>$5.31 ± $0.02</strong></td><td>$23.8 ± $0.02</td><td>$201 ± $0.35</td></tr><tr><td>Two steps: split page by page, then classify</td><td>$12.7 ± $0.01</td><td>$18.0 ± $0.66</td><td>$349 ± $0.53</td></tr><tr><td>Two steps: split holistically, then classify</td><td>$7.90 ± $0.14</td><td>$29.1 ± $1.70</td><td>$326 ± $0.46</td></tr></tbody></table>
 <p>Failed packets per run: Page by page · Amazon Nova 2 Lite: 1, 0, 0; Page by page · Claude Haiku 5.5: 0, 2, 2; Page by page · Claude Sonnet 5.5: 0, 0, 2; Holistic · Claude Sonnet 5.5: 0, 0, 1; Two steps: split page by page, then classify · Amazon Nova 2 Lite: 1, 0, 0; Two steps: split page by page, then classify · Claude Haiku 5.5: 2, 5, 6; Two steps: split page by page, then classify · Claude Sonnet 5.5: 0, 0, 2; Two steps: split holistically, then classify · Amazon Nova 2 Lite: 0, 0, 1; Two steps: split holistically, then classify · Claude Haiku 5.5: 0, 0, 3.</p>
 <p><em>The <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a> is <em>Holistic</em> with <em>Claude Haiku 5.5</em>. A bold figure beats every other in its table by more than twice the combined standard error.</em></p>
 <p><em>Costs use on-demand prices for us-east-1 from <a href="../../config_library/pricing.yaml">config_library/pricing.yaml</a> as of 2026-11-18. Classification cost counts only the classification step: its Amazon Bedrock calls and a decision model’s AWS Lambda time. OCR, extraction, confidence scoring and other AWS charges are left out.</em></p>
 </details>
 <div class="sl-heading-wrapper level-h3"><h3 id="do-i-need-page-images-in-the-classification-prompt">Do I need page images in the classification prompt?</h3><a class="sl-anchor-link" href="#do-i-need-page-images-in-the-classification-prompt"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Do I need page images in the classification prompt?”</span></a></div>
-<p><svg aria-label="Text alone gets the most sections right, for the least: section accuracy against classification cost per 1,000 packets, one point per classification input" xmlns="http://www.w3.org/2000/svg" class="viz" width="792" height="446" viewBox="0 0 792 446" role="img"><title>With Claude Haiku 5.5, text alone gets the most sections right, for the least</title><desc>DocSplit packets, 19–20 packets × 3 runs: Text and images (baseline) 76% at $10.4 classification cost per 1,000 packets, Text only 88% at $2.55 classification cost per 1,000 packets, Images only 74% at $9.13 classification cost per 1,000 packets; Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction with structured output, and confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</desc><style>
+<p><svg aria-label="Text alone gets the most sections right, for the least: section accuracy against classification cost per 1,000 packets, one point per classification input" xmlns="http://www.w3.org/2000/svg" class="viz" width="792" height="446" viewBox="0 0 792 446" role="img"><title>With Claude Haiku 5.5, text alone gets the most sections right, for the least</title><desc>DocSplit packets, 19–20 packets × 3 runs: Text and images (baseline) 76% at $23.1 classification cost per 1,000 packets, Text only 88% at $2.55 classification cost per 1,000 packets, Images only 74% at $9.13 classification cost per 1,000 packets; Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction with structured output, and confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</desc><style>
   .viz { --series: #2a78d6; --ring: #ffffff; --ink: #0b0b0b; --ink-2: #52514e;
          --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7;
          --fam-nova: #2a78d6; --fam-claude: #eb6834; --fam-other: #1baf7a; }
@@ -515,10 +1655,36 @@ document class.</li>
   .viz .fam-other { fill: var(--fam-other); }
   .viz .baseline { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 5 4; }
   .viz .baselinelabel { font-size: 11px; fill: var(--ink-2); }
-</style><text class="ctitle" x="0" y="18.0">With Claude Haiku 5.5, text alone gets the most sections right, for the least</text><text class="sub" x="0" y="38.0">DocSplit packets, 19–20 packets × 3 runs · Varies: classification input · Everything else: baseline setup</text><g transform="translate(0.0 50.0)"><text class="axislabel" x="42" y="13">Sections exactly right (%) ↑</text><line class="grid" x1="46" x2="770" y1="294.0" y2="294.0"></line><line class="axis" x1="42" x2="46" y1="294.0" y2="294.0"></line><text class="tick" x="39" y="298.0" text-anchor="end">60%</text><line class="grid" x1="46" x2="770" y1="226.5" y2="226.5"></line><line class="axis" x1="42" x2="46" y1="226.5" y2="226.5"></line><text class="tick" x="39" y="230.5" text-anchor="end">70%</text><line class="grid" x1="46" x2="770" y1="159.0" y2="159.0"></line><line class="axis" x1="42" x2="46" y1="159.0" y2="159.0"></line><text class="tick" x="39" y="163.0" text-anchor="end">80%</text><line class="grid" x1="46" x2="770" y1="91.5" y2="91.5"></line><line class="axis" x1="42" x2="46" y1="91.5" y2="91.5"></line><text class="tick" x="39" y="95.5" text-anchor="end">90%</text><line class="grid" x1="46" x2="770" y1="24.0" y2="24.0"></line><line class="axis" x1="42" x2="46" y1="24.0" y2="24.0"></line><text class="tick" x="39" y="28.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="294" y2="298"></line><text class="tick" x="46.0" y="310" text-anchor="middle">$0</text><line class="axis" x1="166.7" x2="166.7" y1="294" y2="298"></line><text class="tick" x="166.7" y="310" text-anchor="middle">$2</text><line class="axis" x1="287.3" x2="287.3" y1="294" y2="298"></line><text class="tick" x="287.3" y="310" text-anchor="middle">$4</text><line class="axis" x1="408.0" x2="408.0" y1="294" y2="298"></line><text class="tick" x="408.0" y="310" text-anchor="middle">$6</text><line class="axis" x1="528.7" x2="528.7" y1="294" y2="298"></line><text class="tick" x="528.7" y="310" text-anchor="middle">$8</text><line class="axis" x1="649.3" x2="649.3" y1="294" y2="298"></line><text class="tick" x="649.3" y="310" text-anchor="middle">$10</text><line class="axis" x1="770.0" x2="770.0" y1="294" y2="298"></line><text class="tick" x="770.0" y="310" text-anchor="middle">$12</text><line class="axis" x1="46" x2="770" y1="294" y2="294"></line><line class="axis" x1="46" x2="46" y1="24" y2="294"></line><text class="axislabel" x="408.0" y="330" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><rect class="band" x="667.5" y="162.1" width="10" height="49.4" rx="5"></rect><rect class="band" x="195.0" y="97.8" width="10" height="17.3" rx="5"></rect><rect class="band" x="591.7" y="160.2" width="10" height="79.0" rx="5"></rect><line class="leader" x1="667.6" y1="181.8" x2="644.5" y2="158.8"></line><g><title>Text and images (baseline): Section accuracy 76% ± 4%, $10.4 classification cost per 1,000 packets</title><circle class="dot ref" cx="672.5" cy="186.8" r="5"></circle></g><g><title>Text only: Section accuracy 88% ± 1%, $2.55 classification cost per 1,000 packets</title><circle class="dot" cx="200.0" cy="106.5" r="5"></circle></g><g><title>Images only: Section accuracy 74% ± 6%, $9.13 classification cost per 1,000 packets</title><circle class="dot" cx="596.7" cy="199.7" r="5"></circle></g><text class="plabel halo" x="210.0" y="110.5" text-anchor="start">Text only</text><text class="plabel halo" x="586.7" y="203.7" text-anchor="end">Images only</text><text class="plabel dflt halo" x="642.5" y="154.8" text-anchor="end">Text and images (baseline)</text></g><text class="prices" x="0" y="409.0">Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction with structured output, and</text><text class="prices" x="0" y="423.0">confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</text><text class="prices" x="0" y="441.0">Prices: on-demand, us-east-1, config_library/pricing.yaml as of 2026-11-18</text></svg>
+</style><text class="ctitle" x="0" y="18.0">With Claude Haiku 5.5, text alone gets the most sections right, for the least</text><text class="sub" x="0" y="38.0">DocSplit packets, 19–20 packets × 3 runs · Varies: classification input · Everything else: baseline setup</text><g transform="translate(0.0 50.0)"><text class="axislabel" x="42" y="13">Sections exactly right (%) ↑</text><line class="grid" x1="46" x2="770" y1="294.0" y2="294.0"></line><line class="axis" x1="42" x2="46" y1="294.0" y2="294.0"></line><text class="tick" x="39" y="298.0" text-anchor="end">60%</text><line class="grid" x1="46" x2="770" y1="226.5" y2="226.5"></line><line class="axis" x1="42" x2="46" y1="226.5" y2="226.5"></line><text class="tick" x="39" y="230.5" text-anchor="end">70%</text><line class="grid" x1="46" x2="770" y1="159.0" y2="159.0"></line><line class="axis" x1="42" x2="46" y1="159.0" y2="159.0"></line><text class="tick" x="39" y="163.0" text-anchor="end">80%</text><line class="grid" x1="46" x2="770" y1="91.5" y2="91.5"></line><line class="axis" x1="42" x2="46" y1="91.5" y2="91.5"></line><text class="tick" x="39" y="95.5" text-anchor="end">90%</text><line class="grid" x1="46" x2="770" y1="24.0" y2="24.0"></line><line class="axis" x1="42" x2="46" y1="24.0" y2="24.0"></line><text class="tick" x="39" y="28.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="294" y2="298"></line><text class="tick" x="46.0" y="310" text-anchor="middle">$0</text><line class="axis" x1="190.8" x2="190.8" y1="294" y2="298"></line><text class="tick" x="190.8" y="310" text-anchor="middle">$5</text><line class="axis" x1="335.6" x2="335.6" y1="294" y2="298"></line><text class="tick" x="335.6" y="310" text-anchor="middle">$10</text><line class="axis" x1="480.4" x2="480.4" y1="294" y2="298"></line><text class="tick" x="480.4" y="310" text-anchor="middle">$15</text><line class="axis" x1="625.2" x2="625.2" y1="294" y2="298"></line><text class="tick" x="625.2" y="310" text-anchor="middle">$20</text><line class="axis" x1="770.0" x2="770.0" y1="294" y2="298"></line><text class="tick" x="770.0" y="310" text-anchor="middle">$25</text><line class="axis" x1="46" x2="770" y1="294" y2="294"></line><line class="axis" x1="46" x2="46" y1="24" y2="294"></line><text class="axislabel" x="408.0" y="330" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><rect class="band" x="710.6" y="162.1" width="10" height="49.4" rx="5"></rect><rect class="band" x="114.9" y="97.8" width="10" height="17.3" rx="5"></rect><rect class="band" x="305.3" y="160.2" width="10" height="79.0" rx="5"></rect><g><title>Text and images (baseline): Section accuracy 76% ± 4%, $23.1 classification cost per 1,000 packets</title><circle class="dot ref" cx="715.6" cy="186.8" r="5"></circle></g><g><title>Text only: Section accuracy 88% ± 1%, $2.55 classification cost per 1,000 packets</title><circle class="dot" cx="119.9" cy="106.5" r="5"></circle></g><g><title>Images only: Section accuracy 74% ± 6%, $9.13 classification cost per 1,000 packets</title><circle class="dot" cx="310.3" cy="199.7" r="5"></circle></g><text class="plabel halo" x="129.9" y="110.5" text-anchor="start">Text only</text><text class="plabel dflt halo" x="705.6" y="190.8" text-anchor="end">Text and images (baseline)</text><text class="plabel halo" x="320.3" y="203.7" text-anchor="start">Images only</text></g><text class="prices" x="0" y="409.0">Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction with structured output, and</text><text class="prices" x="0" y="423.0">confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</text><text class="prices" x="0" y="441.0">Prices: on-demand, us-east-1, config_library/pricing.yaml as of 2026-11-18</text></svg>
 </p>
 <p><em>Bands show ±2 standard errors.</em></p>
 <p><strong>Answer:</strong> Text only is a good place to start: holistic Claude Haiku 5.5 got 0.88 of sections exactly right from the OCR text alone, against 0.76 with page images too, and cost less. Test it on your own packets.</p>
+<p><strong>The economics:</strong> Text only instead of text and images saves $20.6 of classification per 1,000 packets and gets 535 more sections right.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Instead of Text and images (baseline)</th><th>Extra classification cost per 1,000 packets</th><th>Extra sections right per 1,000 packets</th><th><a href="../../benchmark-guidance/marginal-cost-of-error/">Cost per section it saves</a></th></tr></thead><tbody><tr><td>Text only</td><td>−$20.6</td><td>+535</td><td>more right, for less</td></tr><tr><td>Images only</td><td>−$14.0</td><td>no measurable difference</td><td>cheaper, no measurable loss</td></tr></tbody></table>
+<p><em>DocSplit packets, N = 19–20 packets × 3 runs. A difference within twice the combined standard error is no measurable difference. Costs use on-demand prices for us-east-1 from <a href="../../config_library/pricing.yaml">config_library/pricing.yaml</a> as of 2026-11-18.</em></p>
 <details>
 <summary>Details</summary>
 <p><em>Measured on release 0.6.15.dev1, November 2026, us-east-1. Source: 9 Test Studio runs (3 failed documents left out of the scores), listed in <code dir="auto">benchmarks/results/guidance/SC-02.json</code>.</em></p>
@@ -601,13 +1767,13 @@ document class.</li>
 
 
 
-<table><thead><tr><th>Dataset</th><th>What the classification model reads</th><th>Section accuracy</th><th>Page accuracy</th><th>Boundary accuracy</th><th>Label accuracy</th><th>Classification tokens per page</th><th>Classification cost per 1,000 packets (USD)</th><th><a href="../../benchmark-guidance/marginal-cost-of-error/">Classification cost per error prevented</a> vs Text only</th></tr></thead><tbody><tr><td>DocSplit</td><td><strong>Text and images (baseline)</strong></td><td>0.76 ± 0.04</td><td>0.91 ± 0.02</td><td>0.8 ± 0.04</td><td>0.95 ± 0.02</td><td>6,074 ± 13</td><td>$10.4 ± $0.08</td><td>no measurable gain</td></tr><tr><td>DocSplit</td><td>Text only</td><td><strong>0.88 ± 0.01</strong></td><td><strong>0.95 ± 0.01</strong></td><td><strong>0.91 ± 0.02</strong></td><td>0.96 ± 0.02</td><td><strong>1,201 ± 40</strong></td><td><strong>$2.55 ± $0.05</strong></td><td>—</td></tr><tr><td>DocSplit</td><td>Images only</td><td>0.74 ± 0.06</td><td>0.88 ± 0.05</td><td>0.75 ± 0.05</td><td>0.95 ± 0.03</td><td>5,139 ± 32</td><td>$9.13 ± $0.27</td><td>no measurable gain</td></tr></tbody></table>
+<table><thead><tr><th>Dataset</th><th>What the classification model reads</th><th>Section accuracy</th><th>Page accuracy</th><th>Boundary accuracy</th><th>Label accuracy</th><th>Classification tokens per page</th><th>Classification cost per 1,000 packets (USD)</th><th><a href="../../benchmark-guidance/marginal-cost-of-error/">Classification cost per wrong section prevented</a> vs Text only</th></tr></thead><tbody><tr><td>DocSplit</td><td><strong>Text and images (baseline)</strong></td><td>0.76 ± 0.04</td><td>0.91 ± 0.02</td><td>0.8 ± 0.04</td><td>0.95 ± 0.02</td><td>6,074 ± 13</td><td>$23.1 ± $1.40</td><td>no measurable gain</td></tr><tr><td>DocSplit</td><td>Text only</td><td><strong>0.88 ± 0.01</strong></td><td><strong>0.95 ± 0.01</strong></td><td><strong>0.91 ± 0.02</strong></td><td>0.96 ± 0.02</td><td><strong>1,201 ± 40</strong></td><td><strong>$2.55 ± $0.05</strong></td><td>—</td></tr><tr><td>DocSplit</td><td>Images only</td><td>0.74 ± 0.06</td><td>0.88 ± 0.05</td><td>0.75 ± 0.05</td><td>0.95 ± 0.03</td><td>5,139 ± 32</td><td>$9.13 ± $0.27</td><td>no measurable gain</td></tr></tbody></table>
 <p>Failed packets per run: Text and images (baseline): 0, 1, 0; Images only: 1, 1, 0.</p>
 <p><em>A bold figure beats every other in its column, for that dataset, by more than twice the combined standard error. The bold name is the value the <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a> uses.</em></p>
 <p><em>Costs use on-demand prices for us-east-1 from <a href="../../config_library/pricing.yaml">config_library/pricing.yaml</a> as of 2026-11-18. Classification cost counts only the classification step: its Amazon Bedrock calls and a decision model’s AWS Lambda time. OCR, extraction, confidence scoring and other AWS charges are left out.</em></p>
 </details>
 <div class="sl-heading-wrapper level-h3"><h3 id="can-a-decision-model-classify-the-sections">Can a decision model classify the sections?</h3><a class="sl-anchor-link" href="#can-a-decision-model-classify-the-sections"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Can a decision model classify the sections?”</span></a></div>
-<p><svg aria-label="With the preset&#x27;s descriptions, Claude Haiku 5.5 classifies sections better than the Decider 2B: label accuracy against classification cost per 1,000 packets, one point per which model classifies each section" xmlns="http://www.w3.org/2000/svg" class="viz" width="792" height="460" viewBox="0 0 792 460" role="img"><title>With the preset's descriptions, Claude Haiku 5.5 classifies sections better than the Decider 2B</title><desc>DocSplit packets, 18–20 packets × 3 runs: LLM · Haiku 5.5 (baseline setup) 96% at $17.2 classification cost per 1,000 packets, LLM · Nova 2 Lite 94% at $15.3 classification cost per 1,000 packets, Decider 2B · first page image 81% at $20.3 classification cost per 1,000 packets, Decider 2B · first page image and text 83% at $20.5 classification cost per 1,000 packets, Decider 2B · first 2 page images 82% at $19.0 classification cost per 1,000 packets; Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction, and confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model. Interim: 20 packets, the preset's class descriptions; a 100-packet re-run with one-line descriptions is in progress.</desc><style>
+<p><svg aria-label="With one-line descriptions, Decider 2B comes close to Haiku 5.5 at classifying sections: label accuracy against classification cost per 1,000 packets, one point per which model classifies each section, and the class descriptions" xmlns="http://www.w3.org/2000/svg" class="viz" width="792" height="462" viewBox="0 0 792 462" role="img"><title>With one-line descriptions, Decider 2B comes close to Haiku 5.5 at classifying sections</title><desc>DocSplit packets, 90–100 packets × 2–3 runs: LLM · Haiku 5.5 (baseline setup) 96% at $31.1 classification cost per 1,000 packets, LLM · Haiku 5.5 · short desc. 98% at $30.9 classification cost per 1,000 packets, Decider 2B · first page image 77% at $31.7 classification cost per 1,000 packets, Decider 2B · first page image · short desc. 90% at $30.7 classification cost per 1,000 packets, Decider 2B · first 2 page images · short desc. 95% at $31.7 classification cost per 1,000 packets, Decider 2B · first page image and text · short desc. 94% at $32.3 classification cost per 1,000 packets; Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction, and confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</desc><style>
   .viz { --series: #2a78d6; --ring: #ffffff; --ink: #0b0b0b; --ink-2: #52514e;
          --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7;
          --fam-nova: #2a78d6; --fam-claude: #eb6834; --fam-other: #1baf7a; }
@@ -651,15 +1817,58 @@ document class.</li>
   .viz .fam-other { fill: var(--fam-other); }
   .viz .baseline { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 5 4; }
   .viz .baselinelabel { font-size: 11px; fill: var(--ink-2); }
-</style><text class="ctitle" x="0" y="18.0">With the preset's descriptions, Claude Haiku 5.5 classifies sections better than the Decider 2B</text><text class="sub" x="0" y="38.0">DocSplit packets, 18–20 packets × 3 runs · Varies: which model classifies each section · Everything else: baseline setup</text><g transform="translate(0.0 50.0)"><text class="axislabel" x="42" y="13">Label accuracy (%) ↑</text><line class="grid" x1="46" x2="770" y1="294.0" y2="294.0"></line><line class="axis" x1="42" x2="46" y1="294.0" y2="294.0"></line><text class="tick" x="39" y="298.0" text-anchor="end">70%</text><line class="grid" x1="46" x2="770" y1="204.0" y2="204.0"></line><line class="axis" x1="42" x2="46" y1="204.0" y2="204.0"></line><text class="tick" x="39" y="208.0" text-anchor="end">80%</text><line class="grid" x1="46" x2="770" y1="114.0" y2="114.0"></line><line class="axis" x1="42" x2="46" y1="114.0" y2="114.0"></line><text class="tick" x="39" y="118.0" text-anchor="end">90%</text><line class="grid" x1="46" x2="770" y1="24.0" y2="24.0"></line><line class="axis" x1="42" x2="46" y1="24.0" y2="24.0"></line><text class="tick" x="39" y="28.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="294" y2="298"></line><text class="tick" x="46.0" y="310" text-anchor="middle">$0</text><line class="axis" x1="190.8" x2="190.8" y1="294" y2="298"></line><text class="tick" x="190.8" y="310" text-anchor="middle">$5</text><line class="axis" x1="335.6" x2="335.6" y1="294" y2="298"></line><text class="tick" x="335.6" y="310" text-anchor="middle">$10</text><line class="axis" x1="480.4" x2="480.4" y1="294" y2="298"></line><text class="tick" x="480.4" y="310" text-anchor="middle">$15</text><line class="axis" x1="625.2" x2="625.2" y1="294" y2="298"></line><text class="tick" x="625.2" y="310" text-anchor="middle">$20</text><line class="axis" x1="770.0" x2="770.0" y1="294" y2="298"></line><text class="tick" x="770.0" y="310" text-anchor="middle">$25</text><line class="axis" x1="46" x2="770" y1="294" y2="294"></line><line class="axis" x1="46" x2="46" y1="24" y2="294"></line><text class="axislabel" x="408.0" y="330" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><rect class="band" x="538.6" y="49.5" width="10" height="14.6" rx="5"></rect><rect class="band" x="483.2" y="64.6" width="10" height="29.6" rx="5"></rect><rect class="band" x="628.0" y="176.7" width="10" height="38.0" rx="5"></rect><rect class="band" x="634.2" y="157.0" width="10" height="33.0" rx="5"></rect><rect class="band" x="591.9" y="160.2" width="10" height="48.4" rx="5"></rect><line class="leader" x1="634.0" y1="168.8" x2="621.2" y2="157.5"></line><line class="leader" x1="627.8" y1="200.3" x2="615.0" y2="211.6"></line><g><title>LLM · Haiku 5.5 (baseline setup): Label accuracy 96% ± 1%, $17.2 classification cost per 1,000 packets</title><circle class="dot ref" cx="543.6" cy="56.8" r="5"></circle></g><g><title>LLM · Nova 2 Lite: Label accuracy 94% ± 2%, $15.3 classification cost per 1,000 packets</title><circle class="dot" cx="488.2" cy="79.4" r="5"></circle></g><g><title>Decider 2B · first page image: Label accuracy 81% ± 2%, $20.3 classification cost per 1,000 packets</title><circle class="dot" cx="633.0" cy="195.6" r="5"></circle></g><g><title>Decider 2B · first page image and text: Label accuracy 83% ± 2%, $20.5 classification cost per 1,000 packets</title><circle class="dot" cx="639.2" cy="173.5" r="5"></circle></g><g><title>Decider 2B · first 2 page images: Label accuracy 82% ± 3%, $19.0 classification cost per 1,000 packets</title><circle class="dot" cx="596.9" cy="184.5" r="5"></circle></g><text class="plabel dflt halo" x="553.6" y="60.8" text-anchor="start">LLM · Haiku 5.5 (baseline setup)</text><text class="plabel halo" x="478.2" y="83.4" text-anchor="end">LLM · Nova 2 Lite</text><text class="plabel halo" x="586.9" y="188.5" text-anchor="end">Decider 2B · first 2 page images</text><text class="plabel halo" x="619.2" y="153.5" text-anchor="end">Decider 2B · first page image and text</text><text class="plabel halo" x="613.0" y="223.6" text-anchor="end">Decider 2B · first page image</text></g><text class="prices" x="0" y="409.0">Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction, and confidence scoring, all</text><text class="prices" x="0" y="423.0">on Claude Haiku 5.5, with no escalation to a second scoring model. Interim: 20 packets, the preset's class descriptions; a 100-packet re-run with one-line</text><text class="prices" x="0" y="437.0">descriptions is in progress.</text><text class="prices" x="0" y="455.0">Prices: on-demand, us-east-1, config_library/pricing.yaml as of 2026-11-18</text></svg>
+</style><text class="ctitle" x="0" y="18.0">With one-line descriptions, Decider 2B comes close to Haiku 5.5 at classifying sections</text><text class="sub" x="0" y="38.0">DocSplit packets, 90–100 packets × 2–3 runs · Varies: which model classifies each section, and the class descriptions ·</text><text class="sub" x="0" y="54.0">Everything else: baseline setup</text><g transform="translate(0.0 66.0)"><text class="axislabel" x="42" y="13">Label accuracy (%) ↑</text><line class="grid" x1="46" x2="770" y1="294.0" y2="294.0"></line><line class="axis" x1="42" x2="46" y1="294.0" y2="294.0"></line><text class="tick" x="39" y="298.0" text-anchor="end">70%</text><line class="grid" x1="46" x2="770" y1="204.0" y2="204.0"></line><line class="axis" x1="42" x2="46" y1="204.0" y2="204.0"></line><text class="tick" x="39" y="208.0" text-anchor="end">80%</text><line class="grid" x1="46" x2="770" y1="114.0" y2="114.0"></line><line class="axis" x1="42" x2="46" y1="114.0" y2="114.0"></line><text class="tick" x="39" y="118.0" text-anchor="end">90%</text><line class="grid" x1="46" x2="770" y1="24.0" y2="24.0"></line><line class="axis" x1="42" x2="46" y1="24.0" y2="24.0"></line><text class="tick" x="39" y="28.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="294" y2="298"></line><text class="tick" x="46.0" y="310" text-anchor="middle">$0</text><line class="axis" x1="149.4" x2="149.4" y1="294" y2="298"></line><text class="tick" x="149.4" y="310" text-anchor="middle">$5</text><line class="axis" x1="252.9" x2="252.9" y1="294" y2="298"></line><text class="tick" x="252.9" y="310" text-anchor="middle">$10</text><line class="axis" x1="356.3" x2="356.3" y1="294" y2="298"></line><text class="tick" x="356.3" y="310" text-anchor="middle">$15</text><line class="axis" x1="459.7" x2="459.7" y1="294" y2="298"></line><text class="tick" x="459.7" y="310" text-anchor="middle">$20</text><line class="axis" x1="563.1" x2="563.1" y1="294" y2="298"></line><text class="tick" x="563.1" y="310" text-anchor="middle">$25</text><line class="axis" x1="666.6" x2="666.6" y1="294" y2="298"></line><text class="tick" x="666.6" y="310" text-anchor="middle">$30</text><line class="axis" x1="770.0" x2="770.0" y1="294" y2="298"></line><text class="tick" x="770.0" y="310" text-anchor="middle">$35</text><line class="axis" x1="46" x2="770" y1="294" y2="294"></line><line class="axis" x1="46" x2="46" y1="24" y2="294"></line><text class="axislabel" x="408.0" y="330" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><rect class="band" x="683.8" y="25.9" width="10" height="64.8" rx="5"></rect><rect class="band" x="680.4" y="29.6" width="10" height="18.3" rx="5"></rect><rect class="band" x="696.3" y="221.9" width="10" height="20.0" rx="5"></rect><rect class="band" x="676.4" y="107.9" width="10" height="15.7" rx="5"></rect><rect class="band" x="695.7" y="52.3" width="10" height="38.1" rx="5"></rect><rect class="band" x="709.6" y="64.9" width="10" height="22.8" rx="5"></rect><line class="leader" x1="696.8" y1="77.2" x2="692.7" y2="83.4"></line><line class="leader" x1="714.6" y1="69.3" x2="714.6" y2="62.3"></line><g><title>LLM · Haiku 5.5 (baseline setup): Label accuracy 96% ± 4%, $31.1 classification cost per 1,000 packets</title><circle class="dot ref" cx="688.8" cy="58.3" r="5"></circle></g><g><title>LLM · Haiku 5.5 · short desc.: Label accuracy 98% ± 1%, $30.9 classification cost per 1,000 packets</title><circle class="dot" cx="685.4" cy="38.8" r="5"></circle></g><g><title>Decider 2B · first page image: Label accuracy 77% ± 1%, $31.7 classification cost per 1,000 packets</title><circle class="dot" cx="701.3" cy="231.9" r="5"></circle></g><g><title>Decider 2B · first page image · short desc.: Label accuracy 90% ± 1%, $30.7 classification cost per 1,000 packets</title><circle class="dot" cx="681.4" cy="115.8" r="5"></circle></g><g><title>Decider 2B · first 2 page images · short desc.: Label accuracy 95% ± 2%, $31.7 classification cost per 1,000 packets</title><circle class="dot" cx="700.7" cy="71.4" r="5"></circle></g><g><title>Decider 2B · first page image and text · short desc.: Label accuracy 94% ± 1%, $32.3 classification cost per 1,000 packets</title><circle class="dot" cx="714.6" cy="76.3" r="5"></circle></g><text class="plabel halo" x="677.4" y="29.8" text-anchor="end">LLM · Haiku 5.5 · short desc.</text><text class="plabel dflt halo" x="680.8" y="75.3" text-anchor="end">LLM · Haiku 5.5 (baseline setup)</text><text class="plabel halo" x="671.4" y="119.8" text-anchor="end">Decider 2B · first page image · short desc.</text><text class="plabel halo" x="691.3" y="235.9" text-anchor="end">Decider 2B · first page image</text><text class="plabel halo" x="690.7" y="95.4" text-anchor="end">Decider 2B · first 2 page images · short desc.</text><text class="plabel halo" x="770.0" y="58.3" text-anchor="end">Decider 2B · first page image and text · short desc.</text></g><text class="prices" x="0" y="425.0">Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction, and confidence scoring, all</text><text class="prices" x="0" y="439.0">on Claude Haiku 5.5, with no escalation to a second scoring model.</text><text class="prices" x="0" y="457.0">Prices: on-demand, us-east-1, config_library/pricing.yaml as of 2026-11-18</text></svg>
 </p>
 <p><em>Bands show ±2 standard errors.</em></p>
-<p><strong>Answer:</strong> Not yet, with the preset’s class descriptions: Claude Haiku 5.5 classified 0.96 of sections right, against 0.81 to 0.83 for the Strands Decider 2B, whose classification cost slightly more ($19 to $20 against $17 per 1,000 packets). The decision model is more sensitive to how classes are described: a 100-packet re-run with one-line descriptions of what each page looks like is in progress, and in its first runs the Strands Decider 2B classified 0.90 of sections right with them. Test it on your own packets.</p>
+<p><strong>Answer:</strong> Claude Haiku 5.5 is a good place to start for classifying sections, and the Strands Decider 2B comes close once its classes are described well. Given a one-line description of what each class’s pages look like and the first two page images, the Decider 2B gave the right class to 0.95 of the sections with the right pages, against 0.98 for Claude Haiku 5.5 with the same descriptions, at the same classification cost (about $31 per 1,000 packets). Sections exactly right were within run-to-run variation (0.77 against 0.78), because section detection, the same Claude Haiku 5.5 step in every row, causes most errors. With the preset’s class descriptions, written for the LLM prompt, the Decider 2B got 0.77. Test it on your own packets.</p>
+<p><strong>The economics:</strong> The Strands Decider 2B, reading the first two page images with one-line class descriptions, and Claude Haiku 5.5 show no measurable difference in cost or accuracy.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Instead of LLM · Haiku 5.5</th><th>Extra classification cost per 1,000 packets</th><th>Extra sections right per 1,000 packets</th><th><a href="../../benchmark-guidance/marginal-cost-of-error/">Cost per section it saves</a></th></tr></thead><tbody><tr><td>LLM · Haiku 5.5 · short desc.</td><td>no measurable difference</td><td>no measurable difference</td><td>—</td></tr><tr><td>Decider 2B · first page image</td><td>no measurable difference</td><td>−720</td><td>—</td></tr><tr><td>Decider 2B · first page image · short desc.</td><td>no measurable difference</td><td>−239</td><td>—</td></tr><tr><td>Decider 2B · first 2 page images · short desc.</td><td>no measurable difference</td><td>no measurable difference</td><td>—</td></tr><tr><td>Decider 2B · first page image and text · short desc.</td><td>no measurable difference</td><td>no measurable difference</td><td>—</td></tr></tbody></table>
+<p><em>DocSplit packets, N = 90–100 packets × 2–3 runs. A difference within twice the combined standard error is no measurable difference. Costs use on-demand prices for us-east-1 from <a href="../../config_library/pricing.yaml">config_library/pricing.yaml</a> as of 2026-11-18.</em></p>
 <details>
 <summary>Details</summary>
-<p><em>Measured on each dataset’s preset, not the baseline setup.</em></p>
-<p><em>Measured on release 0.6.15-develop-d1be93f, November 2026, us-east-1. Source: 15 Test Studio runs (6 failed documents left out of the scores), listed in <code dir="auto">benchmarks/results/guidance/SC-12.json</code>.</em></p>
-<p>The decision model is the Strands Decider 2B (StrandsAgents/strands-decider-2B-qwen3.5-v1-2610, 8-bit), on AWS Lambda, reading each section’s first page at 448 pixels; its cost is the function’s duration, with cold starts left out. These runs used the docsplit preset’s class descriptions, written for the LLM prompt.</p>
+<p><em>Measured on release 0.6.15-develop-d1be93f+fixes-2034-2035-2036, November 2026, us-east-1. Source: 17 Test Studio runs (62 failed documents left out of the scores), listed in <code dir="auto">benchmarks/results/guidance/SC-12.json</code>.</em></p>
+<p>Short descriptions replace each class’s preset description with one line about what the page looks like (for example “a typed formal letter with a salutation (Dear …) and a signature”); the splitter and the namer both read them. The decision model is the Strands Decider 2B (StrandsAgents/strands-decider-2B-qwen3.5-v1-2610, 8-bit, on AWS Lambda, images at 448 pixels).</p>
 
 
 
@@ -689,7 +1898,7 @@ document class.</li>
 
 
 
-<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Changes</strong></td><td>Which model classifies each section after Claude Haiku 5.5 detects the sections: an LLM or a decision model</td></tr><tr><td><strong>Everything else</strong></td><td>The <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a></td></tr><tr><td><strong>Datasets</strong></td><td><a href="../../benchmark-guidance/datasets/#docsplit-poly-seq-20-packets">DocSplit-Poly-Seq (20 packets)</a></td></tr><tr><td><strong>Models</strong></td><td>OCR: Amazon Textract (Layout) · Classification: varies (the setting under test) · Extraction: Claude Haiku 5.5, single-pass · Scoring: Claude Haiku 5.5.</td></tr><tr><td><strong>Runs</strong></td><td>3 per document, per value; N = 18–20 packets × 3 runs; up to 2 packets failed in a run and are left out of it</td></tr></tbody></table>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Changes</strong></td><td>Which model classifies each section after Claude Haiku 5.5 detects the sections, and the class descriptions it reads</td></tr><tr><td><strong>Everything else</strong></td><td>The <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a></td></tr><tr><td><strong>Datasets</strong></td><td><a href="../../benchmark-guidance/datasets/#docsplit-poly-seq-100-packets">DocSplit-Poly-Seq (100 packets)</a></td></tr><tr><td><strong>Models</strong></td><td>OCR: Amazon Textract (Layout) · Classification: Claude Haiku 5.5 finds the sections (holistic), then Claude Haiku 5.5 classifies them · Extraction: Claude Haiku 5.5, single-pass · Scoring: Claude Haiku 5.5.</td></tr><tr><td><strong>Runs</strong></td><td>3 per document, per value; N = 90–100 packets × 2–3 runs; up to 10 packets failed in a run and are left out of it</td></tr></tbody></table>
 
 
 
@@ -767,13 +1976,27 @@ document class.</li>
 
 
 
-<table><thead><tr><th>Dataset</th><th>Which model classifies each section after Claude Haiku 5.5 detects the sections: an LLM or a decision model</th><th>Section accuracy</th><th>Label accuracy</th><th>Page accuracy</th><th>Boundary accuracy</th><th>Classification tokens per page</th><th>Total tokens per page</th><th>Classification cost per 1,000 packets (USD)</th><th>Median seconds per packet</th></tr></thead><tbody><tr><td>DocSplit</td><td><strong>LLM · Claude Haiku 5.5 (baseline)</strong></td><td>0.77 ± 0.05</td><td><strong>0.96 ± 0.01</strong></td><td>0.89 ± 0.05</td><td>0.76 ± 0.07</td><td>9,988 ± 57</td><td>24,723 ± 126</td><td>$17.2 ± $0.17</td><td>112 ± 14</td></tr><tr><td>DocSplit</td><td>LLM · Amazon Nova 2 Lite</td><td>0.74 ± 0.06</td><td>0.94 ± 0.02</td><td>0.87 ± 0.04</td><td>0.75 ± 0.08</td><td>6,894 ± 16</td><td>21,658 ± 67</td><td><strong>$15.3 ± $0.11</strong></td><td>128 ± 18</td></tr><tr><td>DocSplit</td><td>Decision model · first page image</td><td>0.66 ± 0.01</td><td>0.81 ± 0.02</td><td>0.76 ± 0</td><td>0.79 ± 0.02</td><td>6,000 ± 3.69</td><td>20,790 ± 51</td><td>$20.3 ± $0.71</td><td>139 ± 9.2</td></tr><tr><td>DocSplit</td><td>Decision model · first page image and text</td><td>0.64 ± 0.04</td><td>0.83 ± 0.02</td><td>0.8 ± 0.01</td><td>0.72 ± 0.05</td><td>6,009 ± 3.13</td><td>20,757 ± 28</td><td>$20.5 ± $0.12</td><td>131 ± 12</td></tr><tr><td>DocSplit</td><td>Decision model · first 2 page images</td><td>0.65 ± 0.02</td><td>0.82 ± 0.03</td><td>0.81 ± 0</td><td>0.77 ± 0.03</td><td>5,999 ± 2.41</td><td>20,787 ± 54</td><td>$19.0 ± $0.43</td><td>151 ± 21</td></tr></tbody></table>
-<p>Failed packets per run: Decision model · first page image and text: 2, 2, 2.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Dataset</th><th>Which model classifies each section after Claude Haiku 5.5 detects the sections, and the class descriptions it reads</th><th>Section accuracy</th><th>Label accuracy</th><th>Page accuracy</th><th>Boundary accuracy</th><th>Classification tokens per page</th><th>Total tokens per page</th><th>Classification cost per 1,000 packets (USD)</th><th>Median seconds per packet</th></tr></thead><tbody><tr><td>DocSplit</td><td><strong>LLM · Claude Haiku 5.5 (baseline)</strong></td><td>0.78 ± 0.02</td><td>0.96 ± 0.04</td><td>0.94 ± 0.04</td><td>0.8 ± 0.02</td><td>9,731 ± 17</td><td>24,447 ± 3.78</td><td>$31.1 ± $1.92</td><td>210 ± 41</td></tr><tr><td>DocSplit</td><td>LLM · Claude Haiku 5.5 · short descriptions</td><td>0.78 ± 0.03</td><td>0.98 ± 0.01</td><td>0.96 ± 0</td><td>0.8 ± 0.03</td><td>9,699 ± 72</td><td>24,376 ± 116</td><td>$30.9 ± $1.99</td><td>253 ± 100</td></tr><tr><td>DocSplit</td><td>Decision model · first page image</td><td>0.62 ± 0.01</td><td>0.77 ± 0.01</td><td>0.79 ± 0</td><td>0.79 ± 0.02</td><td>6,101 ± 7.98</td><td>20,830 ± 82</td><td>$31.7 ± $0.41</td><td>172 ± 28</td></tr><tr><td>DocSplit</td><td>Decision model · first page image · short descriptions</td><td>0.74 ± 0.01</td><td>0.9 ± 0.01</td><td>0.84 ± 0.01</td><td>0.8 ± 0.01</td><td>6,103 ± 12</td><td>20,914 ± 8.02</td><td>$30.7 ± $0.37</td><td><strong>151 ± 8.88</strong></td></tr><tr><td>DocSplit</td><td>Decision model · first 2 page images · short descriptions</td><td>0.77 ± 0.03</td><td>0.95 ± 0.02</td><td>0.87 ± 0.02</td><td>0.81 ± 0.03</td><td>6,096 ± 14</td><td>20,871 ± 26</td><td>$31.7 ± $0.28</td><td>161 ± 1.91</td></tr><tr><td>DocSplit</td><td>Decision model · first page image and text · short descriptions</td><td>0.75 ± 0.02</td><td>0.94 ± 0.01</td><td>0.87 ± 0</td><td>0.8 ± 0.01</td><td>6,079 ± 9.55</td><td>20,800 ± 47</td><td>$32.3 ± $0.28</td><td>194 ± 47</td></tr></tbody></table>
+<p>Failed packets per run: LLM · Claude Haiku 5.5: 8, 10; LLM · Claude Haiku 5.5 · short descriptions: 9, 0, 0; Decision model · first page image: 0, 3, 2; Decision model · first page image · short descriptions: 2, 1, 0; Decision model · first 2 page images · short descriptions: 0, 1, 0; Decision model · first page image and text · short descriptions: 8, 10, 8.</p>
 <p><em>A bold figure beats every other in its column, for that dataset, by more than twice the combined standard error. The bold name is the value the <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a> uses.</em></p>
 <p><em>Costs use on-demand prices for us-east-1 from <a href="../../config_library/pricing.yaml">config_library/pricing.yaml</a> as of 2026-11-18. Classification cost counts only the classification step: its Amazon Bedrock calls and a decision model’s AWS Lambda time. OCR, extraction, confidence scoring and other AWS charges are left out.</em></p>
 </details>
 <div class="sl-heading-wrapper level-h3"><h3 id="which-way-of-splitting-and-classifying-should-i-use">Which way of splitting and classifying should I use?</h3><a class="sl-anchor-link" href="#which-way-of-splitting-and-classifying-should-i-use"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Which way of splitting and classifying should I use?”</span></a></div>
-<p><svg aria-label="To be measured: section accuracy against classification cost per 1,000 packets, one point per approach and model" xmlns="http://www.w3.org/2000/svg" class="viz" width="792" height="522" viewBox="0 0 792 522" role="img"><title>To be measured</title><desc>DocSplit packets, 90–100 packets × 2–3 runs: Page by page · Nova 2 Lite 49% at $13.2 classification cost per 1,000 packets, Holistic · Nova 2 Lite 51% at $5.39 classification cost per 1,000 packets, Split, LLM classifies · Nova 2 Lite 46% at $7.83 classification cost per 1,000 packets, Page by page · Haiku 5.5 70% at $14.5 classification cost per 1,000 packets, Holistic · Haiku 5.5 (baseline setup) 75% at $10.4 classification cost per 1,000 packets, Split, LLM classifies · Haiku 5.5 75% at $16.4 classification cost per 1,000 packets, Page by page · Sonnet 5.5 73% at $252 classification cost per 1,000 packets, Holistic · Sonnet 5.5 90% at $200 classification cost per 1,000 packets, Split, LLM classifies · Sonnet 5.5 88% at $315 classification cost per 1,000 packets; Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction, and confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model. Partial: 7 of 12 settings measured; Claude Sonnet 5.5, the decision-model row and the same-class packets are still running.</desc><style>
+<p>See <a href="#which-approach-should-i-use">Which approach should I use?</a>.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="do-long-packets-change-which-approach-to-use">Do long packets change which approach to use?</h3><a class="sl-anchor-link" href="#do-long-packets-change-which-approach-to-use"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Do long packets change which approach to use?”</span></a></div>
+<p><svg aria-label="With Claude Haiku 5.5, long packets cost every approach whole sections: section accuracy against classification cost per 1,000 packets, one point per approach and packet length" xmlns="http://www.w3.org/2000/svg" class="viz" width="792" height="468" viewBox="0 0 792 468" role="img"><title>With Claude Haiku 5.5, long packets cost every approach whole sections</title><desc>DocSplit packets, 90–100 packets × 3 runs: Page by page · Haiku 5.5 70% at $14.5 classification cost per 1,000 packets, Holistic · Haiku 5.5 (baseline setup) 75% at $25.6 classification cost per 1,000 packets, Split, LLM classifies · Haiku 5.5 75% at $31.5 classification cost per 1,000 packets; Long packets, 38–40 packets × 3 runs: Page by page · Haiku 5.5 62% at $44.6 classification cost per 1,000 packets, Holistic · Haiku 5.5 (baseline setup) 62% at $103 classification cost per 1,000 packets, Split, LLM classifies · Haiku 5.5 67% at $125 classification cost per 1,000 packets; Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction, and confidence scoring, all on Claude Haiku 5.5, with no escalation to a second scoring model.</desc><style>
   .viz { --series: #2a78d6; --ring: #ffffff; --ink: #0b0b0b; --ink-2: #52514e;
          --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7;
          --fam-nova: #2a78d6; --fam-claude: #eb6834; --fam-other: #1baf7a; }
@@ -817,15 +2040,14 @@ document class.</li>
   .viz .fam-other { fill: var(--fam-other); }
   .viz .baseline { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 5 4; }
   .viz .baselinelabel { font-size: 11px; fill: var(--ink-2); }
-</style><text class="ctitle" x="0" y="18.0">To be measured</text><text class="sub" x="0" y="38.0">DocSplit packets, 90–100 packets × 2–3 runs · Varies: approach and model · Everything else: baseline setup</text><rect class="dot ref fam-claude" x="1.5" y="49.5" width="9.0" height="9.0" rx="1.5"></rect><text class="plabel dflt" x="16" y="58.0">Baseline setup</text><g transform="translate(0.0 72.0)"><text class="ptitle" x="0" y="14">Amazon Nova 2 Lite</text><text class="axislabel" x="42" y="33">Sections exactly right (%) ↑</text><line class="grid" x1="46" x2="230.0" y1="334.0" y2="334.0"></line><line class="axis" x1="42" x2="46" y1="334.0" y2="334.0"></line><text class="tick" x="39" y="338.0" text-anchor="end">40%</text><line class="grid" x1="46" x2="230.0" y1="237.3" y2="237.3"></line><line class="axis" x1="42" x2="46" y1="237.3" y2="237.3"></line><text class="tick" x="39" y="241.3" text-anchor="end">60%</text><line class="grid" x1="46" x2="230.0" y1="140.7" y2="140.7"></line><line class="axis" x1="42" x2="46" y1="140.7" y2="140.7"></line><text class="tick" x="39" y="144.7" text-anchor="end">80%</text><line class="grid" x1="46" x2="230.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="334" y2="338"></line><text class="tick" x="46.0" y="350" text-anchor="middle">$0</text><line class="axis" x1="107.3" x2="107.3" y1="334" y2="338"></line><text class="tick" x="107.3" y="350" text-anchor="middle">$5</text><line class="axis" x1="168.7" x2="168.7" y1="334" y2="338"></line><text class="tick" x="168.7" y="350" text-anchor="middle">$10</text><line class="axis" x1="230.0" x2="230.0" y1="334" y2="338"></line><text class="tick" x="230.0" y="350" text-anchor="middle">$15</text><line class="axis" x1="46" x2="230.0" y1="334" y2="334"></line><line class="axis" x1="46" x2="46" y1="44" y2="334"></line><rect class="band fam-nova" x="203.5" y="285.5" width="10" height="13.5" rx="5"></rect><rect class="band fam-nova" x="107.1" y="266.6" width="10" height="24.9" rx="5"></rect><rect class="band fam-nova" x="137.0" y="293.4" width="10" height="19.6" rx="5"></rect><line class="leader" x1="142.0" y1="310.2" x2="142.0" y2="313.2"></line><g><title>Page by page · Nova 2 Lite: Section accuracy 49% ± 1%, $13.2 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="208.5" cy="292.3" r="5"></circle></g><g><title>Holistic · Nova 2 Lite: Section accuracy 51% ± 3%, $5.39 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="112.1" cy="279.1" r="5"></circle></g><g><title>Split, LLM classifies · Nova 2 Lite: Section accuracy 46% ± 2%, $7.83 classification cost per 1,000 packets</title><circle class="dot fam-nova" cx="142.0" cy="303.2" r="5"></circle></g><text class="plabel halo" x="102.1" y="283.1" text-anchor="end">Holistic</text><text class="plabel halo" x="230.0" y="281.5" text-anchor="end">Page by page</text><text class="plabel halo" x="142.0" y="325.2" text-anchor="middle">Split, LLM classifies</text></g><g transform="translate(270.0 72.0)"><text class="ptitle" x="0" y="14">Claude Haiku 5.5</text><line class="grid" x1="46" x2="230.0" y1="334.0" y2="334.0"></line><line class="axis" x1="42" x2="46" y1="334.0" y2="334.0"></line><text class="tick" x="39" y="338.0" text-anchor="end">40%</text><line class="grid" x1="46" x2="230.0" y1="237.3" y2="237.3"></line><line class="axis" x1="42" x2="46" y1="237.3" y2="237.3"></line><text class="tick" x="39" y="241.3" text-anchor="end">60%</text><line class="grid" x1="46" x2="230.0" y1="140.7" y2="140.7"></line><line class="axis" x1="42" x2="46" y1="140.7" y2="140.7"></line><text class="tick" x="39" y="144.7" text-anchor="end">80%</text><line class="grid" x1="46" x2="230.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="334" y2="338"></line><text class="tick" x="46.0" y="350" text-anchor="middle">$0</text><line class="axis" x1="138.0" x2="138.0" y1="334" y2="338"></line><text class="tick" x="138.0" y="350" text-anchor="middle">$10</text><line class="axis" x1="230.0" x2="230.0" y1="334" y2="338"></line><text class="tick" x="230.0" y="350" text-anchor="middle">$20</text><line class="axis" x1="46" x2="230.0" y1="334" y2="334"></line><line class="axis" x1="46" x2="46" y1="44" y2="334"></line><rect class="band fam-claude" x="174.3" y="188.7" width="10" height="4.1" rx="5"></rect><rect class="band fam-claude" x="136.6" y="148.3" width="10" height="36.9" rx="5"></rect><rect class="band fam-claude" x="192.3" y="158.7" width="10" height="9.9" rx="5"></rect><line class="leader" x1="194.1" y1="157.4" x2="189.3" y2="147.7"></line><g><title>Page by page · Haiku 5.5: Section accuracy 70% ± 0%, $14.5 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="174.8" y="186.3" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Holistic · Haiku 5.5 (baseline setup): Section accuracy 75% ± 4%, $10.4 classification cost per 1,000 packets</title><rect class="dot fam-claude ref" x="137.1" y="162.3" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Split, LLM classifies · Haiku 5.5: Section accuracy 75% ± 1%, $16.4 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="192.8" y="159.2" width="9.0" height="9.0" rx="1.5"></rect></g><text class="plabel dflt halo" x="131.6" y="170.8" text-anchor="end">Holistic</text><text class="plabel halo" x="179.3" y="209.8" text-anchor="middle">Page by page</text><text class="plabel halo" x="187.3" y="143.7" text-anchor="end">Split, LLM classifies</text></g><g transform="translate(540.0 72.0)"><text class="ptitle" x="0" y="14">Claude Sonnet 5.5</text><line class="grid" x1="46" x2="230.0" y1="334.0" y2="334.0"></line><line class="axis" x1="42" x2="46" y1="334.0" y2="334.0"></line><text class="tick" x="39" y="338.0" text-anchor="end">40%</text><line class="grid" x1="46" x2="230.0" y1="237.3" y2="237.3"></line><line class="axis" x1="42" x2="46" y1="237.3" y2="237.3"></line><text class="tick" x="39" y="241.3" text-anchor="end">60%</text><line class="grid" x1="46" x2="230.0" y1="140.7" y2="140.7"></line><line class="axis" x1="42" x2="46" y1="140.7" y2="140.7"></line><text class="tick" x="39" y="144.7" text-anchor="end">80%</text><line class="grid" x1="46" x2="230.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="334" y2="338"></line><text class="tick" x="46.0" y="350" text-anchor="middle">$0</text><line class="axis" x1="138.0" x2="138.0" y1="334" y2="338"></line><text class="tick" x="138.0" y="350" text-anchor="middle">$200</text><line class="axis" x1="230.0" x2="230.0" y1="334" y2="338"></line><text class="tick" x="230.0" y="350" text-anchor="middle">$400</text><line class="axis" x1="46" x2="230.0" y1="334" y2="334"></line><line class="axis" x1="46" x2="46" y1="44" y2="334"></line><rect class="band fam-claude" x="157.1" y="173.0" width="10" height="4.6" rx="5"></rect><rect class="band fam-claude" x="133.2" y="90.5" width="10" height="3.1" rx="5"></rect><rect class="band fam-claude" x="186.0" y="97.4" width="10" height="12.4" rx="5"></rect><line class="leader" x1="184.7" y1="106.8" x2="183.0" y2="107.6"></line><g><title>Page by page · Sonnet 5.5: Section accuracy 73% ± 0%, $252 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="157.6" y="170.8" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Holistic · Sonnet 5.5: Section accuracy 90% ± 0%, $200 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="133.7" y="87.5" width="9.0" height="9.0" rx="1.5"></rect></g><g><title>Split, LLM classifies · Sonnet 5.5: Section accuracy 88% ± 1%, $315 classification cost per 1,000 packets</title><rect class="dot fam-claude" x="186.5" y="99.1" width="9.0" height="9.0" rx="1.5"></rect></g><text class="plabel halo" x="128.2" y="96.0" text-anchor="end">Holistic</text><text class="plabel halo" x="152.1" y="179.3" text-anchor="end">Page by page</text><text class="plabel halo" x="181.0" y="119.6" text-anchor="end">Split, LLM classifies</text></g><text class="axislabel" x="396.0" y="442.0" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><text class="prices" x="0" y="471.0">Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction, and confidence scoring, all</text><text class="prices" x="0" y="485.0">on Claude Haiku 5.5, with no escalation to a second scoring model. Partial: 7 of 12 settings measured; Claude Sonnet 5.5, the decision-model row and the</text><text class="prices" x="0" y="499.0">same-class packets are still running.</text><text class="prices" x="0" y="517.0">Prices: on-demand, us-east-1, config_library/pricing.yaml as of 2026-11-18</text></svg>
+</style><text class="ctitle" x="0" y="18.0">With Claude Haiku 5.5, long packets cost every approach whole sections</text><text class="sub" x="0" y="38.0">Varies: approach and packet length · Everything else: baseline setup</text><circle class="dot ref" cx="6.0" cy="54.0" r="5"></circle><text class="plabel dflt" x="16" y="58.0">Baseline setup</text><g transform="translate(0.0 72.0)"><text class="ptitle" x="0" y="14">DocSplit packets, 90–100 packets × 3 runs</text><text class="axislabel" x="42" y="33">Sections exactly right (%) ↑</text><line class="grid" x1="46" x2="360.0" y1="294.0" y2="294.0"></line><line class="axis" x1="42" x2="46" y1="294.0" y2="294.0"></line><text class="tick" x="39" y="298.0" text-anchor="end">50%</text><line class="grid" x1="46" x2="360.0" y1="244.0" y2="244.0"></line><line class="axis" x1="42" x2="46" y1="244.0" y2="244.0"></line><text class="tick" x="39" y="248.0" text-anchor="end">60%</text><line class="grid" x1="46" x2="360.0" y1="194.0" y2="194.0"></line><line class="axis" x1="42" x2="46" y1="194.0" y2="194.0"></line><text class="tick" x="39" y="198.0" text-anchor="end">70%</text><line class="grid" x1="46" x2="360.0" y1="144.0" y2="144.0"></line><line class="axis" x1="42" x2="46" y1="144.0" y2="144.0"></line><text class="tick" x="39" y="148.0" text-anchor="end">80%</text><line class="grid" x1="46" x2="360.0" y1="94.0" y2="94.0"></line><line class="axis" x1="42" x2="46" y1="94.0" y2="94.0"></line><text class="tick" x="39" y="98.0" text-anchor="end">90%</text><line class="grid" x1="46" x2="360.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="294" y2="298"></line><text class="tick" x="46.0" y="310" text-anchor="middle">$0</text><line class="axis" x1="124.5" x2="124.5" y1="294" y2="298"></line><text class="tick" x="124.5" y="310" text-anchor="middle">$10</text><line class="axis" x1="203.0" x2="203.0" y1="294" y2="298"></line><text class="tick" x="203.0" y="310" text-anchor="middle">$20</text><line class="axis" x1="281.5" x2="281.5" y1="294" y2="298"></line><text class="tick" x="281.5" y="310" text-anchor="middle">$30</text><line class="axis" x1="360.0" x2="360.0" y1="294" y2="298"></line><text class="tick" x="360.0" y="310" text-anchor="middle">$40</text><line class="axis" x1="46" x2="360.0" y1="294" y2="294"></line><line class="axis" x1="46" x2="46" y1="44" y2="294"></line><text class="axislabel" x="203.0" y="330" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><rect class="band" x="154.8" y="193.7" width="10" height="4.2" rx="5"></rect><rect class="band" x="242.3" y="151.9" width="10" height="38.1" rx="5"></rect><rect class="band" x="288.1" y="165.1" width="10" height="8.7" rx="5"></rect><line class="leader" x1="291.7" y1="162.5" x2="285.1" y2="129.4"></line><g><title>Page by page · Haiku 5.5: Section accuracy 70% ± 0%, $14.5 classification cost per 1,000 packets</title><circle class="dot" cx="159.8" cy="195.8" r="5"></circle></g><g><title>Holistic · Haiku 5.5 (baseline setup): Section accuracy 75% ± 4%, $25.6 classification cost per 1,000 packets</title><circle class="dot ref" cx="247.3" cy="171.0" r="5"></circle></g><g><title>Split, LLM classifies · Haiku 5.5: Section accuracy 75% ± 1%, $31.5 classification cost per 1,000 packets</title><circle class="dot" cx="293.1" cy="169.4" r="5"></circle></g><text class="plabel dflt halo" x="239.3" y="162.0" text-anchor="end">Holistic · Haiku 5.5</text><text class="plabel halo" x="159.8" y="214.8" text-anchor="middle">Page by page · Haiku 5.5</text><text class="plabel halo" x="283.1" y="125.4" text-anchor="end">Split, LLM classifies · Haiku 5.5</text></g><g transform="translate(410.0 72.0)"><text class="ptitle" x="0" y="14">Long packets, 38–40 packets × 3 runs</text><text class="axislabel" x="42" y="33">Sections exactly right (%) ↑</text><line class="grid" x1="46" x2="360.0" y1="294.0" y2="294.0"></line><line class="axis" x1="42" x2="46" y1="294.0" y2="294.0"></line><text class="tick" x="39" y="298.0" text-anchor="end">50%</text><line class="grid" x1="46" x2="360.0" y1="244.0" y2="244.0"></line><line class="axis" x1="42" x2="46" y1="244.0" y2="244.0"></line><text class="tick" x="39" y="248.0" text-anchor="end">60%</text><line class="grid" x1="46" x2="360.0" y1="194.0" y2="194.0"></line><line class="axis" x1="42" x2="46" y1="194.0" y2="194.0"></line><text class="tick" x="39" y="198.0" text-anchor="end">70%</text><line class="grid" x1="46" x2="360.0" y1="144.0" y2="144.0"></line><line class="axis" x1="42" x2="46" y1="144.0" y2="144.0"></line><text class="tick" x="39" y="148.0" text-anchor="end">80%</text><line class="grid" x1="46" x2="360.0" y1="94.0" y2="94.0"></line><line class="axis" x1="42" x2="46" y1="94.0" y2="94.0"></line><text class="tick" x="39" y="98.0" text-anchor="end">90%</text><line class="grid" x1="46" x2="360.0" y1="44.0" y2="44.0"></line><line class="axis" x1="42" x2="46" y1="44.0" y2="44.0"></line><text class="tick" x="39" y="48.0" text-anchor="end">100%</text><line class="axis" x1="46.0" x2="46.0" y1="294" y2="298"></line><text class="tick" x="46.0" y="310" text-anchor="middle">$0</text><line class="axis" x1="150.7" x2="150.7" y1="294" y2="298"></line><text class="tick" x="150.7" y="310" text-anchor="middle">$50</text><line class="axis" x1="255.3" x2="255.3" y1="294" y2="298"></line><text class="tick" x="255.3" y="310" text-anchor="middle">$100</text><line class="axis" x1="360.0" x2="360.0" y1="294" y2="298"></line><text class="tick" x="360.0" y="310" text-anchor="middle">$150</text><line class="axis" x1="46" x2="360.0" y1="294" y2="294"></line><line class="axis" x1="46" x2="46" y1="44" y2="294"></line><text class="axislabel" x="203.0" y="330" text-anchor="middle">Classification cost per 1,000 packets ($) — cheaper ←</text><rect class="band" x="134.4" y="231.0" width="10" height="7.3" rx="5"></rect><rect class="band" x="257.5" y="221.3" width="10" height="26.5" rx="5"></rect><rect class="band" x="303.1" y="205.3" width="10" height="12.0" rx="5"></rect><line class="leader" x1="262.5" y1="241.6" x2="262.5" y2="254.6"></line><g><title>Page by page · Haiku 5.5: Section accuracy 62% ± 1%, $44.6 classification cost per 1,000 packets</title><circle class="dot" cx="139.4" cy="234.6" r="5"></circle></g><g><title>Holistic · Haiku 5.5 (baseline setup): Section accuracy 62% ± 3%, $103 classification cost per 1,000 packets</title><circle class="dot ref" cx="262.5" cy="234.6" r="5"></circle></g><g><title>Split, LLM classifies · Haiku 5.5: Section accuracy 67% ± 1%, $125 classification cost per 1,000 packets</title><circle class="dot" cx="308.1" cy="211.3" r="5"></circle></g><text class="plabel halo" x="300.1" y="202.3" text-anchor="end">Split, LLM classifies · Haiku 5.5</text><text class="plabel halo" x="139.4" y="223.6" text-anchor="middle">Page by page · Haiku 5.5</text><text class="plabel dflt halo" x="262.5" y="266.6" text-anchor="middle">Holistic · Haiku 5.5</text></g><text class="prices" x="0" y="431.0">Baseline setup: Amazon Textract with Layout only; holistic classification reading text and page images, single-pass extraction, and confidence scoring, all</text><text class="prices" x="0" y="445.0">on Claude Haiku 5.5, with no escalation to a second scoring model.</text><text class="prices" x="0" y="463.0">Prices: on-demand, us-east-1, config_library/pricing.yaml as of 2026-11-18</text></svg>
 </p>
-<p><em>Bands show ±2 standard errors.</em></p>
-<p><strong>Answer:</strong> Measured; see the table.</p>
+<p><em>Bands show ±2 standard errors. Cost axes differ by dataset.</em></p>
+<p><strong>Answer:</strong> Holistic is a good place to start on long packets if pages must be grouped well; page by page if cost matters most. With Claude Haiku 5.5, on 30-to-60-page packets every approach got fewer sections exactly right than on 5-to-20-page ones, and on that strict measure none was measurably ahead (0.62 to 0.67). On the grouping score, which gives credit for nearly right sections, holistic still beat page by page (0.88 against 0.82), but on Claude Haiku 5.5 it cost 2.3 times as much ($103 against $45 of classification per 1,000 packets), because its 20-page windows with page images go over the 100,000 tokens above which Claude Haiku 5.5 bills its long-context rate. Split-then-classify was no measurably better than holistic, for about a fifth more ($125). Test it on your own packets.</p>
 <details>
 <summary>Details</summary>
-<p><em>Measured on each dataset’s preset, not the baseline setup.</em></p>
-<p><em>Measured on release 0.6.15-develop-d1be93f, November 2026, us-east-1. Source: 26 Test Studio runs (22 failed documents left out of the scores), listed in <code dir="auto">benchmarks/results/guidance/SC-13.json</code>.</em></p>
-<p>In the two split rows the model named in the column finds the section boundaries (reading the whole packet); the LLM row then has that same model classify each section, and the decision-model row has the Strands Decider 2B (StrandsAgents/strands-decider-2B-qwen3.5-v1-2610, 8-bit, on AWS Lambda, images at 448 pixels) classify it from the section’s first page image.</p>
+<p><em>Measured on release 0.6.15-develop-d1be93f+fixes-2034-2035-2036, November 2026, us-east-1. Source: 18 Test Studio runs (22 failed documents left out of the scores), listed in <code dir="auto">benchmarks/results/guidance/SC-14.json</code>.</em></p>
+<p>The 5-to-20-page results are the same runs as SC-13. A holistic call reads at most the preset’s page window at once, so a long packet is read in several windows.</p>
 
 
 
@@ -855,8 +2077,7 @@ document class.</li>
 
 
 
-<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Changes</strong></td><td>How the packet is split and who names each section, by model</td></tr><tr><td><strong>Everything else</strong></td><td>The <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a></td></tr><tr><td><strong>Datasets</strong></td><td><a href="../../benchmark-guidance/datasets/#docsplit-poly-seq-100-packets">DocSplit-Poly-Seq (100 packets)</a>; <a href="../../benchmark-guidance/datasets/#docsplit-same-class-runs-60-packets">DocSplit same-class runs (60 packets)</a></td></tr><tr><td><strong>Models</strong></td><td>OCR: Amazon Textract (Layout) · Classification: varies (the setting under test) · Extraction: Claude Haiku 5.5, single-pass · Scoring: Claude Haiku 5.5.</td></tr><tr><td><strong>Runs</strong></td><td>3 per document, per value; N = 90–100 packets × 2–3 runs; up to 10 packets failed in a run and are left out of it</td></tr></tbody></table>
-<p><strong>DocSplit: section accuracy</strong></p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Changes</strong></td><td>How the packet is split and classified, on packets of 5 to 20 pages and of 30 to 60 pages</td></tr><tr><td><strong>Everything else</strong></td><td>The <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a></td></tr><tr><td><strong>Datasets</strong></td><td><a href="../../benchmark-guidance/datasets/#docsplit-poly-seq-100-packets">DocSplit-Poly-Seq (100 packets)</a>; <a href="../../benchmark-guidance/datasets/#docsplit-long-packets-40-packets-30-to-60-pages">DocSplit long packets (40 packets, 30 to 60 pages)</a></td></tr><tr><td><strong>Models</strong></td><td>OCR: Amazon Textract (Layout) · Classification: varies (the setting under test) · Extraction: Claude Haiku 5.5, single-pass · Scoring: Claude Haiku 5.5.</td></tr><tr><td><strong>Runs</strong></td><td>3 per document, per value; N: DocSplit — 90–100 packets × 3 runs; up to 10 packets failed in a run and are left out of it; Long packets — 38–40 packets × 3 runs; up to 2 packets failed in a run and are left out of it</td></tr></tbody></table>
 
 
 
@@ -892,8 +2113,6 @@ document class.</li>
 
 
 
-<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.49 ± 0.01</td><td>0.70 ± 0.00</td><td>0.73 ± 0.00</td></tr><tr><td>Holistic</td><td>0.51 ± 0.01</td><td>0.75 ± 0.02</td><td><strong>0.90 ± 0.00</strong></td></tr><tr><td>Split, then an LLM names each section</td><td>0.46 ± 0.01</td><td>0.75 ± 0.01</td><td>0.88 ± 0.01</td></tr><tr><td>Split, then a decision model names each section</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
-<p><strong>DocSplit: boundary accuracy</strong></p>
 
 
 
@@ -929,8 +2148,6 @@ document class.</li>
 
 
 
-<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.49 ± 0.01</td><td>0.70 ± 0.01</td><td>0.74 ± 0.01</td></tr><tr><td>Holistic</td><td>0.63 ± 0.02</td><td>0.80 ± 0.02</td><td><strong>0.91 ± 0.00</strong></td></tr><tr><td>Split, then an LLM names each section</td><td>0.56 ± 0.02</td><td>0.77 ± 0.00</td><td>0.89 ± 0.01</td></tr><tr><td>Split, then a decision model names each section</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
-<p><strong>DocSplit: label accuracy</strong></p>
 
 
 
@@ -964,196 +2181,9 @@ document class.</li>
 
 
 
-
-
-<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.91 ± 0.01</td><td>0.98 ± 0.00</td><td><strong>0.99 ± 0.00</strong></td></tr><tr><td>Holistic</td><td>0.86 ± 0.00</td><td>0.95 ± 0.01</td><td>0.98 ± 0.00</td></tr><tr><td>Split, then an LLM names each section</td><td>0.90 ± 0.01</td><td>0.97 ± 0.01</td><td>0.98 ± 0.00</td></tr><tr><td>Split, then a decision model names each section</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
-<p><strong>DocSplit: page accuracy</strong></p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.83 ± 0.00</td><td>0.88 ± 0.00</td><td>0.90 ± 0.00</td></tr><tr><td>Holistic</td><td>0.80 ± 0.01</td><td>0.90 ± 0.00</td><td>0.96 ± 0.00</td></tr><tr><td>Split, then an LLM names each section</td><td>0.75 ± 0.01</td><td>0.93 ± 0.02</td><td>0.96 ± 0.00</td></tr><tr><td>Split, then a decision model names each section</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
-<p><strong>DocSplit: grouping score</strong></p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.66 ± 0.00</td><td>0.82 ± 0.01</td><td>0.85 ± 0.00</td></tr><tr><td>Holistic</td><td>0.90 ± 0.00</td><td>0.91 ± 0.01</td><td><strong>0.94 ± 0.00</strong></td></tr><tr><td>Split, then an LLM names each section</td><td>0.88 ± 0.01</td><td>0.89 ± 0.00</td><td>0.94 ± 0.00</td></tr><tr><td>Split, then a decision model names each section</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
-<p><strong>DocSplit: calibration error</strong></p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr><tr><td>Holistic</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr><tr><td>Split, then an LLM names each section</td><td>0.90 ± 0.00</td><td>0.89 ± 0.00</td><td>0.89 ± 0.00</td></tr><tr><td>Split, then a decision model names each section</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
-<p><strong>DocSplit: median seconds per packet</strong></p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>207.78 ± 57.24</td><td>294.29 ± 54.02</td><td>144.31 ± 13.55</td></tr><tr><td>Holistic</td><td>122.26 ± 6.29</td><td>137.64 ± 4.05</td><td>128.63 ± 6.22</td></tr><tr><td>Split, then an LLM names each section</td><td><strong>106.08 ± 2.36</strong></td><td>210.32 ± 20.29</td><td>143.69 ± 5.90</td></tr><tr><td>Split, then a decision model names each section</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
-<p><strong>DocSplit: classification cost per 1,000 packets (USD)</strong></p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<table><thead><tr><th></th><th>Amazon Nova 2 Lite</th><th>Claude Haiku 5.5</th><th>Claude Sonnet 5.5</th></tr></thead><tbody><tr><td>Page by page</td><td>$13.2 ± $0.01</td><td>$14.5 ± $0.03</td><td>$252 ± $0.53</td></tr><tr><td>Holistic</td><td><strong>$5.39 ± $0.00</strong></td><td>$10.4 ± $0.03</td><td>$200 ± $0.37</td></tr><tr><td>Split, then an LLM names each section</td><td>$7.83 ± $0.03</td><td>$16.4 ± $0.05</td><td>$315 ± $0.46</td></tr><tr><td>Split, then a decision model names each section</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
-<p>Failed packets per run: DocSplit — Holistic · Claude Haiku 5.5: 1, 0, 1; DocSplit — Split, then an LLM names each section · Amazon Nova 2 Lite: 1, 1, 0; DocSplit — Split, then an LLM names each section · Claude Haiku 5.5: 8, 10.</p>
-<p><em>The <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a> is <em>Holistic</em> with <em>Claude Haiku 5.5</em>. A bold figure beats every other in its table by more than twice the combined standard error.</em></p>
+<table><thead><tr><th>Dataset</th><th>How the packet is split and classified, on packets of 5 to 20 pages and of 30 to 60 pages</th><th>Section accuracy</th><th>Boundary accuracy</th><th>Label accuracy</th><th>Page accuracy</th><th>Over-splits</th><th>Merges</th><th>Classification tokens per page</th><th>Classification cost per 1,000 packets (USD)</th><th>Median seconds per packet</th><th><a href="../../benchmark-guidance/marginal-cost-of-error/">Classification cost per wrong section prevented</a> vs Page by page · Haiku 5.5</th></tr></thead><tbody><tr><td>DocSplit</td><td>Page by page · Claude Haiku 5.5</td><td>0.7 ± 0</td><td>0.7 ± 0.01</td><td>0.98 ± 0</td><td>0.88 ± 0</td><td>—</td><td>—</td><td>8,842 ± 6.96</td><td><strong>$14.5 ± $0.06</strong></td><td>294 ± 108</td><td>—</td></tr><tr><td>DocSplit</td><td><strong>Holistic · Claude Haiku 5.5 (baseline)</strong></td><td>0.75 ± 0.04</td><td>0.8 ± 0.04</td><td>0.95 ± 0.01</td><td>0.9 ± 0.01</td><td>—</td><td>—</td><td><strong>6,168 ± 7.23</strong></td><td>$25.6 ± $0.52</td><td><strong>138 ± 8.1</strong></td><td>$0.05</td></tr><tr><td>DocSplit</td><td>Split, then an LLM classifies each section · Claude Haiku 5.5</td><td>0.75 ± 0.01</td><td>0.77 ± 0.01</td><td>0.97 ± 0.02</td><td>0.92 ± 0.02</td><td>—</td><td>—</td><td>9,762 ± 64</td><td>$31.5 ± $1.37</td><td>189 ± 49</td><td>$0.08</td></tr><tr><td>Long packets</td><td>Page by page · Claude Haiku 5.5</td><td>0.62 ± 0.01</td><td>0.65 ± 0.01</td><td><strong>0.97 ± 0.01</strong></td><td>0.83 ± 0.01</td><td>—</td><td>—</td><td>8,772 ± 1.84</td><td><strong>$44.6 ± $0.15</strong></td><td>880 ± 75</td><td>—</td></tr><tr><td>Long packets</td><td><strong>Holistic · Claude Haiku 5.5 (baseline)</strong></td><td>0.62 ± 0.03</td><td>0.68 ± 0.02</td><td>0.92 ± 0.01</td><td>0.84 ± 0.01</td><td>—</td><td>—</td><td><strong>6,732 ± 86</strong></td><td>$103 ± $0.69</td><td><strong>595 ± 222</strong></td><td>no measurable gain</td></tr><tr><td>Long packets</td><td>Split, then an LLM classifies each section · Claude Haiku 5.5</td><td><strong>0.67 ± 0.01</strong></td><td><strong>0.71 ± 0.01</strong></td><td>0.95 ± 0</td><td><strong>0.87 ± 0</strong></td><td>—</td><td>—</td><td>10,432 ± 2.52</td><td>$125 ± $0.27</td><td>1,128 ± 216</td><td>$0.14</td></tr></tbody></table>
+<p>Failed packets per run: DocSplit — Holistic · Claude Haiku 5.5: 1, 0, 1; DocSplit — Split, then an LLM classifies each section · Claude Haiku 5.5: 8, 10, 0; Long packets — Holistic · Claude Haiku 5.5: 2, 0, 0.</p>
+<p><em>A bold figure beats every other in its column, for that dataset, by more than twice the combined standard error. The bold name is the value the <a href="../../benchmark-guidance/index/#how-we-run-a-benchmark">baseline setup</a> uses.</em></p>
 <p><em>Costs use on-demand prices for us-east-1 from <a href="../../config_library/pricing.yaml">config_library/pricing.yaml</a> as of 2026-11-18. Classification cost counts only the classification step: its Amazon Bedrock calls and a decision model’s AWS Lambda time. OCR, extraction, confidence scoring and other AWS charges are left out.</em></p>
 </details>
 <div class="sl-heading-wrapper level-h3"><h3 id="planned">Planned</h3><a class="sl-anchor-link" href="#planned"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Planned”</span></a></div>
@@ -1165,6 +2195,5 @@ document class.</li>
 <li>Does accuracy drop as I add document classes? (SC-08)</li>
 <li>How small can classification images be? (SC-09)</li>
 <li>If every file is one document, should I turn splitting off? (SC-10)</li>
-<li>Do long packets change which approach to use? (SC-14)</li>
 </ul>
 <!-- END GENERATED FAQ --></div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/digitization/" rel="prev" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-jgq3vlii">Previous<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Digitization (OCR)</span></span></a><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/extraction/" rel="next" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-jgq3vlii">Next<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Key Information Extraction</span></span></a></div></footer></div></div></main></div></div></div></div></body></html>

@@ -116,6 +116,10 @@ results with ground truth. Stickler scores each field and averages the scores by
 weight, giving each document a score from 0 to 1. The error rate is 1 minus that score.</p>
 <p>One error is one document’s worth of wrong field weight. 1,000 documents with a mean score
 of 0.80 carry 200 errors.</p>
+<p>Splitting and classification count sections instead. Section accuracy is the share of
+sections with exactly the right pages and class, so one error is one wrong section. A
+DocSplit packet holds about four sections, so 1,000 packets with a section accuracy of
+0.80 carry about 800 errors, and the cost per error prevented is per section.</p>
 <div class="sl-heading-wrapper level-h2"><h2 id="how-to-read-the-lines-on-our-charts">How to read the lines on our charts</h2><a class="sl-anchor-link" href="#how-to-read-the-lines-on-our-charts"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “How to read the lines on our charts”</span></a></div>
 <p>Each chart on our benchmark pages plots accuracy against cost per 1,000 documents, one point
 per value of a setting. <a href="../../benchmark-guidance/extraction/">Key Information Extraction</a> has examples. We compute
