@@ -1,0 +1,923 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Benchmarking Guide | GenAI IDP</title><link rel="canonical" href="https://aws-solutions-library-samples.github.io/accelerated-intelligent-document-processing-on-aws/benchmarking/"/><link rel="sitemap" href="/accelerated-intelligent-document-processing-on-aws/sitemap-index.xml"/><link rel="shortcut icon" href="/accelerated-intelligent-document-processing-on-aws/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.4.5"/><meta name="generator" content="Starlight v0.41.4"/><meta property="og:title" content="Benchmarking Guide"/><meta property="og:type" content="article"/><meta property="og:url" content="https://aws-solutions-library-samples.github.io/accelerated-intelligent-document-processing-on-aws/benchmarking/"/><meta property="og:locale" content="en"/><meta property="og:description" content="GenAI Intelligent Document Processing — scalable, serverless AWS solution for automated document processing"/><meta property="og:site_name" content="GenAI IDP"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="GenAI Intelligent Document Processing — scalable, serverless AWS solution for automated document processing"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/common.Dt04y4fs.css"><style>@layer starlight.components{.card:where(.astro-zts4jgjd){--sl-card-border:var(--sl-color-purple);--sl-card-bg:var(--sl-color-purple-low);border:1px solid var(--sl-color-gray-5);background-color:var(--sl-color-black);flex-direction:column;gap:clamp(.5rem,.125rem + 1vw,1rem);padding:clamp(1rem,.125rem + 3vw,2.5rem)}.card:where(.astro-zts4jgjd):nth-child(4n+1){--sl-card-border:var(--sl-color-orange);--sl-card-bg:var(--sl-color-orange-low)}.card:where(.astro-zts4jgjd):nth-child(4n+3){--sl-card-border:var(--sl-color-green);--sl-card-bg:var(--sl-color-green-low)}.card:where(.astro-zts4jgjd):nth-child(4n+4){--sl-card-border:var(--sl-color-red);--sl-card-bg:var(--sl-color-red-low)}.card:where(.astro-zts4jgjd):nth-child(4n+5){--sl-card-border:var(--sl-color-blue);--sl-card-bg:var(--sl-color-blue-low)}.title:where(.astro-zts4jgjd){font-weight:600;font-size:var(--sl-text-h4);color:var(--sl-color-white);line-height:var(--sl-line-height-headings);align-items:center;gap:1rem}.card:where(.astro-zts4jgjd) .icon:where(.astro-zts4jgjd){border:1px solid var(--sl-card-border);background-color:var(--sl-card-bg);border-radius:.25rem;flex-shrink:0;padding:.2em}.card:where(.astro-zts4jgjd) .body:where(.astro-zts4jgjd){font-size:clamp(var(--sl-text-sm), calc(.5rem + 1vw), var(--sl-text-body));margin:0}.card-grid:where(.astro-lmor3ela){grid-template-columns:100%;gap:1rem;display:grid}.card-grid:where(.astro-lmor3ela)>*{margin-top:0!important}@media (width>=50rem){.card-grid:where(.astro-lmor3ela){grid-template-columns:1fr 1fr;gap:1.5rem}.stagger:where(.astro-lmor3ela){--stagger-height:5rem;padding-bottom:var(--stagger-height)}.stagger:where(.astro-lmor3ela)>:nth-child(2n){transform:translateY(var(--stagger-height))}}.sl-link-card:where(.astro-vodiqeol){border:1px solid var(--sl-color-gray-5);box-shadow:var(--sl-shadow-sm);border-radius:.5rem;grid-template-columns:1fr auto;gap:.5rem;padding:1rem;display:grid;position:relative}a:where(.astro-vodiqeol){line-height:var(--sl-line-height-headings);text-decoration:none}a:where(.astro-vodiqeol):before{content:"";position:absolute;inset:0}.stack:where(.astro-vodiqeol){flex-direction:column;gap:.5rem}.title:where(.astro-vodiqeol){color:var(--sl-color-white);font-weight:600;font-size:var(--sl-text-lg)}.description:where(.astro-vodiqeol){color:var(--sl-color-gray-3);line-height:1.5}.icon:where(.astro-vodiqeol){color:var(--sl-color-gray-3)}.sl-link-card:where(.astro-vodiqeol):hover{background:var(--sl-color-gray-7,var(--sl-color-gray-6));border-color:var(--sl-color-gray-2)}.sl-link-card:where(.astro-vodiqeol):hover .icon:where(.astro-vodiqeol){color:var(--sl-color-white)}}
+@layer starlight.components{svg:where(.astro-n5k4ipy7){color:var(--sl-icon-color);font-size:var(--sl-icon-size,1em);width:1em;height:1em}}
+</style><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/page.B1sbS0l1.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">Skip to content</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><a href="/accelerated-intelligent-document-processing-on-aws/" class="site-title sl-flex astro-clw6ags5"><img class="light:sl-hidden print:hidden astro-clw6ags5" alt src="/accelerated-intelligent-document-processing-on-aws/_astro/logo-dark.CDSNlVMV.svg" width="120" height="32"><img class="dark:sl-hidden print:block astro-clw6ags5" alt src="/accelerated-intelligent-document-processing-on-aws/_astro/logo-light.CszXvHpe.svg" width="120" height="32"><span class="astro-clw6ags5" translate="no">GenAI IDP</span></a></div><div class="sl-flex print:hidden astro-nczgtkxc"><site-search class="astro-nczgtkxc astro-r5ar4xm7" data-translations="{&quot;placeholder&quot;:&quot;Search&quot;}"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-r5ar4xm7"><svg aria-hidden="true" class="astro-r5ar4xm7 astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-r5ar4xm7" aria-hidden="true">Search</span><kbd class="sl-hidden md:sl-flex astro-r5ar4xm7" style="display: none;"><kbd class="astro-r5ar4xm7">Ctrl</kbd><kbd class="astro-r5ar4xm7">K</kbd></kbd></button><dialog style="padding:0" aria-label="Search" class="astro-r5ar4xm7"><div class="dialog-frame sl-flex astro-r5ar4xm7"><button data-close-modal class="sl-flex md:sl-hidden astro-r5ar4xm7">Cancel</button><div class="search-container astro-r5ar4xm7"><div id="starlight__search" class="astro-r5ar4xm7"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/Search.astro_astro_type_script_index_0_lang.DoiGT_Lk.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">GitHub</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="Main"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="01pw2uh" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Overview</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/" class="astro-ojxuodky"><span class="astro-ojxuodky">Welcome</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/references/" class="astro-ojxuodky"><span class="astro-ojxuodky">Blogs, Customer Stories &amp; Research</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/workshops/" class="astro-ojxuodky"><span class="astro-ojxuodky">Hands-on Workshops</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Get Started</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/get-started/" class="astro-ojxuodky"><span class="astro-ojxuodky">Get Started</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">IDP Fundamentals</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/" class="astro-ojxuodky"><span class="astro-ojxuodky">How Document Processing Works</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/digitization/" class="astro-ojxuodky"><span class="astro-ojxuodky">Digitization (OCR)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/splitting-and-classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Splitting and Section Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Key Information Extraction</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/confidence-assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Assessment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/rule-validation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/benchmark-datasets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Datasets</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Benchmarks by Problem Set</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/" class="astro-ojxuodky"><span class="astro-ojxuodky">How We Benchmark Configurations</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/digitization/" class="astro-ojxuodky"><span class="astro-ojxuodky">Digitization (OCR)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/splitting-and-classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Splitting and Section Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Key Information Extraction</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/confidence-assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Assessment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/token-use/" class="astro-ojxuodky"><span class="astro-ojxuodky">Token Use and Cost</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/marginal-cost-of-error/" class="astro-ojxuodky"><span class="astro-ojxuodky">Marginal Cost of Error</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/datasets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Datasets</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Core</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/architecture/" class="astro-ojxuodky"><span class="astro-ojxuodky">Architecture</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/quick-start/" class="astro-ojxuodky"><span class="astro-ojxuodky">Quick Start</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-deployment-ai-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">AI-Guided Deployment Walkthrough</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/terraform/" class="astro-ojxuodky"><span class="astro-ojxuodky">Terraform Deployment (Experimental)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/terraform-migration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Migrating from genai-idp-terraform</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/headless-deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Headless Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/apigateway-hosting/" class="astro-ojxuodky"><span class="astro-ojxuodky">API Gateway Hosting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/deployment-private-network/" class="astro-ojxuodky"><span class="astro-ojxuodky">Private Network Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/vpc-secured-mode/" class="astro-ojxuodky"><span class="astro-ojxuodky">VPC-Secured Mode</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration-profiles/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Profiles</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/multi-tenancy/" class="astro-ojxuodky"><span class="astro-ojxuodky">Multi-Tenant Isolation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration-versions/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Versions (renamed)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-configuration-best-practices/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Best Practices</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/json-schema-migration/" class="astro-ojxuodky"><span class="astro-ojxuodky">JSON Schema Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/web-ui/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web UI</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-appsync-to-rest/" class="astro-ojxuodky"><span class="astro-ojxuodky">UI ⇄ Backend Transport (AppSync → REST)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-cli/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP CLI</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-sdk/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP SDK</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idpcommon-api-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">idp_common API Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/demo-videos/" class="astro-ojxuodky"><span class="astro-ojxuodky">Demo Videos</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/troubleshooting/" class="astro-ojxuodky"><span class="astro-ojxuodky">Troubleshooting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/error-analyzer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Error Analyzer</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Processing Modes</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/pattern-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">BDA Mode Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/pattern-2/" class="astro-ojxuodky"><span class="astro-ojxuodky">Pipeline Mode Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/discovery/" class="astro-ojxuodky"><span class="astro-ojxuodky">Discovery</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/policy-discovery/" class="astro-ojxuodky"><span class="astro-ojxuodky">Policy Discovery</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Document Processing Features</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction-and-confidence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction &amp; Confidence</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Assessment (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/assessment-bounding-boxes/" class="astro-ojxuodky"><span class="astro-ojxuodky">Assessment Bounding Boxes (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/few-shot-examples/" class="astro-ojxuodky"><span class="astro-ojxuodky">Few-Shot Examples</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/human-review/" class="astro-ojxuodky"><span class="astro-ojxuodky">Human-in-the-Loop Review</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/review-queues/" class="astro-ojxuodky"><span class="astro-ojxuodky">Review Queues</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rule-validation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/missing-page-handling/" class="astro-ojxuodky"><span class="astro-ojxuodky">Missing Page Handling</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/ocr-image-sizing-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">OCR Image Sizing Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/languages/" class="astro-ojxuodky"><span class="astro-ojxuodky">Languages</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Evaluation &amp; Testing</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/testing/" class="astro-ojxuodky"><span class="astro-ojxuodky">Testing</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/evaluation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Evaluation Framework</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/evaluation-enhanced-reporting/" class="astro-ojxuodky"><span class="astro-ojxuodky">Enhanced Reporting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/test-studio/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Studio</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/creating-custom-test-sets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Creating Custom Test Sets</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mlflow-integration/" class="astro-ojxuodky"><span class="astro-ojxuodky">MLflow Experiment Tracking</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Release Validation</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation Records</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0611/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.11</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0612/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.12</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.13</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0614/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.14</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v066/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.6</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v068/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.8</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v069/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.9</span></a></li></ul></details></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Benchmarks &amp; Performance</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/" aria-current="page" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmarking Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/config-guidance/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Guidance</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Release Audit Trail</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit Trail</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v060/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.0 vs v0.5.16</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0611/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.11 vs v0.6.10</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0612/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.12 vs v0.6.11</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.13 vs v0.6.12</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0614/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.14 vs v0.6.13</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v065/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.5 vs v0.6.4</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v065-fix-verification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Fix Verification: v0.6.5 correctness fixes</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v066/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.6 vs v0.6.5</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v067/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.7</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v068/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.8</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v069/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.9</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Studies</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/advanced-extraction-refinements/" class="astro-ojxuodky"><span class="astro-ojxuodky">Advanced Extraction — Seven Candidate Refinements, Measured</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/classification-confidence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Classification Confidence — Does the Score Carry Signal?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/confidence-calibration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Calibration — Can the Score Route Human Review?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/feature-multi-instance/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Study: multi-instance sections (#715 / #753)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/greedy-decoding-tool-use/" class="astro-ojxuodky"><span class="astro-ojxuodky">Greedy Decoding and Invalid Tool-Use Sequences</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/prompt-cache-padding-proposal/" class="astro-ojxuodky"><span class="astro-ojxuodky">Should we pad prompts to clear the cache minimum?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/prompt-caching/" class="astro-ojxuodky"><span class="astro-ojxuodky">Prompt Caching — Measured Behaviour</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Studies</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/schema-restatement-tokens/" class="astro-ojxuodky"><span class="astro-ojxuodky">Schema Restatement — What Turning It Off Actually Costs</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction-scaling-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction Scaling Guide</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">AI Agents &amp; Analytics</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="12"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/agent-analysis/" class="astro-ojxuodky"><span class="astro-ojxuodky">Agent Analysis</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/agent-companion-chat/" class="astro-ojxuodky"><span class="astro-ojxuodky">Agent Companion Chat</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/code-intelligence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Code Intelligence</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/knowledge-base/" class="astro-ojxuodky"><span class="astro-ojxuodky">Knowledge Base</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/custom-mcp-agent/" class="astro-ojxuodky"><span class="astro-ojxuodky">Custom MCP Agent</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mcp-connector/" class="astro-ojxuodky"><span class="astro-ojxuodky">MCP Connector</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mcp-server/" class="astro-ojxuodky"><span class="astro-ojxuodky">MCP Server</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Integration &amp; Extensions</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="13"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/feature-platform/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Platform</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/feature-platform-developer-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Platform Developer Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/marketplace-subscription-next-steps/" class="astro-ojxuodky"><span class="astro-ojxuodky">After Subscribing on AWS Marketplace</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Extensions</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="14"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/auto-optimizer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Auto Optimizer (Beta)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/idp-monitor/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP Monitor</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/pii-anonymizer/" class="astro-ojxuodky"><span class="astro-ojxuodky">PII Anonymization</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/confbench-testset/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Set - ConfBench</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/idp-data-generator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Set Generator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/sample-document-status/" class="astro-ojxuodky"><span class="astro-ojxuodky">Sample: Document Status (feature add-on)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/sample-health-insurance-review/" class="astro-ojxuodky"><span class="astro-ojxuodky">Sample: Health Insurance Review</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/document-versions/" class="astro-ojxuodky"><span class="astro-ojxuodky">Document Versions</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/post-processing-lambda-hook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Post-Processing Lambda Hook</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/lambda-hook-inference/" class="astro-ojxuodky"><span class="astro-ojxuodky">Lambda Hook Inference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/nova-finetuning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Nova Fine-Tuning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/custom-model-finetuning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Custom Model Fine-Tuning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/service-tiers/" class="astro-ojxuodky"><span class="astro-ojxuodky">Service Tiers</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Monitoring &amp; Operations</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="15"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/monitoring/" class="astro-ojxuodky"><span class="astro-ojxuodky">Monitoring</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/reporting-database/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reporting Database</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/reporting-sql-layer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reporting SQL Layer</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/capacity-planning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Capacity Planning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/cost-calculator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Cost Calculator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/circuit-breaker/" class="astro-ojxuodky"><span class="astro-ojxuodky">Circuit Breaker</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/cross-account-bedrock/" class="astro-ojxuodky"><span class="astro-ojxuodky">Cross-Account Bedrock</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/version-update-indicator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Version Update Indicator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-runbook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Runbook</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Planning &amp; Security</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="16"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/threat-model/" class="astro-ojxuodky"><span class="astro-ojxuodky">Threat Model</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/malware-scanning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Malware Scanning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/well-architected/" class="astro-ojxuodky"><span class="astro-ojxuodky">Well-Architected Review</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/aws-services-and-roles/" class="astro-ojxuodky"><span class="astro-ojxuodky">AWS Services &amp; IAM Roles</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rbac/" class="astro-ojxuodky"><span class="astro-ojxuodky">Role-Based Access Control (RBAC)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/external-idp/" class="astro-ojxuodky"><span class="astro-ojxuodky">External Identity Provider</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">GovCloud</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="17"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-architecture/" class="astro-ojxuodky"><span class="astro-ojxuodky">Architecture</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-operations/" class="astro-ojxuodky"><span class="astro-ojxuodky">Operations</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-batch-api/" class="astro-ojxuodky"><span class="astro-ojxuodky">Batch API</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/eu-region-model-support/" class="astro-ojxuodky"><span class="astro-ojxuodky">EU Region Model Support</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/canada-region-model-support/" class="astro-ojxuodky"><span class="astro-ojxuodky">Canada (Central) Model Support</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/openai-models/" class="astro-ojxuodky"><span class="astro-ojxuodky">OpenAI Models</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/grok-models/" class="astro-ojxuodky"><span class="astro-ojxuodky">xAI Grok Models</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Development Setup</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="18"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-linux/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: Linux</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-macos/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: macOS</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-wsl/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: WSL</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-windows/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: Windows</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/using-notebooks-with-idp-common/" class="astro-ojxuodky"><span class="astro-ojxuodky">Using Notebooks</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/dependency-mirroring/" class="astro-ojxuodky"><span class="astro-ojxuodky">Dependency Mirroring</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/dependency-confusion/" class="astro-ojxuodky"><span class="astro-ojxuodky">Installing First-Party Packages</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Migration</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="19"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v0612-to-v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.6.12 → v0.6.13 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v05-to-v06/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.5 → v0.6 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v04-to-v05/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.4 → v0.5 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-granular-retirement/" class="astro-ojxuodky"><span class="astro-ojxuodky">Granular Assessment Retirement</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">New &amp; Uncategorized</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="20"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/data-mart-migration-runbook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Data Mart Migration Runbook</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rule-validation-z3/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation Z3</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">GitHub</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-three-benchmark-documents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The three benchmark documents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#what-it-measures-seven-dimensions" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">What it measures (seven dimensions)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-two-corpora-ground-truth-strategy" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The two corpora (ground-truth strategy)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-two-matrices" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The two matrices</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-a-run-executes" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How a run executes</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#suites-cost-tiered" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Suites (cost-tiered)</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#which-models-are-actually-measured" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Which models are actually measured</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#is-a-premium-model-worth-it" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Is a premium model worth it?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#is-the-newer-opus-cheaper-for-the-same-result" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Is the newer Opus cheaper for the same result?</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#regression-thresholds" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Regression thresholds</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#reproducibility-and-reporting-rules" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Reproducibility and reporting rules</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#maintaining-the-release-audit-trail--one-command-per-release" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Maintaining the release audit trail — one command per release</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-three-benchmark-documents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The three benchmark documents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#what-it-measures-seven-dimensions" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">What it measures (seven dimensions)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-two-corpora-ground-truth-strategy" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The two corpora (ground-truth strategy)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-two-matrices" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The two matrices</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-a-run-executes" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How a run executes</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#suites-cost-tiered" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Suites (cost-tiered)</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#which-models-are-actually-measured" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Which models are actually measured</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#is-a-premium-model-worth-it" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Is a premium model worth it?</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#is-the-newer-opus-cheaper-for-the-same-result" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Is the newer Opus cheaper for the same result?</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#regression-thresholds" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Regression thresholds</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#reproducibility-and-reporting-rules" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Reproducibility and reporting rules</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#maintaining-the-release-audit-trail--one-command-per-release" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Maintaining the release audit trail — one command per release</span></a></li></ul></nav></starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">Benchmarking Guide</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><div class="sl-heading-wrapper level-h1"><h1 id="benchmarking-guide--how-the-idp-benchmark-suite-works">Benchmarking Guide — How the IDP Benchmark Suite Works</h1><a class="sl-anchor-link" href="#benchmarking-guide--how-the-idp-benchmark-suite-works"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Benchmarking Guide — How the IDP Benchmark Suite Works”</span></a></div>
+<p>The benchmark suite (<code dir="auto">benchmarks/</code> in the repo) is a repeatable, scientific harness
+that runs the accelerator end-to-end across a controlled matrix of <strong>document
+types/sizes</strong> and <strong>configuration options</strong>, then quantifies every result on seven
+dimensions. It exists to serve two audiences:</p>
+<ul>
+<li><strong>Users</strong> — an empirical, transparent basis for choosing configuration options
+(the published results are in the <a href="../../benchmarking/config-guidance/">Configuration Guidance</a> paper).</li>
+<li><strong>Maintainers</strong> — a regression gate: re-run the same matrix on any change and diff
+against a committed baseline to catch accuracy/cost/robustness regressions.</li>
+</ul>
+<blockquote>
+<p>To <em>run</em> it, see the <code dir="auto">run-benchmarks</code> skill and <code dir="auto">benchmarks/matrices/METHODOLOGY.md</code>.
+This page explains how it is designed and what the numbers mean.</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="the-three-benchmark-documents">The three benchmark documents</h2><a class="sl-anchor-link" href="#the-three-benchmark-documents"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “The three benchmark documents”</span></a></div>
+<p>This section of the docs holds three distinct, non-overlapping documents. Keep them
+separate — they answer different questions and are regenerated on different cadences:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Document</th><th>Question it answers</th><th>Cadence</th></tr></thead><tbody><tr><td><strong>This guide</strong> (<code dir="auto">index.md</code>)</td><td><em>How does the suite work and what do the numbers mean?</em></td><td>Evergreen; edit when the harness changes.</td></tr><tr><td><a href="../../benchmarking/config-guidance/">Configuration Guidance</a></td><td><em>Which config (OCR / mode / assessment / model) should I pick?</em> — cross-config at one release</td><td>Refreshed per release.</td></tr><tr><td><a href="./studies/">Benchmark Studies</a></td><td><em>One question each</em>, asked once during development and not regenerated per release — prompt caching, classification confidence, multi-instance sections, the seven advanced-extraction refinements, schema restatement, greedy decoding on tool use</td><td>Added when a one-off question is measured; the <a href="./studies/">index</a> lists each study’s verdict.</td></tr><tr><td><a href="./releases/">Release Audit Trail</a></td><td><em>Is upgrading from the last published release safe / cheaper / faster?</em> — release-vs-release</td><td><strong>One new entry per release</strong> (never overwritten).</td></tr></tbody></table>
+<p>The release audit trail is the durable history: <code dir="auto">docs/benchmarking/releases/vX.Y.Z.md</code>
+compares each <code dir="auto">develop</code> prerelease to the previous <strong>published</strong> release, and the
+<a href="./releases/">index</a> table links them all. Raw data lives (unpublished) under
+<code dir="auto">benchmarks/results/&#x3C;release>/&#x3C;suite>/</code> — <strong>one complete set per release</strong>, per
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/benchmarks/results/RETENTION.md"><code dir="auto">benchmarks/results/RETENTION.md</code></a>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="what-it-measures-seven-dimensions">What it measures (seven dimensions)</h2><a class="sl-anchor-link" href="#what-it-measures-seven-dimensions"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “What it measures (seven dimensions)”</span></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Dimension</th><th>Definition</th></tr></thead><tbody><tr><td><strong>Success / failure</strong></td><td>Did the document complete? Failure phase + Bedrock error class are captured (e.g. input-overflow <code dir="auto">ValidationException</code>).</td></tr><tr><td><strong>Completeness</strong></td><td>For list-bearing docs: fraction of ground-truth rows recovered, plus the <em>truncation point</em> (longest contiguous prefix) and duplicate/gap counts.</td></tr><tr><td><strong>Accuracy</strong></td><td>Exact field/cell match against ground truth (synthetic) or the stack’s evaluation <code dir="auto">weighted_overall_score</code> (reference docs).</td></tr><tr><td><strong>Confidence calibration</strong></td><td>Mean confidence, %-below-threshold (alert rate), and — where a match flag exists — separation between confidence on correct vs incorrect values. Over-confidence on wrong values is a regression even when accuracy holds.</td></tr><tr><td><strong>Latency</strong></td><td>Wall-clock per document (and per phase where available).</td></tr><tr><td><strong>Token use</strong></td><td>Per-phase, per-model, per-unit (input / output / cache-read / cache-write) from the document’s metering.</td></tr><tr><td><strong>Cost</strong></td><td>Metering priced with <code dir="auto">config_library/pricing.yaml</code>, broken out by phase (OCR / Extraction / Assessment / Summarization / Lambda).</td></tr></tbody></table>
+<p>Three of these have more than one instrument, and picking the wrong one has produced
+wrong conclusions here before:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Metric</th><th>Reads</th><th>Use it for</th></tr></thead><tbody><tr><td><code dir="auto">scalar_accuracy</code></td><td>The text the document <strong>renders</strong> (<code dir="auto">"$685.50"</code>)</td><td>Comparability with historical baselines. Do <strong>not</strong> use it to judge value normalization — a correctly-typed <code dir="auto">685.5</code> scores as a miss.</td></tr><tr><td><code dir="auto">typed_accuracy</code></td><td>The schema-<strong>typed</strong> target (<code dir="auto">685.5</code>)</td><td>Whether <strong>scalar</strong> values came back correctly typed. Defined only for a document whose truth declares <code dir="auto">fields_typed</code>, which is the <code dir="auto">kv_form</code> document and nothing else — see below. Absent, not zero, on every other row.</td></tr><tr><td><code dir="auto">cell_accuracy</code></td><td>Per-cell typed match on list rows, matched by <code dir="auto">SEQ</code> tag</td><td>Value fidelity <em>inside</em> lists. Completeness answers “did the row come back”; this answers “with the right value”. Defined only for a document that has a list attribute — absent, not zero, on a flat key/value form. Read it with <code dir="auto">cells_compared</code>.</td></tr><tr><td><code dir="auto">sections_correct</code></td><td>Section count vs <code dir="auto">expected_sections</code>, as 1.0/0.0</td><td>Boundary detection. Nothing else can see an over-split: a document split into 3 sections still reports <code dir="auto">completeness_recall</code> 1.0 and status <code dir="auto">COMPLETED</code>. The mean over repeats <strong>is</strong> the pass rate.</td></tr><tr><td><code dir="auto">n_gaps</code></td><td>Truth <code dir="auto">SEQ</code> ids <strong>absent</strong> from the extraction</td><td>Completeness. It is an <em>extraction</em> metric and says nothing about confidence — a document can have <code dir="auto">n_gaps</code> 0 and every recovered row unscored.</td></tr><tr><td><code dir="auto">conf_coverage</code></td><td>Extracted list rows carrying a confidence, over all extracted list rows</td><td>Whether the confidence surface covers the data. This is the quantity the <code dir="auto">assessment_coverage_incomplete</code> guard fires on, computed by the same function (<code dir="auto">idp_common.assessment.batching.confidence_coverage</code>) so the measurement and the guard cannot drift apart.</td></tr><tr><td><code dir="auto">mean_confidence</code></td><td>The mean of the confidence values that <strong>exist</strong></td><td>The calibration question. It is silent about rows that have no confidence at all — that is <code dir="auto">conf_coverage</code>’s job, and the two move independently.</td></tr></tbody></table>
+<p><strong><code dir="auto">typed_accuracy</code> is a scalar-field metric and only one corpus document can carry
+it.</strong> <code dir="auto">kv_form</code> is the flat key/value form, and its generator emits the typed scalar
+expectations the metric scores against. Every other synthetic document comes from the
+<code dir="auto">bank_statement</code> generator, whose two scalar fields are an account number with leading
+zeros and a date <em>range</em> — both of which a typed schema correctly leaves as strings, so
+there is no typed scalar to score. On those rows the pair is <strong>absent rather than
+null</strong>, and <code dir="auto">typed_truth_unavailable</code> says so and names <code dir="auto">cell_accuracy</code> as the
+per-value instrument that does apply there. Null would have claimed the other thing a
+missing value means in these artifacts — measured, and nothing to join — which reads in
+a published table as a blank cell instead of as a metric that was never applicable.</p>
+<p>So the grid the model table is computed on (<code dir="auto">core_synth</code>, all <code dir="auto">bank_statement</code>) cannot
+carry a typed-accuracy column, and the configuration guidance omits it rather than
+printing blanks. The suites that do produce it are <code dir="auto">enforcement</code> and <code dir="auto">forcing</code>, both of
+which name <code dir="auto">kv_form</code> and must be run with <code dir="auto">--class kv_form</code> for it, because configs are
+built per document class.</p>
+<p><strong><code dir="auto">cells_compared</code> is the column whose blank means one thing, and <code dir="auto">cell_accuracy</code> is
+not.</strong> On a document with no list attribute — <code dir="auto">kv_form</code>, the flat key/value form —
+<code dir="auto">cell_accuracy</code> and <code dir="auto">cells_compared</code> are both <strong>absent</strong>, with
+<code dir="auto">cell_truth_unavailable</code> saying so and naming <code dir="auto">scalar_accuracy</code> and <code dir="auto">typed_accuracy</code>
+as the per-value instruments that apply there. On a document that <em>has</em> a list and
+returned none of its rows, both columns are present: <code dir="auto">cell_accuracy</code> is null, because
+0/0 is undefined and a <code dir="auto">1.0</code> there would be the “a null column scores 1.000” blind
+spot in its purest form, and <code dir="auto">cells_compared</code> is the literal <code dir="auto">0</code> it compared. In
+<code dir="auto">summary.json</code> those two states differ on <code dir="auto">cell_accuracy</code> alone — absent against
+present-and-null. <strong>In the CSV they do not</strong>, because <code dir="auto">DictWriter</code> renders an absent
+key and a null value as the same empty cell: a blank <code dir="auto">cells_compared</code> means “this
+document has no list” and nothing else, while a blank <code dir="auto">cell_accuracy</code> is either that
+or a list that joined nothing, which <code dir="auto">cells_compared</code>’s <code dir="auto">0</code> and
+<code dir="auto">cell_truth_unavailable</code> tell apart. Both states used to be the same pair of blanks in
+both artifacts, so a reader could not tell a metric that never applied from a run that
+returned nothing — which is the reading that hides row loss, since a model returning
+10 rows of 400 scores 1.000 over the 20 cells it returned. <strong>Never read
+<code dir="auto">cell_accuracy</code> without <code dir="auto">cells_compared</code> beside it</strong>; both are in <code dir="auto">summary.json</code> and
+in the CSV.</p>
+<p><strong>Which encoding a grid you are reading uses is told by the reason columns, not by the
+blank.</strong> A row carrying <code dir="auto">typed_truth_unavailable</code> and <code dir="auto">cell_truth_unavailable</code> was
+scored under the encoding above, so an absent metric there means “never applicable”
+and nothing else. A row carrying neither column was scored under the earlier one,
+where both pairs are present and null on a document they do not apply to, and a blank
+is therefore <em>not</em> distinguishable from a measurement that came back empty. Every grid
+committed under <code dir="auto">benchmarks/results/</code> up to and including <code dir="auto">v0.6.11</code> is of that earlier
+vintage — they are not rescored, since scoring is a point-in-time read of a stack’s
+output and <code dir="auto">RETENTION.md</code> records how short that window is — so check for the columns
+before reading one of their blanks.</p>
+<p><code dir="auto">conf_coverage</code> is <code dir="auto">None</code>, not <code dir="auto">1.0</code>, for a document with no list attribute: coverage
+is undefined there, and <code dir="auto">cell_stats</code> drops it rather than averaging it in. The cell
+roll-up carries min, max, stdev and CV as well as the mean, because a mean of 0.99 is
+equally consistent with every document at 0.99 and with one document at 0. The
+per-field breakdown (<code dir="auto">conf_unscored_by_field</code>) is in <code dir="auto">summary.json</code> only — the CSV
+carries the four scalars.</p>
+<p><strong>Did the feature under test actually engage?</strong> <code dir="auto">analyze.py</code> also reads the audit block
+each section records about itself, because a delta of zero is uninterpretable without
+it — no effect, or no opportunity? <code dir="auto">forced_tool_honored_rate</code> (a forced tool the model
+answered in prose has measured nothing), <code dir="auto">coercions</code> / <code dir="auto">coercion_refusals</code>, and
+<code dir="auto">validation_valid_rate</code> are reported per run and rolled up per cell.</p>
+<p><strong>Did the pipeline warn about anything?</strong> Five stages emit structured
+<code dir="auto">ProcessingIssue</code>s — extraction, classification and assessment from inside the
+services, plus rule validation and postprocessing from the pipeline handlers —
+covering 28 codes including <code dir="auto">extraction_rows_below_ocr_estimate</code>,
+<code dir="auto">assessment_coverage_incomplete</code> and <code dir="auto">extraction_validation_failed</code>. <code dir="auto">analyze.py</code>
+records them per run as <code dir="auto">processing_issues</code> (the count, <code dir="auto">0</code> on a clean
+run and never null), <code dir="auto">processing_issues_by_severity</code> / <code dir="auto">_by_code</code> / <code dir="auto">_by_stage</code>
+(tallies), and <code dir="auto">processing_issue_detail</code> (every issue verbatim, which is where the
+message a reader needs lives). <code dir="auto">cell_stats</code> merges the tallies per cell over <strong>all</strong>
+its runs including the failed ones, and <code dir="auto">aggregate.py</code> prints a <code dir="auto">⚠</code> line at scoring
+time naming the codes. The CSV carries the count plus the severity and code tallies
+rendered flat.</p>
+<p>Read these <strong>before</strong> reading a completeness figure. A check that fires into a field
+nobody reads is indistinguishable, in the results tree, from a check that does not
+fire — so until these existed a run whose extraction reported losing rows was
+recorded identically to a clean one, which is how a warned run came to be described
+as a silent one. Nothing in the recorder enumerates issue codes: the tallies are
+keyed on each issue’s own values, so a code added to any service is recorded without
+a harness change.</p>
+<p>⚠️ <strong>A zero here does not cover everything, and this is the part to know before
+trusting one.</strong> The figures come from the section’s <code dir="auto">result.json</code>. Three things
+record onto the section’s DynamoDB record <em>after</em> that file is written, and nothing
+rewrites it afterwards, so a <code dir="auto">processing_issues: 0</code> is silent about them rather than
+evidence they did not fire:</p>
+<ul>
+<li><strong>The assessment degrade and skip pair</strong> — <code dir="auto">assessment_failed_confidence_unavailable</code>
+and <code dir="auto">assessment_skipped_confidence_unavailable</code>. These are the ones that matter.
+They are <strong>error</strong> severity on a document that <strong>completes</strong>, because not failing
+it is the whole purpose of that path, so a section that came back with <em>no
+confidence scores at all</em> reads here as <code dir="auto">processing_issues: 0, success: true</code> with
+no <code dir="auto">status</code> to fall back on. And they are live in what you measure: across
+<code dir="auto">results/v0.6.11/</code>, <code dir="auto">resolved.assessment</code> is <code dir="auto">separate</code> on 4,192 rows against 516
+<code dir="auto">integrated</code> and 257 <code dir="auto">off</code>, and the skip path is the standalone one.</li>
+<li><strong><code dir="auto">rule_validation</code> and <code dir="auto">postprocessing</code></strong> — smaller, because these accompany a
+document the harness already records as failed, so what is lost is the reason
+rather than the event.</li>
+</ul>
+<p>The tracking record is not read instead because it would need de-duplicating against
+the S3 copy of everything earlier, it is another large attribute fetched per run, and
+it is deleted with its stack while the S3 artifacts outlive it. So the boundary is
+declared and closed: universe-closure tests over the declared stage constants and
+over the codes <code dir="auto">assessment/degradation.py</code> declares, plus a computed check that that
+module still performs no S3 write, so a third such stage or code — or the boundary
+ceasing to be true — fails a test rather than going quietly unread.</p>
+<p>Scoring is <strong>resolver-free</strong> — it reads S3 output and DynamoDB metering directly, so it
+works on any stack version (useful for cross-release comparisons).</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="the-two-corpora-ground-truth-strategy">The two corpora (ground-truth strategy)</h2><a class="sl-anchor-link" href="#the-two-corpora-ground-truth-strategy"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “The two corpora (ground-truth strategy)”</span></a></div>
+<p><strong>A. Synthetic, exact ground truth.</strong> Generators (<code dir="auto">benchmarks/corpus/generators/</code>)
+produce documents whose field values are known and whose every list row carries a
+unique <code dir="auto">SEQnnnnn</code> tag. This makes completeness and accuracy measurable <em>exactly</em>, and
+lets us treat document size (rows/pages), row width (token density), list count, text
+length, and OCR noise as <strong>controlled variables</strong>. Generators are deterministic (no
+RNG) so a regenerated corpus is byte-stable and results are reproducible.</p>
+<p><strong>B. Reference, real labeled sets.</strong> Existing curated test sets (RealKIE-FCC,
+OCR-Benchmark, bank-statement samples) provide real-world messiness the synthetic set
+can’t emulate, scored against the stack’s evaluation baselines.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="the-two-matrices">The two matrices</h2><a class="sl-anchor-link" href="#the-two-matrices"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “The two matrices”</span></a></div>
+<p><strong>Configuration matrix</strong> (<code dir="auto">benchmarks/matrices/config_matrix.yaml</code>). Full-factorial
+over every knob is combinatorially huge and largely redundant (accuracy is empirically
+flat across several axes), so the suite tests:</p>
+<ul>
+<li>a curated set of <strong>core cells</strong> — the decision-relevant combinations of OCR backend ×
+extraction mode × assessment mode; and</li>
+<li><strong>one-axis sweeps</strong> — vary a single knob (geometry, escalation, extraction model,
+confidence model, reasoning effort) with everything else held at a fixed default, so
+each knob’s marginal effect is isolated (scientific control).</li>
+</ul>
+<p>Every generated cell is validated against the real config loader
+(<code dir="auto">merge_config_with_defaults(..., validate=True)</code>) before it can run.</p>
+<p><strong>Document matrix</strong> (<code dir="auto">benchmarks/matrices/doc_matrix.yaml</code>). Names the synthetic docs to
+generate (size series, width/list/noise variants, a non-list key/value form) and the
+reference test sets to reference, with each doc’s ground-truth pointer and config class.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="how-a-run-executes">How a run executes</h2><a class="sl-anchor-link" href="#how-a-run-executes"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “How a run executes”</span></a></div>
+<ol>
+<li><strong>Generate the corpus</strong> — <code dir="auto">gen_corpus.py</code> writes PDFs + <code dir="auto">&#x3C;id>.truth.json</code>.</li>
+<li><strong>Expand configs</strong> — <code dir="auto">make_configs.py</code> merges each matrix cell onto a base config per
+document class, validates, and writes full v0.6 config variants.</li>
+<li><strong>Run the matrix</strong> — <code dir="auto">run_matrix.py</code> registers each synthetic doc as a test set,
+uploads the config variants as <code dir="auto">Config#bench-*</code> versions (it <strong>never</strong> mutates
+<code dir="auto">Config#default</code>), launches each (cell × doc) via the stack test runner, and polls the
+tracking table to completion. <code dir="auto">--estimate</code> prints projected doc-count/cost/time first.
+Reference corpora (the two 20-document real labeled sets, plus <code dir="auto">bank_real</code>)
+are launched as <strong>test sets</strong> through the TestRunner with the cell’s config
+built onto the corpus’s own base config, and every document is scored with
+the stack’s evaluation (<code dir="auto">analyze.score_reference</code>). That needs the cells built
+for the corpus’s class too — <code dir="auto">make_configs.py --suite &#x3C;suite> --class realkie</code>
+(and <code dir="auto">ocr_bench</code>) with the same <code dir="auto">--set</code> overrides — and the test set present
+on the stack. A corpus whose index is missing is reported with the exact
+command to build it and recorded in the runmap as <code dir="auto">docs_unlaunchable</code>, so a
+partial grid never reads as complete (#766).</li>
+<li><strong>Score &#x26; aggregate</strong> — <code dir="auto">aggregate.py</code> scores every run on the seven dimensions, rolls
+them into <code dir="auto">results/&#x3C;release>/&#x3C;suite>/summary.{json,csv}</code> with a <code dir="auto">meta.json</code> (commit,
+stack, pricing hash, date), diffs against <code dir="auto">results/baseline.json</code> to flag regressions,
+and emits figures.</li>
+</ol>
+<div class="sl-heading-wrapper level-h2"><h2 id="suites-cost-tiered">Suites (cost-tiered)</h2><a class="sl-anchor-link" href="#suites-cost-tiered"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Suites (cost-tiered)”</span></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Suite</th><th>Scope</th><th>Use</th></tr></thead><tbody><tr><td><code dir="auto">smoke</code></td><td>2 cells × 2 tiny docs</td><td>Per-PR gate (minutes)</td></tr><tr><td><code dir="auto">corefast</code></td><td>19 decision cells × 3 docs (≤100 rows) × <strong>3 repeats</strong> (171 runs/side)</td><td><strong>Release-vs-release A/B</strong> — the grid that completes on <em>both</em> the previous published release and the new one (see notes)</td></tr><tr><td><code dir="auto">coresynth</code></td><td>19 decision cells × 7 synthetic docs (<strong>133 runs</strong>)</td><td><strong>Standard single-release run</strong> — the cross-config grid the Configuration Guidance paper reports</td></tr><tr><td><code dir="auto">simplegrid</code></td><td>the 9 simple-mode cells of <code dir="auto">coresynth</code> × 7 synthetic docs (<strong>63 runs</strong>)</td><td><strong>Lightweight-model grid</strong> — for a model that cannot run the agentic path (Nova Lite/Pro, <a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/895">#895</a>) the full <code dir="auto">coresynth</code> never finishes; this is what the guide’s Nova rows are computed on</td></tr><tr><td><code dir="auto">core</code></td><td><code dir="auto">coresynth</code> + the two 20-document reference corpora</td><td>Adds real-world labeled accuracy; several times the cost of <code dir="auto">coresynth</code>, so opt in deliberately</td></tr><tr><td><code dir="auto">scaling</code></td><td>simple vs advanced across the size series</td><td>The completeness-cliff study</td></tr><tr><td><code dir="auto">cost</code></td><td>cost-decision cells × 1 mid doc, repeats≥5</td><td>Cost-difference detection (variance-aware)</td></tr><tr><td><code dir="auto">intconf</code></td><td>integrated + separate confidence × 1 list doc, repeats=4</td><td>Re-verifies the integrated-confidence row-loss hazard; the one finding a single-sample grid cannot settle</td></tr><tr><td><code dir="auto">advverify</code></td><td>advanced × integrated + separate × 1 list doc, repeats=4</td><td>Re-verifies the <strong>tool-decline</strong> list-loss hazard (an agent that declines the table tool returning the whole list as <code dir="auto">null</code>). Run with <code dir="auto">--set extraction_model=sonnet5</code></td></tr><tr><td><code dir="auto">astravalue</code></td><td>Sonnet 5 vs OpenAI GPT-6 Astra, simple + advanced, 4 docs (3–26 pages) × <strong>5 repeats</strong> (100 runs)</td><td><strong>Does a ~4× more expensive frontier model earn its price for IDP?</strong> See below</td></tr><tr><td><code dir="auto">astracap</code></td><td>The same pair plus the 25-page-shard arms on <code dir="auto">scale_3200</code> (66 pages, ~790K tokens), repeats=2</td><td>The <strong>ceiling</strong> arm: a document too large for <em>both</em> models in simple mode, so the finding is where the 1.05M window stops helping and sharding takes over. Expensive — opt in deliberately</td></tr><tr><td><code dir="auto">opus55value</code></td><td>Claude Opus 5.5 vs Claude Opus 5, simple + advanced, 2 docs (3–9 pages) × <strong>5 repeats</strong> (40 runs)</td><td><strong>Is the newer Opus actually cheaper for the same result?</strong> The comparator is Opus 5 rather than the default, because the claim is a ratio and a ratio needs its denominator on the same documents. See below</td></tr><tr><td><code dir="auto">full</code></td><td>core + all one-axis sweeps — including the <strong>extraction-model sweep</strong>, which is what puts a model in the published guide</td><td>The deep study for the paper (expensive)</td></tr></tbody></table>
+<p><strong>Feature A/B suites.</strong> Each pairs two cells that differ on exactly <strong>one</strong> config knob,
+on <strong>one</strong> deployed stack with identical code — which attributes a delta to the feature
+rather than to anything else that shipped in the same release. All run <code dir="auto">repeats: 3</code> or
+more, because each is judged on a <em>rate</em> and a single sample cannot resolve one.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Suite</th><th>Question it answers</th><th>Judged on</th></tr></thead><tbody><tr><td><code dir="auto">enforcement</code></td><td>Does coercion + validation change what is extracted?</td><td><code dir="auto">typed_accuracy</code>, <code dir="auto">cell_accuracy</code>, <code dir="auto">coercions</code> (a zero-coercion run is not evidence about coercion)</td></tr><tr><td><code dir="auto">enforcecost</code></td><td>What does <code dir="auto">fail_action: escalate</code> cost?</td><td><code dir="auto">cost</code> — the only enforcement arm that spends money per failure; kept separate so it is never run by accident</td></tr><tr><td><code dir="auto">forcing</code></td><td>Does forcing the schema as a tool improve extraction?</td><td><code dir="auto">cell_accuracy</code>, <code dir="auto">completeness_recall</code>, and <code dir="auto">forced_tool_honored_rate</code> — <strong>not</strong> “did it parse”</td></tr><tr><td><code dir="auto">restatement</code></td><td>Does dropping the duplicated schema copy cost completeness?</td><td><code dir="auto">completeness_recall</code>. The gate is completeness, not tokens: a saving that loses list rows is a loss</td></tr><tr><td><code dir="auto">boundary</code></td><td>Does boundary detection split correctly in <strong>both</strong> directions?</td><td><code dir="auto">sections_correct</code> on a 3-page single document (must yield 1) <em>and</em> a two-section packet (must yield 2). A fix that only stops over-splitting regresses the second</td></tr><tr><td><code dir="auto">boundaryctl</code></td><td>Control for <code dir="auto">boundary</code>: what did the <strong>pre-fix</strong> prompt score?</td><td><code dir="auto">sections_correct</code>. Runs the frozen pre-#653 prompt from <code dir="auto">benchmarks/matrices/prompts/</code>, so the claim is a measured delta rather than a single post-fix number</td></tr><tr><td><code dir="auto">splitcost</code></td><td>What did making <code dir="auto">llm_determined</code> do real work cost?</td><td><code dir="auto">cost</code>, <code dir="auto">repeats: 5</code></td></tr></tbody></table>
+<p><code dir="auto">kv_form</code> belongs to a different document class, so suites naming it need a second
+invocation with <code dir="auto">--class kv_form</code> (configs are per class; the harness prints which docs
+it skipped and why).</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="which-models-are-actually-measured">Which models are actually measured</h3><a class="sl-anchor-link" href="#which-models-are-actually-measured"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Which models are actually measured”</span></a></div>
+<p>“Selectable in the product” and “covered by the published guidance” are different
+things, and the difference is the <strong><code dir="auto">extraction_model</code> sweep</strong> — the one-axis sweep
+<code dir="auto">full</code> runs (or, as for every release since v0.6.8, <code dir="auto">coresynth --set extraction_model=&#x3C;m></code> once per model),
+which is what the <a href="../../benchmarking/config-guidance/">Configuration Guidance</a> §5 is computed from. A
+model only appears there if it has been swept, and the table records when:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Model</th><th>In the sweep</th><th>Measured</th><th>Note</th></tr></thead><tbody><tr><td>Nova Lite</td><td>✅ (on <code dir="auto">simplegrid</code>)</td><td>✅ <strong>2026-11-07, v0.6.14</strong> (<code dir="auto">simplegrid</code>, 63 runs, 63 completed)</td><td>recall <strong>0.498</strong>, cell accuracy 0.733 over 9,404 cells, against the same matrix’s control at 1.000 over 39,690. Completes every run and returns about half the rows; wrong on 15–17% of values even at 100 rows. Simple mode only — it cannot run the agentic path (<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/895">#895</a>), so it is measured on the simple-mode <code dir="auto">simplegrid</code> matrix rather than <code dir="auto">coresynth</code> — <a href="../../benchmarking/config-guidance/#51-extraction-model--the-full-grid">guide §5.1</a></td></tr><tr><td>Nova Pro</td><td>✅ (on <code dir="auto">simplegrid</code>)</td><td>✅ <strong>2026-11-09, v0.6.14</strong> (<code dir="auto">simplegrid</code>, 63 runs, 63 completed)</td><td>recall <strong>0.504</strong>, cell accuracy 0.923 over 7,858 cells; the same under-return shape as Nova Lite, and simple mode only for the same reason</td></tr><tr><td>Claude Sonnet 4.6</td><td>held as the sweep’s control</td><td>✅ <strong>2026-11-07 and 2026-11-09, v0.6.14</strong> (<code dir="auto">core</code> 893 rows including both reference corpora, <code dir="auto">simplegrid</code>, <code dir="auto">scaling</code>, <code dir="auto">cost</code>, <code dir="auto">intconf</code>, the classification and confidence sweeps)</td><td>the fixed baseline every sweep varies against, and the model of §2–§4 and §7</td></tr><tr><td><strong>Claude Sonnet 5</strong> (default)</td><td>✅</td><td>✅ <strong>2026-11-07 and 2026-11-09, v0.6.14</strong> (<code dir="auto">coresynth</code> 133 runs, plus <code dir="auto">cost</code>, <code dir="auto">advverify</code>, <code dir="auto">astravalue</code>, <code dir="auto">astracap</code>)</td><td>133 of 133 completed, recall <strong>0.9463</strong> over 72,364 cells — all of the shortfall simple-mode truncation on the 17-page document (8 of 13 runs return 43–190 of 800 rows, each <code dir="auto">COMPLETED</code> and flagged), 1.0000 in advanced mode. ⚠️ Its <code dir="auto">pricing.yaml</code> rows carry Sonnet 4.6’s rates, 1.5× its published price, so every Sonnet 5 dollar figure in the guide is an <strong>upper bound</strong></td></tr><tr><td>Sonnet 5 <code dir="auto">:1m</code></td><td>✅</td><td>✅ <strong>2026-11-07, v0.6.14</strong> (<code dir="auto">coresynth</code>, 133 runs)</td><td>recall 0.9524, cell accuracy 0.9995 over 74,188 cells — the same simple-mode truncation as Sonnet 5 (6 of 13). Same 1.5× pricing caveat as Sonnet 5. The 1M window rescued no request on this corpus</td></tr><tr><td><strong>Claude Opus 5</strong></td><td>✅</td><td>✅ <strong>2026-11-07, v0.6.14</strong> (<code dir="auto">coresynth</code> 133 runs, <code dir="auto">opus55value</code> 20)</td><td>133 of 133 at recall <strong>1.0000</strong> and cell accuracy <strong>1.0000</strong> over the full 83,790 cells, $127.08 over the grid — and dominated by Opus 5.5, which does the same for 17% less</td></tr><tr><td><strong>Claude Opus 5.5</strong></td><td>✅ (<code dir="auto">extraction_model</code> sweep + the <code dir="auto">opus55value</code> pair)</td><td>✅ <strong>2026-11-07, v0.6.14</strong> (<code dir="auto">coresynth</code> 133 runs, <code dir="auto">opus55value</code> 20)</td><td>133 of 133 at recall <strong>1.0000</strong> and cell accuracy <strong>1.0000</strong> over 83,790 cells for <strong>$105.95</strong> — the cheapest arm at the grid’s ceiling, 17% below Opus 5 and at least 23% above the shipped default. In the dedicated pair it is 13% cheaper than Opus 5 on identical denominators, 15% in simple mode and 11% in advanced. ⚠️ <strong>The <code dir="auto">forcing</code> axis has no measurement for it</strong>: it rejects a forced <code dir="auto">toolChoice</code> (<code dir="auto">tool_choice: type "tool" and "any" are not supported for this model</code>), so its <code dir="auto">force-on</code> cells run the prose path with <code dir="auto">forced_tool_attempted=0</code>. Thinking cannot be disabled, and its default effort is <code dir="auto">medium</code> where Opus 5’s is <code dir="auto">high</code> (per the model card; a default is not observable from a response, so this is cited rather than measured)</td></tr><tr><td><strong>OpenAI GPT-6 Astra</strong></td><td>✅</td><td>✅ <strong>2026-11-07, v0.6.14</strong> (<code dir="auto">coresynth</code> 133 runs, <code dir="auto">astravalue</code> 100, <code dir="auto">astracap</code> 12)</td><td>133 of 133 completed, recall 0.9924 and the lowest cell accuracy of the grid, <strong>0.9810</strong> over 82,184 cells; $191.85, a <strong>lower bound</strong> (long-context band above 272,000 input tokens). On the 26-page <code dir="auto">dense_250</code> in simple mode it returns no usable row key on 10 of 10 runs, with nothing reporting a problem — <a href="../../benchmarking/config-guidance/#52-is-a-premium-model-worth-it">guide §5.2</a></td></tr><tr><td><code dir="auto">global.openai.gpt-6-astra</code></td><td>❌ deliberately; measured in <code dir="auto">astravalue</code> only</td><td>✅ 2026-11-07, v0.6.14 (20 runs)</td><td>same weights, cheaper: $20.62 against <code dir="auto">us.</code>’s $23.19 over the same 13,000 cells; same simple-mode failure on <code dir="auto">dense_250</code></td></tr><tr><td>Claude Haiku 4.5 (classification only)</td><td>❌ not on the axis (see below)</td><td>2026-09-12, <strong>v0.6.8</strong> (133 runs) — not re-measured</td><td>reproducible on demand with <code dir="auto">--set classification_model=haiku45</code></td></tr><tr><td><strong>Claude Haiku 5.5</strong></td><td>✅ (<code dir="auto">extraction_model</code> <strong>and</strong> <code dir="auto">classification_model</code> sweeps)</td><td>✅ <strong>2026-11-09, v0.6.14</strong> (extraction sweep 133 runs, classification sweep 133 runs)</td><td><strong>Extraction:</strong> 133 of 133 completed, recall 0.9502, cell accuracy 0.9998 over 73,906 cells — accuracy parity with the default on the rows it returns, the same simple-mode truncation on the 17-page document. <strong>Classification:</strong> 133 of 133 sections correct, indistinguishable from the Nova 2 Lite default. ⚠️ <strong>Cost cannot be quoted</strong>: Anthropic prices it in two prompt-length bands (5× on every token type above 100,000 input tokens) while <code dir="auto">pricing.yaml</code> holds one flat rate, and its agentic shard budget is 578,400 tokens, so every dollar figure for it is a lower bound and no ratio is published. It accepts <code dir="auto">reasoning_effort</code> (default <code dir="auto">medium</code> per the model card) and a forced <code dir="auto">toolChoice</code>; its prompt-cache minimum is 512 tokens; images cost high-resolution tokens (~4,770 for a 2550×3301 page)</td></tr><tr><td><strong>Claude Sonnet 5.5</strong></td><td>✅</td><td>✅ <strong>2026-11-09, v0.6.14</strong> (<code dir="auto">coresynth</code>, 133 runs; first measured v0.6.12)</td><td>133 of 133 completed, recall <strong>0.8905</strong> — <strong>15 of its runs return 2–20 rows of a 400-row list</strong>, all in simple mode, 2 of them with no completeness issue (<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/1494">#1494</a>); 1.0000 on every smaller document and on the 800-row one. Do not use it for lists of a few hundred rows. Its per-token input and output rates are <strong>identical</strong> to Sonnet 5’s published price ($2.20/$11.00 per 1M, <code dir="auto">us.</code>/<code dir="auto">eu.</code>) with cache reads at half, so the guide’s lower dollar figure for it is the Sonnet 5 pricing artefact, not a saving. It <strong>rejects</strong> a forced <code dir="auto">toolChoice</code> (a <code dir="auto">forcing</code> A/B is invalid on it), its default window is 1M with no <code dir="auto">:1m</code> id (a 578,400-token agentic shard budget against Sonnet 5’s 18,400), and its prompt-cache minimum is 512 tokens</td></tr><tr><td>xAI Grok 4.6</td><td>❌</td><td>—</td><td>not yet measured — see <code dir="auto">docs/grok-models.md</code> for its documented capabilities</td></tr></tbody></table>
+<p>The classification-model axis (Nova 2 Lite default · Sonnet 5 · Haiku 5.5) and the
+confidence-model axis (Nova Lite default · Nova 2 Lite · Sonnet 5) were <strong>both swept in
+full on v0.6.14</strong> — three arms each, 133 runs per arm, 2026-11-09 and 2026-11-10. The guide’s §5.3 and
+§5.4 report them.</p>
+<p>⚠️ <strong>Haiku 4.5 is not on the classification axis</strong>, and that is deliberate rather than an
+omission: <code dir="auto">config_matrix.yaml</code> sweeps <code dir="auto">haiku55</code> and states that <code dir="auto">haiku45</code> is not swept, so
+that the axis stays “the same width as before plus one”. Both remain axis <em>values</em>, so a
+named cell or an explicit <code dir="auto">--set classification_model=haiku45</code> covers the 4.5-vs-5.5 pair
+on demand, and <code dir="auto">advsplitcost__classification-model-haiku45</code> is a committed result to diff
+against. <strong>Read the axis in <code dir="auto">config_matrix.yaml</code>, never a prose list of it</strong> — this
+paragraph, the release-validation skill’s own copy of the same axis, and a finding in the
+v0.6.11 prerelease record each drifted from it independently.</p>
+<p>Two numbers the <code dir="auto">classification_model</code> sweep does <strong>not</strong> produce, and which the
+guidance for that axis needs: per-page <strong>classification accuracy</strong> and
+<strong>confidence calibration separation</strong> (<code dir="auto">mean(conf | right) − mean(conf | wrong)</code>,
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/673">#673</a>).
+Those come from a separate driver, <code dir="auto">benchmarks/harness/run_classification_bench.py</code>,
+which runs a real multi-class corpus with per-page ground truth instead of the
+synthetic single-class documents <code dir="auto">run_matrix.py</code> launches — so a model added to the
+axis above must also be added to that script’s own <code dir="auto">MODELS</code> map. Haiku 5.5 is in both.
+Run the Haiku pair as one measurement:</p>
+<div class="expressive-code"><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/ec.w36nc.css"><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">AWS_PROFILE</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#ECC48D;--1:#3B61B0">default</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">python3</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">benchmarks/harness/run_classification_bench.py</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">--stack</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">&#x3C;STACK></span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--testset</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docsplit</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--n</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">20</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--models</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">haiku45,haiku55</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--mode</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">topk</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="AWS_PROFILE=default python3 benchmarks/harness/run_classification_bench.py \    --stack <STACK> --testset docsplit --n 20 --models haiku45,haiku55 --mode topk"><div></div></button></div></figure></div>
+<p>The separation is the number to read first on a model this cheap: high
+<code dir="auto">class_accuracy</code> with a confidence that does not separate right answers from wrong
+ones is worse for a user than lower accuracy with an honest confidence, because the
+escalation path acts on the number.</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="comparing-classification-configurations-not-just-models">Comparing classification <em>configurations</em>, not just models</h4><a class="sl-anchor-link" href="#comparing-classification-configurations-not-just-models"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Comparing classification configurations, not just models”</span></a></div>
+<p>The same driver crosses the models with named combinations of
+granularity, modality and <code dir="auto">classification.strategy</code> via <code dir="auto">--variants</code> (see <code dir="auto">VARIANTS</code> in the script for the
+list). <strong>It has run twice at a size that can show direction: all seven variants, 20
+DocSplit packets, Nova 2 Lite, on v0.6.13 (2026-10-31) and on v0.6.14 (2026-11-10)</strong>,
+reported in <a href="../../benchmarking/config-guidance/#56-classification-granularity-modality-and-strategy">guide §5.6</a>
+with the data in <code dir="auto">benchmarks/results/v0.6.14/clsvariants/</code>. Over the 19 packets every
+variant scored on v0.6.14, packet granularity reproduced 0.600–0.710 of section boundaries
+against 0.509 for the page-granularity default, at 29–59% of its classification cost per
+page, and the image-bearing packet variants no longer fail long packets
+(<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/1676">#1676</a>).
+⚠️ <strong>That is one model, one run per packet and 19 comparable documents</strong>, and the two runs
+disagree on the order of the packet variants by more than one packet’s worth, which is enough
+to measure the direction of the boundary effect and not enough to rank the packet variants
+against each other, so
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/1513">#1513</a>’s
+aim — a recommendation to change the shipped default — still needs a second model and
+repeats. The advice in
+<a href="../../classification/#choosing-granularity-modality-and-strategy">Classification</a> is now
+measured on the boundary and cost side and still reasoned on the accuracy side.</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Is packet granularity cheaper, and does it cost accuracy?</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">AWS_PROFILE</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#ECC48D;--1:#3B61B0">default</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">python3</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">benchmarks/harness/run_classification_bench.py</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">--stack</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">&#x3C;STACK></span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--testset</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">docsplit</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--n</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">20</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--models</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">nova2lite</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">--variants</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">page-both,packet-both,packet-text</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--estimate</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="AWS_PROFILE=default python3 benchmarks/harness/run_classification_bench.py \    --stack <STACK> --testset docsplit --n 20 --models nova2lite \    --variants page-both,packet-both,packet-text --estimate"><div></div></button></div></figure></div>
+<p>Three things about reading the result:</p>
+<ul>
+<li><strong><code dir="auto">boundary_accuracy</code> and <code dir="auto">label_accuracy</code>, not overall section accuracy.</strong>
+<code dir="auto">split_accuracy_without_order</code> requires a section to match on both its page
+range <em>and</em> its class, so it cannot show a granularity winning on boundaries
+while losing on labels — and those two call for different fixes. The
+decomposition is exact: <code dir="auto">split = boundary × label</code>.</li>
+<li><strong>Cost per document <em>and</em> per page.</strong> Per-page flatters packet granularity on
+long packets and per-document flatters page granularity on short ones;
+whichever you quote alone will argue for the setting it favours.</li>
+<li><strong><code dir="auto">classification_by_context</code></strong> carries the per-stage tokens, cost and Lambda
+invocation count, so a split-then-classify cell shows whether the money went to
+<code dir="auto">Splitting</code> or <code dir="auto">SectionClassification</code>.
+⚠️ <strong>Two counts, and the obvious reading of the first one is wrong.</strong>
+<code dir="auto">lambda_invocations_per_document</code> counts Lambda invocations: a 6-page document
+at <code dir="auto">page</code> granularity makes six Bedrock calls inside <strong>one</strong> invocation, so it
+reads <code dir="auto">1.0</code> for <code dir="auto">page</code> and <code dir="auto">packet</code> alike, and in a split-then-classify run the single
+invocation lands under <code dir="auto">Classification</code> while the spend lands under
+<code dir="auto">Splitting</code>/<code dir="auto">SectionClassification</code>, which therefore read <code dir="auto">0.0</code>.
+<strong><code dir="auto">bedrock_calls_per_document</code></strong> is the figure the N-calls-to-one claim is
+about, and it is per stage — a split-then-classify page-granularity run over a 6-page
+document measured 6 splitting calls and 6 section classification calls. ⚠️ It is <code dir="auto">None</code> rather
+than <code dir="auto">0</code> when nothing carried a request count, because not every metering entry
+does and “made no calls” is a different claim from “not metered”.
+<strong><code dir="auto">classification_output_tokens_per_page</code></strong> separates the granularities too,
+and on a more robust basis — it is a mechanical consequence of how many answers
+the model emits rather than of a request count the runtime may or may not
+record. ⚠️ It is still a metering figure, so like the cost figures it is
+computed over the documents whose metering read, not over every document
+scored; compare <code dir="auto">n_docs</code> with the <code dir="auto">read(s) FAILED</code> line to see whether that
+was all of them. Page granularity emits a verdict per
+page, measured at 216.7 against 45.7 for <code dir="auto">packet-text</code> on the same 8-document
+<code dir="auto">docsplit</code> corpus. ⚠️ A token count from a corpus that small is a reliable
+signal — it is a mechanical consequence of how many answers the model emits —
+in a way the accuracy figures from the same run are not. Do not read the one as
+licensing the other.</li>
+</ul>
+<p>⚠️ <strong>The matrix is multiplicative and cells drain one at a time</strong> — deliberately,
+since a page cell and a packet cell issue very different call volumes for the
+same documents, and run concurrently the page cell’s per-page burst throttles
+the packet cell it is being compared against. <code dir="auto">--estimate</code> prints the document
+count before you commit the wall-clock.</p>
+<p>The premium cells below live in their own <code dir="auto">model_premium_cells</code> registry, <strong>not</strong> in
+<code dir="auto">core_cells</code>, because <code dir="auto">core_cells</code> feeds <code dir="auto">core</code> / <code dir="auto">coresynth</code> / <code dir="auto">corefast</code> / <code dir="auto">full</code>:
+putting seven model-pinned cells there inflated the standard grid by 37% and — on any
+document over ~11 pages — added cells that are <em>expected</em> to fail, which makes a
+release regression gate unreadable.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="is-a-premium-model-worth-it">Is a premium model worth it?</h3><a class="sl-anchor-link" href="#is-a-premium-model-worth-it"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Is a premium model worth it?”</span></a></div>
+<p>A model-price question is a <strong>ratio</strong>, so this pair is built to be able to answer
+“no”. It compares Claude Sonnet 5 against OpenAI GPT-6 Astra (~4× the input price)
+with only <code dir="auto">extraction.model</code> differing.</p>
+<p><strong>Size a fixture by page count, not by text.</strong> This is the finding that shaped the
+suite, and it cost five wasted runs to learn. What Simple mode sends is dominated by
+<strong>page images</strong>, not OCR text:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>tokens</th></tr></thead><tbody><tr><td>one 300-DPI Letter page image (2550 × 3300 ÷ 750, Bedrock’s own formula)</td><td><strong>~11,220</strong></td></tr><tr><td>the OCR text of that same page</td><td>~600</td></tr></tbody></table>
+<p>So the pipeline costs <strong>~12,000 tokens per page</strong> — about 19× the text — and the
+practical Simple-mode ceiling is a <em>page</em> count: <strong>~11 pages for Sonnet 5</strong> (200K
+window, 140,000 usable at the 0.30 buffer) and <strong>~61 for Astra</strong> (1.05M / 735,000
+usable). Measured live on IDP1: an 81-page fixture estimated 964,223 tokens and a
+164-page one 1,971,931 — both rejected by <em>Astra</em> as well as Sonnet 5. The
+discriminating band is therefore roughly <strong>12–61 pages</strong>, and most of it was already
+covered by existing fixtures. Four documents separate the two things a frontier model
+can actually be paid for:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Doc</th><th>Size</th><th>What it isolates</th></tr></thead><tbody><tr><td><code dir="auto">small_narrow</code></td><td>3 pages, ~35K</td><td><strong>Control.</strong> An ordinary document where the cheaper model is already at ceiling. Astra should <em>lose</em> here on cost-per-correct-field; if it doesn’t, the suite is broken</td></tr><tr><td><code dir="auto">med_narrow</code></td><td>9 pages, ~108K</td><td><strong>Size that still fits both.</strong> Guards against crediting a capacity win that was never needed</td></tr><tr><td><code dir="auto">large_narrow</code></td><td>17 pages, ~203K</td><td>The first cell Sonnet 5 <strong>cannot do in one request</strong> while Astra can — capability, not accuracy</td></tr><tr><td><code dir="auto">dense_250</code></td><td>26 pages, ~304K</td><td><strong>Astra-only <em>and</em> maximally difficult</strong> — 8 columns, 4 interleaved lists, long free text, 15% OCR noise, typed value truth</td></tr><tr><td><code dir="auto">scale_3200</code> (<code dir="auto">astracap</code>)</td><td>66 pages, ~790K</td><td><strong>Exceeds Astra too.</strong> Both models fail in simple mode; that ceiling is the finding</td></tr></tbody></table>
+<p>Two things to know before reading the output:</p>
+<ul>
+<li><strong>Sharding is the alternative to buying a bigger window.</strong> On the agentic path the
+5-page-per-shard default is a <em>timeout</em> guard, not a context proxy — its field doc
+says a roomy token budget “must NOT collapse a large doc back into one giant shard”,
+and <code dir="auto">0</code> is documented as unsuitable for large docs. So neither suite runs an
+unbounded arm (it would measure a Lambda timeout); <code dir="auto">astracap</code> instead adds
+<code dir="auto">astra-adv-wide</code> / <code dir="auto">sonnet5-adv-wide</code>, which raise it to 25 pages — the tuning a
+user could adopt. If sharded Sonnet 5 matches Astra’s completeness for less, the
+honest recommendation is “shard, don’t buy”.</li>
+<li><strong><code dir="auto">repeats: 5</code> also measures Astra’s implicit prompt caching</strong>, the one mechanism
+that can close a 4× gap: runs 2–5 re-send an identical prefix, so
+<code dir="auto">cacheReadInputTokens</code> should be non-zero from the second run and cost per document
+should fall. Read the per-run series — a mean hides it. Astra needs no
+<code dir="auto">&#x3C;&#x3C;CACHEPOINT>></code> marker (and rejects an explicit one).</li>
+</ul>
+<p><strong>The deciding metric is cost per correctly-extracted field</strong>, not accuracy and not
+cost. A premium model earns its price only where the accuracy gap is large enough that
+the cheaper model would need human review to close it. If accuracy ties, the answer is
+the cheaper model.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="is-the-newer-opus-cheaper-for-the-same-result">Is the newer Opus cheaper for the same result?</h3><a class="sl-anchor-link" href="#is-the-newer-opus-cheaper-for-the-same-result"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Is the newer Opus cheaper for the same result?”</span></a></div>
+<p>The same method, one generation apart: Claude Opus 5.5 against Claude Opus 5, with only
+<code dir="auto">extraction.model</code> differing. The comparator is Opus 5 rather than the shipped default
+because the claim under test names it — Opus 5.5 is cheaper per token, has cheaper cache
+reads, and is said to use fewer tokens for the same task — and a ratio needs its
+denominator run on the same documents, on the same stack, in the same window.</p>
+<p><strong>Three multipliers compound, so the rate card cannot predict the answer.</strong> Input and
+output are 0.8× Opus 5’s ($4/$20 per 1M against $5/$25). A cache read is 0.05× input
+rather than the 0.1× every other model in <code dir="auto">config_library/pricing.yaml</code> uses, so cached
+reads are 0.4× Opus 5’s per-token cost, not 0.8×. And “fewer tokens” is a third factor
+the price list says nothing about. The rate card alone predicts about −20%; anything
+beyond that is the token claim, and anything short of it is worth explaining before it
+is published.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Doc</th><th>Size</th><th>What it isolates</th></tr></thead><tbody><tr><td><code dir="auto">small_narrow</code></td><td>3 pages, ~35K</td><td><strong>Control.</strong> Both models are already at ceiling, so a cost delta here is the rate card and nothing else</td></tr><tr><td><code dir="auto">med_narrow</code></td><td>9 pages, ~108K</td><td>3× the size, still one request in simple mode: where a per-token difference is large enough to read</td></tr></tbody></table>
+<p>Three things to know before reading the output:</p>
+<ul>
+<li><strong>The documents are a deliberate subset of <code dir="auto">astra_docs</code>.</strong> <code dir="auto">large_narrow</code> (17 pages)
+and <code dir="auto">dense_250</code> (26 pages) are in that set because Astra’s window reaches them and
+Sonnet 5’s does not — that asymmetry <em>is</em> the Astra finding. Opus 5 and Opus 5.5
+share one window and one sizing budget, so both simple-mode arms would be refused on
+both documents: an A/B whose two arms fail identically measures nothing and is still
+billed. The ceiling question belongs to <code dir="auto">astracap</code>, which already owns it.</li>
+<li>⚠️ <strong>This suite measures the switch, not the model.</strong> Opus 5.5 defaults to <code dir="auto">medium</code>
+reasoning effort where Opus 5 defaults to <code dir="auto">high</code>, and neither cell sets
+<code dir="auto">reasoning_effort</code> — so the two arms differ by model <em>and</em> by default effort. That is
+what a user who changes the model and nothing else actually gets, which is the
+decision the guide has to inform, but it is not a model-for-model comparison. To
+separate the two, re-run with <code dir="auto">--set reasoning_effort=high</code> on both arms and read the
+difference between the two runs.</li>
+<li><strong><code dir="auto">repeats: 5</code> is what makes a cost claim sayable at all</strong>, for the same reason
+<code dir="auto">astravalue</code> uses it: agentic cost is non-deterministic (turn-count spreads around 4×
+have been observed), so a single draw per cell cannot resolve a cost <em>difference</em>.
+It also exercises the cache-read rate that is half of the price story — runs 2–5
+re-send an identical prefix, so read the per-run series rather than the mean.</li>
+</ul>
+<p><strong>Forcing cannot be part of this comparison.</strong> Opus 5.5 rejects a forced <code dir="auto">toolChoice</code>,
+so with <code dir="auto">extraction.forced_tool.enabled</code> on it falls back to the prose schema and
+records the reason in the section metadata, while Opus 5 forces normally. A <code dir="auto">forcing</code>
+A/B built on Opus 5.5 would show a delta of zero for a reason that has nothing to do
+with forcing.</p>
+<blockquote>
+<p><strong>Picking the extraction model.</strong> The committed <code dir="auto">default_cell</code> holds <code dir="auto">extraction_model</code> at
+a <strong>cross-version control</strong> so the release A/B runs on a model every compared release can
+invoke. A single-release study should instead use the product default —
+<code dir="auto">make_configs.py --set extraction_model=sonnet5</code>. Mixing the two is how a
+model-dependent behaviour can look like a code change.</p>
+</blockquote>
+<blockquote>
+<p><strong>Why <code dir="auto">corefast</code> for release comparisons.</strong> Advanced (agentic) mode + granular
+assessment on ≥400-row list documents can exceed the 900 s assessment-Lambda timeout
+on older releases (e.g. v0.5.16), which then retry for hours before failing. A grid
+that must complete on <strong>both</strong> the old and new release therefore uses the ≤100-row
+<code dir="auto">corefast</code> docs. Larger-doc behavior is covered by the single-release <code dir="auto">coresynth</code>/<code dir="auto">scaling</code>
+suites against the current release only.</p>
+</blockquote>
+<blockquote>
+<p><strong>Why <code dir="auto">corefast</code> runs 3 repeats.</strong> Accuracy is stable at <code dir="auto">repeats: 1</code>, which is why the
+broad grids stay there — but the release gate answers a different question: not “how
+accurate is this config” but “<strong>did the release change anything</strong>”. At one sample a
+non-deterministic agentic outcome is indistinguishable from a regression, and that is not
+hypothetical: the v0.6.5 fix verification reported a new FAILURE and a −0.143 accuracy drop
+from a <code dir="auto">repeats: 1</code> grid, and <strong>neither reproduced</strong>. Three samples let <code dir="auto">--compare</code> reason
+about failure <em>rates</em> and mean-vs-spread instead of a single draw. The spend is bounded
+because <code dir="auto">corefast</code> is deliberately the cheap ≤100-row subset. Do <strong>not</strong> raise
+<code dir="auto">core</code>/<code dir="auto">coresynth</code>/<code dir="auto">full</code> to match — they include the 400/800-row documents.</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="regression-thresholds">Regression thresholds</h2><a class="sl-anchor-link" href="#regression-thresholds"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Regression thresholds”</span></a></div>
+<p><code dir="auto">aggregate.py --compare</code> compares per <strong>(cell, doc)</strong>, aggregating across repeats:</p>
+<ul>
+<li><strong>Failures</strong> — compared as <em>rates</em>. <code dir="auto">1/3 → 1/3</code> is the same behaviour, not a new failure;
+<code dir="auto">0/3 → 3/3</code> is a regression. A partial increase (<code dir="auto">1/3 → 2/3</code>) is reported but tagged
+<em>confirm before believing</em>, because both sides fail sometimes.</li>
+<li><strong>Accuracy / completeness</strong> — mean-vs-mean, and the delta must exceed the run-to-run
+spread observed within that (cell, doc) on either side. Thresholds: accuracy ±0.02,
+calibration-separation −0.03.</li>
+<li><strong>Cost</strong> — mean-vs-mean, +15%, likewise against the observed spread. Agentic cost varies
+~4× run-to-run, so a single sample cannot resolve a cost difference at all.</li>
+<li>Anything that clears the threshold but not the spread prints as <code dir="auto">~ … INCONCLUSIVE, add repeats</code> and is <strong>excluded from both verdict lists</strong> rather than counted as a finding.</li>
+<li>Failed runs are excluded from quality means, so a failure already reported as a failure
+cannot also manufacture an accuracy regression.</li>
+</ul>
+<p>With <code dir="auto">repeats: 1</code> this is identical to the old per-run comparison (mean = the single value,
+spread = 0). A second, <strong>variance-aware</strong> pass then re-judges cost and quality at the <em>cell</em>
+level across documents.</p>
+<blockquote>
+<p>The n=1 limitation this replaces bit at v0.6.5 — see
+<a href="../../benchmarking/releases/v0.6.5/">releases/v0.6.5.md §3.1</a> for what it cost.</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="reproducibility-and-reporting-rules">Reproducibility and reporting rules</h2><a class="sl-anchor-link" href="#reproducibility-and-reporting-rules"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Reproducibility and reporting rules”</span></a></div>
+<ul>
+<li>Each results directory records the exact commit, the deployed stack version (read from the
+stack’s CloudFormation <code dir="auto">Description</code>, <strong>not</strong> the local git HEAD — those differ whenever a
+run targets a published template), stack name, model IDs, pricing hash, and date.</li>
+<li>Failures are reported explicitly; accuracy is never averaged over only the docs that
+completed without saying so (advanced/large runs are survivorship-sensitive).</li>
+<li>Any cell capped or skipped for cost is logged in <code dir="auto">meta.json</code>, never silently dropped.</li>
+<li>Costs are <strong>estimates</strong> from <code dir="auto">pricing.yaml</code> (intro pricing may apply); the rate date is stated.</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="maintaining-the-release-audit-trail--one-command-per-release">Maintaining the release audit trail — one command per release</h2><a class="sl-anchor-link" href="#maintaining-the-release-audit-trail--one-command-per-release"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Maintaining the release audit trail — one command per release”</span></a></div>
+<p>Each release cycle, produce one new audit-trail entry comparing the <strong>previous
+published release</strong> to the current <strong><code dir="auto">develop</code></strong> prerelease:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">benchmark-release</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">VERSION=</span><span style="--0:#F78C6C;--1:#AA0982">0.6.0</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">PREV=</span><span style="--0:#F78C6C;--1:#AA0982">0.5.16</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="make benchmark-release VERSION=0.6.0 PREV=0.5.16"><div></div></button></div></figure></div>
+<p>This single target (see the repo <code dir="auto">Makefile</code> and the <code dir="auto">run-benchmarks</code> skill):</p>
+<ol>
+<li>Deploys / reuses a stack from the <strong>published PREV</strong> template, runs <code dir="auto">corefast</code>
+(native-upload configs, held at a shared control model both versions can run).</li>
+<li>Upgrades the <strong>same stack</strong> in place to <code dir="auto">develop</code> HEAD (<code dir="auto">--from-code --clean-build</code>)
+and re-runs <code dir="auto">corefast</code> with <strong>byte-identical</strong> configs (only the code version differs).</li>
+<li>Aggregates both, diffs them, and scaffolds
+<code dir="auto">docs/benchmarking/releases/v&#x3C;VERSION>.md</code> from the template + appends a row to the
+<a href="./releases/">audit-trail index</a>.</li>
+<li>Promotes the PREV summary to <code dir="auto">benchmarks/results/baseline.json</code>.</li>
+</ol>
+<p>Commit the new <code dir="auto">docs/benchmarking/releases/v&#x3C;VERSION>.md</code>, its figures under <code dir="auto">images/</code>,
+the <code dir="auto">benchmarks/results/{vPREV,vVERSION}/corefast/</code> data dirs, and the updated
+<code dir="auto">baseline.json</code> and <code dir="auto">releases/README.md</code>. That is the durable, per-release audit trail.</p>
+<blockquote>
+<p><strong>Retention.</strong> <code dir="auto">benchmarks/results/</code> keeps <strong>one complete set per release</strong> and nothing
+else: the <code dir="auto">corefast</code> A/B grid behind each audit-trail entry. One-off suite slices
+(<code dir="auto">config-*</code>, <code dir="auto">intconf</code>, <code dir="auto">advverify</code>, post-fix re-runs) are pruned once their finding is
+written into the prose here — the published page is the durable record, and the data stays
+recoverable from git history. Rules and recovery commands:
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/benchmarks/results/RETENTION.md"><code dir="auto">RETENTION.md</code></a>.</p>
+</blockquote>
+<blockquote>
+<p>The step-by-step mechanics (and the cross-version config-compatibility handling the
+harness performs) are documented in the <code dir="auto">run-benchmarks</code> skill and
+<code dir="auto">benchmarks/matrices/METHODOLOGY.md</code>.</p>
+</blockquote></div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v069/" rel="prev" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-jgq3vlii">Previous<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Release Validation: v0.6.9</span></span></a><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/config-guidance/" rel="next" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-jgq3vlii">Next<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Configuration Guidance</span></span></a></div></footer></div></div></main></div></div></div></div></body></html>

@@ -1,0 +1,925 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>AWS Services and IAM Role Requirements for GenAI IDP Accelerator | GenAI IDP</title><link rel="canonical" href="https://aws-solutions-library-samples.github.io/accelerated-intelligent-document-processing-on-aws/aws-services-and-roles/"/><link rel="sitemap" href="/accelerated-intelligent-document-processing-on-aws/sitemap-index.xml"/><link rel="shortcut icon" href="/accelerated-intelligent-document-processing-on-aws/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.4.5"/><meta name="generator" content="Starlight v0.41.4"/><meta property="og:title" content="AWS Services and IAM Role Requirements for GenAI IDP Accelerator"/><meta property="og:type" content="article"/><meta property="og:url" content="https://aws-solutions-library-samples.github.io/accelerated-intelligent-document-processing-on-aws/aws-services-and-roles/"/><meta property="og:locale" content="en"/><meta property="og:description" content="GenAI Intelligent Document Processing — scalable, serverless AWS solution for automated document processing"/><meta property="og:site_name" content="GenAI IDP"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="GenAI Intelligent Document Processing — scalable, serverless AWS solution for automated document processing"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/common.Dt04y4fs.css"><style>@layer starlight.components{.card:where(.astro-zts4jgjd){--sl-card-border:var(--sl-color-purple);--sl-card-bg:var(--sl-color-purple-low);border:1px solid var(--sl-color-gray-5);background-color:var(--sl-color-black);flex-direction:column;gap:clamp(.5rem,.125rem + 1vw,1rem);padding:clamp(1rem,.125rem + 3vw,2.5rem)}.card:where(.astro-zts4jgjd):nth-child(4n+1){--sl-card-border:var(--sl-color-orange);--sl-card-bg:var(--sl-color-orange-low)}.card:where(.astro-zts4jgjd):nth-child(4n+3){--sl-card-border:var(--sl-color-green);--sl-card-bg:var(--sl-color-green-low)}.card:where(.astro-zts4jgjd):nth-child(4n+4){--sl-card-border:var(--sl-color-red);--sl-card-bg:var(--sl-color-red-low)}.card:where(.astro-zts4jgjd):nth-child(4n+5){--sl-card-border:var(--sl-color-blue);--sl-card-bg:var(--sl-color-blue-low)}.title:where(.astro-zts4jgjd){font-weight:600;font-size:var(--sl-text-h4);color:var(--sl-color-white);line-height:var(--sl-line-height-headings);align-items:center;gap:1rem}.card:where(.astro-zts4jgjd) .icon:where(.astro-zts4jgjd){border:1px solid var(--sl-card-border);background-color:var(--sl-card-bg);border-radius:.25rem;flex-shrink:0;padding:.2em}.card:where(.astro-zts4jgjd) .body:where(.astro-zts4jgjd){font-size:clamp(var(--sl-text-sm), calc(.5rem + 1vw), var(--sl-text-body));margin:0}.card-grid:where(.astro-lmor3ela){grid-template-columns:100%;gap:1rem;display:grid}.card-grid:where(.astro-lmor3ela)>*{margin-top:0!important}@media (width>=50rem){.card-grid:where(.astro-lmor3ela){grid-template-columns:1fr 1fr;gap:1.5rem}.stagger:where(.astro-lmor3ela){--stagger-height:5rem;padding-bottom:var(--stagger-height)}.stagger:where(.astro-lmor3ela)>:nth-child(2n){transform:translateY(var(--stagger-height))}}.sl-link-card:where(.astro-vodiqeol){border:1px solid var(--sl-color-gray-5);box-shadow:var(--sl-shadow-sm);border-radius:.5rem;grid-template-columns:1fr auto;gap:.5rem;padding:1rem;display:grid;position:relative}a:where(.astro-vodiqeol){line-height:var(--sl-line-height-headings);text-decoration:none}a:where(.astro-vodiqeol):before{content:"";position:absolute;inset:0}.stack:where(.astro-vodiqeol){flex-direction:column;gap:.5rem}.title:where(.astro-vodiqeol){color:var(--sl-color-white);font-weight:600;font-size:var(--sl-text-lg)}.description:where(.astro-vodiqeol){color:var(--sl-color-gray-3);line-height:1.5}.icon:where(.astro-vodiqeol){color:var(--sl-color-gray-3)}.sl-link-card:where(.astro-vodiqeol):hover{background:var(--sl-color-gray-7,var(--sl-color-gray-6));border-color:var(--sl-color-gray-2)}.sl-link-card:where(.astro-vodiqeol):hover .icon:where(.astro-vodiqeol){color:var(--sl-color-white)}}
+@layer starlight.components{svg:where(.astro-n5k4ipy7){color:var(--sl-icon-color);font-size:var(--sl-icon-size,1em);width:1em;height:1em}}
+</style><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/page.B1sbS0l1.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">Skip to content</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><a href="/accelerated-intelligent-document-processing-on-aws/" class="site-title sl-flex astro-clw6ags5"><img class="light:sl-hidden print:hidden astro-clw6ags5" alt src="/accelerated-intelligent-document-processing-on-aws/_astro/logo-dark.CDSNlVMV.svg" width="120" height="32"><img class="dark:sl-hidden print:block astro-clw6ags5" alt src="/accelerated-intelligent-document-processing-on-aws/_astro/logo-light.CszXvHpe.svg" width="120" height="32"><span class="astro-clw6ags5" translate="no">GenAI IDP</span></a></div><div class="sl-flex print:hidden astro-nczgtkxc"><site-search class="astro-nczgtkxc astro-r5ar4xm7" data-translations="{&quot;placeholder&quot;:&quot;Search&quot;}"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-r5ar4xm7"><svg aria-hidden="true" class="astro-r5ar4xm7 astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-r5ar4xm7" aria-hidden="true">Search</span><kbd class="sl-hidden md:sl-flex astro-r5ar4xm7" style="display: none;"><kbd class="astro-r5ar4xm7">Ctrl</kbd><kbd class="astro-r5ar4xm7">K</kbd></kbd></button><dialog style="padding:0" aria-label="Search" class="astro-r5ar4xm7"><div class="dialog-frame sl-flex astro-r5ar4xm7"><button data-close-modal class="sl-flex md:sl-hidden astro-r5ar4xm7">Cancel</button><div class="search-container astro-r5ar4xm7"><div id="starlight__search" class="astro-r5ar4xm7"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/Search.astro_astro_type_script_index_0_lang.DoiGT_Lk.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">GitHub</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="Main"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="01pw2uh" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Overview</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/" class="astro-ojxuodky"><span class="astro-ojxuodky">Welcome</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/references/" class="astro-ojxuodky"><span class="astro-ojxuodky">Blogs, Customer Stories &amp; Research</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/workshops/" class="astro-ojxuodky"><span class="astro-ojxuodky">Hands-on Workshops</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Get Started</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/get-started/" class="astro-ojxuodky"><span class="astro-ojxuodky">Get Started</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">IDP Fundamentals</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/" class="astro-ojxuodky"><span class="astro-ojxuodky">How Document Processing Works</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/digitization/" class="astro-ojxuodky"><span class="astro-ojxuodky">Digitization (OCR)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/splitting-and-classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Splitting and Section Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Key Information Extraction</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/confidence-assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Assessment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/rule-validation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/benchmark-datasets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Datasets</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Benchmarks by Problem Set</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/" class="astro-ojxuodky"><span class="astro-ojxuodky">How We Benchmark Configurations</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/digitization/" class="astro-ojxuodky"><span class="astro-ojxuodky">Digitization (OCR)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/splitting-and-classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Splitting and Section Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Key Information Extraction</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/confidence-assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Assessment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/token-use/" class="astro-ojxuodky"><span class="astro-ojxuodky">Token Use and Cost</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/marginal-cost-of-error/" class="astro-ojxuodky"><span class="astro-ojxuodky">Marginal Cost of Error</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/datasets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Datasets</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Core</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/architecture/" class="astro-ojxuodky"><span class="astro-ojxuodky">Architecture</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/quick-start/" class="astro-ojxuodky"><span class="astro-ojxuodky">Quick Start</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-deployment-ai-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">AI-Guided Deployment Walkthrough</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/terraform/" class="astro-ojxuodky"><span class="astro-ojxuodky">Terraform Deployment (Experimental)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/terraform-migration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Migrating from genai-idp-terraform</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/headless-deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Headless Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/apigateway-hosting/" class="astro-ojxuodky"><span class="astro-ojxuodky">API Gateway Hosting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/deployment-private-network/" class="astro-ojxuodky"><span class="astro-ojxuodky">Private Network Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/vpc-secured-mode/" class="astro-ojxuodky"><span class="astro-ojxuodky">VPC-Secured Mode</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration-profiles/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Profiles</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/multi-tenancy/" class="astro-ojxuodky"><span class="astro-ojxuodky">Multi-Tenant Isolation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration-versions/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Versions (renamed)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-configuration-best-practices/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Best Practices</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/json-schema-migration/" class="astro-ojxuodky"><span class="astro-ojxuodky">JSON Schema Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/web-ui/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web UI</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-appsync-to-rest/" class="astro-ojxuodky"><span class="astro-ojxuodky">UI ⇄ Backend Transport (AppSync → REST)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-cli/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP CLI</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-sdk/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP SDK</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idpcommon-api-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">idp_common API Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/demo-videos/" class="astro-ojxuodky"><span class="astro-ojxuodky">Demo Videos</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/troubleshooting/" class="astro-ojxuodky"><span class="astro-ojxuodky">Troubleshooting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/error-analyzer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Error Analyzer</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Processing Modes</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/pattern-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">BDA Mode Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/pattern-2/" class="astro-ojxuodky"><span class="astro-ojxuodky">Pipeline Mode Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/discovery/" class="astro-ojxuodky"><span class="astro-ojxuodky">Discovery</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/policy-discovery/" class="astro-ojxuodky"><span class="astro-ojxuodky">Policy Discovery</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Document Processing Features</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction-and-confidence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction &amp; Confidence</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Assessment (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/assessment-bounding-boxes/" class="astro-ojxuodky"><span class="astro-ojxuodky">Assessment Bounding Boxes (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/few-shot-examples/" class="astro-ojxuodky"><span class="astro-ojxuodky">Few-Shot Examples</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/human-review/" class="astro-ojxuodky"><span class="astro-ojxuodky">Human-in-the-Loop Review</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/review-queues/" class="astro-ojxuodky"><span class="astro-ojxuodky">Review Queues</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rule-validation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/missing-page-handling/" class="astro-ojxuodky"><span class="astro-ojxuodky">Missing Page Handling</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/ocr-image-sizing-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">OCR Image Sizing Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/languages/" class="astro-ojxuodky"><span class="astro-ojxuodky">Languages</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Evaluation &amp; Testing</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/testing/" class="astro-ojxuodky"><span class="astro-ojxuodky">Testing</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/evaluation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Evaluation Framework</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/evaluation-enhanced-reporting/" class="astro-ojxuodky"><span class="astro-ojxuodky">Enhanced Reporting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/test-studio/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Studio</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/creating-custom-test-sets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Creating Custom Test Sets</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mlflow-integration/" class="astro-ojxuodky"><span class="astro-ojxuodky">MLflow Experiment Tracking</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Release Validation</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation Records</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0611/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.11</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0612/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.12</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.13</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0614/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.14</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v066/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.6</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v068/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.8</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v069/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.9</span></a></li></ul></details></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Benchmarks &amp; Performance</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmarking Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/config-guidance/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Guidance</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Release Audit Trail</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit Trail</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v060/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.0 vs v0.5.16</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0611/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.11 vs v0.6.10</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0612/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.12 vs v0.6.11</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.13 vs v0.6.12</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0614/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.14 vs v0.6.13</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v065/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.5 vs v0.6.4</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v065-fix-verification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Fix Verification: v0.6.5 correctness fixes</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v066/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.6 vs v0.6.5</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v067/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.7</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v068/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.8</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v069/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.9</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Studies</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/advanced-extraction-refinements/" class="astro-ojxuodky"><span class="astro-ojxuodky">Advanced Extraction — Seven Candidate Refinements, Measured</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/classification-confidence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Classification Confidence — Does the Score Carry Signal?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/confidence-calibration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Calibration — Can the Score Route Human Review?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/feature-multi-instance/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Study: multi-instance sections (#715 / #753)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/greedy-decoding-tool-use/" class="astro-ojxuodky"><span class="astro-ojxuodky">Greedy Decoding and Invalid Tool-Use Sequences</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/prompt-cache-padding-proposal/" class="astro-ojxuodky"><span class="astro-ojxuodky">Should we pad prompts to clear the cache minimum?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/prompt-caching/" class="astro-ojxuodky"><span class="astro-ojxuodky">Prompt Caching — Measured Behaviour</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Studies</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/schema-restatement-tokens/" class="astro-ojxuodky"><span class="astro-ojxuodky">Schema Restatement — What Turning It Off Actually Costs</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction-scaling-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction Scaling Guide</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">AI Agents &amp; Analytics</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="12"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/agent-analysis/" class="astro-ojxuodky"><span class="astro-ojxuodky">Agent Analysis</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/agent-companion-chat/" class="astro-ojxuodky"><span class="astro-ojxuodky">Agent Companion Chat</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/code-intelligence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Code Intelligence</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/knowledge-base/" class="astro-ojxuodky"><span class="astro-ojxuodky">Knowledge Base</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/custom-mcp-agent/" class="astro-ojxuodky"><span class="astro-ojxuodky">Custom MCP Agent</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mcp-connector/" class="astro-ojxuodky"><span class="astro-ojxuodky">MCP Connector</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mcp-server/" class="astro-ojxuodky"><span class="astro-ojxuodky">MCP Server</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Integration &amp; Extensions</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="13"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/feature-platform/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Platform</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/feature-platform-developer-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Platform Developer Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/marketplace-subscription-next-steps/" class="astro-ojxuodky"><span class="astro-ojxuodky">After Subscribing on AWS Marketplace</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Extensions</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="14"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/auto-optimizer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Auto Optimizer (Beta)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/idp-monitor/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP Monitor</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/pii-anonymizer/" class="astro-ojxuodky"><span class="astro-ojxuodky">PII Anonymization</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/confbench-testset/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Set - ConfBench</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/idp-data-generator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Set Generator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/sample-document-status/" class="astro-ojxuodky"><span class="astro-ojxuodky">Sample: Document Status (feature add-on)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/sample-health-insurance-review/" class="astro-ojxuodky"><span class="astro-ojxuodky">Sample: Health Insurance Review</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/document-versions/" class="astro-ojxuodky"><span class="astro-ojxuodky">Document Versions</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/post-processing-lambda-hook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Post-Processing Lambda Hook</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/lambda-hook-inference/" class="astro-ojxuodky"><span class="astro-ojxuodky">Lambda Hook Inference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/nova-finetuning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Nova Fine-Tuning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/custom-model-finetuning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Custom Model Fine-Tuning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/service-tiers/" class="astro-ojxuodky"><span class="astro-ojxuodky">Service Tiers</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Monitoring &amp; Operations</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="15"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/monitoring/" class="astro-ojxuodky"><span class="astro-ojxuodky">Monitoring</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/reporting-database/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reporting Database</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/reporting-sql-layer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reporting SQL Layer</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/capacity-planning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Capacity Planning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/cost-calculator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Cost Calculator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/circuit-breaker/" class="astro-ojxuodky"><span class="astro-ojxuodky">Circuit Breaker</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/cross-account-bedrock/" class="astro-ojxuodky"><span class="astro-ojxuodky">Cross-Account Bedrock</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/version-update-indicator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Version Update Indicator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-runbook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Runbook</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Planning &amp; Security</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="16"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/threat-model/" class="astro-ojxuodky"><span class="astro-ojxuodky">Threat Model</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/malware-scanning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Malware Scanning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/well-architected/" class="astro-ojxuodky"><span class="astro-ojxuodky">Well-Architected Review</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/aws-services-and-roles/" aria-current="page" class="astro-ojxuodky"><span class="astro-ojxuodky">AWS Services &amp; IAM Roles</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rbac/" class="astro-ojxuodky"><span class="astro-ojxuodky">Role-Based Access Control (RBAC)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/external-idp/" class="astro-ojxuodky"><span class="astro-ojxuodky">External Identity Provider</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">GovCloud</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="17"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-architecture/" class="astro-ojxuodky"><span class="astro-ojxuodky">Architecture</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-operations/" class="astro-ojxuodky"><span class="astro-ojxuodky">Operations</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-batch-api/" class="astro-ojxuodky"><span class="astro-ojxuodky">Batch API</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/eu-region-model-support/" class="astro-ojxuodky"><span class="astro-ojxuodky">EU Region Model Support</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/canada-region-model-support/" class="astro-ojxuodky"><span class="astro-ojxuodky">Canada (Central) Model Support</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/openai-models/" class="astro-ojxuodky"><span class="astro-ojxuodky">OpenAI Models</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/grok-models/" class="astro-ojxuodky"><span class="astro-ojxuodky">xAI Grok Models</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Development Setup</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="18"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-linux/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: Linux</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-macos/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: macOS</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-wsl/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: WSL</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-windows/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: Windows</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/using-notebooks-with-idp-common/" class="astro-ojxuodky"><span class="astro-ojxuodky">Using Notebooks</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/dependency-mirroring/" class="astro-ojxuodky"><span class="astro-ojxuodky">Dependency Mirroring</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/dependency-confusion/" class="astro-ojxuodky"><span class="astro-ojxuodky">Installing First-Party Packages</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Migration</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="19"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v0612-to-v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.6.12 → v0.6.13 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v05-to-v06/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.5 → v0.6 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v04-to-v05/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.4 → v0.5 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-granular-retirement/" class="astro-ojxuodky"><span class="astro-ojxuodky">Granular Assessment Retirement</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">New &amp; Uncategorized</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="20"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/data-mart-migration-runbook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Data Mart Migration Runbook</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rule-validation-z3/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation Z3</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">GitHub</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#aws-services-used" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">AWS Services Used</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#core-infrastructure-services" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Core Infrastructure Services</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#aiml-services" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">AI/ML Services</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#auth--api-services" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Auth &amp; API Services</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#monitoring--operations" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Monitoring &amp; Operations</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#analytics--reporting" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Analytics &amp; Reporting</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#iam-role-requirements" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">IAM Role Requirements</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#enterprise-deployment-considerations" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Enterprise Deployment Considerations</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#deployment-roles" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Deployment Roles</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#runtime-roles" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Runtime Roles</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#service-quotas-considerations" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Service Quotas Considerations</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#security-recommendations" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Security Recommendations</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#aws-services-used" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">AWS Services Used</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#core-infrastructure-services" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Core Infrastructure Services</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#aiml-services" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">AI/ML Services</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#auth--api-services" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Auth &amp; API Services</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#monitoring--operations" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Monitoring &amp; Operations</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#analytics--reporting" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Analytics &amp; Reporting</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#iam-role-requirements" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">IAM Role Requirements</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#enterprise-deployment-considerations" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Enterprise Deployment Considerations</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#deployment-roles" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Deployment Roles</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#runtime-roles" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Runtime Roles</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#service-quotas-considerations" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Service Quotas Considerations</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#security-recommendations" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Security Recommendations</span></a></li></ul></nav></starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">AWS Services and IAM Role Requirements for GenAI IDP Accelerator</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><p>Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+SPDX-License-Identifier: MIT-0</p>
+<div class="sl-heading-wrapper level-h1"><h1 id="aws-services-and-iam-role-requirements-for-genai-idp-accelerator">AWS Services and IAM Role Requirements for GenAI IDP Accelerator</h1><a class="sl-anchor-link" href="#aws-services-and-iam-role-requirements-for-genai-idp-accelerator"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “AWS Services and IAM Role Requirements for GenAI IDP Accelerator”</span></a></div>
+<p>This document outlines the AWS services used by the GenAI Intelligent Document Processing (IDP) Accelerator solution, along with the IAM role scopes needed for deployment and operation.</p>
+<blockquote>
+<p><strong>Architecture note:</strong> The solution now uses a <strong>unified pattern stack</strong> (<code dir="auto">patterns/unified/</code>) controlled by the <code dir="auto">use_bda</code> configuration flag, rather than the historical separate Pattern 1/2/3 stacks. “BDA mode” (<code dir="auto">use_bda: true</code>) uses Bedrock Data Automation; “Pipeline mode” (<code dir="auto">use_bda: false</code>) uses Textract OCR + Bedrock classification/extraction. References to “Pattern 1/2/3” below are retained only where they aid historical understanding.</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="aws-services-used">AWS Services Used</h2><a class="sl-anchor-link" href="#aws-services-used"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “AWS Services Used”</span></a></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="core-infrastructure-services">Core Infrastructure Services</h3><a class="sl-anchor-link" href="#core-infrastructure-services"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Core Infrastructure Services”</span></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Service</th><th>Usage</th><th>Deployment</th><th>Runtime</th></tr></thead><tbody><tr><td><strong>Amazon S3</strong></td><td>Stores input documents, processed outputs, and web UI assets</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon DynamoDB</strong></td><td>Tracks document processing, manages configurations and concurrency, stores each user’s <a href="../web-ui/#inbox">Inbox</a> messages (<code dir="auto">NotificationsTable</code>), and holds HITL review queues, assignments and Test Studio queue summaries (<code dir="auto">HITLTable</code>)</td><td>✓</td><td>✓</td></tr><tr><td><strong>AWS Lambda</strong></td><td>Executes document processing functions and business logic</td><td>✓</td><td>✓</td></tr><tr><td><strong>AWS Step Functions</strong></td><td>Orchestrates document processing workflows and the data-mart rollup schema-migration (<code dir="auto">DataMartMigrationStateMachine</code>, retry-safe/chunked/resumable — see <a href="../reporting-sql-layer/">reporting-sql-layer.md</a> §Track A and <a href="../data-mart-migration-runbook/">data-mart-migration-runbook.md</a>)</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon SQS</strong></td><td>Queues documents for processing and handles throttling</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon EventBridge</strong></td><td>Triggers document processing workflows when files are uploaded</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon CloudFront</strong></td><td>Delivers the web UI with global distribution (default hosting mode)</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon API Gateway</strong></td><td>Backs the web UI’s data API — a REST API with a Cognito User Pools authorizer in front of a dispatcher Lambda, which is how every UI query and mutation reaches the backend (see <a href="../migration-appsync-to-rest/">AppSync → REST API Migration</a>). Can alternatively serve the web UI itself (S3 proxy) for VPC-based deployments (see <a href="../apigateway-hosting/">API Gateway Hosting</a>)</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon ECR</strong></td><td>Stores container images for the pattern processing Lambda functions (OCR, classification, extraction, etc., which are deployed as container images)</td><td>✓</td><td>✓</td></tr><tr><td><strong>AWS CloudFormation</strong></td><td>Deploys and manages the solution infrastructure</td><td>✓</td><td></td></tr><tr><td><strong>AWS SAM</strong></td><td>Simplifies serverless application deployment</td><td>✓</td><td></td></tr><tr><td><strong>AWS CodeBuild</strong></td><td>Builds and packages the web UI assets and pattern container images</td><td>✓</td><td></td></tr><tr><td><strong>AWS Systems Manager (Parameter Store)</strong></td><td>Stores and retrieves runtime configuration/settings parameters</td><td>✓</td><td>✓</td></tr></tbody></table>
+<div class="sl-heading-wrapper level-h3"><h3 id="aiml-services">AI/ML Services</h3><a class="sl-anchor-link" href="#aiml-services"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “AI/ML Services”</span></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Service</th><th>Usage</th><th>Deployment</th><th>Runtime</th></tr></thead><tbody><tr><td><strong>Amazon Bedrock</strong></td><td>Provides foundation models for document understanding</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon Bedrock Guardrails</strong></td><td>Enforces content safety, information security, model usage policies, and <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-automated-reasoning.html">Automated Reasoning Checks</a></td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon Textract</strong></td><td>Extracts text and data from documents (OCR) in Pipeline mode</td><td></td><td>✓</td></tr><tr><td><strong>Amazon SageMaker (MLflow)</strong></td><td>Optional managed MLflow tracking server for logging processing metrics/experiments. Set <code dir="auto">EnableMLflow=true</code> and give the server’s ARN in <code dir="auto">MlflowTrackingURI</code> (required when enabled). ⚠️ See the note below before relying on it.</td><td></td><td>✓</td></tr><tr><td><strong>Amazon Bedrock Knowledge Base</strong></td><td>Enables semantic document querying (optional) — backed by S3 Vectors (default) or OpenSearch Serverless</td><td>✓</td><td>✓</td></tr><tr><td><strong>Bedrock Data Automation (BDA)</strong></td><td>Automates document processing workflows (BDA mode, <code dir="auto">use_bda: true</code>)</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon Bedrock AgentCore</strong></td><td>Optional MCP gateway for external application access (enabled via <code dir="auto">EnableMCP</code>)</td><td>✓</td><td>✓</td></tr></tbody></table>
+<blockquote>
+<p>⚠️ <strong>MLflow logging does not currently reach the tracking server.</strong> <code dir="auto">EnableMLflow=true</code>
+creates the <code dir="auto">MLflowLoggerFunction</code> in the pattern stack and hands it <code dir="auto">MlflowTrackingURI</code>,
+and the function’s one caller is the test-results resolver in <code dir="auto">nested/api-resolvers/</code>.
+The parent stack does not pass the pattern stack’s <code dir="auto">MLflowLoggerFunctionArn</code> output down
+to that stack, so the resolver’s <code dir="auto">MLFLOW_LOGGER_FUNCTION_ARN</code> is always empty and the
+logger is never invoked. The parameters above are wired correctly and the tracking server
+is not charged for runs it never receives; nothing else is affected. Tracked in
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/1553">issue #1553</a>.</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h3"><h3 id="auth--api-services">Auth &#x26; API Services</h3><a class="sl-anchor-link" href="#auth--api-services"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Auth &#x26; API Services”</span></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Service</th><th>Usage</th><th>Deployment</th><th>Runtime</th></tr></thead><tbody><tr><td><strong>Amazon Cognito</strong></td><td>Manages user authentication and authorization. The User Pool fronts the UI’s REST API as a <strong>User Pools authorizer</strong> (authentication only — per-role authorization is enforced in each resolver, see <a href="../rbac/">rbac.md</a>), and the Identity Pool’s authenticated role SigV4-signs the chat streaming Lambda Function URL</td><td>✓</td><td>✓</td></tr><tr><td><strong>AWS WAF</strong></td><td>Protects the UI’s REST API from unwanted sources (optional) — a REGIONAL WAFv2 WebACL associated with the REST API stage, enabled when <code dir="auto">WAFAllowedIPv4Ranges</code> is set to anything other than the allow-all default</td><td>✓</td><td>✓</td></tr><tr><td><strong>AWS Marketplace (Agreement / Catalog / Entitlement)</strong></td><td>Subscription checks for paid Feature Platform extensions. In the <strong>host</strong> stack, buyer-side <code dir="auto">SearchAgreements</code>. In the optional <strong>Seller Entitlement Service</strong> (deployed separately, into a <em>seller</em> account), seller-side <code dir="auto">SearchAgreements</code> + <code dir="auto">ListEntities</code></td><td>—</td><td>✓</td></tr></tbody></table>
+<div class="sl-heading-wrapper level-h3"><h3 id="monitoring--operations">Monitoring &#x26; Operations</h3><a class="sl-anchor-link" href="#monitoring--operations"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Monitoring &#x26; Operations”</span></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Service</th><th>Usage</th><th>Deployment</th><th>Runtime</th></tr></thead><tbody><tr><td><strong>Amazon CloudWatch</strong></td><td>Provides monitoring, logging, and alerting</td><td>✓</td><td>✓</td></tr><tr><td><strong>AWS X-Ray</strong></td><td>Distributed tracing for the Lambda functions and state machines, controlled by <code dir="auto">EnableXRayTracing</code> (default <code dir="auto">true</code>). Traced functions need <code dir="auto">xray:PutTraceSegments</code> / <code dir="auto">xray:PutTelemetryRecords</code>: SAM attaches its X-Ray managed policy to any execution role it generates, and the roles declared explicitly in the templates carry <code dir="auto">AWSXrayWriteOnlyAccess</code>. Billed per trace recorded — see <a href="../monitoring/#x-ray-tracing">monitoring.md</a>, which also covers what <code dir="auto">EnableXRayTracing=false</code> does not reach</td><td>—</td><td>✓</td></tr><tr><td><strong>AWS SNS</strong></td><td>Delivers operational alerts and notifications</td><td>✓</td><td>✓</td></tr><tr><td><strong>AWS KMS</strong></td><td>Manages encryption keys for secure data storage</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon GuardDuty</strong></td><td>Optional Malware Protection for S3 on the input bucket, gating document ingest on a clean scan verdict. Only when <code dir="auto">MalwareScanning</code> is not <code dir="auto">DISABLED</code>; with <code dir="auto">CREATE_PLAN</code> the stack creates the protection plan (needing GuardDuty permissions at deploy time), with <code dir="auto">GATE_ONLY</code> it creates nothing and reads verdicts from a plan managed elsewhere. See <a href="../malware-scanning/">malware-scanning.md</a></td><td>✓</td><td>✓</td></tr></tbody></table>
+<div class="sl-heading-wrapper level-h3"><h3 id="analytics--reporting">Analytics &#x26; Reporting</h3><a class="sl-anchor-link" href="#analytics--reporting"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Analytics &#x26; Reporting”</span></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Service</th><th>Usage</th><th>Deployment</th><th>Runtime</th></tr></thead><tbody><tr><td><strong>AWS Glue</strong></td><td>Data Catalog (database + tables) and crawler for evaluation/reporting metrics, including the <code dir="auto">metering_hourly</code>, <code dir="auto">metering_daily</code>, <code dir="auto">metering_docs_hourly</code>, <code dir="auto">metering_docs_daily</code>, <code dir="auto">control_plane_hourly</code>, and <code dir="auto">data_plane_lambda_hourly</code> rollup tables added by the Reporting SQL Layer</td><td>✓</td><td>✓</td></tr><tr><td><strong>Amazon Athena</strong></td><td>Queries evaluation/metering/rollup tables for analytics; scheduled <code dir="auto">DataMartRollupFunction</code> writes <code dir="auto">INSERT INTO</code> the rollup tables hourly + daily</td><td>✓</td><td>✓</td></tr><tr><td><strong>AWS Resource Groups Tagging API</strong></td><td>The <code dir="auto">DataMartRollupFunction</code> uses <code dir="auto">tag:GetResources</code> to discover Lambdas in this stack’s tree (root + nested) for control-plane cost attribution</td><td></td><td>✓</td></tr><tr><td><strong>Amazon OpenSearch Serverless</strong></td><td>Optional vector store for the Bedrock Knowledge Base (the default vector store is S3 Vectors; <code dir="auto">KnowledgeBaseVectorStore: OPENSEARCH_SERVERLESS</code> selects this instead)</td><td>✓</td><td>✓</td></tr></tbody></table>
+<div class="sl-heading-wrapper level-h2"><h2 id="iam-role-requirements">IAM Role Requirements</h2><a class="sl-anchor-link" href="#iam-role-requirements"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “IAM Role Requirements”</span></a></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="enterprise-deployment-considerations">Enterprise Deployment Considerations</h3><a class="sl-anchor-link" href="#enterprise-deployment-considerations"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Enterprise Deployment Considerations”</span></a></div>
+<p>For organizations with Service Control Policies (SCPs) that mandate permissions boundaries on all IAM roles, the solution provides comprehensive support through the <code dir="auto">PermissionsBoundaryArn</code> parameter. This optional parameter can be specified during deployment to attach a permissions boundary to all IAM roles (both explicit roles and implicit roles created by AWS SAM functions).</p>
+<blockquote>
+<p><strong>The boundary is optional for the stack but required by the delegated
+deployment role.</strong> If you deploy through the example CloudFormation service role
+in <a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/main/iam-roles/cloudformation-management/README.md">iam-roles/cloudformation-management/</a>,
+a boundary is <strong>mandatory</strong>: that stack’s <code dir="auto">CreatedRolePermissionsBoundaryArn</code>
+parameter has no default, and the same ARN must be passed here as
+<code dir="auto">PermissionsBoundaryArn</code>. The service role’s <code dir="auto">iam:CreateRole</code> grant carries an
+<code dir="auto">iam:PermissionsBoundary</code> condition, which is the mechanism that stops a
+delegated deployment identity from being able to create a role more powerful
+than itself. Deploying with an empty <code dir="auto">PermissionsBoundaryArn</code> through that role
+fails on <code dir="auto">iam:CreateRole</code> by design. Deploying with administrator credentials is
+unaffected.</p>
+<p>Do <strong>not</strong> confuse that with the service-role template’s second, optional
+parameter <code dir="auto">ServiceRolePermissionsBoundaryArn</code>, which caps the deployment role
+itself and must be left blank or set to a <em>wide</em> policy. Passing the tight
+runtime boundary there stops the role deploying anything.</p>
+<p>If the IDP stack already exists and was deployed before that role was hardened,
+read “Updating an Existing Deployment” in the service role’s README first: three
+detectable configurations wedge the update in <code dir="auto">UPDATE_ROLLBACK_FAILED</code>.</p>
+</blockquote>
+<p><strong>Usage:</strong></p>
+<div class="expressive-code"><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/ec.w36nc.css"><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">aws</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">cloudformation</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">deploy</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#82AAFF;--1:#3B61B0">--template-file</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">template.yaml</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#82AAFF;--1:#3B61B0">--parameter-overrides</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">PermissionsBoundaryArn=arn:aws:iam::123456789012:policy/MyPermissionsBoundary</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#82AAFF;--1:#3B61B0">--capabilities</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">CAPABILITY_IAM</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="aws cloudformation deploy \  --template-file template.yaml \  --parameter-overrides PermissionsBoundaryArn=arn:aws:iam::123456789012:policy/MyPermissionsBoundary \  --capabilities CAPABILITY_IAM"><div></div></button></div></figure></div>
+<p>When no permissions boundary is specified, roles deploy normally, ensuring backward compatibility.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="deployment-roles">Deployment Roles</h3><a class="sl-anchor-link" href="#deployment-roles"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Deployment Roles”</span></a></div>
+<p>Deploying this solution requires an IAM role/user with the following permissions.</p>
+<blockquote>
+<p><strong>Ready-to-use CloudFormation service role:</strong> Rather than granting these
+permissions directly to deploying users, administrators can provision the
+example <strong>CloudFormation service role</strong> in
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/main/iam-roles/cloudformation-management/README.md">iam-roles/cloudformation-management/</a>.
+It bundles the deployment permissions below into a single role that
+CloudFormation assumes on a user’s behalf, so developers/DevOps can deploy and
+manage IDP stacks with only <code dir="auto">iam:PassRole</code> instead of broad administrator
+access. See also <a href="../deployment/#administrator-access-requirements">Deployment → Administrator Access Requirements</a>.</p>
+<p>That role is a <strong>deployment</strong> role, not a least-privilege one. It still holds
+<code dir="auto">cloudformation:*</code> plus service wildcards on 25 services, because a
+CloudFormation service role must be able to create, update, <strong>and roll back</strong>
+every resource type in every optional feature of the templates. What contains
+it is not narrow actions but three constraints, which its own template now
+requires: a mandatory <code dir="auto">CreatedRolePermissionsBoundaryArn</code> (its <code dir="auto">iam:CreateRole</code>
+grant carries an <code dir="auto">iam:PermissionsBoundary</code> condition, so it cannot mint a role
+outside the boundary), a <code dir="auto">ManagedStackNamePrefix</code> that scopes its IAM
+role/policy grants to resource names beginning with that prefix, and a trust
+policy that admits only the CloudFormation service principal in the same
+account. Read the “Read This Before Granting the Role” and “What Remains Broad,
+and Why” sections of that
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/main/iam-roles/cloudformation-management/README.md">README</a> before granting it.</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h4"><h4 id="essential-permissions">Essential Permissions</h4><a class="sl-anchor-link" href="#essential-permissions"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Essential Permissions”</span></a></div>
+<ul>
+<li><code dir="auto">cloudformation:*</code> - Create and manage CloudFormation stacks</li>
+<li><code dir="auto">iam:*</code> - Create and manage IAM roles and policies. This is the one entry the
+example service role deliberately does <strong>not</strong> grant as a wildcard: it holds a
+named list of role/policy actions, scoped to the stack name prefix, with
+<code dir="auto">iam:CreateRole</code> gated on the permissions boundary and explicit denies on
+removing that boundary, editing the boundary policy, editing the service role
+itself, and creating IAM users or access keys</li>
+<li><code dir="auto">lambda:*</code> - Create and configure Lambda functions</li>
+<li><code dir="auto">states:*</code> - Create and manage Step Functions state machines</li>
+<li><code dir="auto">s3:*</code> - Create buckets and manage S3 resources</li>
+<li><code dir="auto">dynamodb:*</code> - Create and configure DynamoDB tables</li>
+<li><code dir="auto">sqs:*</code> - Create and configure SQS queues</li>
+<li><code dir="auto">events:*</code> - Create and configure EventBridge rules</li>
+<li><code dir="auto">cloudfront:*</code> - Create and configure CloudFront distributions</li>
+<li><code dir="auto">cognito-idp:*</code> - Create and configure Cognito user pools</li>
+<li><code dir="auto">cognito-identity:*</code> - Create and configure Cognito identity pools for AWS service access</li>
+<li><code dir="auto">apigateway:*</code> - Create and configure the UI ⇄ backend REST API (and the optional API Gateway UI host)</li>
+<li><code dir="auto">appsync:*</code> - <strong>Legacy, retained for upgrades only.</strong> No template creates an AppSync API any more (see <a href="../migration-appsync-to-rest/">AppSync → REST API Migration</a>); the grant remains so that an in-place update of a stack created <em>before</em> that migration can delete the AppSync resources it still owns. Safe to drop once no pre-migration stacks remain.</li>
+<li><code dir="auto">logs:*</code> - Create and configure CloudWatch log groups</li>
+<li><code dir="auto">cloudwatch:*</code> - Create and configure CloudWatch dashboards and alarms</li>
+<li><code dir="auto">sns:*</code> - Create and configure SNS topics</li>
+</ul>
+<div class="sl-heading-wrapper level-h4"><h4 id="feature-specific-permissions">Feature-Specific Permissions</h4><a class="sl-anchor-link" href="#feature-specific-permissions"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Feature-Specific Permissions”</span></a></div>
+<ul>
+<li><code dir="auto">bedrock:*</code> - Create and invoke Bedrock resources (all modes)</li>
+<li><code dir="auto">ecr:*</code> - Create ECR repositories and push pattern container images</li>
+<li><code dir="auto">glue:*</code> - Create the reporting database and tables (evaluation reporting).
+<code dir="auto">athena:*</code> is needed to <em>query</em> that data, not to deploy it — no template
+declares an <code dir="auto">AWS::Athena</code> resource, so the example service role does not grant it</li>
+<li><code dir="auto">aoss:*</code> / <code dir="auto">opensearch-serverless:*</code> - Create OpenSearch Serverless collections (Knowledge Base feature, only when <code dir="auto">KnowledgeBaseVectorStore: OPENSEARCH_SERVERLESS</code>; the default S3 Vectors store does not need this)</li>
+<li><code dir="auto">kms:*</code> - Create KMS keys for encryption</li>
+<li><code dir="auto">wafv2:*</code> - Configure WAF rules (optional)</li>
+<li><code dir="auto">ec2:*</code> - Create the VPC-attached resources used by the private/VPC hosting
+variants and the optional bastion host</li>
+<li><code dir="auto">scheduler:*</code> / <code dir="auto">secretsmanager:*</code> - Optional scheduled jobs and stored secrets</li>
+<li><code dir="auto">glue:*</code> / <code dir="auto">codebuild:*</code> / <code dir="auto">ssm:*</code> - Supporting build, configuration, and reporting infrastructure</li>
+</ul>
+<blockquote>
+<p><strong>Runtime-only services are not deployment permissions.</strong> <code dir="auto">textract:*</code> and
+<code dir="auto">sagemaker:*</code> were previously listed here, but neither is needed to <em>create</em> the
+stack: no template declares an <code dir="auto">AWS::Textract</code> or <code dir="auto">AWS::SageMaker</code> resource.
+Textract is called at runtime by the OCR Lambda, and SageMaker (MLflow tracking)
+at runtime by the evaluation path — both via the scoped Lambda execution roles
+described under <a href="#runtime-roles">Runtime Roles</a>. They have been removed from the
+example CloudFormation service role for the same reason.</p>
+</blockquote>
+<blockquote>
+<p><strong>Note:</strong> Earlier releases used Amazon SageMaker to host a UDOP classification endpoint (the former “Pattern 3”). The unified architecture no longer deploys a SageMaker inference endpoint; document classification is performed by Bedrock foundation models (with optional custom/fine-tuned model ARNs). SageMaker now appears only in the optional MLflow tracking integration.</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h3"><h3 id="runtime-roles">Runtime Roles</h3><a class="sl-anchor-link" href="#runtime-roles"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Runtime Roles”</span></a></div>
+<p>The solution creates various IAM roles to run different components of the system. Key role scopes include:</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="document-processing-roles">Document Processing Roles</h4><a class="sl-anchor-link" href="#document-processing-roles"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Document Processing Roles”</span></a></div>
+<ul>
+<li>
+<p><strong>Queue Processing Role</strong>:</p>
+<ul>
+<li><code dir="auto">sqs:ReceiveMessage</code>, <code dir="auto">sqs:DeleteMessage</code>, <code dir="auto">sqs:GetQueueAttributes</code></li>
+<li><code dir="auto">dynamodb:GetItem</code>, <code dir="auto">dynamodb:PutItem</code>, <code dir="auto">dynamodb:UpdateItem</code></li>
+<li><code dir="auto">states:StartExecution</code></li>
+<li><code dir="auto">states:ListExecutions</code> (read-only, scoped to this stack’s state machine — used to reconcile the workflow-concurrency counter against the executions that are really running, so a leaked counter cannot permanently stop the stack admitting documents)</li>
+<li><code dir="auto">states:StopExecution</code> (scoped to executions of this stack’s own state machine — used only to stop an execution the processor has just started when the document was aborted while that start was in flight, so the abort is not overwritten by a running workflow)</li>
+<li><code dir="auto">s3:GetObject</code> on the Configuration bucket’s <code dir="auto">config_revisions/*</code> prefix, and <code dir="auto">s3:ListBucket</code> on that bucket conditioned on the same prefix (reads the body of the configuration revision a document is pinned to, so BDA or Pipeline routing follows that revision; the prefix-scoped <code dir="auto">ListBucket</code> is the grant every revision-body reader carries, because S3 answers a missing key with 403 rather than 404 to a caller with no <code dir="auto">ListBucket</code>)</li>
+<li><code dir="auto">cloudwatch:PutMetricData</code> (restricted by an <code dir="auto">IAM</code> condition to the stack’s own metric namespace — publishes the concurrency-counter drift the <code dir="auto">ConcurrencyCounterDriftAlarm</code> watches)</li>
+<li><code dir="auto">logs:CreateLogGroup</code>, <code dir="auto">logs:CreateLogStream</code>, <code dir="auto">logs:PutLogEvents</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Step Functions Execution Role</strong>:</p>
+<ul>
+<li><code dir="auto">lambda:InvokeFunction</code></li>
+<li><code dir="auto">states:*</code></li>
+<li><code dir="auto">events:PutEvents</code></li>
+</ul>
+</li>
+<li>
+<p><strong>OCR Processing Role</strong>:</p>
+<ul>
+<li><code dir="auto">textract:AnalyzeDocument</code>, <code dir="auto">textract:DetectDocumentText</code></li>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:PutObject</code></li>
+<li><code dir="auto">logs:*</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Classification Role</strong>:</p>
+<ul>
+<li><code dir="auto">bedrock:InvokeModel</code>, <code dir="auto">bedrock:InvokeModelWithResponseStream</code>, <code dir="auto">bedrock:GetInferenceProfile</code></li>
+<li><code dir="auto">bedrock:ApplyGuardrail</code> (when Guardrails configured)</li>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:PutObject</code></li>
+<li><code dir="auto">dynamodb:GetItem</code>, <code dir="auto">dynamodb:PutItem</code>, <code dir="auto">dynamodb:UpdateItem</code> (tracking &#x26; configuration tables)</li>
+<li><code dir="auto">cloudwatch:PutMetricData</code></li>
+<li><code dir="auto">logs:*</code></li>
+<li>(Optional custom classification model invoked via Lambda hook / custom model ARN; no SageMaker endpoint is used.)</li>
+</ul>
+</li>
+<li>
+<p><strong>Extraction Role</strong>:</p>
+<ul>
+<li><code dir="auto">bedrock:InvokeModel</code></li>
+<li><code dir="auto">bedrock:ApplyGuardrail</code> (when Guardrails configured)</li>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:PutObject</code></li>
+<li><code dir="auto">logs:*</code></li>
+</ul>
+</li>
+<li>
+<p><strong>BDA Integration Role</strong> (BDA mode, <code dir="auto">use_bda: true</code>):</p>
+<ul>
+<li><code dir="auto">bedrock:InvokeDataAutomationAsync</code></li>
+<li><code dir="auto">bedrock:GetDataAutomationProject</code>, <code dir="auto">bedrock:ListDataAutomationProjects</code>, <code dir="auto">bedrock:GetBlueprint</code>, <code dir="auto">bedrock:GetBlueprintRecommendation</code></li>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:PutObject</code></li>
+<li><code dir="auto">dynamodb:GetItem</code>, <code dir="auto">dynamodb:PutItem</code>, <code dir="auto">dynamodb:UpdateItem</code></li>
+<li><code dir="auto">ssm:GetParameter</code>, <code dir="auto">ssm:PutParameter</code></li>
+<li><code dir="auto">cloudwatch:PutMetricData</code></li>
+<li><code dir="auto">logs:*</code></li>
+</ul>
+</li>
+</ul>
+<div class="sl-heading-wrapper level-h4"><h4 id="web-ui--api-roles">Web UI &#x26; API Roles</h4><a class="sl-anchor-link" href="#web-ui--api-roles"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Web UI &#x26; API Roles”</span></a></div>
+<ul>
+<li>
+<p><strong>API Dispatcher Role</strong> (the single Lambda behind <code dir="auto">POST /op/{field}</code>, which fans a request out to the per-field resolver Lambdas and serves the DynamoDB-direct fields in process):</p>
+<ul>
+<li>SAM <code dir="auto">DynamoDBCrudPolicy</code> on the Tracking, Discovery Tracking and Agent tables, for the DynamoDB-direct fields it serves itself</li>
+<li><code dir="auto">kms:Decrypt</code>, <code dir="auto">kms:GenerateDataKey</code> on the customer-managed key that encrypts those tables</li>
+<li><code dir="auto">lambda:InvokeFunction</code> on the stack’s resolver functions (by function-name prefix) and the main-stack resolver ARNs in its field → function map</li>
+<li><code dir="auto">ssm:GetParameter</code> on the stack’s field → function map parameter, read at cold start</li>
+</ul>
+</li>
+<li>
+<p><strong>API Gateway CloudWatch Logging Role</strong> (created when <code dir="auto">LogLevel</code> is <code dir="auto">INFO</code> or <code dir="auto">DEBUG</code>):</p>
+<ul>
+<li>Managed policy <code dir="auto">AmazonAPIGatewayPushToCloudWatchLogs</code> (assumed by <code dir="auto">apigateway.amazonaws.com</code>)</li>
+<li>Registered as the account-level API Gateway CloudWatch role (<code dir="auto">AWS::ApiGateway::Account</code>) to enable REST API stage access logging. This setting is per account per region and is retained on stack deletion so other stacks’ logging keeps working.</li>
+</ul>
+</li>
+<li>
+<p><strong>Configuration Resolver Role</strong> (API resolver Lambda for configuration CRUD + Z3 RuleJSON generation):</p>
+<ul>
+<li><code dir="auto">dynamodb:GetItem</code>, <code dir="auto">dynamodb:PutItem</code>, <code dir="auto">dynamodb:UpdateItem</code>, <code dir="auto">dynamodb:DeleteItem</code>, <code dir="auto">dynamodb:Query</code></li>
+<li><code dir="auto">s3:GetObject</code> (configuration bucket)</li>
+<li><code dir="auto">kms:Encrypt</code>, <code dir="auto">kms:Decrypt</code>, <code dir="auto">kms:GenerateDataKey*</code></li>
+<li><code dir="auto">bedrock:InvokeModel</code> (foundation models + inference profiles, for Z3 RuleJSON translation via <code dir="auto">generateRuleJson</code> mutation)</li>
+<li><code dir="auto">bedrock:DeleteDataAutomationProject</code>, <code dir="auto">bedrock:GetDataAutomationProject</code>, <code dir="auto">bedrock:DeleteBlueprint</code>, <code dir="auto">bedrock:ListBlueprints</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Notifications Resolver Role</strong> (API resolver Lambda that serves each user’s own <a href="../web-ui/#inbox">Inbox</a>):</p>
+<ul>
+<li><code dir="auto">dynamodb:GetItem</code>, <code dir="auto">dynamodb:PutItem</code>, <code dir="auto">dynamodb:UpdateItem</code>, <code dir="auto">dynamodb:Query</code>, <code dir="auto">dynamodb:BatchGetItem</code>, <code dir="auto">dynamodb:BatchWriteItem</code> on <code dir="auto">NotificationsTable</code> and its <code dir="auto">UnreadIndex</code>. Deletes go through <code dir="auto">BatchWriteItem</code>; there is no <code dir="auto">DeleteItem</code>, Cognito or configuration access</li>
+<li><code dir="auto">kms:Encrypt</code>, <code dir="auto">kms:Decrypt</code>, <code dir="auto">kms:ReEncrypt*</code>, <code dir="auto">kms:GenerateDataKey*</code>, <code dir="auto">kms:DescribeKey</code> on the customer-managed key</li>
+</ul>
+</li>
+<li>
+<p><strong>Upload Resolver Role</strong> (API resolver Lambda for <code dir="auto">uploadDocument</code>, <code dir="auto">listSampleDocuments</code> and <code dir="auto">uploadSampleDocument</code>):</p>
+<ul>
+<li>SAM <code dir="auto">S3WritePolicy</code> on the Input, Configuration, Output, Evaluation Baseline and Test Set buckets (the write targets an upload’s presigned POST may name), and <code dir="auto">S3ReadPolicy</code> on the Configuration bucket (the bundled samples)</li>
+<li>SAM <code dir="auto">DynamoDBReadPolicy</code> on the Configuration table (the config prefix mappings)</li>
+<li><code dir="auto">dynamodb:GetItem</code> on the Tracking table: a document’s <code dir="auto">HITLStatus</code>, so a section-result upload for a document in a review queue is refused</li>
+<li><code dir="auto">dynamodb:Query</code>, <code dir="auto">dynamodb:GetItem</code> on the Users table and its indexes (the caller’s configuration scope)</li>
+<li><code dir="auto">kms:Encrypt</code>, <code dir="auto">kms:Decrypt</code>, <code dir="auto">kms:ReEncrypt*</code>, <code dir="auto">kms:GenerateDataKey*</code>, <code dir="auto">kms:DescribeKey</code> on the customer-managed key</li>
+<li><code dir="auto">cloudwatch:PutMetricData</code>, limited to the stack’s namespace</li>
+</ul>
+</li>
+<li>
+<p><strong>Inbox producers</strong> (none in this release). A Lambda that posts Inbox messages through <code dir="auto">idp_common.notifications</code> needs the grants listed in the <a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/main/lib/idp_common_pkg/idp_common/notifications/README.md">notifications module README</a>:</p>
+<ul>
+<li><code dir="auto">dynamodb:PutItem</code>, <code dir="auto">dynamodb:UpdateItem</code>, <code dir="auto">dynamodb:DeleteItem</code>, <code dir="auto">dynamodb:GetItem</code>, <code dir="auto">dynamodb:Query</code>, <code dir="auto">dynamodb:BatchGetItem</code>, <code dir="auto">dynamodb:BatchWriteItem</code>, <code dir="auto">dynamodb:ConditionCheckItem</code> on <code dir="auto">NotificationsTable</code> and its <code dir="auto">UnreadIndex</code></li>
+<li>read access to the Configuration table (for retention and the per-user cap)</li>
+<li><code dir="auto">cognito-idp:ListUsersInGroup</code> on the user pool, only when it posts to Cognito groups</li>
+<li><code dir="auto">cloudwatch:PutMetricData</code></li>
+<li>KMS use of the customer-managed key that encrypts the table</li>
+</ul>
+</li>
+<li>
+<p><strong>Configuration Resolver Role</strong>, tenant additions: <code dir="auto">dynamodb:Scan</code> on the UsersTable (the table only, not its indexes), so that saving a <a href="../multi-tenancy/">tenant</a> can refuse one that would leave a stored user scope crossing a tenant boundary.</p>
+</li>
+<li>
+<p><strong>Test Runner Role</strong>, tenant additions: <code dir="auto">dynamodb:Query</code> and <code dir="auto">dynamodb:GetItem</code> on the UsersTable and its indexes, to check the caller’s configuration scope before a test run starts.</p>
+</li>
+<li>
+<p><strong>PII Anonymizer Feature API Role</strong>: <code dir="auto">ssm:GetParameter</code> on the single parameter <code dir="auto">/&#x3C;StackName>/tenant-isolation-mode</code>, which carries the stack’s <code dir="auto">TenantIsolationMode</code>.</p>
+</li>
+<li>
+<p><strong>API Dispatcher, Document Versions, Delete Document, Abort Workflow, Copy-to-Baseline and Test Results resolver roles</strong>, scope additions: <code dir="auto">dynamodb:Query</code> and <code dir="auto">dynamodb:GetItem</code> on the UsersTable and its indexes, to resolve the caller’s configuration scope before acting on one document or test run.</p>
+</li>
+<li>
+<p><strong>User Management Role</strong> (API resolver Lambda for <code dir="auto">createUser</code>, <code dir="auto">updateUser</code>, <code dir="auto">deleteUser</code>, <code dir="auto">listUsers</code> and <code dir="auto">setUserTenant</code>):</p>
+<ul>
+<li><code dir="auto">dynamodb</code> CRUD on the UsersTable</li>
+<li><code dir="auto">dynamodb:GetItem</code> on the ConfigurationTable, restricted by a <code dir="auto">dynamodb:LeadingKeys</code> condition to the single key <code dir="auto">TenantIndex#__index</code> (reads the <a href="../multi-tenancy/">tenant declarations</a> so that a user’s configuration scope cannot be set across tenants)</li>
+<li><code dir="auto">cognito-idp:AdminCreateUser</code>, <code dir="auto">AdminDeleteUser</code>, <code dir="auto">AdminAddUserToGroup</code>, <code dir="auto">AdminRemoveUserFromGroup</code>, <code dir="auto">AdminListGroupsForUser</code>, <code dir="auto">ListUsers</code>, <code dir="auto">ListUsersInGroup</code> on the stack’s user pool</li>
+<li><code dir="auto">kms:Encrypt</code>, <code dir="auto">kms:Decrypt</code>, <code dir="auto">kms:GenerateDataKey*</code>, <code dir="auto">kms:DescribeKey</code> on the stack’s customer-managed key</li>
+</ul>
+</li>
+<li>
+<p><strong>User Sync Role</strong> (<code dir="auto">UserSyncFunction</code>, which consumes the UsersTable’s DynamoDB stream and mirrors user rows into Cognito):</p>
+<ul>
+<li>read access to the UsersTable stream, added by the SAM <code dir="auto">DynamoDB</code> event source</li>
+<li><code dir="auto">cognito-idp:AdminCreateUser</code>, <code dir="auto">AdminDeleteUser</code>, <code dir="auto">AdminAddUserToGroup</code>, <code dir="auto">AdminRemoveUserFromGroup</code> on the stack’s user pool</li>
+<li><code dir="auto">kms:Decrypt</code> on the stack’s customer-managed key, which encrypts the UsersTable and so its stream</li>
+</ul>
+</li>
+<li>
+<p><strong>External IdP Group Mapping Role</strong> (the Cognito pre-token trigger, deployed only when federation with group mapping is configured):</p>
+<ul>
+<li><code dir="auto">cognito-idp:AdminGetUser</code>, <code dir="auto">AdminListGroupsForUser</code>, <code dir="auto">AdminAddUserToGroup</code>, <code dir="auto">AdminRemoveUserFromGroup</code> on the stack’s user pool (a separate policy, to avoid a circular dependency on the pool)</li>
+<li>Only when <code dir="auto">TenantGrantSource=IdpClaim</code>, to write the tenant the claim grants: <code dir="auto">dynamodb:GetItem</code>, <code dir="auto">PutItem</code>, <code dir="auto">UpdateItem</code>, <code dir="auto">DeleteItem</code> on the UsersTable and <code dir="auto">dynamodb:Query</code> on its <code dir="auto">EmailIndex</code>; <code dir="auto">dynamodb:GetItem</code> on the ConfigurationTable restricted by <code dir="auto">dynamodb:LeadingKeys</code> to <code dir="auto">TenantIndex#__index</code>; and <code dir="auto">kms:Encrypt</code>, <code dir="auto">kms:Decrypt</code>, <code dir="auto">kms:GenerateDataKey*</code>, <code dir="auto">kms:DescribeKey</code> on the stack’s customer-managed key. Under any other grant source the trigger holds no data-plane grant</li>
+</ul>
+</li>
+<li>
+<p><strong>Cognito Authentication Role</strong> (the Identity Pool’s authenticated role, assumed by the browser):</p>
+<ul>
+<li><code dir="auto">lambda:InvokeFunction</code> on the chat streaming function — the browser SigV4-signs its Function URL directly (a Function URL invocation needs <code dir="auto">InvokeFunction</code>, <em>not</em> <code dir="auto">InvokeFunctionUrl</code>). The REST API itself is reached with the Cognito <strong>ID token</strong>, not IAM, so no <code dir="auto">execute-api:Invoke</code> grant is required.</li>
+<li><strong>No S3 and no KMS.</strong> This role grants <strong>nothing</strong> on the Input and Output buckets, and <strong>no</strong> <code dir="auto">s3:GetObject</code>, <code dir="auto">s3:GetObjectVersion</code> or <code dir="auto">s3:ListBucket</code> on any bucket in the deployment (<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/1033">issue #1033</a>). ⚠️ A single <code dir="auto">authenticated</code> role is attached with <strong>no <code dir="auto">RoleMappings</code></strong>, so every signed-in user holds exactly this role regardless of Cognito group — including a user in no group, which self-signup produces — with no resolver in the path to apply a group check, a per-document check or a per-user scope check. That is why the document read path runs through <code dir="auto">getFileContents</code> / <code dir="auto">getFilePresignedUrl</code> / <code dir="auto">getFilePresignedUrls</code> instead: the browser asks the backend for a presigned URL and the resolver applies the dispatcher’s group floor, a bucket allow-list, the per-user key scope on the Configuration and Test Set buckets, and the owning document’s <code dir="auto">ConfigVersion</code> against the caller’s <code dir="auto">allowedConfigVersions</code> on the Input and Output ones. The KMS grant went with the S3 one — a presigned URL minted by the resolver is decrypted under the resolver’s role, which holds its own grant on the key. See <a href="../rbac/">RBAC</a> for what the per-document check does and does not close.</li>
+<li><code dir="auto">ssm:GetParameter</code> (for settings — the UI reads its runtime settings blob, which includes the stack’s bucket names, directly from Parameter Store. ⚠️ The names being readable is not a grant: with no S3 action on this role there is no bucket those names open)</li>
+</ul>
+</li>
+<li>
+<p><strong>Knowledge Base Query Role</strong>:</p>
+<ul>
+<li><code dir="auto">bedrock:InvokeModel</code></li>
+<li><code dir="auto">bedrock:Retrieve</code></li>
+<li><code dir="auto">bedrock:RetrieveAndGenerate</code></li>
+<li><code dir="auto">bedrock:ApplyGuardrail</code> (when Guardrails configured)</li>
+<li>No direct vector-store permissions: <code dir="auto">bedrock:Retrieve</code> reaches the vector store through the Knowledge Base Service Role below</li>
+<li><code dir="auto">logs:*</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Knowledge Base Service Role</strong>:</p>
+<ul>
+<li><code dir="auto">bedrock:InvokeModel</code></li>
+<li><code dir="auto">aoss:APIAccessAll</code> (OpenSearch Serverless) <strong>or</strong> <code dir="auto">s3vectors:GetIndex</code>, <code dir="auto">s3vectors:QueryVectors</code>, <code dir="auto">s3vectors:PutVectors</code>, <code dir="auto">s3vectors:GetVectors</code>, <code dir="auto">s3vectors:DeleteVectors</code> on the stack’s single vector index (default S3 Vectors store)</li>
+<li><code dir="auto">s3:ListBucket</code>, <code dir="auto">s3:GetObject</code> (when using S3 data source)</li>
+</ul>
+</li>
+<li>
+<p><strong>S3 Vectors Manager Role</strong> (custom-resource Lambda, default S3 Vectors store only):</p>
+<ul>
+<li><code dir="auto">s3vectors:CreateVectorBucket</code>, <code dir="auto">s3vectors:GetVectorBucket</code>, <code dir="auto">s3vectors:DeleteVectorBucket</code> on <code dir="auto">bucket/*</code> in the deploying account and Region — the bucket segment is a wildcard because the Lambda lowercases and sanitizes the stack-derived bucket name, which CloudFormation cannot reproduce for every stack name</li>
+<li><code dir="auto">s3vectors:CreateIndex</code>, <code dir="auto">s3vectors:DeleteIndex</code> on <code dir="auto">bucket/*/index/&#x3C;index name></code> (the index name is exact)</li>
+<li><code dir="auto">s3vectors:ListIndexes</code>, and <code dir="auto">s3vectors:DeleteIndex</code> on any index, on the stack’s own vector bucket only, named exactly — deleting the stack deletes every index in that bucket before the bucket, because S3 Vectors will not delete a bucket that still holds an index. Not granted when <code dir="auto">pS3VectorBucketName</code> names the bucket</li>
+<li><code dir="auto">bedrock:CreateKnowledgeBase</code>, <code dir="auto">bedrock:DeleteKnowledgeBase</code>, <code dir="auto">bedrock:GetKnowledgeBase</code>, <code dir="auto">bedrock:UpdateKnowledgeBase</code>, <code dir="auto">bedrock:ListKnowledgeBases</code></li>
+<li><code dir="auto">iam:PassRole</code> on the Knowledge Base Service Role only, with an <code dir="auto">iam:PassedToService</code> condition naming Bedrock (granted in a separate policy, because naming that role in this one would be a circular dependency)</li>
+</ul>
+</li>
+</ul>
+<div class="sl-heading-wrapper level-h4"><h4 id="monitoring--evaluation-roles">Monitoring &#x26; Evaluation Roles</h4><a class="sl-anchor-link" href="#monitoring--evaluation-roles"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Monitoring &#x26; Evaluation Roles”</span></a></div>
+<ul>
+<li>
+<p><strong>CloudWatch Dashboard Role</strong>:</p>
+<ul>
+<li><code dir="auto">cloudwatch:GetDashboard</code>, <code dir="auto">cloudwatch:PutDashboard</code></li>
+<li><code dir="auto">logs:DescribeLogGroups</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Workflow Tracking Role</strong>:</p>
+<ul>
+<li><code dir="auto">dynamodb:GetItem</code>, <code dir="auto">dynamodb:PutItem</code>, <code dir="auto">dynamodb:UpdateItem</code></li>
+<li><code dir="auto">cloudwatch:PutMetricData</code></li>
+<li><code dir="auto">logs:*</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Evaluation Function Role</strong>:</p>
+<ul>
+<li><code dir="auto">s3:GetObject</code> (from baseline bucket)</li>
+<li><code dir="auto">s3:PutObject</code>, <code dir="auto">s3:GetObject</code> (for output bucket)</li>
+<li><code dir="auto">dynamodb:GetItem</code>, <code dir="auto">dynamodb:PutItem</code>, <code dir="auto">dynamodb:UpdateItem</code> — evaluation results are written straight to the tracking table; backend workers do not call the UI API</li>
+<li><code dir="auto">bedrock:InvokeModel</code> (for LLM-based evaluations)</li>
+<li><code dir="auto">cloudwatch:PutMetricData</code></li>
+<li><code dir="auto">logs:*</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Reporting / Analytics Roles</strong> (evaluation reporting &#x26; analytics UI):</p>
+<ul>
+<li><code dir="auto">glue:GetDatabase</code>, <code dir="auto">glue:GetTable</code>, <code dir="auto">glue:GetPartitions</code> (reporting database/tables)</li>
+<li><code dir="auto">athena:StartQueryExecution</code>, <code dir="auto">athena:GetQueryExecution</code>, <code dir="auto">athena:GetQueryResults</code>, <code dir="auto">athena:StopQueryExecution</code></li>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:PutObject</code>, <code dir="auto">s3:ListBucket</code> (reporting/Athena results buckets)</li>
+<li><code dir="auto">logs:*</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Save Reporting Data Role</strong> (<code dir="auto">SaveReportingDataFunctionV2</code>, writes each document’s reporting Parquet):</p>
+<ul>
+<li>Read and write on the reporting bucket (SAM <code dir="auto">S3CrudPolicy</code>), read on the output bucket (<code dir="auto">S3ReadPolicy</code>)</li>
+<li>Read-only on the configuration table (<code dir="auto">DynamoDBReadPolicy</code>)</li>
+<li><code dir="auto">s3:GetObject</code> on the Configuration bucket’s <code dir="auto">config_revisions/*</code> prefix, and <code dir="auto">s3:ListBucket</code> on that bucket conditioned on the same prefix (reads the configuration revision a document is pinned to, so its report’s classes match the configuration it ran under)</li>
+<li><code dir="auto">glue:CreateTable</code>, <code dir="auto">glue:GetTable</code>, <code dir="auto">glue:UpdateTable</code>, <code dir="auto">glue:GetDatabase</code> (the reporting database’s tables)</li>
+<li><code dir="auto">cloudwatch:PutMetricData</code> (restricted to the stack’s own metric namespace), and use of the stack’s KMS key</li>
+</ul>
+</li>
+<li>
+<p><strong>Data-Mart Rollup Lambda Role</strong> (<code dir="auto">DataMartRollupFunction</code>, scheduled hourly + daily + reconciler + migration state-machine task-mode invocations):</p>
+<ul>
+<li><code dir="auto">athena:StartQueryExecution</code>, <code dir="auto">athena:GetQueryExecution</code>, <code dir="auto">athena:GetQueryResults</code>, <code dir="auto">athena:StopQueryExecution</code> (writes rollup tables via <code dir="auto">INSERT INTO</code>)</li>
+<li><code dir="auto">glue:GetDatabase</code>, <code dir="auto">glue:GetTable</code>, <code dir="auto">glue:GetPartitions</code>, <code dir="auto">glue:CreatePartition</code>, <code dir="auto">glue:BatchCreatePartition</code> (partition management on rollup tables)</li>
+<li><code dir="auto">glue:GetDatabases</code>, <code dir="auto">glue:GetTables</code> — required by the rollup Lambda’s direct Glue-catalog scan of <code dir="auto">document_sections_*</code> tables (used to build the <code dir="auto">doc_class</code> CTE that fills in <code dir="auto">document_class</code> for historical metering rows). On a missing grant, <code dir="auto">get_tables</code> raises <code dir="auto">AccessDeniedException</code> and the discovery function re-raises it so the invocation errors and the DLQ alarm fires — a permissions regression here surfaces immediately rather than degrading every historical row to <code dir="auto">'unknown'</code> in the rollup output</li>
+<li><code dir="auto">ssm:GetParameter</code>, <code dir="auto">ssm:PutParameter</code> on <code dir="auto">/idp/&#x3C;stack-name>/data-mart-rollup/*</code> — the state machine’s two-phase migration marker (<code dir="auto">state=in_progress</code> after purge, <code dir="auto">state=completed</code> on success). Read by <code dir="auto">_check_marker_state</code>, written by <code dir="auto">_write_marker</code> — both are task-mode invocations of this Lambda</li>
+<li><code dir="auto">s3:DeleteObject</code> on the four rollup prefixes (<code dir="auto">metering_hourly/*</code>, <code dir="auto">metering_daily/*</code>, <code dir="auto">metering_docs_hourly/*</code>, <code dir="auto">metering_docs_daily/*</code>) under the reporting bucket — used by the migration state machine’s <code dir="auto">InitialPurge</code> task, scoped to date= partitions inside the migration window so older aggregates outside the window are preserved</li>
+<li><code dir="auto">cloudwatch:GetMetricData</code>, <code dir="auto">cloudwatch:ListMetrics</code> (<code dir="auto">*</code> — API doesn’t support resource-level scoping) for reading <code dir="auto">AWS/Lambda/Duration</code>, <code dir="auto">AWS/Lambda/Invocations</code>, <code dir="auto">IDPControlPlane/AthenaBytesScanned</code>, <code dir="auto">IDPControlPlane/BedrockInputTokens</code>, <code dir="auto">IDPControlPlane/BedrockOutputTokens</code></li>
+<li><code dir="auto">tag:GetResources</code> (<code dir="auto">*</code> — account-scoped API) for tag-based Lambda discovery</li>
+<li><code dir="auto">cloudformation:ListStackResources</code> (scoped to this stack + its nested stacks) to walk the stack tree</li>
+<li><code dir="auto">lambda:GetFunctionConfiguration</code> (scoped to functions in this account/region) for accurate per-Lambda memory + architecture in the cost estimate</li>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:PutObject</code>, <code dir="auto">s3:ListBucket</code>, <code dir="auto">s3:GetBucketLocation</code> (reporting bucket only; <code dir="auto">GetBucketLocation</code> is also needed by Athena’s <code dir="auto">StartQueryExecution</code> on the OutputLocation bucket). <code dir="auto">HeadObject</code> calls are authorized by <code dir="auto">s3:GetObject</code> — there is no <code dir="auto">s3:HeadObject</code> IAM action</li>
+<li><code dir="auto">s3:AbortMultipartUpload</code>, <code dir="auto">s3:ListBucketMultipartUploads</code>, <code dir="auto">s3:ListMultipartUploadParts</code> (reporting bucket only) — part of AWS’s reference policy for Athena <code dir="auto">INSERT INTO</code>, which switches to a multipart upload once a result part exceeds its buffer</li>
+<li><code dir="auto">sqs:SendMessage</code> on its DLQ (async-failure destination)</li>
+<li>KMS on the stack CMK</li>
+</ul>
+</li>
+<li>
+<p><strong>Data-Mart Migration State-Machine Role</strong> (<code dir="auto">DataMartMigrationStateMachine</code>, invoked by the CFN custom-resource dispatcher on every <code dir="auto">MigrationVersion</code> change):</p>
+<ul>
+<li><code dir="auto">lambda:InvokeFunction</code> on <code dir="auto">DataMartRollupFunction</code> only — the state machine drives every migration step by invoking that Lambda in task modes (<code dir="auto">check_marker_state</code>, <code dir="auto">check_lake_state</code>, <code dir="auto">purge_rollup_prefixes</code>, <code dir="auto">write_marker</code>, <code dir="auto">plan_migration_chunks</code>, <code dir="auto">backfill</code>, <code dir="auto">backfill_daily_range</code>, <code dir="auto">check_hours_failed</code>)</li>
+<li>CloudWatch Logs delivery — <code dir="auto">logs:CreateLogDelivery</code>, <code dir="auto">logs:GetLogDelivery</code>, <code dir="auto">logs:UpdateLogDelivery</code>, <code dir="auto">logs:DeleteLogDelivery</code>, <code dir="auto">logs:ListLogDeliveries</code>, <code dir="auto">logs:PutResourcePolicy</code>, <code dir="auto">logs:DescribeResourcePolicies</code>, <code dir="auto">logs:DescribeLogGroups</code> (<code dir="auto">*</code> resource — the SFN service creates the delivery, not the state machine itself)</li>
+<li>X-Ray write permissions — <code dir="auto">xray:PutTraceSegments</code>, <code dir="auto">xray:PutTelemetryRecords</code>, <code dir="auto">xray:GetSamplingRules</code>, <code dir="auto">xray:GetSamplingTargets</code>. Granted <strong>unconditionally</strong> in the template — <code dir="auto">EnableXRayTracing</code> gates whether the function’s <code dir="auto">Tracing</code> mode is <code dir="auto">Active</code> or <code dir="auto">PassThrough</code>, not the permissions themselves</li>
+</ul>
+</li>
+<li>
+<p><strong>Data-Mart Migration Dispatcher Role</strong> (<code dir="auto">DataMartMigrationDispatcherFunction</code>, CFN custom-resource entry point):</p>
+<ul>
+<li><code dir="auto">states:StartExecution</code> on <code dir="auto">DataMartMigrationStateMachine</code> only — starts the state machine asynchronously and returns SUCCESS to CFN immediately; the migration continues after the CustomResource completes</li>
+<li><code dir="auto">ssm:DeleteParameter</code> on <code dir="auto">/idp/&#x3C;stack-name>/data-mart-rollup/*</code> — deletes the SSM migration marker on <code dir="auto">ForceFresh=true</code> (so the state machine’s <code dir="auto">CheckMarker</code> sees <code dir="auto">ParameterNotFound</code> and takes the full-flow branch), and cleans it up on stack Delete so a same-name recreate starts clean. Read access is deliberately NOT granted here — the marker is read from the rollup Lambda’s own role, not this one</li>
+<li>No KMS grant on the dispatcher role. The dispatcher does not encrypt or decrypt any customer data — its only writes are <code dir="auto">states:StartExecution</code> (no customer-data payload beyond <code dir="auto">days</code> / <code dir="auto">chunk_hours</code> / <code dir="auto">version</code> / <code dir="auto">anchor</code>) and <code dir="auto">ssm:DeleteParameter</code>; the SSM parameter’s own encryption is handled by SSM’s service-owned key, not the stack CMK</li>
+</ul>
+</li>
+<li>
+<p><strong>Metering Hour Migration Lambda Role</strong> (<code dir="auto">MeteringHourMigrationFunction</code>, one-shot CFN custom resource):</p>
+<ul>
+<li><code dir="auto">s3:ListBucket</code> (reporting bucket) for listing pre-migration parquet files</li>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:PutObject</code>, <code dir="auto">s3:DeleteObject</code> (scoped to <code dir="auto">metering/*</code> under the reporting bucket) for the copy-then-delete relocation</li>
+<li>KMS on the stack CMK</li>
+<li>See <a href="../reporting-sql-layer/">Reporting SQL Layer</a> §2.3 for the migration’s purpose (backwards-compat upgrade to the <code dir="auto">hour</code>-partitioned metering layout)</li>
+</ul>
+</li>
+<li>
+<p><strong>Control-Plane Lambda cost-telemetry (in-band, all control-plane Lambdas that hit Athena or Bedrock):</strong></p>
+<ul>
+<li><code dir="auto">cloudwatch:PutMetricData</code> scoped to namespace <code dir="auto">IDPControlPlane</code> (already granted via the existing app-metrics grant)</li>
+<li>The <code dir="auto">idp_common.metrics.emit_control_plane_cost_metric</code> helper emits <code dir="auto">IDPControlPlane/{AthenaBytesScanned,BedrockInputTokens,BedrockOutputTokens}</code> with dims <code dir="auto">[Component, FunctionName, Model?]</code> for the rollup Lambda to aggregate.</li>
+</ul>
+</li>
+<li>
+<p><strong>Glue Crawler Service Role</strong>:</p>
+<ul>
+<li><code dir="auto">glue:*</code> (managed <code dir="auto">AWSGlueServiceRole</code>) for crawling reporting data</li>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:ListBucket</code></li>
+<li><code dir="auto">kms:Decrypt</code>, <code dir="auto">kms:DescribeKey</code></li>
+</ul>
+</li>
+</ul>
+<div class="sl-heading-wrapper level-h4"><h4 id="build--optional-feature-roles">Build &#x26; Optional Feature Roles</h4><a class="sl-anchor-link" href="#build--optional-feature-roles"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Build &#x26; Optional Feature Roles”</span></a></div>
+<ul>
+<li>
+<p><strong>CodeBuild Roles</strong> (UI build and pattern container-image build):</p>
+<ul>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:PutObject</code>, <code dir="auto">s3:ListBucket</code> (artifacts)</li>
+<li><code dir="auto">ecr:*</code> (push/scan container images), <code dir="auto">cloudfront:CreateInvalidation</code> (UI)</li>
+<li><code dir="auto">logs:CreateLogGroup</code>, <code dir="auto">logs:CreateLogStream</code>, <code dir="auto">logs:PutLogEvents</code></li>
+<li><code dir="auto">ec2:*</code> networking actions (when deploying into a VPC)</li>
+</ul>
+</li>
+<li>
+<p><strong>Malware Scan Role</strong> (optional malware scanning, <code dir="auto">MalwareScanning: CREATE_PLAN</code>) — assumed by <code dir="auto">malware-protection-plan.guardduty.&#x3C;url-suffix></code>, never by a Lambda:</p>
+<ul>
+<li><code dir="auto">s3:GetObject</code>, <code dir="auto">s3:GetObjectVersion</code> on the input bucket’s objects — reading what it scans.</li>
+<li><code dir="auto">s3:PutObjectTagging</code>, <code dir="auto">GetObjectTagging</code>, <code dir="auto">PutObjectVersionTagging</code>, <code dir="auto">GetObjectVersionTagging</code> on the same — writing the <code dir="auto">GuardDutyMalwareScanStatus</code> verdict onto the object.</li>
+<li><code dir="auto">s3:PutObject</code> on the single key <code dir="auto">malware-protection-resource-validation-object</code>, GuardDuty’s write probe — <strong>not</strong> the bucket, so a scanner cannot modify the documents it scans.</li>
+<li><code dir="auto">s3:ListBucket</code>, <code dir="auto">s3:GetBucketNotification</code>, <code dir="auto">s3:PutBucketNotification</code> on the bucket itself — ownership check, and asserting that EventBridge notifications are on.</li>
+<li><code dir="auto">events:PutRule</code>/<code dir="auto">DeleteRule</code>/<code dir="auto">PutTargets</code>/<code dir="auto">RemoveTargets</code>/<code dir="auto">DescribeRule</code>/<code dir="auto">ListTargetsByRule</code>, scoped to <code dir="auto">rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*</code> and conditioned on <code dir="auto">events:ManagedBy</code> — GuardDuty manages its own object-notification rule.</li>
+<li><code dir="auto">kms:Decrypt</code>, <code dir="auto">kms:GenerateDataKey</code> on the stack’s customer-managed key, conditioned on <code dir="auto">kms:ViaService: s3.&#x3C;region>.&#x3C;url-suffix></code>. ⚠️ <strong>Required, not optional:</strong> the input bucket is SSE-KMS, so without this every scan returns <code dir="auto">ACCESS_DENIED</code> and — failing closed — every document is refused.</li>
+<li>No wildcard resource in any statement, asserted by <code dir="auto">scripts/tests/test_malware_scanning_template.py</code>.</li>
+<li>Accepts <code dir="auto">PermissionsBoundaryArn</code> and attaches it when set.</li>
+</ul>
+</li>
+<li>
+<p><strong>AgentCore Gateway Manager Role</strong> (optional MCP integration, <code dir="auto">EnableMCP: true</code>) — the custom-resource function that creates, updates and deletes the gateway:</p>
+<ul>
+<li><code dir="auto">bedrock-agentcore:*</code> — gateway and gateway target lifecycle (list, get, create, update, delete). <code dir="auto">Resource: "*"</code>: the gateway id is assigned by the service.</li>
+<li><code dir="auto">logs:DeleteDeliverySource</code>, <code dir="auto">logs:DeleteDeliveryDestination</code> on <code dir="auto">Resource: "*"</code>, and <code dir="auto">logs:DeleteLogGroup</code> on <code dir="auto">/aws/vendedlogs/bedrock-agentcore/gateway/APPLICATION_LOGS/*</code> only — on delete, removes the log group and delivery resources that gateways created by earlier versions have. Nothing in the function creates them.</li>
+<li><code dir="auto">iam:GetRole</code>, <code dir="auto">iam:PassRole</code> on the gateway execution role only — no IAM write.</li>
+<li><code dir="auto">kms:Encrypt</code>, <code dir="auto">Decrypt</code>, <code dir="auto">ReEncrypt*</code>, <code dir="auto">GenerateDataKey*</code>, <code dir="auto">DescribeKey</code> on the stack’s customer-managed key.</li>
+</ul>
+</li>
+<li>
+<p><strong>AgentCore Gateway Execution Role</strong> (optional MCP integration, <code dir="auto">EnableMCP: true</code>):</p>
+<ul>
+<li><code dir="auto">lambda:InvokeFunction</code> (MCP handler)</li>
+<li><code dir="auto">bedrock-agentcore:InvokeAgentRuntime</code></li>
+<li><code dir="auto">logs:*</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Seller Entitlement Service — Activation Role</strong> (<code dir="auto">feature-platform/seller-entitlement-service/</code>, deployed <strong>standalone into an AWS Marketplace seller account</strong>, <em>not</em> part of the main stack):</p>
+<ul>
+<li><code dir="auto">aws-marketplace:SearchAgreements</code>, <code dir="auto">DescribeAgreement</code>, <code dir="auto">GetAgreementTerms</code>, <code dir="auto">GetEntitlements</code>, <code dir="auto">ResolveCustomer</code> — seller-side entitlement reads. <code dir="auto">Resource: "*"</code>: these actions do <strong>not</strong> support resource-level permissions. Read-only by design (no <code dir="auto">BatchMeterUsage</code>/catalog writes), asserted by a static test.</li>
+<li><code dir="auto">kms:Sign</code> on the stack’s own asymmetric <code dir="auto">TokenSigningKey</code> only — <strong>not</strong> <code dir="auto">GetPublicKey</code>, <code dir="auto">PutKeyPolicy</code>, or <code dir="auto">ScheduleKeyDeletion</code>, so a compromised function cannot re-point trust.</li>
+<li><code dir="auto">dynamodb:UpdateItem</code> on the stack’s <code dir="auto">ActivationsTable</code> only — write-only, so the function cannot read or delete the seller’s customer roster.</li>
+<li><code dir="auto">logs:CreateLogStream</code>, <code dir="auto">logs:PutLogEvents</code> (via <code dir="auto">AWSLambdaBasicExecutionRole</code>).</li>
+<li>Accepts <code dir="auto">PermissionsBoundaryArn</code> and attaches it when set.</li>
+<li>Deploying operator additionally needs <code dir="auto">marketplace-catalog:ListEntities</code> for the ownership preflight, plus the usual CloudFormation/IAM/KMS/DynamoDB create permissions.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>Container-image Lambdas:</strong> The pattern processing functions (OCR, classification, extraction, assessment, summarization, BDA, evaluation, rule validation, etc.) are deployed as <strong>container images</strong> from Amazon ECR. Each function’s execution role therefore also includes <code dir="auto">ecr:GetDownloadUrlForLayer</code>, <code dir="auto">ecr:BatchGetImage</code>, and <code dir="auto">ecr:BatchCheckLayerAvailability</code> (via a shared managed policy).</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="service-quotas-considerations">Service Quotas Considerations</h2><a class="sl-anchor-link" href="#service-quotas-considerations"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Service Quotas Considerations”</span></a></div>
+<p>For high-volume document processing, consider requesting quota increases for:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Service</th><th>Quota to Increase</th><th>Typical Default</th></tr></thead><tbody><tr><td>Amazon Bedrock</td><td>On-demand InvokeModel tokens per minute</td><td>Varies by model</td></tr><tr><td>Amazon Bedrock</td><td>On-demand InvokeModel requests per minute</td><td>Varies by model</td></tr><tr><td>Amazon Bedrock</td><td>ApplyGuardrail requests per minute</td><td>Varies by region</td></tr><tr><td>Amazon Textract</td><td>DetectDocumentText / AnalyzeDocument transactions per second</td><td>10-25 TPS</td></tr><tr><td>AWS Lambda</td><td>Concurrent executions</td><td>1,000 executions</td></tr><tr><td>AWS Step Functions</td><td>State transitions per second</td><td>2,000 transitions</td></tr><tr><td>Amazon SQS</td><td>API requests per queue</td><td>Very high by default</td></tr><tr><td>Amazon CloudWatch</td><td>PutMetricData API requests per second</td><td>150 requests/second</td></tr><tr><td>Amazon Athena</td><td>Active DML/DDL queries</td><td>20-25 queries</td></tr><tr><td>Bedrock Data Automation</td><td>Concurrent jobs (BDA mode)</td><td>Varies by region</td></tr></tbody></table>
+<div class="sl-heading-wrapper level-h2"><h2 id="security-recommendations">Security Recommendations</h2><a class="sl-anchor-link" href="#security-recommendations"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Security Recommendations”</span></a></div>
+<p>When deploying this solution, consider the following security best practices:</p>
+<ol>
+<li>
+<p><strong>Encryption</strong>:</p>
+<ul>
+<li>Enable SSE-KMS encryption for all S3 buckets</li>
+<li>Use customer-managed CMKs for sensitive data</li>
+<li>Enable encryption for DynamoDB tables</li>
+</ul>
+</li>
+<li>
+<p><strong>Network Security</strong>:</p>
+<ul>
+<li>Use CloudFront security features (geo-restrictions, HTTPS, etc.) or a private API Gateway endpoint for <a href="../apigateway-hosting/">VPC-based hosting</a></li>
+<li>Configure AWS WAF to protect web interfaces</li>
+</ul>
+</li>
+<li>
+<p><strong>Authentication</strong>:</p>
+<ul>
+<li>Enforce MFA for admin users in Cognito</li>
+<li>Set strong password policies</li>
+<li>Limit admin access to necessary personnel</li>
+</ul>
+</li>
+<li>
+<p><strong>IAM Best Practices</strong>:</p>
+<ul>
+<li>Use least privilege principles for all roles</li>
+<li>Regularly audit and rotate credentials</li>
+<li>Enable CloudTrail logging for all API actions</li>
+</ul>
+</li>
+<li>
+<p><strong>Content Safety &#x26; Control</strong>:</p>
+<ul>
+<li>Configure Bedrock Guardrails with appropriate topic filters</li>
+<li>Set up content blocking for sensitive information</li>
+<li>Implement trace logging for guardrail activations</li>
+<li>Use different guardrail configurations for different environments (dev/test/prod)</li>
+</ul>
+</li>
+<li>
+<p><strong>Data Protection</strong>:</p>
+<ul>
+<li>Implement lifecycle policies for S3 objects</li>
+<li>Configure appropriate retention policies for logs and data</li>
+<li>Consider data residency requirements when selecting regions</li>
+</ul>
+</li>
+</ol></div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"><a href="/accelerated-intelligent-document-processing-on-aws/well-architected/" rel="prev" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-jgq3vlii">Previous<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Well-Architected Review</span></span></a><a href="/accelerated-intelligent-document-processing-on-aws/rbac/" rel="next" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-jgq3vlii">Next<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Role-Based Access Control (RBAC)</span></span></a></div></footer></div></div></main></div></div></div></div></body></html>

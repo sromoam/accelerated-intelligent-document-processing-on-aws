@@ -1,0 +1,772 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Key Information Extraction | GenAI IDP</title><link rel="canonical" href="https://aws-solutions-library-samples.github.io/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/extraction/"/><link rel="sitemap" href="/accelerated-intelligent-document-processing-on-aws/sitemap-index.xml"/><link rel="shortcut icon" href="/accelerated-intelligent-document-processing-on-aws/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.4.5"/><meta name="generator" content="Starlight v0.41.4"/><meta property="og:title" content="Key Information Extraction"/><meta property="og:type" content="article"/><meta property="og:url" content="https://aws-solutions-library-samples.github.io/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/extraction/"/><meta property="og:locale" content="en"/><meta property="og:description" content="GenAI Intelligent Document Processing — scalable, serverless AWS solution for automated document processing"/><meta property="og:site_name" content="GenAI IDP"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="GenAI Intelligent Document Processing — scalable, serverless AWS solution for automated document processing"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/common.Dt04y4fs.css"><style>@layer starlight.components{.card:where(.astro-zts4jgjd){--sl-card-border:var(--sl-color-purple);--sl-card-bg:var(--sl-color-purple-low);border:1px solid var(--sl-color-gray-5);background-color:var(--sl-color-black);flex-direction:column;gap:clamp(.5rem,.125rem + 1vw,1rem);padding:clamp(1rem,.125rem + 3vw,2.5rem)}.card:where(.astro-zts4jgjd):nth-child(4n+1){--sl-card-border:var(--sl-color-orange);--sl-card-bg:var(--sl-color-orange-low)}.card:where(.astro-zts4jgjd):nth-child(4n+3){--sl-card-border:var(--sl-color-green);--sl-card-bg:var(--sl-color-green-low)}.card:where(.astro-zts4jgjd):nth-child(4n+4){--sl-card-border:var(--sl-color-red);--sl-card-bg:var(--sl-color-red-low)}.card:where(.astro-zts4jgjd):nth-child(4n+5){--sl-card-border:var(--sl-color-blue);--sl-card-bg:var(--sl-color-blue-low)}.title:where(.astro-zts4jgjd){font-weight:600;font-size:var(--sl-text-h4);color:var(--sl-color-white);line-height:var(--sl-line-height-headings);align-items:center;gap:1rem}.card:where(.astro-zts4jgjd) .icon:where(.astro-zts4jgjd){border:1px solid var(--sl-card-border);background-color:var(--sl-card-bg);border-radius:.25rem;flex-shrink:0;padding:.2em}.card:where(.astro-zts4jgjd) .body:where(.astro-zts4jgjd){font-size:clamp(var(--sl-text-sm), calc(.5rem + 1vw), var(--sl-text-body));margin:0}.card-grid:where(.astro-lmor3ela){grid-template-columns:100%;gap:1rem;display:grid}.card-grid:where(.astro-lmor3ela)>*{margin-top:0!important}@media (width>=50rem){.card-grid:where(.astro-lmor3ela){grid-template-columns:1fr 1fr;gap:1.5rem}.stagger:where(.astro-lmor3ela){--stagger-height:5rem;padding-bottom:var(--stagger-height)}.stagger:where(.astro-lmor3ela)>:nth-child(2n){transform:translateY(var(--stagger-height))}}.sl-link-card:where(.astro-vodiqeol){border:1px solid var(--sl-color-gray-5);box-shadow:var(--sl-shadow-sm);border-radius:.5rem;grid-template-columns:1fr auto;gap:.5rem;padding:1rem;display:grid;position:relative}a:where(.astro-vodiqeol){line-height:var(--sl-line-height-headings);text-decoration:none}a:where(.astro-vodiqeol):before{content:"";position:absolute;inset:0}.stack:where(.astro-vodiqeol){flex-direction:column;gap:.5rem}.title:where(.astro-vodiqeol){color:var(--sl-color-white);font-weight:600;font-size:var(--sl-text-lg)}.description:where(.astro-vodiqeol){color:var(--sl-color-gray-3);line-height:1.5}.icon:where(.astro-vodiqeol){color:var(--sl-color-gray-3)}.sl-link-card:where(.astro-vodiqeol):hover{background:var(--sl-color-gray-7,var(--sl-color-gray-6));border-color:var(--sl-color-gray-2)}.sl-link-card:where(.astro-vodiqeol):hover .icon:where(.astro-vodiqeol){color:var(--sl-color-white)}}
+@layer starlight.components{svg:where(.astro-n5k4ipy7){color:var(--sl-icon-color);font-size:var(--sl-icon-size,1em);width:1em;height:1em}}
+</style><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/page.B1sbS0l1.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">Skip to content</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><a href="/accelerated-intelligent-document-processing-on-aws/" class="site-title sl-flex astro-clw6ags5"><img class="light:sl-hidden print:hidden astro-clw6ags5" alt src="/accelerated-intelligent-document-processing-on-aws/_astro/logo-dark.CDSNlVMV.svg" width="120" height="32"><img class="dark:sl-hidden print:block astro-clw6ags5" alt src="/accelerated-intelligent-document-processing-on-aws/_astro/logo-light.CszXvHpe.svg" width="120" height="32"><span class="astro-clw6ags5" translate="no">GenAI IDP</span></a></div><div class="sl-flex print:hidden astro-nczgtkxc"><site-search class="astro-nczgtkxc astro-r5ar4xm7" data-translations="{&quot;placeholder&quot;:&quot;Search&quot;}"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-r5ar4xm7"><svg aria-hidden="true" class="astro-r5ar4xm7 astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-r5ar4xm7" aria-hidden="true">Search</span><kbd class="sl-hidden md:sl-flex astro-r5ar4xm7" style="display: none;"><kbd class="astro-r5ar4xm7">Ctrl</kbd><kbd class="astro-r5ar4xm7">K</kbd></kbd></button><dialog style="padding:0" aria-label="Search" class="astro-r5ar4xm7"><div class="dialog-frame sl-flex astro-r5ar4xm7"><button data-close-modal class="sl-flex md:sl-hidden astro-r5ar4xm7">Cancel</button><div class="search-container astro-r5ar4xm7"><div id="starlight__search" class="astro-r5ar4xm7"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/Search.astro_astro_type_script_index_0_lang.DoiGT_Lk.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">GitHub</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="Main"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="01pw2uh" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Overview</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/" class="astro-ojxuodky"><span class="astro-ojxuodky">Welcome</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/references/" class="astro-ojxuodky"><span class="astro-ojxuodky">Blogs, Customer Stories &amp; Research</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/workshops/" class="astro-ojxuodky"><span class="astro-ojxuodky">Hands-on Workshops</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Get Started</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/get-started/" class="astro-ojxuodky"><span class="astro-ojxuodky">Get Started</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">IDP Fundamentals</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/" class="astro-ojxuodky"><span class="astro-ojxuodky">How Document Processing Works</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/digitization/" class="astro-ojxuodky"><span class="astro-ojxuodky">Digitization (OCR)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/splitting-and-classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Splitting and Section Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/extraction/" aria-current="page" class="astro-ojxuodky"><span class="astro-ojxuodky">Key Information Extraction</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/confidence-assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Assessment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/rule-validation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/benchmark-datasets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Datasets</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Benchmarks by Problem Set</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/" class="astro-ojxuodky"><span class="astro-ojxuodky">How We Benchmark Configurations</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/digitization/" class="astro-ojxuodky"><span class="astro-ojxuodky">Digitization (OCR)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/splitting-and-classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Splitting and Section Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Key Information Extraction</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/confidence-assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Assessment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/token-use/" class="astro-ojxuodky"><span class="astro-ojxuodky">Token Use and Cost</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/marginal-cost-of-error/" class="astro-ojxuodky"><span class="astro-ojxuodky">Marginal Cost of Error</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/datasets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Datasets</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Core</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/architecture/" class="astro-ojxuodky"><span class="astro-ojxuodky">Architecture</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/quick-start/" class="astro-ojxuodky"><span class="astro-ojxuodky">Quick Start</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-deployment-ai-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">AI-Guided Deployment Walkthrough</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/terraform/" class="astro-ojxuodky"><span class="astro-ojxuodky">Terraform Deployment (Experimental)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/terraform-migration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Migrating from genai-idp-terraform</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/headless-deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Headless Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/apigateway-hosting/" class="astro-ojxuodky"><span class="astro-ojxuodky">API Gateway Hosting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/deployment-private-network/" class="astro-ojxuodky"><span class="astro-ojxuodky">Private Network Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/vpc-secured-mode/" class="astro-ojxuodky"><span class="astro-ojxuodky">VPC-Secured Mode</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration-profiles/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Profiles</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/multi-tenancy/" class="astro-ojxuodky"><span class="astro-ojxuodky">Multi-Tenant Isolation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration-versions/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Versions (renamed)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-configuration-best-practices/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Best Practices</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/json-schema-migration/" class="astro-ojxuodky"><span class="astro-ojxuodky">JSON Schema Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/web-ui/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web UI</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-appsync-to-rest/" class="astro-ojxuodky"><span class="astro-ojxuodky">UI ⇄ Backend Transport (AppSync → REST)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-cli/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP CLI</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-sdk/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP SDK</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idpcommon-api-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">idp_common API Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/demo-videos/" class="astro-ojxuodky"><span class="astro-ojxuodky">Demo Videos</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/troubleshooting/" class="astro-ojxuodky"><span class="astro-ojxuodky">Troubleshooting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/error-analyzer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Error Analyzer</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Processing Modes</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/pattern-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">BDA Mode Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/pattern-2/" class="astro-ojxuodky"><span class="astro-ojxuodky">Pipeline Mode Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/discovery/" class="astro-ojxuodky"><span class="astro-ojxuodky">Discovery</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/policy-discovery/" class="astro-ojxuodky"><span class="astro-ojxuodky">Policy Discovery</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Document Processing Features</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction-and-confidence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction &amp; Confidence</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Assessment (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/assessment-bounding-boxes/" class="astro-ojxuodky"><span class="astro-ojxuodky">Assessment Bounding Boxes (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/few-shot-examples/" class="astro-ojxuodky"><span class="astro-ojxuodky">Few-Shot Examples</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/human-review/" class="astro-ojxuodky"><span class="astro-ojxuodky">Human-in-the-Loop Review</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/review-queues/" class="astro-ojxuodky"><span class="astro-ojxuodky">Review Queues</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rule-validation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/missing-page-handling/" class="astro-ojxuodky"><span class="astro-ojxuodky">Missing Page Handling</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/ocr-image-sizing-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">OCR Image Sizing Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/languages/" class="astro-ojxuodky"><span class="astro-ojxuodky">Languages</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Evaluation &amp; Testing</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/testing/" class="astro-ojxuodky"><span class="astro-ojxuodky">Testing</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/evaluation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Evaluation Framework</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/evaluation-enhanced-reporting/" class="astro-ojxuodky"><span class="astro-ojxuodky">Enhanced Reporting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/test-studio/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Studio</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/creating-custom-test-sets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Creating Custom Test Sets</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mlflow-integration/" class="astro-ojxuodky"><span class="astro-ojxuodky">MLflow Experiment Tracking</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Release Validation</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation Records</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0611/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.11</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0612/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.12</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.13</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0614/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.14</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v066/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.6</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v068/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.8</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v069/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.9</span></a></li></ul></details></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Benchmarks &amp; Performance</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmarking Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/config-guidance/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Guidance</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Release Audit Trail</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit Trail</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v060/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.0 vs v0.5.16</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0611/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.11 vs v0.6.10</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0612/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.12 vs v0.6.11</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.13 vs v0.6.12</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0614/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.14 vs v0.6.13</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v065/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.5 vs v0.6.4</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v065-fix-verification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Fix Verification: v0.6.5 correctness fixes</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v066/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.6 vs v0.6.5</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v067/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.7</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v068/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.8</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v069/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.9</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Studies</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/advanced-extraction-refinements/" class="astro-ojxuodky"><span class="astro-ojxuodky">Advanced Extraction — Seven Candidate Refinements, Measured</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/classification-confidence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Classification Confidence — Does the Score Carry Signal?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/confidence-calibration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Calibration — Can the Score Route Human Review?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/feature-multi-instance/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Study: multi-instance sections (#715 / #753)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/greedy-decoding-tool-use/" class="astro-ojxuodky"><span class="astro-ojxuodky">Greedy Decoding and Invalid Tool-Use Sequences</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/prompt-cache-padding-proposal/" class="astro-ojxuodky"><span class="astro-ojxuodky">Should we pad prompts to clear the cache minimum?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/prompt-caching/" class="astro-ojxuodky"><span class="astro-ojxuodky">Prompt Caching — Measured Behaviour</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Studies</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/schema-restatement-tokens/" class="astro-ojxuodky"><span class="astro-ojxuodky">Schema Restatement — What Turning It Off Actually Costs</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction-scaling-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction Scaling Guide</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">AI Agents &amp; Analytics</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="12"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/agent-analysis/" class="astro-ojxuodky"><span class="astro-ojxuodky">Agent Analysis</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/agent-companion-chat/" class="astro-ojxuodky"><span class="astro-ojxuodky">Agent Companion Chat</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/code-intelligence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Code Intelligence</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/knowledge-base/" class="astro-ojxuodky"><span class="astro-ojxuodky">Knowledge Base</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/custom-mcp-agent/" class="astro-ojxuodky"><span class="astro-ojxuodky">Custom MCP Agent</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mcp-connector/" class="astro-ojxuodky"><span class="astro-ojxuodky">MCP Connector</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mcp-server/" class="astro-ojxuodky"><span class="astro-ojxuodky">MCP Server</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Integration &amp; Extensions</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="13"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/feature-platform/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Platform</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/feature-platform-developer-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Platform Developer Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/marketplace-subscription-next-steps/" class="astro-ojxuodky"><span class="astro-ojxuodky">After Subscribing on AWS Marketplace</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Extensions</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="14"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/auto-optimizer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Auto Optimizer (Beta)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/idp-monitor/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP Monitor</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/pii-anonymizer/" class="astro-ojxuodky"><span class="astro-ojxuodky">PII Anonymization</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/confbench-testset/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Set - ConfBench</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/idp-data-generator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Set Generator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/sample-document-status/" class="astro-ojxuodky"><span class="astro-ojxuodky">Sample: Document Status (feature add-on)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/sample-health-insurance-review/" class="astro-ojxuodky"><span class="astro-ojxuodky">Sample: Health Insurance Review</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/document-versions/" class="astro-ojxuodky"><span class="astro-ojxuodky">Document Versions</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/post-processing-lambda-hook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Post-Processing Lambda Hook</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/lambda-hook-inference/" class="astro-ojxuodky"><span class="astro-ojxuodky">Lambda Hook Inference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/nova-finetuning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Nova Fine-Tuning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/custom-model-finetuning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Custom Model Fine-Tuning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/service-tiers/" class="astro-ojxuodky"><span class="astro-ojxuodky">Service Tiers</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Monitoring &amp; Operations</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="15"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/monitoring/" class="astro-ojxuodky"><span class="astro-ojxuodky">Monitoring</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/reporting-database/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reporting Database</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/reporting-sql-layer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reporting SQL Layer</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/capacity-planning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Capacity Planning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/cost-calculator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Cost Calculator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/circuit-breaker/" class="astro-ojxuodky"><span class="astro-ojxuodky">Circuit Breaker</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/cross-account-bedrock/" class="astro-ojxuodky"><span class="astro-ojxuodky">Cross-Account Bedrock</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/version-update-indicator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Version Update Indicator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-runbook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Runbook</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Planning &amp; Security</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="16"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/threat-model/" class="astro-ojxuodky"><span class="astro-ojxuodky">Threat Model</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/malware-scanning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Malware Scanning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/well-architected/" class="astro-ojxuodky"><span class="astro-ojxuodky">Well-Architected Review</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/aws-services-and-roles/" class="astro-ojxuodky"><span class="astro-ojxuodky">AWS Services &amp; IAM Roles</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rbac/" class="astro-ojxuodky"><span class="astro-ojxuodky">Role-Based Access Control (RBAC)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/external-idp/" class="astro-ojxuodky"><span class="astro-ojxuodky">External Identity Provider</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">GovCloud</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="17"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-architecture/" class="astro-ojxuodky"><span class="astro-ojxuodky">Architecture</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-operations/" class="astro-ojxuodky"><span class="astro-ojxuodky">Operations</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-batch-api/" class="astro-ojxuodky"><span class="astro-ojxuodky">Batch API</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/eu-region-model-support/" class="astro-ojxuodky"><span class="astro-ojxuodky">EU Region Model Support</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/canada-region-model-support/" class="astro-ojxuodky"><span class="astro-ojxuodky">Canada (Central) Model Support</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/openai-models/" class="astro-ojxuodky"><span class="astro-ojxuodky">OpenAI Models</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/grok-models/" class="astro-ojxuodky"><span class="astro-ojxuodky">xAI Grok Models</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Development Setup</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="18"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-linux/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: Linux</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-macos/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: macOS</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-wsl/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: WSL</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-windows/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: Windows</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/using-notebooks-with-idp-common/" class="astro-ojxuodky"><span class="astro-ojxuodky">Using Notebooks</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/dependency-mirroring/" class="astro-ojxuodky"><span class="astro-ojxuodky">Dependency Mirroring</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/dependency-confusion/" class="astro-ojxuodky"><span class="astro-ojxuodky">Installing First-Party Packages</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Migration</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="19"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v0612-to-v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.6.12 → v0.6.13 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v05-to-v06/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.5 → v0.6 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v04-to-v05/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.4 → v0.5 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-granular-retirement/" class="astro-ojxuodky"><span class="astro-ojxuodky">Granular Assessment Retirement</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">New &amp; Uncategorized</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="20"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/data-mart-migration-runbook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Data Mart Migration Runbook</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rule-validation-z3/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation Z3</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">GitHub</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#what-extraction-does-turn-each-section-into-a-database-record" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">What extraction does: turn each section into a database record</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-the-accelerator-extracts-the-fields-of-a-section" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How the accelerator extracts the fields of a section</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-the-extraction-model-reads" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What the extraction model reads</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#single-pass-extraction-simple-one-request-writes-the-whole-record" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Single-pass extraction (Simple): one request writes the whole record</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#agentic-extraction-advanced-an-agent-works-through-the-section-in-shards" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Agentic extraction (Advanced): an agent works through the section in shards</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-the-accelerator-checks-after-either-mode" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What the accelerator checks after either mode</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#how-the-two-modes-compare" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">How the two modes compare</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-configuration-to-start-with" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The configuration to start with</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-many-tokens-extraction-uses-and-what-drives-the-count" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How many tokens extraction uses, and what drives the count</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-to-measure-extraction-on-your-own-documents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How to measure extraction on your own documents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#short-lists-and-other-extraction-mistakes-which-configuration-makes-which" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Short lists and other extraction mistakes: which configuration makes which</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#benchmark-results-completeness-accuracy-and-tokens-by-extraction-mode" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Benchmark results: completeness, accuracy and tokens by extraction mode</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#long-lists-synthetic-bank-statements" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Long lists: synthetic bank statements</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#invoices-realkie-fcc-verified" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Invoices: RealKIE-FCC-Verified</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#improving-accuracy-once-your-pipeline-is-running" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Improving accuracy once your pipeline is running</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#run-the-benchmarks-yourself" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Run the benchmarks yourself</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#where-to-configure-extraction-in-the-accelerator" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Where to configure extraction in the accelerator</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#what-extraction-does-turn-each-section-into-a-database-record" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">What extraction does: turn each section into a database record</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-the-accelerator-extracts-the-fields-of-a-section" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How the accelerator extracts the fields of a section</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-the-extraction-model-reads" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What the extraction model reads</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#single-pass-extraction-simple-one-request-writes-the-whole-record" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Single-pass extraction (Simple): one request writes the whole record</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#agentic-extraction-advanced-an-agent-works-through-the-section-in-shards" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Agentic extraction (Advanced): an agent works through the section in shards</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#what-the-accelerator-checks-after-either-mode" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">What the accelerator checks after either mode</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#how-the-two-modes-compare" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">How the two modes compare</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-configuration-to-start-with" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The configuration to start with</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-many-tokens-extraction-uses-and-what-drives-the-count" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How many tokens extraction uses, and what drives the count</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#how-to-measure-extraction-on-your-own-documents" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">How to measure extraction on your own documents</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#short-lists-and-other-extraction-mistakes-which-configuration-makes-which" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Short lists and other extraction mistakes: which configuration makes which</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#benchmark-results-completeness-accuracy-and-tokens-by-extraction-mode" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Benchmark results: completeness, accuracy and tokens by extraction mode</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#long-lists-synthetic-bank-statements" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Long lists: synthetic bank statements</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#invoices-realkie-fcc-verified" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Invoices: RealKIE-FCC-Verified</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#improving-accuracy-once-your-pipeline-is-running" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Improving accuracy once your pipeline is running</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#run-the-benchmarks-yourself" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Run the benchmarks yourself</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#where-to-configure-extraction-in-the-accelerator" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Where to configure extraction in the accelerator</span></a></li></ul></nav></starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">Key Information Extraction</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><p>Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+SPDX-License-Identifier: MIT-0</p>
+<div class="sl-heading-wrapper level-h1"><h1 id="key-information-extraction">Key Information Extraction</h1><a class="sl-anchor-link" href="#key-information-extraction"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Key Information Extraction”</span></a></div>
+<div class="sl-heading-wrapper level-h2"><h2 id="what-extraction-does-turn-each-section-into-a-database-record">What extraction does: turn each section into a database record</h2><a class="sl-anchor-link" href="#what-extraction-does-turn-each-section-into-a-database-record"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “What extraction does: turn each section into a database record”</span></a></div>
+<p>Extraction is the step that fills your database. For every section, it reads the pages and
+returns the values of the fields you defined for the section’s document class. The result is
+a <strong>record</strong>: one value per field, in the structure your schema describes.</p>
+<p>Two kinds of field make up a record:</p>
+<ul>
+<li>A <strong>field</strong> holds one value, such as an invoice’s gross total or a statement’s account
+number.</li>
+<li>A <strong>list field</strong> holds <strong>rows</strong>, one per item, such as the line items on an invoice or the
+transactions on a bank statement. Each row has its own fields, such as date, description and
+amount.</li>
+</ul>
+<p>A record’s fields usually become one row in a table for the document class, and each list
+field becomes a second table with one row per item. In the example below, extraction turns a
+two-page invoice and a 17-page bank statement into two records:</p>
+<pre class="mermaid">flowchart LR
+    I["Invoice&#x3C;br/>section, 2 pages"] -- extraction --> RI["Invoice record&#x3C;br/>Agency, Advertiser&#x3C;br/>Gross total, Net amount due&#x3C;br/>Line items: 6 rows"]
+    S["Bank statement&#x3C;br/>section, 17 pages"] -- extraction --> RS["Statement record&#x3C;br/>Account number&#x3C;br/>Statement period&#x3C;br/>Transactions: 800 rows"]
+    RI --> D1[("invoices table&#x3C;br/>line_items table")]
+    RS --> D2[("statements table&#x3C;br/>transactions table")]
+    classDef file fill:#f1f5f9,stroke:#475569,color:#0f172a,stroke-width:2px
+    classDef app fill:#dbeafe,stroke:#2563eb,color:#1e3a8a,stroke-width:2px
+    classDef stubA fill:#dcfce7,stroke:#16a34a,color:#14532d,stroke-width:2px
+    classDef bank fill:#ffedd5,stroke:#ea580c,color:#7c2d12,stroke-width:2px
+    class I,RI app
+    class S,RS bank
+    class D1,D2 stubA</pre>
+<p>The invoice has a handful of fields and a short list. The statement has two fields and a list
+of 800 rows. Both are ordinary documents, and the accelerator offers two ways to extract
+them, one suited to each.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="how-the-accelerator-extracts-the-fields-of-a-section">How the accelerator extracts the fields of a section</h2><a class="sl-anchor-link" href="#how-the-accelerator-extracts-the-fields-of-a-section"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “How the accelerator extracts the fields of a section”</span></a></div>
+<p>A language model, the <strong>extraction model</strong>, does the reading. The shipped default is Claude
+Sonnet 5 (<code dir="auto">extraction.model</code>). You choose how the model works through the section with
+<em>Extraction mode</em> (<code dir="auto">extraction.mode</code>): <em>Simple — single-pass</em> (the default) or <em>Advanced —
+sharded, for large documents</em>.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="what-the-extraction-model-reads">What the extraction model reads</h3><a class="sl-anchor-link" href="#what-the-extraction-model-reads"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “What the extraction model reads”</span></a></div>
+<p>In both modes the extraction model receives four things:</p>
+<ul>
+<li><strong>The section’s text</strong> from OCR, every page in order.</li>
+<li><strong>The page images,</strong> so the model can see layout, check boxes and handwriting, and check the
+OCR text against the page.</li>
+<li><strong>The fields of the document class, with their descriptions.</strong> The accelerator sends each
+field’s name, type and description to the model. The model treats each description as
+its instruction for that field, so the description is where you say where a value appears
+and what format you want.</li>
+<li><strong>Few-shot examples,</strong> if you added any for the document class.</li>
+</ul>
+<div class="sl-heading-wrapper level-h3"><h3 id="single-pass-extraction-simple-one-request-writes-the-whole-record">Single-pass extraction (Simple): one request writes the whole record</h3><a class="sl-anchor-link" href="#single-pass-extraction-simple-one-request-writes-the-whole-record"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Single-pass extraction (Simple): one request writes the whole record”</span></a></div>
+<p>In Simple mode the accelerator sends everything above to the extraction model in one request.
+The model reads the whole section and writes the complete record as JSON: every field, and
+every row of every list field.</p>
+<pre class="mermaid">flowchart LR
+    P["Pages 1–17, text and images&#x3C;br/>fields and their descriptions"] --> C["One request to the&#x3C;br/>extraction model"]
+    C -- "writes every value&#x3C;br/>and all 800 rows" --> K["Coercion and&#x3C;br/>schema checks"]
+    K --> R[("Record&#x3C;br/>800 rows")]
+    classDef file fill:#f1f5f9,stroke:#475569,color:#0f172a,stroke-width:2px
+    classDef app fill:#dbeafe,stroke:#2563eb,color:#1e3a8a,stroke-width:2px
+    classDef stubA fill:#dcfce7,stroke:#16a34a,color:#14532d,stroke-width:2px
+    classDef bank fill:#ffedd5,stroke:#ea580c,color:#7c2d12,stroke-width:2px
+    class P file
+    class C app
+    class K stubA
+    class R bank</pre>
+<p>A single-pass is the simplest route, and the one that reads the fewest tokens, for a section
+with a bounded number of fields. Three properties follow from the single request:</p>
+<ul>
+<li><strong>The model writes every row itself,</strong> so the request’s output grows with the length of
+the list.</li>
+<li><strong>The whole section has to fit in one request.</strong> The accelerator estimates the request size
+before it sends it, and stops with an explanation (<code dir="auto">ExtractionInputTooLarge</code>) when the
+section is larger than the extraction model’s input window.</li>
+<li><strong>A request with more than 20 page images</strong> has each image reduced to at most 2,000 pixels
+on a side, because Amazon Bedrock caps images at that size in such requests.</li>
+</ul>
+<p>See <a href="../../extraction-and-confidence/#simple-non-agentic-extraction">Simple (non-agentic) extraction</a>.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="agentic-extraction-advanced-an-agent-works-through-the-section-in-shards">Agentic extraction (Advanced): an agent works through the section in shards</h3><a class="sl-anchor-link" href="#agentic-extraction-advanced-an-agent-works-through-the-section-in-shards"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Agentic extraction (Advanced): an agent works through the section in shards”</span></a></div>
+<p>In Advanced mode an <strong>agent</strong> does the extraction: the extraction model runs in a loop, calling
+tools the accelerator gives it, until the record is complete and valid. Four mechanisms do
+most of the work on a long statement.</p>
+<p><strong>1. Shards.</strong> The accelerator splits the section’s pages into <strong>shards</strong>: runs of
+consecutive pages, up to five pages each by default
+(<code dir="auto">extraction.agentic.max_pages_per_shard</code>). Each shard gets its own agent, and the agents run
+at the same time. Every shard after the first also receives the column headings from the
+first page, so each agent knows what the columns mean. By default the accelerator makes at most 10 shards
+(<code dir="auto">extraction.agentic.max_concurrent_batches</code>), so it divides a section of more than 50 pages
+into 10 shards of similar text length. Each shard runs as its own AWS Lambda invocation under AWS Step Functions
+(<code dir="auto">extraction.agentic.runtime: step_functions</code>), so no single function’s time limit applies
+to a long section, and a retry repeats only the shards that did not finish.</p>
+<p><strong>2. The table tool.</strong> Before the agents start, the accelerator parses the tables in the OCR
+text, which Amazon Textract writes as Markdown when its <code dir="auto">TABLES</code> feature is on (the shipped
+default). The agent then maps the table’s columns to your row fields (<code dir="auto">parse_table</code>, then
+<code dir="auto">map_table_to_schema</code>), and a third tool (<code dir="auto">finalize_table_extraction</code>) assembles the rows in
+code. The model chooses the mapping and never has to write each row out. When the tables
+parse, the accelerator leaves the page images out of the agent’s prompt
+(<code dir="auto">extraction.agentic.table_parsing.lazy_images</code>), and the agent can still open any page with its <code dir="auto">view_image</code>
+tool. The table tool is <em>Table Parsing Tool</em> (<code dir="auto">extraction.agentic.table_parsing.enabled</code>), on
+in the shipped configuration.</p>
+<p><strong>3. A schema check at every step.</strong> The agent hands its record to an extraction tool whose
+input is your schema. The tool checks types, allowed values, patterns and list sizes, and
+returns any error to the agent, which corrects the record with targeted edits
+(<code dir="auto">apply_json_patches</code>) instead of starting again. For a record too large to write in one
+call, the agent builds it in a scratch buffer, up to 100 rows per edit, and promotes the
+buffer to the record when it is complete.</p>
+<p><strong>4. A merge.</strong> When every shard finishes, the accelerator joins the shards’ list rows in page
+order and takes each single-value field from the first shard that found it.</p>
+<pre class="mermaid">flowchart LR
+    P["Pages 1–17"] --> S1["Shard 1&#x3C;br/>pages 1–5"]
+    P --> S2["Shard 2&#x3C;br/>pages 6–10"]
+    P --> S3["Shard 3&#x3C;br/>pages 11–15"]
+    P --> S4["Shard 4&#x3C;br/>pages 16–17"]
+    S1 --> A1["Agent: map table&#x3C;br/>columns, check schema"]
+    S2 --> A2["Agent: map table&#x3C;br/>columns, check schema"]
+    S3 --> A3["Agent: map table&#x3C;br/>columns, check schema"]
+    S4 --> A4["Agent: map table&#x3C;br/>columns, check schema"]
+    A1 --> M["Merge rows&#x3C;br/>in page order"]
+    A2 --> M
+    A3 --> M
+    A4 --> M
+    M --> R[("Record&#x3C;br/>800 rows")]
+    classDef file fill:#f1f5f9,stroke:#475569,color:#0f172a,stroke-width:2px
+    classDef app fill:#dbeafe,stroke:#2563eb,color:#1e3a8a,stroke-width:2px
+    classDef stubA fill:#dcfce7,stroke:#16a34a,color:#14532d,stroke-width:2px
+    classDef stubB fill:#ecfccb,stroke:#65a30d,color:#365314,stroke-width:2px
+    classDef bank fill:#ffedd5,stroke:#ea580c,color:#7c2d12,stroke-width:2px
+    class P,M file
+    class S1,A1 app
+    class S2,A2 stubA
+    class S3,A3 stubB
+    class S4,A4 bank
+    class R file</pre>
+<p>One more check runs in Advanced mode without any setting: when the OCR text holds a table of
+more than 30 rows and every list field comes back empty, the accelerator sends the agent back
+for another try, naming the field and the row count. The agent also scores confidence inside
+each shard, so confidence scales with the shards; see
+<a href="../../idp-fundamentals/confidence-assessment/">Confidence Assessment</a>.</p>
+<p>See <a href="../../extraction-and-confidence/#advanced-agentic-extraction">Advanced (agentic) extraction</a>,
+<a href="../../extraction-and-confidence/#deterministic-table-parsing">Deterministic table parsing</a> and
+<a href="../../extraction-and-confidence/#scalable-extraction-for-large-documents-sharding">sharding</a>.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="what-the-accelerator-checks-after-either-mode">What the accelerator checks after either mode</h3><a class="sl-anchor-link" href="#what-the-accelerator-checks-after-either-mode"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “What the accelerator checks after either mode”</span></a></div>
+<p>Every record passes through the same checks before the accelerator stores it:</p>
+<ul>
+<li><strong>Value coercion</strong> (<em>Value Coercion</em>, <code dir="auto">extraction.coercion</code>) repairs values that do not
+match their declared type, with no model call: <code dir="auto">"$1,234.00"</code> in a <code dir="auto">number</code> field becomes
+<code dir="auto">1234.0</code>, and <code dir="auto">"03/15/2024"</code> in a date field becomes <code dir="auto">"2024-03-15"</code>. Coercion refuses to
+guess at an ambiguous value such as <code dir="auto">01/02/2024</code>, and records every change. In Simple mode
+this step runs on the returned record; in Advanced mode the extraction tool’s schema check
+converts types as values arrive.</li>
+<li><strong>Schema validation</strong> (<em>Schema Validation &#x26; Escalation</em>, <code dir="auto">extraction.validation</code>) checks the
+record against the full schema, including formats such as dates and email addresses, and
+records any violation on the section. Validation is on by default and costs nothing.</li>
+<li><strong>Completeness checks</strong> compare each list with what the section’s OCR text shows and raise a
+processing issue when rows appear to be missing.
+<a href="#short-lists-and-other-extraction-mistakes-which-configuration-makes-which">Short lists and other extraction mistakes</a>
+describes them.</li>
+</ul>
+<p>When one section holds several records of the same document class, such as three pay stubs
+on consecutive pages, <em>Records per section</em> (<code dir="auto">x-aws-idp-multi-instance</code>) tells extraction to
+return a list of records instead of one. See
+<a href="../../extraction-and-confidence/#2b-output-correctness-coercion-validation--multi-instance-sections">Output Correctness</a>.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="how-the-two-modes-compare">How the two modes compare</h3><a class="sl-anchor-link" href="#how-the-two-modes-compare"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “How the two modes compare”</span></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Single-pass (<em>Simple</em>)</th><th>Agentic (<em>Advanced</em>)</th></tr></thead><tbody><tr><td>Config value</td><td><code dir="auto">extraction.mode: simple</code> (default)</td><td><code dir="auto">extraction.mode: advanced</code></td></tr><tr><td>Model requests per section</td><td>One</td><td>Several per shard, shards in parallel</td></tr><tr><td>Who writes the list rows</td><td>The model, every row</td><td>The table tool, in code, when the OCR has Markdown tables</td></tr><tr><td>Section size</td><td>Must fit in one request</td><td>Split into shards</td></tr><tr><td>Schema checks</td><td>After the model answers</td><td>At every tool call, then after the merge</td></tr><tr><td>Extraction models</td><td>Every supported model</td><td>Models that use tools reliably, such as Claude Sonnet 5</td></tr></tbody></table>
+<p><em>Extraction mode</em> applies to every document class in a
+<a href="../../configuration-profiles/">configuration profile</a>. To process short forms in one mode and
+long statements in the other, give each its own profile and route each kind of document to it
+with a <a href="../../configuration-profiles/#prefix-mappings-assigning-a-profile-by-where-a-document-lands">prefix mapping</a>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="the-configuration-to-start-with">The configuration to start with</h2><a class="sl-anchor-link" href="#the-configuration-to-start-with"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “The configuration to start with”</span></a></div>
+<p><strong>For forms and documents with a bounded number of fields, such as invoices, start with
+single-pass extraction (<em>Simple</em>), the default.</strong> One request reads the whole section and
+returns the record. On real invoices, single-pass extraction scored as high as agentic
+extraction and read about a tenth of the extraction input tokens (see
+<a href="#invoices-realkie-fcc-verified">Invoices</a>).</p>
+<p><strong>For documents with long lists, from a few hundred rows up, choose agentic extraction
+(<em>Advanced</em>).</strong> Statements, transaction logs and holdings reports are the typical cases. In
+our benchmark, agentic extraction returned every row of every statement we tested, up to
+3,200 rows on 66 pages, and from 400 rows it finished in about half the time of a single-pass
+(see <a href="#long-lists-synthetic-bank-statements">Long lists</a>).</p>
+<p><strong>In either mode, keep Amazon Textract’s <code dir="auto">TABLES</code> feature on</strong> (the shipped default,
+<code dir="auto">ocr.features</code>). The table tool and the row-count checks both read the Markdown tables it
+produces.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="how-many-tokens-extraction-uses-and-what-drives-the-count">How many tokens extraction uses, and what drives the count</h2><a class="sl-anchor-link" href="#how-many-tokens-extraction-uses-and-what-drives-the-count"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “How many tokens extraction uses, and what drives the count”</span></a></div>
+<p>Four things decide how many tokens extraction uses:</p>
+<ul>
+<li><strong>The rows the model writes.</strong> Output tokens grow with the length of the list. In a single
+pass, Claude Sonnet 5 wrote about 48 output tokens per row of a three-column statement. In
+agentic mode the table tool assembles the rows, and the agent wrote about 39 per row.</li>
+<li><strong>How often the model rereads its instructions.</strong> A single-pass reads each page once. An
+agent sends its prompt again on every turn of its loop, and every shard repeats the
+instructions and the schema, so agentic extraction reads several times the input tokens.
+Amazon Bedrock serves most of the repeated part from the prompt cache, which it bills at a
+reduced rate.</li>
+<li><strong>Page images.</strong> Each image adds input tokens, and how many depends on the extraction model
+and the image size.</li>
+<li><strong>The extraction model.</strong> Models count tokens differently, especially for images, and models
+differ in how many tokens they spend reasoning.</li>
+</ul>
+<p>Measured extraction tokens on synthetic bank statements with Claude Sonnet 5, the default
+extraction model (release 0.6.14, November 2026; mean over the runs shown):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Statement</th><th>Runs per mode</th><th>Mode</th><th>Input per document</th><th>Output per document</th><th>Input per page</th><th>Output per page</th></tr></thead><tbody><tr><td>100 rows, 3 pages</td><td>6</td><td>Single-pass</td><td>20,221</td><td>4,900</td><td>6,740</td><td>1,633</td></tr><tr><td></td><td></td><td>Agentic</td><td>82,691</td><td>4,075</td><td>27,564</td><td>1,358</td></tr><tr><td>400 rows, 9 pages</td><td>11</td><td>Single-pass</td><td>60,000</td><td>19,315</td><td>6,667</td><td>2,146</td></tr><tr><td></td><td></td><td>Agentic</td><td>215,171</td><td>15,597</td><td>23,908</td><td>1,733</td></tr><tr><td>800 rows, 17 pages</td><td>6</td><td>Single-pass ¹</td><td>112,977</td><td>38,556</td><td>6,646</td><td>2,268</td></tr><tr><td></td><td></td><td>Agentic</td><td>431,289</td><td>31,100</td><td>25,370</td><td>1,829</td></tr><tr><td>3,200 rows, 66 pages</td><td>2</td><td>Single-pass ²</td><td>0</td><td>0</td><td>—</td><td>—</td></tr><tr><td></td><td></td><td>Agentic</td><td>1,405,276</td><td>123,564</td><td>21,292</td><td>1,872</td></tr></tbody></table>
+<p>¹ The four runs that returned every row. The two runs that returned part of the list wrote
+2,277 output tokens each; see
+<a href="#short-lists-and-other-extraction-mistakes-which-configuration-makes-which">Short lists and other extraction mistakes</a>.</p>
+<p>² The statement was too large for one request, so the accelerator stopped before sending it
+and spent no extraction tokens.</p>
+<p>Measured extraction tokens on real invoices with Claude Sonnet 4.6, the benchmark’s control
+model (20 documents, 81 pages, release 0.6.14):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Configuration</th><th>Input / output per document</th><th>Input / output per page</th></tr></thead><tbody><tr><td>Single-pass</td><td>14,849 / 2,121</td><td>3,666 / 524</td></tr><tr><td>Agentic</td><td>141,719 / 6,031</td><td>34,992 / 1,489</td></tr></tbody></table>
+<p>Input tokens include tokens read from and written to the prompt cache. The figures cover the
+extraction phase only; classification and confidence assessment use tokens of their own. Sources:
+<code dir="auto">benchmarks/results/v0.6.14/{cost__extraction-model-sonnet5,coresynth__extraction-model-sonnet5,astravalue,astracap}/summary.json</code>
+for the statements and <code dir="auto">benchmarks/results/v0.6.14/core/summary.json</code> for the invoices, field
+<code dir="auto">tokens_by_phase.Extraction</code>.</p>
+<p>What this shows:</p>
+<ul>
+<li><strong>On long statements, agentic extraction read 3.6 to 4.1 times the input tokens of a
+single-pass and wrote about a fifth fewer output tokens.</strong> Between 65% and 78% of the
+agentic input came from the prompt cache.</li>
+<li><strong>On invoices, agentic extraction read about 9.5 times the input tokens and wrote 2.8
+times the output,</strong> with 85% of the input from the prompt cache. An invoice’s short list
+gives the table tool little to save, while the agent loop still repeats its prompt.</li>
+<li><strong>Input tokens per page stayed roughly level as statements grew,</strong> in both modes, so a
+statement’s extraction input scales with its page count and its output with its row count.</li>
+</ul>
+<p>The same pattern holds with Claude Sonnet 4.6, one run per size: about 3,100 input tokens per
+page in a single-pass (100 to 1,600 rows) and 17,300 to 21,600 in agentic mode (100 to
+3,200 rows). Source: <code dir="auto">benchmarks/results/v0.6.14/scaling/summary.json</code>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="how-to-measure-extraction-on-your-own-documents">How to measure extraction on your own documents</h2><a class="sl-anchor-link" href="#how-to-measure-extraction-on-your-own-documents"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “How to measure extraction on your own documents”</span></a></div>
+<p>Ground truth for this step is the correct value of every field and every row in a sample of
+your documents. Two numbers describe a list field, and a third describes the record as a
+whole:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Number</th><th>Question it answers</th></tr></thead><tbody><tr><td><strong>Completeness</strong></td><td>What share of the rows in the ground truth came back? Rows returned ÷ rows in the ground truth.</td></tr><tr><td><strong>Accuracy over compared cells</strong></td><td>Of the values compared in the rows that came back, what share match the ground truth? In our statement benchmark, the compared cells are each returned row’s date and amount, matched exactly.</td></tr><tr><td><strong>Weighted accuracy</strong></td><td>How close is the whole record to the ground truth, field by field? Stickler scores each field from 0 to 1 with that field’s comparison method, then averages the scores, weighted by each field’s weight.</td></tr></tbody></table>
+<p>Read completeness and accuracy together. Accuracy counts only the rows that came back, so a
+list that returned 43 of 800 rows, all correct, scores 1.0 on accuracy and 0.054 on
+completeness.</p>
+<p>Stickler is the open-source library the accelerator uses to compare results with ground truth.
+You choose each field’s comparison method: exact for IDs, a tolerance for amounts, date-aware
+for dates, similarity for names, and item-by-item matching for lists, which pairs each
+extracted row with its closest row in the ground truth. See
+<a href="../../idp-fundamentals/index/#4-measure-with-ground-truth">Measure with ground truth</a> for the full list and for how
+the accelerator drafts the ground truth for you, and
+<a href="../../evaluation/#weighted-score-calculation">Weighted Score Calculation</a> for the formula.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="short-lists-and-other-extraction-mistakes-which-configuration-makes-which">Short lists and other extraction mistakes: which configuration makes which</h2><a class="sl-anchor-link" href="#short-lists-and-other-extraction-mistakes-which-configuration-makes-which"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Short lists and other extraction mistakes: which configuration makes which”</span></a></div>
+<p>Once you measure completeness and accuracy, look at what kind of mistake you see. Some
+mistakes belong to one extraction mode and some to both, and the accelerator reports most of
+them as a
+<strong>processing issue</strong> on the section, which you see in the document list’s <em>Processing Issues</em>
+column and on the <em>Processing Report</em> tab.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Configuration</th><th>Typical mistake</th><th>How the accelerator reports it</th><th>What to change</th></tr></thead><tbody><tr><td><strong>Single-pass</strong> on a long list</td><td>Returns the first rows of the list and reports <code dir="auto">COMPLETED</code></td><td><code dir="auto">extraction_rows_below_ocr_estimate</code> (warning)</td><td>Use agentic extraction</td></tr><tr><td><strong>Single-pass</strong> on a section too large for one request</td><td>Stops before extracting</td><td>The document fails with <code dir="auto">ExtractionInputTooLarge</code>, naming the request size and the remedy</td><td>Use agentic extraction</td></tr><tr><td><strong>Single-pass or agentic</strong> on a section that holds several records of one class</td><td>Returns the first record only</td><td><code dir="auto">extraction_multi_instance_suspected</code>, when <em>Multi-instance Section Detection</em> is on</td><td>Set <em>Records per section</em> to <em>Several — wrap my single-record class</em></td></tr><tr><td><strong>Single-pass or agentic</strong> with a value in the wrong format</td><td>Stores the value as the model wrote it</td><td><code dir="auto">extraction_validation_failed</code> (warning)</td><td>Declare the format on the field, and say it in the description</td></tr></tbody></table>
+<p><strong>A short list is the mistake to watch for on long documents.</strong> On the 800-row statement, the
+two single-pass runs that returned part of the list returned its first 43 rows and finished
+with <code dir="auto">COMPLETED</code>. They also ran faster and wrote far fewer tokens than the complete runs, so
+neither the document status nor the run time shows the loss. The accelerator’s row-count
+check does: it compares the rows extracted with the rows in the section’s OCR tables of the
+same width, and raises <code dir="auto">extraction_rows_below_ocr_estimate</code> when fewer than half came back.
+Across every release 0.6.14 benchmark cell that ran Claude Sonnet 5 in a single-pass on that
+statement with table-rendering OCR, 9 of 16 runs returned part of the list, and the
+accelerator raised <code dir="auto">extraction_rows_below_ocr_estimate</code> on all 9. Source:
+<code dir="auto">processing_issue_codes</code> in <code dir="auto">benchmarks/results/v0.6.14/coresynth__extraction-model-sonnet5/</code>
+and <code dir="auto">astravalue/</code>.</p>
+<p>Three settings change what happens to a short list:</p>
+<ul>
+<li><strong>Make a short list fail the document.</strong> <em>Truncated list outcome</em>
+(<code dir="auto">extraction.row_shortfall_action</code>) is <code dir="auto">warn</code> by default: the accelerator records the issue
+and the document completes. With <code dir="auto">fail</code>, the accelerator saves the rows it extracted and the
+issue, then marks the section and the document failed. The check matches tables by column
+count, so a two-column array that models a group of values, such as an account summary, can
+borrow evidence from an unrelated two-column table on the same statement. Check your
+document classes for such arrays before you choose <code dir="auto">fail</code>; see
+<a href="../../extraction-and-confidence/#making-a-materially-incomplete-list-fail-the-section--extractionrow_shortfall_action">Making a materially incomplete list fail the section</a>.</li>
+<li><strong>Declare a minimum list length.</strong> <em>Min Items</em> (<code dir="auto">minItems</code>) on a list field states the
+fewest rows any real document holds. In single-pass mode a list under the floor raises
+<code dir="auto">extraction_list_truncated</code> and a schema violation, and the rows are kept. In agentic mode
+the extraction tool enforces the floor in every shard, so a floor larger than one shard’s
+rows fails the section; leave <code dir="auto">minItems</code> off lists in sections that shard, and use
+<code dir="auto">row_shortfall_action</code> instead. See
+<a href="../../extraction-and-confidence/#minitems-on-a-list-field--a-warning-in-simple-mode-a-hard-floor-in-advanced"><code dir="auto">minItems</code> on a list field</a>.</li>
+<li><strong>Keep the row-count check able to run.</strong> The check needs OCR that writes Markdown tables
+(Amazon Textract with <code dir="auto">TABLES</code>, or BDA) and a row schema with one field per table column.
+When the check cannot run on a list of 30 or more rows, the accelerator says so with
+<code dir="auto">extraction_row_count_unverified</code> (info).</li>
+</ul>
+<p>See <a href="../../extraction-and-confidence/#detecting-a-truncated-list">Detecting a truncated list</a> for
+every completeness signal.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="benchmark-results-completeness-accuracy-and-tokens-by-extraction-mode">Benchmark results: completeness, accuracy and tokens by extraction mode</h2><a class="sl-anchor-link" href="#benchmark-results-completeness-accuracy-and-tokens-by-extraction-mode"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Benchmark results: completeness, accuracy and tokens by extraction mode”</span></a></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="long-lists-synthetic-bank-statements">Long lists: synthetic bank statements</h3><a class="sl-anchor-link" href="#long-lists-synthetic-bank-statements"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Long lists: synthetic bank statements”</span></a></div>
+<p><strong>Dataset:</strong> <a href="../../idp-fundamentals/benchmark-datasets/#synthetic-bank-statements">synthetic bank statements</a> with
+exact ground truth for every row: a three-column transaction list from 100 rows on 3 pages to
+3,200 rows on 66 pages. <strong>Run:</strong> release 0.6.14, November 2026, extraction model Claude
+Sonnet 5 (the default), Amazon Textract with <code dir="auto">TABLES</code>, confidence in a separate pass.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Statement</th><th>Runs per mode</th><th>Single-pass: runs with every row</th><th>Agentic: runs with every row</th><th>Single-pass: median time</th><th>Agentic: median time</th></tr></thead><tbody><tr><td>100 rows, 3 pages</td><td>6</td><td>6 of 6</td><td>6 of 6</td><td>69 s</td><td>65 s</td></tr><tr><td>400 rows, 9 pages</td><td>11</td><td>11 of 11</td><td>11 of 11</td><td>262 s</td><td>139 s</td></tr><tr><td>800 rows, 17 pages</td><td>6</td><td>4 of 6; the other 2 returned 43 rows, both flagged</td><td><strong>6 of 6</strong></td><td>954 s ¹</td><td>147 s</td></tr><tr><td>3,200 rows, 66 pages</td><td>2</td><td>Not sent: too large for one request</td><td><strong>2 of 2</strong></td><td>—</td><td>433 s</td></tr></tbody></table>
+<p>¹ The four complete runs. Times are for the whole document, from upload to result, including
+OCR, classification and confidence assessment.</p>
+<p>Accuracy over compared cells was 1.000 in every run in the table: every row that came back had
+the right date and amount. Sources:
+<code dir="auto">benchmarks/results/v0.6.14/cost__extraction-model-sonnet5/</code>, <code dir="auto">coresynth__extraction-model-sonnet5/</code>,
+<code dir="auto">astravalue/</code> and <code dir="auto">astracap/</code> (cells <code dir="auto">core-tt-simple-sep</code>, <code dir="auto">core-tt-adv-sep</code>,
+<code dir="auto">sonnet5-simple-sep</code> and <code dir="auto">sonnet5-adv-sep</code>).</p>
+<p>What this shows:</p>
+<ul>
+<li><strong>Agentic extraction returned every row at every size,</strong> up to 3,200 rows on 66 pages, in
+under eight minutes.</li>
+<li><strong>From 400 rows, agentic extraction finished in about half the time of a single-pass,</strong>
+because its shards run in parallel while a single-pass writes every row in one response.</li>
+<li><strong>Up to 400 rows on 9 pages, both modes returned every row in every run.</strong> The single-pass
+read fewer tokens there.</li>
+<li><strong>Wrong values were not the issue on long lists. Missing rows were,</strong> which is why
+completeness is the number to follow.</li>
+</ul>
+<p>With Claude Sonnet 4.6 (one run per size, <code dir="auto">benchmarks/results/v0.6.14/scaling/</code>), a single
+pass returned every row up to 1,600 rows on 33 pages, taking about 17 and 18 minutes at
+1,200 and 1,600 rows, and the 3,200-row statement was too large for one request. Agentic extraction
+returned every row at every size, in at most about 6 minutes. How long a list a single-pass completes
+depends on the extraction model.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="invoices-realkie-fcc-verified">Invoices: RealKIE-FCC-Verified</h3><a class="sl-anchor-link" href="#invoices-realkie-fcc-verified"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Invoices: RealKIE-FCC-Verified”</span></a></div>
+<p><strong>Dataset:</strong> <a href="../../idp-fundamentals/benchmark-datasets/#realkie-fcc-verified">RealKIE-FCC-Verified</a>, 20 real
+broadcast-advertising invoices (81 pages) with header fields and a short list of line items.
+<strong>Run:</strong> release 0.6.14, November 2026, extraction model Claude Sonnet 4.6 (the benchmark’s
+control), scored by Stickler as weighted accuracy, one run per configuration. Differences are
+paired by document: each configuration’s score on a document minus the single-pass’s score on
+the same document, averaged over the 20 documents.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Configuration</th><th>Weighted accuracy</th><th>Difference from single-pass (SE)</th><th>Documents better / worse</th><th>Extraction tokens per page, input / output</th></tr></thead><tbody><tr><td><strong>Single-pass</strong> (baseline)</td><td>0.798</td><td>—</td><td>—</td><td>3,666 / 524</td></tr><tr><td>Agentic</td><td>0.774</td><td>−0.025 (0.022)</td><td>2 / 5</td><td>34,992 / 1,489</td></tr><tr><td>Single-pass, each file one section</td><td>0.836</td><td>+0.038 (0.024)</td><td>5 / 3</td><td>3,066 / 360</td></tr></tbody></table>
+<p>SE is the standard error of the mean paired difference. Source:
+<code dir="auto">benchmarks/results/v0.6.14/core/summary.json</code>, <code dir="auto">doc == "realkie"</code>, cells
+<code dir="auto">core-tt-simple-sep</code>, <code dir="auto">core-tt-adv-sep</code> and <code dir="auto">split-disabled</code>.</p>
+<p>What this shows:</p>
+<ul>
+<li><strong>A single-pass is the right default for invoices.</strong> Agentic extraction read about 9.5
+times the input tokens per page, and its score was within about one standard error of the
+single-pass’s, slightly lower.</li>
+<li><strong>Telling the accelerator that each file holds one invoice helped the most.</strong> With section
+splitting set to <em>One section</em>, the single-pass scored 0.038 higher (SE 0.024) and used
+fewer tokens. See
+<a href="../../idp-fundamentals/splitting-and-classification/#the-configuration-to-start-with">Splitting and Section Classification</a>.</li>
+</ul>
+<p><strong>How far this carries:</strong> the statements are synthetic, clean and regular, with most sizes
+run 6 to 11 times; the largest ran twice. RealKIE is 20 documents of one document class, run
+once per configuration on the control model rather than the default, so treat differences
+under about two standard errors as unresolved. Confirm the choice on your own documents.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="improving-accuracy-once-your-pipeline-is-running">Improving accuracy once your pipeline is running</h2><a class="sl-anchor-link" href="#improving-accuracy-once-your-pipeline-is-running"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Improving accuracy once your pipeline is running”</span></a></div>
+<p>When your test set shows fields with wrong or missing values, these changes help most, roughly
+in this order.</p>
+<p><strong>Write each field description as an instruction.</strong> The extraction model reads the
+description as its instruction for the field. Say where the value appears, what it is not,
+and the format you want: “Invoice date: the date the invoice was issued, not the due date or
+the order date, as YYYY-MM-DD.” Edit descriptions in the
+<a href="../../web-ui/#document-schema-builder">Document Schema Builder</a> under <em>Description</em>. Most
+early fixes are wording fixes, and they cost nothing.</p>
+<p><strong>Declare types and formats in the schema.</strong> Give amounts the type <code dir="auto">number</code> and dates
+<em>Format (JSON Schema)</em> <code dir="auto">date</code>, and use <em>Pattern (regex)</em> or <em>Enum (Allowed Values)</em> for codes.
+Value coercion then repairs common mismatches for free, and schema validation reports the
+rest. <code dir="auto">format: date</code> means ISO 8601 (YYYY-MM-DD); for dates written day-first or month-first,
+set <code dir="auto">extraction.coercion.date_order</code> to your documents’ convention. See
+<a href="../../extraction-and-confidence/#value-coercion-extractioncoercion">Value coercion</a> and
+<a href="../../extraction-and-confidence/#schema-validation-extractionvalidation">Schema validation</a>.</p>
+<p><strong>Add a few-shot example for a hard document class.</strong> A few-shot example is a sample document
+with its correct values, which the accelerator adds to the extraction prompt for that
+document class. One or two examples often settle a field the model keeps misreading. Add them
+under <em>Few-Shot Examples</em> in the schema builder, with the expected values in <em>Extraction
+Prompt (x-aws-idp-attributes-prompt)</em>. See <a href="../../few-shot-examples/">Few-Shot Examples</a>.</p>
+<p><strong>Use a different extraction model for one document class.</strong> <em>Extraction Model Override
+(Optional)</em> (<code dir="auto">x-aws-idp-extraction-model</code>) sets the extraction model for one document class
+and leaves the rest on <code dir="auto">extraction.model</code>. Use a stronger model for a difficult class, or a
+smaller one for a simple class at high volume. See
+<a href="../../extraction-and-confidence/#per-class-extraction-model-override">Per-class extraction model override</a>.</p>
+<p><strong>Tell the accelerator which pages a field comes from.</strong> Some packets leave out optional pages,
+such as a supplement that only some customers submit. Declare the page types of the document
+class and, under <em>Source Page Types (Optional)</em> (<code dir="auto">x-aws-idp-source-page-types</code>), which page
+type each field comes from. With <code dir="auto">extraction.missing_field_handling.enabled</code>, the accelerator
+then marks a field from an absent page as missing instead of blank. See
+<a href="../../missing-page-handling/">Missing pages vs. blank fields</a>.</p>
+<p><strong>Extract every record when one section holds several.</strong> When a section can hold several
+records of one document class, such as consecutive pay stubs or several checks on one page,
+set <em>Records per section</em> to <em>Several — wrap my single-record class</em>
+(<code dir="auto">x-aws-idp-multi-instance: true</code>). The accelerator then returns a list of records,
+<code dir="auto">instances</code>, each with its own confidence. Migrate the ground truth of your test sets to the
+new shape in the same change. To find the sections that need it, turn on <em>Multi-instance
+Section Detection</em> (<code dir="auto">extraction.multi_instance_detection.enabled</code>) for a while. See
+<a href="../../extraction-and-confidence/#multi-instance-sections-x-aws-idp-multi-instance">Multi-instance sections</a>.</p>
+<p><strong>Let an agent do the tuning.</strong> The <a href="../../extensions/auto-optimizer/">Auto Optimizer</a> tries
+changes to descriptions, prompts, models and settings against your test set, within a cost
+budget you set, and keeps the ones that score better.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="run-the-benchmarks-yourself">Run the benchmarks yourself</h2><a class="sl-anchor-link" href="#run-the-benchmarks-yourself"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Run the benchmarks yourself”</span></a></div>
+<p><strong>On your own documents.</strong> Build a test set of real documents with their correct values, run
+it in <a href="../../test-studio/">Test Studio</a> once in each extraction mode, and compare completeness
+and field accuracy. Every stack includes the RealKIE test set, so you can repeat the invoice
+comparison above in your own account.</p>
+<p><strong>The benchmark suite.</strong></p>
+<div class="expressive-code"><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/ec.w36nc.css"><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">python3</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">benchmarks/harness/gen_corpus.py</span><span style="--0:#D6DEEB;--1:#403F53">          </span><span style="--0:#919F9F;--1:#5F636F"># synthetic statements with exact ground truth</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">M</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#ECC48D;--1:#3B61B0">benchmarks/harness/make_configs.py</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">R</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">python3 benchmarks/harness/run_matrix.py --stack &#x3C;STACK></span><span style="--0:#D9F5DD;--1:#111111">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Long lists, default extraction model (Claude Sonnet 5)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">for</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">s</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">in</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">cost</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">coresynth</span><span style="--0:#D6DEEB;--1:#403F53">; </span><span style="--0:#C792EA;--1:#8844AE">do</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#82AAFF;--1:#3B61B0">python3</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$M</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--suite</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$s</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--class</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">bank_statement</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--set</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">extraction_model=sonnet5</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#C5E478;--1:#3B61B0">$R</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--suite</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$s</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--set</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">extraction_model=sonnet5</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">done</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">for</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">s</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">in</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">astravalue</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">astracap</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">scaling</span><span style="--0:#D6DEEB;--1:#403F53">; </span><span style="--0:#C792EA;--1:#8844AE">do</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#82AAFF;--1:#3B61B0">python3</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$M</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--suite</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$s</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--class</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">bank_statement</span><span style="--0:#D6DEEB;--1:#403F53">; </span><span style="--0:#C5E478;--1:#3B61B0">$R</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--suite</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$s</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">done</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># RealKIE invoices and the configuration grid (control model)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">for</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">c</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">in</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">bank_statement</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">realkie</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ocr_bench</span><span style="--0:#D6DEEB;--1:#403F53">; </span><span style="--0:#C792EA;--1:#8844AE">do</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">python3</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$M</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--suite</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">core</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--class</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">$c</span><span style="--0:#D6DEEB;--1:#403F53">; </span><span style="--0:#C792EA;--1:#8844AE">done</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">$R</span><span style="--0:#D6DEEB;--1:#403F53"> --suite core</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="python3 benchmarks/harness/gen_corpus.py          # synthetic statements with exact ground truthM=benchmarks/harness/make_configs.pyR=&#x22;python3 benchmarks/harness/run_matrix.py --stack <STACK>&#x22;for s in cost coresynth; do  python3 $M --suite $s --class bank_statement --set extraction_model=sonnet5  $R --suite $s --set extraction_model=sonnet5donefor s in astravalue astracap scaling; do  python3 $M --suite $s --class bank_statement; $R --suite $sdonefor c in bank_statement realkie ocr_bench; do python3 $M --suite core --class $c; done$R --suite core"><div></div></button></div></figure></div>
+<p>Recompute figures from the committed results:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Rows returned and processing issues for each single-pass run on the 800-row statement</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">jq</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">-c</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">[.rows[] | select(.doc=="large_narrow.pdf" and .cell=="sonnet5-simple-sep")</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#ECC48D;--1:#984E4D">        </span></span><span style="--0:#ECC48D;--1:#984E4D">| {repeat, rows_extracted, processing_issue_codes}]</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#ECC48D;--1:#3B61B0">benchmarks/results/v0.6.14/astravalue/summary.json</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># Mean extraction input tokens, agentic, 400-row statement (prompt-cache tokens included)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">jq</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">[.rows[] | select(.doc=="med_narrow.pdf" and .cell=="core-tt-adv-sep")</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#ECC48D;--1:#984E4D">     </span></span><span style="--0:#ECC48D;--1:#984E4D">| .tokens_by_phase.Extraction</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#ECC48D;--1:#984E4D">     </span></span><span style="--0:#ECC48D;--1:#984E4D">| .inputTokens + .cacheReadInputTokens + .cacheWriteInputTokens] | add/length</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">  </span><span style="--0:#ECC48D;--1:#3B61B0">benchmarks/results/v0.6.14/cost__extraction-model-sonnet5/summary.json</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="jq -c &#x27;[.rows[] | select(.doc==&#x22;large_narrow.pdf&#x22; and .cell==&#x22;sonnet5-simple-sep&#x22;)        | {repeat, rows_extracted, processing_issue_codes}]&#x27; \  benchmarks/results/v0.6.14/astravalue/summary.jsonjq &#x27;[.rows[] | select(.doc==&#x22;med_narrow.pdf&#x22; and .cell==&#x22;core-tt-adv-sep&#x22;)     | .tokens_by_phase.Extraction     | .inputTokens + .cacheReadInputTokens + .cacheWriteInputTokens] | add/length&#x27; \  benchmarks/results/v0.6.14/cost__extraction-model-sonnet5/summary.json"><div></div></button></div></figure></div>
+<p>See the <a href="../../benchmarking/index/">benchmark suite</a> for setup and scoring, and
+<a href="../../benchmarking/config-guidance/#3-scaling-limits-by-document-size">Configuration guidance</a>
+for how each mode behaves as documents grow.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="where-to-configure-extraction-in-the-accelerator">Where to configure extraction in the accelerator</h2><a class="sl-anchor-link" href="#where-to-configure-extraction-in-the-accelerator"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Where to configure extraction in the accelerator”</span></a></div>
+<ul>
+<li><strong>Choose the extraction mode:</strong> <a href="../../extraction-and-confidence/#0-choosing-a-configuration-start-here">Choosing a configuration</a>
+and <a href="../../extraction-and-confidence/#extraction-mode-simple-vs-advanced">Simple vs Advanced</a>
+in Extraction and Confidence.</li>
+<li><strong>Define document classes and fields:</strong> the
+<a href="../../web-ui/#document-schema-builder">Document Schema Builder</a>,
+<a href="../../extraction-and-confidence/#document-classes-and-attributes">Document classes and attributes</a>
+and <a href="../../idp-configuration-best-practices/">Configuration Best Practices</a>.</li>
+<li><strong>Draft a schema from sample documents:</strong> <a href="../../discovery/">Discovery</a>, or
+<a href="../../quick-start/">Quick Start</a> from a description.</li>
+<li><strong>Tune agentic extraction for very large documents:</strong>
+<a href="../../extraction-and-confidence/#8-large-document-guidance">Large-Document Guidance</a>.</li>
+<li><strong>Check every list came back complete:</strong>
+<a href="../../extraction-and-confidence/#detecting-a-truncated-list">Detecting a truncated list</a>.</li>
+<li><strong>Score how sure the model is of each value:</strong> <a href="../../idp-fundamentals/confidence-assessment/">Confidence Assessment</a>.</li>
+<li><strong>Correct a result by hand:</strong> <a href="../../web-ui/#document-details">Document Details</a> and
+<a href="../../web-ui/#re-extract-sections">Re-extract Sections</a>.</li>
+<li><strong>Improve automatically:</strong> the <a href="../../extensions/auto-optimizer/">Auto Optimizer</a>.</li>
+</ul></div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/splitting-and-classification/" rel="prev" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-jgq3vlii">Previous<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Splitting and Section Classification</span></span></a><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/confidence-assessment/" rel="next" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-jgq3vlii">Next<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Confidence Assessment</span></span></a></div></footer></div></div></main></div></div></div></div></body></html>

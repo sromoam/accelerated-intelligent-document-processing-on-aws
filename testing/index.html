@@ -1,0 +1,847 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Testing | GenAI IDP</title><link rel="canonical" href="https://aws-solutions-library-samples.github.io/accelerated-intelligent-document-processing-on-aws/testing/"/><link rel="sitemap" href="/accelerated-intelligent-document-processing-on-aws/sitemap-index.xml"/><link rel="shortcut icon" href="/accelerated-intelligent-document-processing-on-aws/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.4.5"/><meta name="generator" content="Starlight v0.41.4"/><meta property="og:title" content="Testing"/><meta property="og:type" content="article"/><meta property="og:url" content="https://aws-solutions-library-samples.github.io/accelerated-intelligent-document-processing-on-aws/testing/"/><meta property="og:locale" content="en"/><meta property="og:description" content="GenAI Intelligent Document Processing — scalable, serverless AWS solution for automated document processing"/><meta property="og:site_name" content="GenAI IDP"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="GenAI Intelligent Document Processing — scalable, serverless AWS solution for automated document processing"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/common.Dt04y4fs.css"><style>@layer starlight.components{.card:where(.astro-zts4jgjd){--sl-card-border:var(--sl-color-purple);--sl-card-bg:var(--sl-color-purple-low);border:1px solid var(--sl-color-gray-5);background-color:var(--sl-color-black);flex-direction:column;gap:clamp(.5rem,.125rem + 1vw,1rem);padding:clamp(1rem,.125rem + 3vw,2.5rem)}.card:where(.astro-zts4jgjd):nth-child(4n+1){--sl-card-border:var(--sl-color-orange);--sl-card-bg:var(--sl-color-orange-low)}.card:where(.astro-zts4jgjd):nth-child(4n+3){--sl-card-border:var(--sl-color-green);--sl-card-bg:var(--sl-color-green-low)}.card:where(.astro-zts4jgjd):nth-child(4n+4){--sl-card-border:var(--sl-color-red);--sl-card-bg:var(--sl-color-red-low)}.card:where(.astro-zts4jgjd):nth-child(4n+5){--sl-card-border:var(--sl-color-blue);--sl-card-bg:var(--sl-color-blue-low)}.title:where(.astro-zts4jgjd){font-weight:600;font-size:var(--sl-text-h4);color:var(--sl-color-white);line-height:var(--sl-line-height-headings);align-items:center;gap:1rem}.card:where(.astro-zts4jgjd) .icon:where(.astro-zts4jgjd){border:1px solid var(--sl-card-border);background-color:var(--sl-card-bg);border-radius:.25rem;flex-shrink:0;padding:.2em}.card:where(.astro-zts4jgjd) .body:where(.astro-zts4jgjd){font-size:clamp(var(--sl-text-sm), calc(.5rem + 1vw), var(--sl-text-body));margin:0}.card-grid:where(.astro-lmor3ela){grid-template-columns:100%;gap:1rem;display:grid}.card-grid:where(.astro-lmor3ela)>*{margin-top:0!important}@media (width>=50rem){.card-grid:where(.astro-lmor3ela){grid-template-columns:1fr 1fr;gap:1.5rem}.stagger:where(.astro-lmor3ela){--stagger-height:5rem;padding-bottom:var(--stagger-height)}.stagger:where(.astro-lmor3ela)>:nth-child(2n){transform:translateY(var(--stagger-height))}}.sl-link-card:where(.astro-vodiqeol){border:1px solid var(--sl-color-gray-5);box-shadow:var(--sl-shadow-sm);border-radius:.5rem;grid-template-columns:1fr auto;gap:.5rem;padding:1rem;display:grid;position:relative}a:where(.astro-vodiqeol){line-height:var(--sl-line-height-headings);text-decoration:none}a:where(.astro-vodiqeol):before{content:"";position:absolute;inset:0}.stack:where(.astro-vodiqeol){flex-direction:column;gap:.5rem}.title:where(.astro-vodiqeol){color:var(--sl-color-white);font-weight:600;font-size:var(--sl-text-lg)}.description:where(.astro-vodiqeol){color:var(--sl-color-gray-3);line-height:1.5}.icon:where(.astro-vodiqeol){color:var(--sl-color-gray-3)}.sl-link-card:where(.astro-vodiqeol):hover{background:var(--sl-color-gray-7,var(--sl-color-gray-6));border-color:var(--sl-color-gray-2)}.sl-link-card:where(.astro-vodiqeol):hover .icon:where(.astro-vodiqeol){color:var(--sl-color-white)}}
+@layer starlight.components{svg:where(.astro-n5k4ipy7){color:var(--sl-icon-color);font-size:var(--sl-icon-size,1em);width:1em;height:1em}}
+</style><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/page.B1sbS0l1.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">Skip to content</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><a href="/accelerated-intelligent-document-processing-on-aws/" class="site-title sl-flex astro-clw6ags5"><img class="light:sl-hidden print:hidden astro-clw6ags5" alt src="/accelerated-intelligent-document-processing-on-aws/_astro/logo-dark.CDSNlVMV.svg" width="120" height="32"><img class="dark:sl-hidden print:block astro-clw6ags5" alt src="/accelerated-intelligent-document-processing-on-aws/_astro/logo-light.CszXvHpe.svg" width="120" height="32"><span class="astro-clw6ags5" translate="no">GenAI IDP</span></a></div><div class="sl-flex print:hidden astro-nczgtkxc"><site-search class="astro-nczgtkxc astro-r5ar4xm7" data-translations="{&quot;placeholder&quot;:&quot;Search&quot;}"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-r5ar4xm7"><svg aria-hidden="true" class="astro-r5ar4xm7 astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-r5ar4xm7" aria-hidden="true">Search</span><kbd class="sl-hidden md:sl-flex astro-r5ar4xm7" style="display: none;"><kbd class="astro-r5ar4xm7">Ctrl</kbd><kbd class="astro-r5ar4xm7">K</kbd></kbd></button><dialog style="padding:0" aria-label="Search" class="astro-r5ar4xm7"><div class="dialog-frame sl-flex astro-r5ar4xm7"><button data-close-modal class="sl-flex md:sl-hidden astro-r5ar4xm7">Cancel</button><div class="search-container astro-r5ar4xm7"><div id="starlight__search" class="astro-r5ar4xm7"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/Search.astro_astro_type_script_index_0_lang.DoiGT_Lk.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">GitHub</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="Main"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="01pw2uh" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Overview</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/" class="astro-ojxuodky"><span class="astro-ojxuodky">Welcome</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/references/" class="astro-ojxuodky"><span class="astro-ojxuodky">Blogs, Customer Stories &amp; Research</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/workshops/" class="astro-ojxuodky"><span class="astro-ojxuodky">Hands-on Workshops</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Get Started</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/get-started/" class="astro-ojxuodky"><span class="astro-ojxuodky">Get Started</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">IDP Fundamentals</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/" class="astro-ojxuodky"><span class="astro-ojxuodky">How Document Processing Works</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/digitization/" class="astro-ojxuodky"><span class="astro-ojxuodky">Digitization (OCR)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/splitting-and-classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Splitting and Section Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Key Information Extraction</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/confidence-assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Assessment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/rule-validation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-fundamentals/benchmark-datasets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Datasets</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Benchmarks by Problem Set</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/" class="astro-ojxuodky"><span class="astro-ojxuodky">How We Benchmark Configurations</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/digitization/" class="astro-ojxuodky"><span class="astro-ojxuodky">Digitization (OCR)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/splitting-and-classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Splitting and Section Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Key Information Extraction</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/confidence-assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Assessment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/token-use/" class="astro-ojxuodky"><span class="astro-ojxuodky">Token Use and Cost</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/marginal-cost-of-error/" class="astro-ojxuodky"><span class="astro-ojxuodky">Marginal Cost of Error</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmark-guidance/datasets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Datasets</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Core</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/architecture/" class="astro-ojxuodky"><span class="astro-ojxuodky">Architecture</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/quick-start/" class="astro-ojxuodky"><span class="astro-ojxuodky">Quick Start</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-deployment-ai-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">AI-Guided Deployment Walkthrough</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/terraform/" class="astro-ojxuodky"><span class="astro-ojxuodky">Terraform Deployment (Experimental)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/terraform-migration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Migrating from genai-idp-terraform</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/headless-deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Headless Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/apigateway-hosting/" class="astro-ojxuodky"><span class="astro-ojxuodky">API Gateway Hosting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/deployment-private-network/" class="astro-ojxuodky"><span class="astro-ojxuodky">Private Network Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/vpc-secured-mode/" class="astro-ojxuodky"><span class="astro-ojxuodky">VPC-Secured Mode</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration-profiles/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Profiles</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/multi-tenancy/" class="astro-ojxuodky"><span class="astro-ojxuodky">Multi-Tenant Isolation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/configuration-versions/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Versions (renamed)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-configuration-best-practices/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Best Practices</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/json-schema-migration/" class="astro-ojxuodky"><span class="astro-ojxuodky">JSON Schema Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/web-ui/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web UI</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-appsync-to-rest/" class="astro-ojxuodky"><span class="astro-ojxuodky">UI ⇄ Backend Transport (AppSync → REST)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-cli/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP CLI</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idp-sdk/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP SDK</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/idpcommon-api-reference/" class="astro-ojxuodky"><span class="astro-ojxuodky">idp_common API Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/demo-videos/" class="astro-ojxuodky"><span class="astro-ojxuodky">Demo Videos</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/troubleshooting/" class="astro-ojxuodky"><span class="astro-ojxuodky">Troubleshooting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/error-analyzer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Error Analyzer</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Processing Modes</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/pattern-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">BDA Mode Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/pattern-2/" class="astro-ojxuodky"><span class="astro-ojxuodky">Pipeline Mode Reference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/discovery/" class="astro-ojxuodky"><span class="astro-ojxuodky">Discovery</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/policy-discovery/" class="astro-ojxuodky"><span class="astro-ojxuodky">Policy Discovery</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Document Processing Features</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/classification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Classification</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction-and-confidence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction &amp; Confidence</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/assessment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Assessment (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/assessment-bounding-boxes/" class="astro-ojxuodky"><span class="astro-ojxuodky">Assessment Bounding Boxes (moved)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/few-shot-examples/" class="astro-ojxuodky"><span class="astro-ojxuodky">Few-Shot Examples</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/human-review/" class="astro-ojxuodky"><span class="astro-ojxuodky">Human-in-the-Loop Review</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/review-queues/" class="astro-ojxuodky"><span class="astro-ojxuodky">Review Queues</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rule-validation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/missing-page-handling/" class="astro-ojxuodky"><span class="astro-ojxuodky">Missing Page Handling</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/ocr-image-sizing-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">OCR Image Sizing Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/languages/" class="astro-ojxuodky"><span class="astro-ojxuodky">Languages</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Evaluation &amp; Testing</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/testing/" aria-current="page" class="astro-ojxuodky"><span class="astro-ojxuodky">Testing</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/evaluation/" class="astro-ojxuodky"><span class="astro-ojxuodky">Evaluation Framework</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/evaluation-enhanced-reporting/" class="astro-ojxuodky"><span class="astro-ojxuodky">Enhanced Reporting</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/test-studio/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Studio</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/creating-custom-test-sets/" class="astro-ojxuodky"><span class="astro-ojxuodky">Creating Custom Test Sets</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mlflow-integration/" class="astro-ojxuodky"><span class="astro-ojxuodky">MLflow Experiment Tracking</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Release Validation</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation Records</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0611/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.11</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0612/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.12</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.13</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v0614/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.14</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v066/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.6</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v068/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.8</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-validation/v069/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Validation: v0.6.9</span></a></li></ul></details></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Benchmarks &amp; Performance</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmarking Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/config-guidance/" class="astro-ojxuodky"><span class="astro-ojxuodky">Configuration Guidance</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Release Audit Trail</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="10"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit Trail</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v060/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.0 vs v0.5.16</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0611/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.11 vs v0.6.10</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0612/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.12 vs v0.6.11</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.13 vs v0.6.12</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v0614/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark: v0.6.14 vs v0.6.13</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v065/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.5 vs v0.6.4</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v065-fix-verification/" class="astro-ojxuodky"><span class="astro-ojxuodky">Fix Verification: v0.6.5 correctness fixes</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v066/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark: v0.6.6 vs v0.6.5</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v067/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.7</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v068/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.8</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/releases/v069/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Benchmark Audit — v0.6.9</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Studies</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="11"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/advanced-extraction-refinements/" class="astro-ojxuodky"><span class="astro-ojxuodky">Advanced Extraction — Seven Candidate Refinements, Measured</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/classification-confidence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Classification Confidence — Does the Score Carry Signal?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/confidence-calibration/" class="astro-ojxuodky"><span class="astro-ojxuodky">Confidence Calibration — Can the Score Route Human Review?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/feature-multi-instance/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Study: multi-instance sections (#715 / #753)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/greedy-decoding-tool-use/" class="astro-ojxuodky"><span class="astro-ojxuodky">Greedy Decoding and Invalid Tool-Use Sequences</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/prompt-cache-padding-proposal/" class="astro-ojxuodky"><span class="astro-ojxuodky">Should we pad prompts to clear the cache minimum?</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/prompt-caching/" class="astro-ojxuodky"><span class="astro-ojxuodky">Prompt Caching — Measured Behaviour</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/readme/" class="astro-ojxuodky"><span class="astro-ojxuodky">Benchmark Studies</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/benchmarking/studies/schema-restatement-tokens/" class="astro-ojxuodky"><span class="astro-ojxuodky">Schema Restatement — What Turning It Off Actually Costs</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extraction-scaling-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">Extraction Scaling Guide</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">AI Agents &amp; Analytics</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="12"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/agent-analysis/" class="astro-ojxuodky"><span class="astro-ojxuodky">Agent Analysis</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/agent-companion-chat/" class="astro-ojxuodky"><span class="astro-ojxuodky">Agent Companion Chat</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/code-intelligence/" class="astro-ojxuodky"><span class="astro-ojxuodky">Code Intelligence</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/knowledge-base/" class="astro-ojxuodky"><span class="astro-ojxuodky">Knowledge Base</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/custom-mcp-agent/" class="astro-ojxuodky"><span class="astro-ojxuodky">Custom MCP Agent</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mcp-connector/" class="astro-ojxuodky"><span class="astro-ojxuodky">MCP Connector</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/mcp-server/" class="astro-ojxuodky"><span class="astro-ojxuodky">MCP Server</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Integration &amp; Extensions</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="13"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/feature-platform/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Platform</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/feature-platform-developer-guide/" class="astro-ojxuodky"><span class="astro-ojxuodky">Feature Platform Developer Guide</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/marketplace-subscription-next-steps/" class="astro-ojxuodky"><span class="astro-ojxuodky">After Subscribing on AWS Marketplace</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Extensions</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="14"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/auto-optimizer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Auto Optimizer (Beta)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/idp-monitor/" class="astro-ojxuodky"><span class="astro-ojxuodky">IDP Monitor</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/pii-anonymizer/" class="astro-ojxuodky"><span class="astro-ojxuodky">PII Anonymization</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/confbench-testset/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Set - ConfBench</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/idp-data-generator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Test Set Generator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/sample-document-status/" class="astro-ojxuodky"><span class="astro-ojxuodky">Sample: Document Status (feature add-on)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/extensions/sample-health-insurance-review/" class="astro-ojxuodky"><span class="astro-ojxuodky">Sample: Health Insurance Review</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/document-versions/" class="astro-ojxuodky"><span class="astro-ojxuodky">Document Versions</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/post-processing-lambda-hook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Post-Processing Lambda Hook</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/lambda-hook-inference/" class="astro-ojxuodky"><span class="astro-ojxuodky">Lambda Hook Inference</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/nova-finetuning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Nova Fine-Tuning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/custom-model-finetuning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Custom Model Fine-Tuning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/service-tiers/" class="astro-ojxuodky"><span class="astro-ojxuodky">Service Tiers</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Monitoring &amp; Operations</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="15"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/monitoring/" class="astro-ojxuodky"><span class="astro-ojxuodky">Monitoring</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/reporting-database/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reporting Database</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/reporting-sql-layer/" class="astro-ojxuodky"><span class="astro-ojxuodky">Reporting SQL Layer</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/capacity-planning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Capacity Planning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/cost-calculator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Cost Calculator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/circuit-breaker/" class="astro-ojxuodky"><span class="astro-ojxuodky">Circuit Breaker</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/cross-account-bedrock/" class="astro-ojxuodky"><span class="astro-ojxuodky">Cross-Account Bedrock</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/version-update-indicator/" class="astro-ojxuodky"><span class="astro-ojxuodky">Version Update Indicator</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/release-runbook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Release Runbook</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Planning &amp; Security</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="16"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/threat-model/" class="astro-ojxuodky"><span class="astro-ojxuodky">Threat Model</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/malware-scanning/" class="astro-ojxuodky"><span class="astro-ojxuodky">Malware Scanning</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/well-architected/" class="astro-ojxuodky"><span class="astro-ojxuodky">Well-Architected Review</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/aws-services-and-roles/" class="astro-ojxuodky"><span class="astro-ojxuodky">AWS Services &amp; IAM Roles</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rbac/" class="astro-ojxuodky"><span class="astro-ojxuodky">Role-Based Access Control (RBAC)</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/external-idp/" class="astro-ojxuodky"><span class="astro-ojxuodky">External Identity Provider</span></a></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">GovCloud</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="17"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-deployment/" class="astro-ojxuodky"><span class="astro-ojxuodky">Deployment</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-architecture/" class="astro-ojxuodky"><span class="astro-ojxuodky">Architecture</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-operations/" class="astro-ojxuodky"><span class="astro-ojxuodky">Operations</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/govcloud-batch-api/" class="astro-ojxuodky"><span class="astro-ojxuodky">Batch API</span></a></li></ul></details></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/eu-region-model-support/" class="astro-ojxuodky"><span class="astro-ojxuodky">EU Region Model Support</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/canada-region-model-support/" class="astro-ojxuodky"><span class="astro-ojxuodky">Canada (Central) Model Support</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/openai-models/" class="astro-ojxuodky"><span class="astro-ojxuodky">OpenAI Models</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/grok-models/" class="astro-ojxuodky"><span class="astro-ojxuodky">xAI Grok Models</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Development Setup</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="18"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-linux/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: Linux</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-macos/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: macOS</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-wsl/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: WSL</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/setup-development-env-windows/" class="astro-ojxuodky"><span class="astro-ojxuodky">Setup: Windows</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/using-notebooks-with-idp-common/" class="astro-ojxuodky"><span class="astro-ojxuodky">Using Notebooks</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/dependency-mirroring/" class="astro-ojxuodky"><span class="astro-ojxuodky">Dependency Mirroring</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/dependency-confusion/" class="astro-ojxuodky"><span class="astro-ojxuodky">Installing First-Party Packages</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Migration</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="19"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v0612-to-v0613/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.6.12 → v0.6.13 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v05-to-v06/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.5 → v0.6 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-v04-to-v05/" class="astro-ojxuodky"><span class="astro-ojxuodky">v0.4 → v0.5 Migration</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/migration-granular-retirement/" class="astro-ojxuodky"><span class="astro-ojxuodky">Granular Assessment Retirement</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">New &amp; Uncategorized</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="20"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/data-mart-migration-runbook/" class="astro-ojxuodky"><span class="astro-ojxuodky">Data Mart Migration Runbook</span></a></li><li class="astro-ojxuodky"><a href="/accelerated-intelligent-document-processing-on-aws/rule-validation-z3/" class="astro-ojxuodky"><span class="astro-ojxuodky">Rule Validation Z3</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">GitHub</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg></a></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-r2p65idu"><span class="sr-only astro-r2p65idu">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-r2p65idu"><option value="dark" class="astro-r2p65idu">Dark</option><option value="light" class="astro-r2p65idu">Light</option><option value="auto" selected class="astro-r2p65idu">Auto</option></select><svg aria-hidden="true" class="icon caret astro-r2p65idu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">On this page<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-layers-at-a-glance" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The layers at a glance</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#1-offline-test-suites" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">1. Offline test suites</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#suites-make-test-does-not-run" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Suites make test does not run</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-integration-marked-tier-runs-in-no-ci" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The integration-marked tier runs in no CI</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#making-sure-a-run-tests-this-checkout" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Making sure a run tests this checkout</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#2-static-gates-lint-types-and-hand-written-scanners" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">2. Static gates (lint, types, and hand-written scanners)</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-terraform-offline-gate" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The Terraform offline gate</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#whether-any-of-this-actually-blocks-a-merge" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Whether any of this actually blocks a merge</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#3-web-ui-unit-tests" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">3. Web UI unit tests</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#4-security-scanning-sast-and-sca" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">4. Security scanning (SAST and SCA)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#5-integration-smoke-suite-ci-only" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">5. Integration smoke suite (CI only)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#6-live-stack-tiers-manual-plus-the-weekly-probe-schedule" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">6. Live-stack tiers (manual, plus the weekly probe schedule)</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-ux-review-and-recording-it" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The UX review, and recording it</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#first-time-user-stories" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">First-time-user stories</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#7-benchmarks" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">7. Benchmarks</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#where-results-are-recorded" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Where results are recorded</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#running-the-whole-battery" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Running the whole battery</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Overview</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#the-layers-at-a-glance" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">The layers at a glance</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#1-offline-test-suites" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">1. Offline test suites</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#suites-make-test-does-not-run" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Suites make test does not run</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-integration-marked-tier-runs-in-no-ci" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The integration-marked tier runs in no CI</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#making-sure-a-run-tests-this-checkout" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Making sure a run tests this checkout</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#2-static-gates-lint-types-and-hand-written-scanners" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">2. Static gates (lint, types, and hand-written scanners)</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-terraform-offline-gate" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The Terraform offline gate</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#whether-any-of-this-actually-blocks-a-merge" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Whether any of this actually blocks a merge</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#3-web-ui-unit-tests" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">3. Web UI unit tests</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#4-security-scanning-sast-and-sca" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">4. Security scanning (SAST and SCA)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#5-integration-smoke-suite-ci-only" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">5. Integration smoke suite (CI only)</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#6-live-stack-tiers-manual-plus-the-weekly-probe-schedule" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">6. Live-stack tiers (manual, plus the weekly probe schedule)</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#the-ux-review-and-recording-it" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">The UX review, and recording it</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#first-time-user-stories" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">First-time-user stories</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#7-benchmarks" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">7. Benchmarks</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#where-results-are-recorded" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Where results are recorded</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#running-the-whole-battery" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">Running the whole battery</span></a></li></ul></nav></starlight-toc><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="en" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">Testing</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><p>Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+SPDX-License-Identifier: MIT-0</p>
+<div class="sl-heading-wrapper level-h1"><h1 id="testing">Testing</h1><a class="sl-anchor-link" href="#testing"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Testing”</span></a></div>
+<p>Every test layer and tier in this repository: what it proves, how to run it, whether
+CI runs it for you, and where its results are recorded. This is a map of the tiers,
+not an index of individual test functions — there are thousands of those across
+hundreds of test modules, and one added inside a suite that already runs needs no
+change here. <code dir="auto">make test-list</code> enumerates the suites themselves, and the section on
+<a href="#suites-make-test-does-not-run">what <code dir="auto">make test</code> does not run</a> is the one place the
+suite-level exceptions are written down. If you are looking for <strong>what a given
+release was actually validated against</strong>, that is the
+<a href="../release-validation/readme/">Release Validation Records</a>; this page describes the
+methods, not any particular run of them.</p>
+<p>The organising fact: <strong>most of what protects this repo runs on every pull request,
+but the tiers that need a deployed stack cannot.</strong> Roughly a dozen methods below run
+only when a person asks for them, which is why each one has a written procedure and a
+record of its last run.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="the-layers-at-a-glance">The layers at a glance</h2><a class="sl-anchor-link" href="#the-layers-at-a-glance"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “The layers at a glance”</span></a></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Layer</th><th>Needs AWS?</th><th>Runs in CI?</th><th>Entry point</th></tr></thead><tbody><tr><td><a href="#1-offline-test-suites">1. Offline test suites</a></td><td>no</td><td>✅ both CIs, but through two other targets — see below</td><td><code dir="auto">make test</code></td></tr><tr><td><a href="#2-static-gates-lint-types-and-hand-written-scanners">2. Static gates</a></td><td>no</td><td>✅ both CIs</td><td><code dir="auto">make lint-cicd</code> · <code dir="auto">make typecheck</code> · <code dir="auto">make terraform-check</code></td></tr><tr><td><a href="#3-web-ui-unit-tests">3. Web UI unit tests</a></td><td>no</td><td>✅ both CIs</td><td><code dir="auto">make ui-test</code></td></tr><tr><td><a href="#4-security-scanning-sast-and-sca">4. Security scanning</a></td><td>no</td><td>✅ both CIs</td><td><code dir="auto">make srt-scan</code> · <code dir="auto">make dep-audit</code></td></tr><tr><td><a href="#5-integration-smoke-suite-ci-only">5. Integration smoke suite</a></td><td><strong>yes</strong></td><td>⚠️ GitLab <strong>scheduled</strong> (primary suite nightly) + manual button — not a merge gate</td><td>pipeline <code dir="auto">integration_tests</code></td></tr><tr><td><a href="#6-live-stack-tiers-manual-plus-the-weekly-probe-schedule">6. Live-stack tiers</a></td><td><strong>yes</strong></td><td>❌ manual, except the ZAP DAST and deploy-variant rows (GitLab weekly schedule, while it is active)</td><td>see the table</td></tr><tr><td><a href="#7-benchmarks">7. Benchmarks</a></td><td><strong>yes</strong></td><td>❌ manual</td><td><code dir="auto">make benchmark-release</code></td></tr></tbody></table>
+<p><code dir="auto">make test</code> and <code dir="auto">make lint</code> are the two commands to run before opening a pull
+request. <code dir="auto">make all</code> is both.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="1-offline-test-suites">1. Offline test suites</h2><a class="sl-anchor-link" href="#1-offline-test-suites"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “1. Offline test suites”</span></a></div>
+<p><code dir="auto">make test</code> discovers and runs every non-integration suite in the repo — the
+<code dir="auto">idp_common</code> library, <code dir="auto">idp_cli</code>, <code dir="auto">idp_sdk</code>, <code dir="auto">idp_feature_sdk</code>, the feature platform,
+the per-Lambda suites, the config library, and the repo’s own tooling tests under
+<code dir="auto">scripts/</code>, with the handful of documented exceptions <a href="#suites-make-test-does-not-run">below</a>.
+<code dir="auto">make test-list</code> prints the discovered roots without running them, which is the honest
+answer to “is my new suite actually being run?”.</p>
+<div class="expressive-code"><link rel="stylesheet" href="/accelerated-intelligent-document-processing-on-aws/_astro/ec.w36nc.css"><script type="module" src="/accelerated-intelligent-document-processing-on-aws/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">test</span><span style="--0:#D6DEEB;--1:#403F53">                                   </span><span style="--0:#919F9F;--1:#5F636F"># everything, auto-discovered</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">test-list</span><span style="--0:#D6DEEB;--1:#403F53">                              </span><span style="--0:#919F9F;--1:#5F636F"># which roots were discovered</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">cd</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">lib/idp_common_pkg</span><span style="--0:#D6DEEB;--1:#403F53"> &#x26;&#x26; </span><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">test-unit</span><span style="--0:#D6DEEB;--1:#403F53">     </span><span style="--0:#919F9F;--1:#5F636F"># one root, isolated</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">test-integration-all</span><span style="--0:#D6DEEB;--1:#403F53">                   </span><span style="--0:#919F9F;--1:#5F636F"># only the integration-marked tests (needs AWS)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="make test                                   # everything, auto-discoveredmake test-list                              # which roots were discoveredcd lib/idp_common_pkg &#x26;&#x26; make test-unit     # one root, isolatedmake test-integration-all                   # only the integration-marked tests (needs AWS)"><div></div></button></div></figure></div>
+<p><strong><code dir="auto">make test</code> itself runs in neither CI.</strong> CI runs the same suites through two other
+targets — <code dir="auto">make test-cicd -C lib/idp_common_pkg</code> and <code dir="auto">make test-packages-cicd</code> — and
+the second of those is a hand-enumerated recipe, so a suite that <code dir="auto">make test</code>
+discovers but nobody adds to it runs locally and on no pull request. 22 registered
+roots holding 506 tests were in exactly that state, including the resolver suites
+covering the download allow-list and the discovery upload target.
+<code dir="auto">scripts/tests/test_src_lambda_tests_in_ci.py</code> now closes that by deriving both
+sides — every directory holding a tracked <code dir="auto">test_*.py</code>, against the paths the two
+recipes actually run pytest against — so a root that is in neither is a test failure
+rather than a gap somebody finds by hand months later. A suite that genuinely cannot
+run in the shared gate goes in the excluded registry <a href="#suites-make-test-does-not-run">below</a>
+with a reason.</p>
+<p>Both of those targets run every suite with the AWS environment <strong>removed</strong> — no
+region, no credentials, no profile, the shared AWS config file neutralised and the
+instance metadata service disabled — because that is what a CI runner supplies. The
+wrapper is defined once, in <code dir="auto">make/hermetic_aws.mk</code>, and included by the root
+<code dir="auto">Makefile</code> and by <code dir="auto">lib/idp_common_pkg/Makefile</code>; <code dir="auto">make test-integration</code> there
+deliberately does <strong>not</strong> use it, because integration tests need real credentials.</p>
+<p>A suite that needs a region or placeholder credentials must therefore supply them
+in its own <code dir="auto">conftest.py</code>, where <code dir="auto">os.environ.setdefault</code> reinstates them after the
+wrapper has taken the machine’s real ones away. Inheriting either from the shell
+means the suite passes where it was written and fails where it is gated, and there
+are two distinct ways that happens:</p>
+<ul>
+<li><strong>A region.</strong> A Lambda handler the suite imports builds a boto3 client at module
+scope, so importing it needs a resolvable region and botocore raises
+<code dir="auto">NoRegionError</code> during collection without one. A developer machine supplies one
+from the shared AWS config file; a runner supplies nothing.</li>
+<li><strong>Credentials.</strong> botocore freezes the session’s credentials object into a client
+when the client is <em>constructed</em>, so a client built at import time with none
+resolvable can never sign — no matter how many credentials appear later, including
+the ones <code dir="auto">moto</code> sets when a fixture starts. A developer box on EC2 resolves
+credentials from the instance metadata service without anyone noticing; a runner
+cannot reach it. The symptom is <code dir="auto">AttributeError: 'NoneType' object has no attribute 'access_key'</code> out of <code dir="auto">botocore/auth.py</code>, which does not mention
+credentials at all.</li>
+</ul>
+<p>A corollary worth knowing: <strong>anything a test module does to <code dir="auto">os.environ</code> at import
+time affects the whole session.</strong> <code dir="auto">-m "not integration"</code> deselects tests <em>after</em>
+collection has imported their modules, so even a file whose tests never run can
+change the environment every later module is imported under.</p>
+<p><code dir="auto">scripts/tests/test_offline_suites_are_hermetic.py</code> checks all of this, and checks
+the stripping wrapper itself by measurement: it builds an environment that supplies
+a region and credentials through every source, puts it through the wrapper, and
+requires that neither survives.</p>
+<p>There is <strong>no standing failure set</strong> — <strong>Expected standing failures: 0</strong> on a
+correctly installed tree, and the enumerated list of accepted failures in
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/full-test-battery.md"><code dir="auto">full-test-battery</code></a>
+is empty. So treat any failure as a real regression until proven otherwise.
+<code dir="auto">scripts/tests/test_standing_failure_baseline.py</code> holds that claim, this page and the
+two skills that repeat it to the same number, so they cannot drift apart again, and
+<code dir="auto">make test</code> itself compares the failures it observed against that table — a failure
+it does not declare and a declared row whose test passed both fail the run.</p>
+<p>Most surprising failures are still a stale virtualenv missing the pinned <code dir="auto">[test]</code>
+extras — but <strong>do not expect a broken install to announce itself as an
+<code dir="auto">ImportError</code>.</strong> Several Lambdas catch a missing <code dir="auto">idp_common</code> on purpose and degrade
+(<code dir="auto">feature-platform/main-stack-extensions/lambdas/apply_feature_config_preset/index.py</code>
+logs at ERROR and applies a config preset without recording a revision), so a
+suite that exercises the non-degraded path fails on a bare assertion instead. Two
+tests in <code dir="auto">test_apply_feature_config_preset.py</code>
+(<code dir="auto">test_remove_hands_the_pipeline_back_to_default_then_deletes</code> and
+<code dir="auto">test_remove_keeps_an_active_profile_when_there_is_no_default_to_fall_back_to</code>) were
+misread as a standing failure of this repo for exactly that reason. With
+<code dir="auto">idp_common</code> unimportable that file reports <code dir="auto">2 failed, 18 passed</code>; with the pin the
+<code dir="auto">make</code> targets export (<code dir="auto">PYTHONPATH</code> naming every <code dir="auto">lib/*</code> package root, absolute) it
+reports <code dir="auto">20 passed</code>, on the same interpreter and the same commit. Measured identically under Python 3.12 and
+3.13, so it is not a version incompatibility. Check that
+<code dir="auto">python3 -c "import idp_common; print(idp_common.__file__)"</code> resolves inside your own
+checkout before reading anything else — an editable install can silently point at a
+different, or deleted, checkout. The diagnosis
+order, the per-suite expected totals, and how to prove a failure is inherited are in
+the <a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/full-test-battery.md"><code dir="auto">full-test-battery</code></a>
+procedure. Conventions for <strong>writing</strong> tests — pytest markers, <code dir="auto">moto</code>, conftest
+layout — are in
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/testing-qa.md"><code dir="auto">testing-qa</code></a>.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="suites-make-test-does-not-run">Suites <code dir="auto">make test</code> does not run</h3><a class="sl-anchor-link" href="#suites-make-test-does-not-run"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Suites make test does not run”</span></a></div>
+<p>Auto-discovery means a suite cannot be <em>forgotten</em>, not that every suite is <em>run</em>.
+<code dir="auto">scripts/run_all_tests.py</code> refuses to run at all when it finds a directory holding a
+<code dir="auto">test_*.py</code> that is in neither of its two registries — the roots it runs, and the
+roots it excludes with a written reason — so tests in a new location cannot be
+silently skipped. An exclusion covers <strong>only the directory named</strong>: nesting under an
+excluded directory used to inherit the exclusion, which meant excluding <code dir="auto">scripts</code>
+quietly accepted every future test directory beneath it, so each excluded directory
+is now listed on its own. That check backs <code dir="auto">make test</code>, which runs in <strong>neither</strong> CI, so
+<code dir="auto">scripts/tests/test_testing_doc.py</code> re-derives it on every pull request, where
+<code dir="auto">pytest scripts/tests</code> does run.</p>
+<p>These are the directories in the excluded registry. They are listed because a suite
+that exists and never runs is otherwise indistinguishable from one that passes:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Not run by <code dir="auto">make test</code></th><th>Why</th></tr></thead><tbody><tr><td><code dir="auto">scripts</code></td><td><code dir="auto">scripts/test_api_rbac.py</code> is the live RBAC harness driven by <code dir="auto">make api-test</code> against a deployed stack (layer 6), not a pytest suite; collecting it picks up its <code dir="auto">test_email()</code> helper as a test</td></tr><tr><td><code dir="auto">src/lambda/ocr_benchmark_deployer</code></td><td><code dir="auto">test_local.py</code> needs <code dir="auto">huggingface_hub</code>, which is not a test dependency</td></tr><tr><td><code dir="auto">samples/lambda-hook-inference/GENAIIDP-chandra-ocr-hook</code></td><td><code dir="auto">test_local.py</code> is a manual local-run script and collects zero pytest tests (measured)</td></tr><tr><td><code dir="auto">lib/idp_sdk/idp_sdk/_core</code></td><td>source, not tests: <code dir="auto">test_studio_processor.py</code> is the Test Studio processor module, which the <code dir="auto">test_</code> prefix makes look like a suite</td></tr><tr><td><code dir="auto">lib/idp_common_pkg/manual_tests/agents</code></td><td>operator-run scripts, not a suite: each one drives real Bedrock, Athena or DynamoDB against a deployed stack and bills model calls. Run by hand (<code dir="auto">python manual_tests/agents/test_analytics.py -q "…"</code>); <code dir="auto">norecursedirs</code> in <code dir="auto">lib/idp_common_pkg/pytest.ini</code> keeps a bare <code dir="auto">pytest</code> from collecting them</td></tr></tbody></table>
+<p>Adding an exclusion, or lifting one of these, fails that guard until this table and
+the registry agree — it is checked in both directions, so a row that outlives the
+exclusion it describes fails too.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="the-integration-marked-tier-runs-in-no-ci">The <code dir="auto">integration</code>-marked tier runs in no CI</h3><a class="sl-anchor-link" href="#the-integration-marked-tier-runs-in-no-ci"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “The integration-marked tier runs in no CI”</span></a></div>
+<p>Separate from the directory exclusions above, the tests marked
+<code dir="auto">@pytest.mark.integration</code> are deselected from every suite on this page. <strong>The
+mechanism is the runner, not a config file.</strong> <code dir="auto">scripts/run_all_tests.py</code> runs one
+<code dir="auto">pytest -m "not integration" &#x3C;root></code> subprocess per root, so the filter applies to
+every root it discovers — including a new package under <code dir="auto">lib/</code>, which inherits
+nothing. Only <code dir="auto">lib/idp_common_pkg/pytest.ini</code> carries <code dir="auto">addopts = -m "not integration"</code> of its own; <code dir="auto">lib/idp_sdk</code> and <code dir="auto">lib/idp_cli_pkg</code> have an empty
+<code dir="auto">addopts</code>, and the root <code dir="auto">pytest.ini</code> deliberately sets none, because an <code dir="auto">addopts</code>
+there would silently change collection for every suite that resolves to it.</p>
+<p>Those tests call live AWS — real Bedrock, Textract, S3 and DynamoDB rather than
+<code dir="auto">moto</code> — and within <code dir="auto">idp_common</code> they are the only ones that do. (Layers 5 to 7
+below need AWS too, but none of them is a marked pytest suite.) They run with
+<code dir="auto">make test-integration-all</code>, or per-package with <code dir="auto">make test-integration</code>, and
+<strong>nothing else runs them</strong>: not <code dir="auto">make test</code>, not GitHub, not GitLab. A person
+typing the target is the whole of their coverage.</p>
+<p>⚠️ <strong>GitLab’s <code dir="auto">integration_tests</code> job is a different thing with a similar name.</strong>
+It is the deploy-driven smoke suite in <a href="#5-integration-smoke-suite-ci-only">layer 5</a>
+— a CodePipeline stack deployment — and it never invokes <code dir="auto">pytest -m integration</code>.
+Reading the stage name as coverage of this tier is what let 14 of its 23 tests sit
+failing on tooling faults until a release validation found them
+(<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/1307">#1307</a>):
+the tier was uncovered, and the exemption recording that it was local-only cited
+the stage as the reason it did not need to be. <code dir="auto">test_ci_gate_parity.py</code>’s
+<code dir="auto">test_the_integration_pytest_tier_runs_in_no_ci</code> now measures the absence instead
+of asserting the stage name, so if a CI starts running the tier, the stale
+exemption fails rather than the claim going quietly out of date.</p>
+<p>Two consequences worth keeping in mind when adding one of these tests. The marker,
+not the directory, is what makes a test part of this tier — <code dir="auto">make test-integration</code>
+runs <code dir="auto">pytest -m "integration"</code> over its whole <em>package</em> tree, so an
+integration-marked test
+under <code dir="auto">tests/unit/</code> is in it. And because nothing gates them, a broken one stays
+broken: a test whose seams are all mocked needs no credentials and belongs in the
+default gate, where something will notice.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="making-sure-a-run-tests-this-checkout">Making sure a run tests this checkout</h3><a class="sl-anchor-link" href="#making-sure-a-run-tests-this-checkout"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Making sure a run tests this checkout”</span></a></div>
+<p><code dir="auto">idp_common</code> and the SDKs are <strong>editable installs</strong>, so <code dir="auto">import idp_common</code> reads
+whatever pointer is in the active interpreter’s <code dir="auto">site-packages</code> — not necessarily this
+checkout. Where more than one checkout is worked on at once and <code dir="auto">python3</code> resolves to a
+shared interpreter rather than a per-project virtualenv, that directory is shared and the
+last <code dir="auto">pip install -e</code> wins for all of them. <code dir="auto">make test-cicd</code> is itself a writer: its
+<code dir="auto">test-unit-cicd</code> target runs <code dir="auto">pip install -e ".[test]"</code> unless <code dir="auto">SKIP_INSTALL=1</code> is set,
+so running the gate repoints the pointer as a side effect.</p>
+<p>Nothing raises when this happens. The imported package is real and self-consistent, just
+a different revision, so it shows up as an unrelated-looking assertion failure or as a
+<strong>green run whose coverage number describes another tree</strong>.</p>
+<p><strong>Through <code dir="auto">make</code>, the pin is applied for you.</strong> <code dir="auto">PYTEST_HERMETIC</code> in
+<code dir="auto">make/hermetic_aws.mk</code> — the wrapper every pytest invocation in both Makefiles goes
+through — exports an absolute <code dir="auto">PYTHONPATH</code> naming every first-party root of the checkout
+the makefile belongs to, and <code dir="auto">scripts/run_all_tests.py</code> passes the same value to each of
+the pytest subprocesses <code dir="auto">make test</code> starts. The set is derived from
+<code dir="auto">lib/*/pyproject.toml</code>, the same rule that decides what <code dir="auto">FIRST_PARTY_EDITABLES</code> installs,
+so a package added under <code dir="auto">lib/</code> is pinned without anyone adding it anywhere;
+<code dir="auto">scripts/tests/test_first_party_pythonpath.py</code> asserts the three implementations of that
+rule agree, and measures the wrapper by importing all five packages under it. A caller’s
+own <code dir="auto">PYTHONPATH</code> is kept, after the pin. <code dir="auto">make test FIRST_PARTY_PYTHONPATH=</code> suppresses
+it, for deliberately testing an installed copy.</p>
+<p><strong>Running <code dir="auto">pytest</code> directly, pin it yourself — every root, and absolute.</strong> The packages
+import each other, so a pin naming <code dir="auto">lib/idp_common_pkg</code> alone is refused by the next one;
+and a relative pin is dropped by any subprocess started in another directory, which
+several suites do start. <code dir="auto">scripts/tests/first_party_provenance.py</code> is what refuses, and it
+is called from <code dir="auto">lib/idp_common_pkg/tests/conftest.py</code>,
+<code dir="auto">feature-platform/main-stack-extensions/tests/conftest.py</code>, <code dir="auto">scripts/tests/conftest.py</code>,
+<code dir="auto">scripts/tests/test_model_surface_consistency.py</code> and
+<code dir="auto">lib/idp_sdk/tests/unit/test_config_operations_region.py</code>. It compares <strong>checkout
+identity</strong>, deriving each side’s root by walking up to <code dir="auto">.git</code>, so a git worktree validates
+against itself and passes while a worktree <em>nested inside</em> another checkout is correctly
+refused. Before refusing it tries to repair: it puts this checkout’s own roots first on
+<code dir="auto">sys.path</code> and reports having done so, since that fixes the process in hand and not the
+environment. It still refuses when the package was already imported — re-importing one
+other modules hold references to leaves two live copies — and when this checkout has no
+copy to prefer. <strong>A refusal is not a failing test; it is a run that did not happen</strong>, and
+the message says so, because a collection error at the end of a long log reads as “some
+tests failed”.</p>
+<p>Fix it durably by installing with the interpreter you actually want
+(<code dir="auto">&#x3C;your-venv>/bin/python -m pip install -e "lib/idp_common_pkg[test]"</code>, by path and never
+by bare name — see <a href="../dependency-confusion/">dependency-confusion.md</a>).
+<code dir="auto">scripts/check_first_party_deps.py</code>, which runs in both CIs and after every <code dir="auto">make setup</code>,
+reports an editable pointer into another checkout as a failure — it answers “from source,
+and from <em>which</em> source”, where answering only the first half is how this condition stayed
+invisible while the control that looked like it covered it was green.
+<code dir="auto">IDP_ALLOW_FOREIGN_FIRST_PARTY=1</code> downgrades both that failure and the pytest-side
+refusal to a note when you are deliberately testing an installed copy; it is a
+per-invocation switch, so it is not in <code dir="auto">scripts/tests/gate_exemptions.json</code>, for the
+reason that file records for <code dir="auto">ALLOW_SHARED_BRANCH</code>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="2-static-gates-lint-types-and-hand-written-scanners">2. Static gates (lint, types, and hand-written scanners)</h2><a class="sl-anchor-link" href="#2-static-gates-lint-types-and-hand-written-scanners"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “2. Static gates (lint, types, and hand-written scanners)”</span></a></div>
+<p><code dir="auto">make lint</code> is the local gate; <code dir="auto">make lint-cicd</code> is the same set in check-only mode
+and is what both CIs run. Several members of the set are not linters at all but
+hand-written scanners for classes of defect that have each shipped at least once:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Gate</th><th>What it catches</th></tr></thead><tbody><tr><td><code dir="auto">make ruff-lint</code> · <code dir="auto">make format</code></td><td>Python style and formatting (88 cols, Python 3.12) over every tracked <code dir="auto">.py</code> file except a named per-file debt list</td></tr><tr><td><code dir="auto">make check-lint-debt</code></td><td>that debt list staying honest: an excluded file that <em>gained</em> a finding, one that is now clean and should be delisted, a dead path, a bare directory name in one of the three generated arrays, or a tracked file ruff’s walk never reaches (which is what covers the top-level <code dir="auto">exclude</code> array, whose bare names are deliberate). <code dir="auto">ruff.toml</code> excluded five bare directory names until <a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/975">#975</a>, which match at any depth, so 442 of 1230 tracked <code dir="auto">.py</code> files were read by neither gate. Use <code dir="auto">python3 scripts/check_lint_debt.py --explain &#x3C;path></code> to ask whether one file is linted — no <code dir="auto">ruff</code> invocation answers that correctly</td></tr><tr><td><code dir="auto">make cfn-lint</code></td><td>any file declaring <code dir="auto">AWSTemplateFormatVersion</code> — discovered by <strong>content</strong>, so a new template cannot escape it. Fails on errors only</td></tr><tr><td><code dir="auto">make check-arn-partitions</code></td><td>hardcoded <code dir="auto">arn:aws:</code> / <code dir="auto">amazonaws.com</code> instead of <code dir="auto">${AWS::Partition}</code> / <code dir="auto">${AWS::URLSuffix}</code> — GovCloud compatibility</td></tr><tr><td><code dir="auto">make check-filtered-scans</code></td><td>DynamoDB <code dir="auto">Scan</code> with a filter expression that cannot see all matches</td></tr><tr><td><code dir="auto">make check-data-plane-tags</code></td><td>the <code dir="auto">idp:plane=data</code> tag on the Lambdas that must carry it</td></tr><tr><td><code dir="auto">make check-markdown-links</code></td><td>a relative Markdown link that resolves to nothing, an <code dir="auto">#anchor</code> naming a heading that has since been retitled, a <strong>published</strong> <code dir="auto">docs/</code> page linking relatively to one <code dir="auto">docs-site/setup.sh</code> does not symlink (resolves on GitHub, 404s on the site), and a code fence that swallows content, which would otherwise leave this gate blind to the rest of the file. Every tracked <code dir="auto">.md</code> file, from <code dir="auto">git ls-files</code>. Anchors are slugified by <code dir="auto">github-slugger</code>’s rule, which <code dir="auto">scripts/tests/test_markdown_links.py</code> verifies against the real package over every heading in the tree. External <code dir="auto">http(s)</code> URLs are <strong>not</strong> fetched, so a green result says nothing about them (<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/1068">#1068</a>)</td></tr><tr><td><code dir="auto">make validate-buildspec</code></td><td>malformed CodeBuild buildspecs, and a loop in a multi-line command that cannot report its own failure — otherwise a deploy-time failure</td></tr><tr><td><code dir="auto">make codegen-check</code></td><td>generated GraphQL types drifting from the schema</td></tr><tr><td><code dir="auto">make typecheck</code></td><td><code dir="auto">basedpyright</code> over every tracked <code dir="auto">.py</code> file — this is what both CIs run. <code dir="auto">make typecheck-pr</code> narrows it to the files a branch changes, for local latency, and is a gate in neither</td></tr><tr><td><code dir="auto">make api-test-static</code></td><td>an API operation added without authorization, and drift between the dispatcher’s generated required-groups manifest and <code dir="auto">scripts/api_rbac_expectations.yaml</code> — see <a href="#6-live-stack-tiers-manual-plus-the-weekly-probe-schedule">layer 6</a> for the live half</td></tr><tr><td><code dir="auto">python3 scripts/check_first_party_deps.py</code></td><td>a first-party package in the <strong>current environment</strong> that came from a package index rather than from <code dir="auto">lib/</code>, which on public PyPI is <a href="../dependency-confusion/">somebody else’s code</a></td></tr><tr><td><code dir="auto">scripts/tests/test_doc_install_commands.py</code> (part of <code dir="auto">make test-packages-cicd</code>)</td><td>a <code dir="auto">pip install</code> <strong>documented</strong> in a fenced code block that could resolve a first-party name from an index — a bare name, or a path install missing a sibling the package requires by name. The environment checker above cannot see an instruction nobody has run yet</td></tr><tr><td><code dir="auto">python3 scripts/sdlc/validate_service_role_permissions.py</code></td><td>the CloudFormation service role missing a permission the templates need</td></tr></tbody></table>
+<p>Three of these gates guard the <strong>gates themselves</strong>:
+<code dir="auto">scripts/tests/test_ci_gate_parity.py</code> fails if a gate runs in one CI and not the
+other, or if <code dir="auto">lint-cicd</code> becomes weaker than local <code dir="auto">make lint</code>;
+<code dir="auto">scripts/tests/test_nested_stack_parameters.py</code> checks parent-to-nested stack
+parameter wiring that <code dir="auto">cfn-lint</code>’s own rule cannot see; and
+<code dir="auto">scripts/tests/test_lint_debt_gate.py</code> drives <code dir="auto">check-lint-debt</code> through each
+failure mode it claims, because a ratchet nobody has watched fail is not a
+ratchet. All three exist because every gap they cover was originally found by
+hand, months late.</p>
+<p><code dir="auto">make typecheck</code> reads every tracked <code dir="auto">.py</code> file — <code dir="auto">git ls-files '*.py' | wc -l</code> and
+<code dir="auto">basedpyright</code>’s <code dir="auto">filesAnalyzed</code> agree exactly, and that identity, rather than any
+particular count, is what <code dir="auto">scripts/tests/test_pyright_config.py</code> asserts by deriving
+the set from <code dir="auto">git ls-files</code> rather than from a list. Run those two commands for
+today’s figure rather than looking for one on this page: it changes with almost every
+merge, and a written-down count has gone stale in three separate documents at once.
+The <code dir="auto">include</code> array once named six paths and reached 432 of the 1,230 tracked at the
+time, and two <code dir="auto">NameError</code>-class defects reached <code dir="auto">develop</code> through the gap.</p>
+<p>Reading every file is a weaker property than it sounds, and the same suite now
+covers the difference. <code dir="auto">basedpyright</code> honours <code dir="auto">PYTHONPATH</code>, which neither the
+<code dir="auto">make</code> target nor either CI sets, so with <code dir="auto">reportMissingImports</code> configured <code dir="auto">"none"</code>
+the shared <code dir="auto">idp_common</code> library did not resolve and no call into it could produce a
+diagnostic — zero errors over a file count that matched <code dir="auto">git ls-files</code> exactly,
+hiding eleven real ones (<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/1109">#1109</a>).
+<code dir="auto">pyrightconfig.json</code>’s <code dir="auto">extraPaths</code> fixes resolution in the configuration rather
+than the environment, using relative paths so it cannot resolve against another
+checkout, and the suite asserts that first-party imports really do resolve — by
+running basedpyright, not by inspecting the JSON.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="the-terraform-offline-gate">The Terraform offline gate</h3><a class="sl-anchor-link" href="#the-terraform-offline-gate"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “The Terraform offline gate”</span></a></div>
+<p><code dir="auto">make terraform-check</code> is a static gate that is not part of <code dir="auto">make lint</code>, because it
+needs network access and about two gigabytes of cache. Each CI runs it as its own job,
+<code dir="auto">terraform_checks</code>. It works in four steps:</p>
+<ol>
+<li>It translates <code dir="auto">template.yaml</code>, with the nested templates read from source, into a
+temporary directory using <code dir="auto">terraform/translator</code> in <code dir="auto">--offline</code> mode. No AWS call
+is made.</li>
+<li>It installs each binary in <code dir="auto">TERRAFORM_CHECK_BINARIES</code> into a cache. By default
+these are the floor and latest-stable releases of both Terraform and OpenTofu,
+pinned in the <code dir="auto">Makefile</code> and mirrored in both CI configs. An archive is accepted
+only when its SHA256 matches both the release’s published <code dir="auto">SHA256SUMS</code> and the
+hash committed in <code dir="auto">scripts/terraform_binaries.lock.json</code>.</li>
+<li>It runs <code dir="auto">init -backend=false</code> and <code dir="auto">validate</code> on the generated module with each
+binary. Provider versions are pinned exactly through an override file: <code dir="auto">aws</code> and
+<code dir="auto">time</code> from the lock file, and <code dir="auto">awscc</code> to the vendored schema’s version. Errors
+fail the gate. Warnings are counted and printed but do not fail it.</li>
+<li>It runs <code dir="auto">make terraform-scan-diff</code>: a pinned <code dir="auto">checkov</code> (<code dir="auto">CHECKOV_VERSION</code> in the
+<code dir="auto">Makefile</code>) over the CloudFormation templates and over the generated module,
+failing on a Terraform finding the CloudFormation side does not have unless
+<code dir="auto">scripts/terraform_scan_baseline.json</code> explains it.</li>
+</ol>
+<p>The gate proves that the generated HCL parses, that its references resolve, and that
+every resource and attribute type-checks against the pinned provider schemas, on the
+oldest and newest releases the module claims to support. It does <strong>not</strong> plan or
+deploy anything, so a value AWS would reject at apply time, an IAM policy grammar
+error, or an ordering problem between resources is outside what it can see. The
+translator’s and bridge’s own unit tests run in <code dir="auto">make test</code> (layer 1) and are not
+repeated here. <code dir="auto">scripts/tests/test_terraform_check.py</code> covers the gate’s own checks
+offline: refusing an archive that matches neither hash, failing on an error while
+passing on warnings, and keeping the provider pins inside the module’s declared
+ranges.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="whether-any-of-this-actually-blocks-a-merge">Whether any of this actually blocks a merge</h3><a class="sl-anchor-link" href="#whether-any-of-this-actually-blocks-a-merge"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Whether any of this actually blocks a merge”</span></a></div>
+<p>Parity means both CIs <em>run</em> a gate. Whether a red gate can <em>stop</em> a merge is a
+repository setting, and today it does not: <strong>neither <code dir="auto">develop</code> nor <code dir="auto">main</code> has any
+branch protection</strong> — and <code dir="auto">main</code> is the branch releases are cut from — so every
+gate in this table is advisory. A pull request can be merged with all checks red,
+and because the gate workflows are <code dir="auto">pull_request</code>-only, a direct push to either
+branch runs none of them.</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">check-branch-protection</span><span style="--0:#D6DEEB;--1:#403F53">    </span><span style="--0:#919F9F;--1:#5F636F"># reads the live setting via the GitHub API</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="make check-branch-protection    # reads the live setting via the GitHub API"><div></div></button></div></figure></div>
+<p>The check derives the expected required-check list by parsing
+<code dir="auto">.github/workflows/*.yml</code> for the job names GitHub turns into status-check contexts,
+rather than from a hardcoded list that would drift on the next rename. It then
+asserts protection is enabled, that every context a PR produces is required, that
+stale approvals are dismissed, that force-push and deletion are blocked, that an
+approving review is required, and that <code dir="auto">enforce_admins</code> is on — without it an
+administrator can push straight past everything else. It also names the contexts
+that must <strong>stay</strong> advisory: the docs and dependency-manifest workflows are
+path-filtered, and <code dir="auto">Test Results</code> is a check run an action creates behind an <code dir="auto">if:</code>,
+so none of them reports on every PR and requiring one would leave a check pending
+forever and block every merge.</p>
+<p>Three details are worth knowing about what it reads. Eleven of the thirteen shared gates
+live in <code dir="auto">developer-tests.yml</code> and the other two — the SRT scan and the dependency
+audit — in <code dir="auto">security-checks.yml</code>; because a context is a <em>job</em>, and those two
+workflows hold five and two jobs respectively, the thirteen gates produce seven
+requireable contexts. ⚠️ <strong>Requiring only the lint context is therefore weaker than
+it looks</strong>: the test suites are their own contexts, so all seven have to be required
+for a red test run to block a merge. It reads <strong>both</strong> enforcement mechanisms,
+classic branch protection and
+rulesets, because a branch can be fully governed by a ruleset while the classic
+endpoint reports nothing. And it distinguishes “not protected” from “cannot see”:
+the classic endpoint needs repository <strong>admin</strong> and answers 404 without it, so the
+tool cross-checks <code dir="auto">GET /repos/{slug}/branches/{branch}</code>, which carries a
+<code dir="auto">protected</code> boolean and is readable with plain <code dir="auto">pull</code> access. <code dir="auto">--json</code> therefore
+reports <code dir="auto">protected: null</code> — not <code dir="auto">false</code> — when the state genuinely could not be
+determined.</p>
+<p>It is opt-in and blocks nothing: it needs network access and a token (<code dir="auto">pull</code> access
+is enough to reach a verified answer about whether the branch is protected <em>and</em> to
+compare the required-check list, because <code dir="auto">GET /repos/{slug}/branches/{branch}</code>
+carries a nested <code dir="auto">protection.required_status_checks</code> object at that scope;
+<code dir="auto">administration:read</code> is what the other five assertions — approvals, stale-review
+dismissal, force-push and deletion blocks, <code dir="auto">enforce_admins</code> — need, and a run
+without it reports those five as <strong>unread</strong>, not as satisfied). One invocation reads
+one branch, so answering the question for this repository takes two — add
+<code dir="auto">BRANCH_PROTECTION_ARGS=--branch=main</code> for the second. With no token or no network it
+exits 0 with an explanation; otherwise its steady-state result here is exit 1 with a
+single <code dir="auto">not_protected</code> finding on each branch, which is the expected answer rather
+than a regression.</p>
+<p>The absence of protection is a <strong>known, accepted residual</strong>, not an open task, and
+the decision is recorded in closed
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/issues/933">issue #933</a>:
+enabling classic protection needs repository <strong>admin</strong>, which no contributor and no
+CI token here has. Nothing in the repository can substitute, because enforcement is
+server-side — a merge taken through GitHub’s own Merge button runs no code from this
+tree. So the condition for making this a required, blocking check, run with
+<code dir="auto">--fail-on-skip</code>, is a repository <strong>setting</strong> changing: either somebody with
+repository admin enables protection, or an organization or enterprise owner
+publishes a <strong>branch ruleset</strong> targeting these branches, which needs no repository
+admin at all. Its own parsing and assertion logic is covered offline by
+<code dir="auto">scripts/tests/test_check_branch_protection.py</code>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="3-web-ui-unit-tests">3. Web UI unit tests</h2><a class="sl-anchor-link" href="#3-web-ui-unit-tests"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “3. Web UI unit tests”</span></a></div>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ui-test</span><span style="--0:#D6DEEB;--1:#403F53">        </span><span style="--0:#919F9F;--1:#5F636F"># Vitest, jsdom — no browser</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ui-build</span><span style="--0:#D6DEEB;--1:#403F53">       </span><span style="--0:#919F9F;--1:#5F636F"># lint + typecheck + production Vite build</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="make ui-test        # Vitest, jsdom — no browsermake ui-build       # lint + typecheck + production Vite build"><div></div></button></div></figure></div>
+<p>Both CIs run the Vitest suite. Nothing in this layer opens a browser — layer 6’s
+UX review and first-time-user stories are the tiers that do.</p>
+<p><strong>If you are splitting a local run across lanes, note that these two share
+<code dir="auto">src/ui/node_modules</code> with <code dir="auto">make lint-cicd</code>.</strong> Both reinstall that directory with
+<code dir="auto">npm ci</code>, which deletes it before rebuilding it, and so do the three UI targets
+<code dir="auto">lint-cicd</code> performs itself (<code dir="auto">ui-lint</code>, <code dir="auto">ui-build-only</code>, <code dir="auto">codegen-check</code>) — so
+“lint in one lane, UI tests in another” is two lanes writing one directory, which
+is how three gates once went red with three unrelated-looking missing-module
+errors. Every one of those targets now takes an exclusive lock on that directory,
+so the second lane waits rather than racing; it tells you it is waiting, and it
+gives up with an error after a bounded wait instead of hanging. The cost in a
+single serial run is one <code dir="auto">flock</code> and no output. Neither CI is affected either way:
+both split these gates across separate runners with separate checkouts, so nothing
+there contends. See the comment above the UI section of the <code dir="auto">Makefile</code> and
+<code dir="auto">scripts/ui_deps_lock.sh</code>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="4-security-scanning-sast-and-sca">4. Security scanning (SAST and SCA)</h2><a class="sl-anchor-link" href="#4-security-scanning-sast-and-sca"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “4. Security scanning (SAST and SCA)”</span></a></div>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">srt-scan</span><span style="--0:#D6DEEB;--1:#403F53">       </span><span style="--0:#919F9F;--1:#5F636F"># Sample Security Review Tool: SAST over the checkout</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">dep-audit</span><span style="--0:#D6DEEB;--1:#403F53">      </span><span style="--0:#919F9F;--1:#5F636F"># every pinned Python + Node dependency against OSV (fails on HIGH+)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="make srt-scan       # Sample Security Review Tool: SAST over the checkoutmake dep-audit      # every pinned Python + Node dependency against OSV (fails on HIGH+)"><div></div></button></div></figure></div>
+<p>Both run on every pull request in <strong>both</strong> CIs, and neither needs AWS. They cover
+different things and one does not imply the other: SRT’s <code dir="auto">syft</code> stage builds an SBOM
+(inventory only, no vulnerability matching), so dependency CVEs are <code dir="auto">dep-audit</code>’s
+job alone.</p>
+<p>Findings are triaged in place rather than waved through: bandit findings take a
+line-scoped <code dir="auto"># nosec &#x3C;ID> - &#x3C;reason></code>, unreachable advisories go in
+<code dir="auto">scripts/security/dep_audit_allowlist.json</code> with a justification (an entry that
+no longer matches any finding fails the audit, so delete it once the advisory is
+withdrawn or the package is upgraded), and security-matrix/Checkov findings go in
+<code dir="auto">scripts/srt/issues.json</code>. Procedures:
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/srt-security-scan.md"><code dir="auto">srt-security-scan</code></a>.</p>
+<p><code dir="auto">dep-audit</code> also prints an <strong>unmapped advisories</strong> section. GitHub publishes many
+advisories as <em>unreviewed</em>, with no affected package attached; matching by package
+and version, as OSV, <code dir="auto">npm audit</code> and Dependabot do, can never report one. The
+section lists each unreviewed advisory from the last 60 days whose summary opens
+with a pinned package’s name and a range that includes the pinned version. It is a
+list to review, not a gate: it is read from prose, and it never changes the exit
+code. It needs a GitHub token (<code dir="auto">GITHUB_TOKEN</code>, <code dir="auto">GH_TOKEN</code> or a <code dir="auto">gh</code> login), and
+says “not checked” without one; <code dir="auto">make dep-audit DEP_AUDIT_ARGS=--no-unmapped</code>
+skips it. GitLab’s <code dir="auto">dep_audit</code> job runs it. GitHub’s passes <code dir="auto">--no-unmapped</code>,
+because the Actions token’s hourly request limit is shared by every job in the
+repository and one run of this report uses about a third of it.</p>
+<p>An advisory in that list is not allowlisted: there is no OSV finding for the entry
+to suppress, so it would fail the audit as stale. Once reviewed it needs no
+record; it leaves the list when it is 60 days old or when GitHub maps it to a
+package, at which point OSV reports it normally.</p>
+<p>Published, redacted snapshots of the four security tests per release live in
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/tree/develop/security/test-results"><code dir="auto">security/test-results/&#x3C;version>/</code></a>,
+produced by <code dir="auto">make security-results</code>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="5-integration-smoke-suite-ci-only">5. Integration smoke suite (CI only)</h2><a class="sl-anchor-link" href="#5-integration-smoke-suite-ci-only"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “5. Integration smoke suite (CI only)”</span></a></div>
+<p>The GitLab pipeline’s <code dir="auto">integration_tests</code> job deploys a stack and drives fourteen
+numbered steps through it — default config, BDA mode, rule validation, concurrent
+batch processing, Test Studio evaluation, agentic extraction on a large table,
+single- and multi-document discovery, test comparison, API RBAC, IAM permissions
+boundary, and pipeline hooks. It needs AWS credentials, so it is <strong>GitLab-only</strong>: a
+change merged through a GitHub pull request has not run it.</p>
+<p>⚠️ <strong>It runs nightly, not per-merge-request, so a green MR pipeline does not mean
+the deploy works.</strong> It was automatic on <code dir="auto">develop</code> and on non-Draft MRs, which put
+62–113 minutes onto every pipeline after a 45-minute check stage. It is now the
+nightly schedule, a weekly variant-probe schedule (below), and a <strong>manual play button</strong>, available on any MR targeting
+<code dir="auto">develop</code> and on a <code dir="auto">develop</code> pipeline.</p>
+<p>The nightly runs the primary suite only. The deployment-variant probes (ZAP DAST,
+tenant isolation and the deploy variants in <a href="#6-live-stack-tiers-manual-plus-the-weekly-probe-schedule">section 6</a>) run on a separate
+<strong>weekly</strong> schedule, so a probe failure is never read as a nightly regression.
+The schedule itself is a GitLab project setting (<strong>Build › Pipeline schedules</strong>,
+carrying <code dir="auto">IDP_RUN_PROBES=true</code>), not something in this repository; the probes run
+only while it exists and is active.
+Two more weekly schedules, while they are active, run the primary suite in
+<code dir="auto">eu-central-1</code> and <code dir="auto">ca-central-1</code>; each result is labelled with its region, in the
+same Slack channel. A second nightly schedule, while it is active (carrying
+<code dir="auto">IDP_IAC=terraform</code>), runs the primary suite against a
+<a href="../terraform/">Terraform deployment</a> of the accelerator instead of a
+CloudFormation stack, labelled <code dir="auto">NIGHTLY TERRAFORM RUN</code>. It is told apart from the
+CloudFormation nightly by that variable alone, so it leaves the UX review stack and
+the nightly first-time-user stories to the CloudFormation nightly, and the two runs
+queue for the same deploy lock rather than overlapping. To run that mode by hand, set
+<code dir="auto">IDP_IAC=terraform</code> for the deploy driver, <code dir="auto">scripts/sdlc/codebuild_deployment.py</code>;
+how it differs from the CloudFormation run, and the CI pipeline-stack update it
+needs before the schedule is turned on, are in the coverage document below.</p>
+<p>Two things follow. <strong>Click the button before merging anything that touches the
+deploy path</strong> — <code dir="auto">template.yaml</code>, <code dir="auto">publish.py</code>, <code dir="auto">patterns/</code>, <code dir="auto">nested/</code>, <code dir="auto">src/</code>,
+<code dir="auto">lib/</code>, <code dir="auto">config_library/</code>, <code dir="auto">feature-platform/</code>, <code dir="auto">iam-roles/</code>, <code dir="auto">scripts/</code> — because
+it is the only pre-merge signal this tier has left. And because a breaking change
+can merge and surface a night later (a week later, for a variant probe) with other
+merges on top of it, <strong>a scheduled failure is triaged by bisecting the merges since
+the last green run</strong>, not by reading the pipeline’s own commit. The trade is written out in full in
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/scripts/sdlc/docs/CI_TEST_COVERAGE.md"><code dir="auto">scripts/sdlc/docs/CI_TEST_COVERAGE.md</code></a>.</p>
+<p>Per-step detail, what each step asserts, and how to reproduce a single step by hand
+are in <a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/scripts/sdlc/docs/CI_TEST_COVERAGE.md"><code dir="auto">scripts/sdlc/docs/CI_TEST_COVERAGE.md</code></a>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="6-live-stack-tiers-manual-plus-the-weekly-probe-schedule">6. Live-stack tiers (manual, plus the weekly probe schedule)</h2><a class="sl-anchor-link" href="#6-live-stack-tiers-manual-plus-the-weekly-probe-schedule"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “6. Live-stack tiers (manual, plus the weekly probe schedule)”</span></a></div>
+<p>Each of these needs a deployed stack (or deploys its own) and has a written
+procedure, and each but the first-time-user stories is mandatory for a release.
+Several also run in CI in some form, on GitLab only, so a GitHub pull request covers
+none of them: the dynamic API RBAC matrix is step 12 of the GitLab
+<code dir="auto">integration_tests</code> deployment (<code dir="auto">scripts/sdlc/codebuild_deployment.py</code> shells out to
+<code dir="auto">make api-test</code> against the stack that job deploys); the ZAP DAST, tenant isolation
+and deploy-variant rows run on the weekly variant-probe schedule, a scheduled pipeline of its own
+separate from the nightly; the UX review runs unattended as the advisory
+<code dir="auto">ai_ux_test</code> job on merge requests that change <code dir="auto">src/ui/</code>; and the first-time-user
+stories run as advisory jobs on merge requests that change <code dir="auto">CHANGELOG.md</code> and every
+night against the review stack. Note when <code dir="auto">integration_tests</code> runs: automatically
+only in the scheduled pipelines; on a merge request to <code dir="auto">develop</code> and on <code dir="auto">develop</code>
+itself it is a manual button, and on any other branch it does not run, so nothing
+exercises a change before it merges unless someone presses that button. The rest of
+the rows run only when a person asks.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tier</th><th>What only a live stack can prove</th><th>Command</th><th>Procedure</th></tr></thead><tbody><tr><td>API RBAC — dynamic (also runs in the GitLab <code dir="auto">integration_tests</code> job)</td><td>that the <strong>deployed</strong> resolver enforces authorization per Cognito group and configuration-profile scope, not just that the code looks right</td><td><code dir="auto">make api-test STACK_NAME=…</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/api-rbac-test.md"><code dir="auto">api-rbac-test</code></a></td></tr><tr><td>Cognito authorization behaviour</td><td>that the pre-token group-mapping trigger and client attribute permissions behave as the docs claim — they do not always</td><td><code dir="auto">make live-auth-checks</code> · <code dir="auto">make verify-idp-federation</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/live-auth-checks.md"><code dir="auto">live-auth-checks</code></a></td></tr><tr><td><strong>UX review (browser)</strong></td><td>that a person can actually complete each flow in the web UI, and how it feels doing so — functional pass/fail <strong>plus</strong> usability findings. One of the two tiers here that open a browser, beside the first-time-user stories below</td><td><code dir="auto">make ux-test STACK_NAME=…</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/ux-test.md"><code dir="auto">ux-test</code></a></td></tr><tr><td><strong>First-time-user stories (browser)</strong></td><td>that a person new to the product can do what the published documentation says they can, by following it literally — each story is one intent attempted as one persona and judged against what that persona’s role should be able to do, with every hesitation, dead end and gap between the docs and the screens recorded as it goes. Advisory in GitLab CI on merge requests and nightly; not a release tier</td><td><code dir="auto">make ai-ux-test-stories-local STORY=…</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/ux-test-stories.md"><code dir="auto">ux-test-stories</code></a></td></tr><tr><td>Inbox end to end</td><td>that a message posted through <code dir="auto">idp_common.notifications</code> (direct, Cognito group fan-out, idempotency key, dedupe key) is the one the <strong>deployed</strong> API lists, counts and marks read for its recipient, and that another user cannot reach it. Creates and removes a temporary Cognito group, two users and their Inbox items</td><td><code dir="auto">make stacktest-inbox STACK_NAME=…</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/run-stack-tests.md"><code dir="auto">run-stack-tests</code></a></td></tr><tr><td>Review queues end to end</td><td>that a document routed under a profile with review queues on reaches the <strong>deployed</strong> queue, can be claimed, edited and completed through the API with a real Annotator token, and finishes with the final status object, an unchanged machine manifest and a final manifest. Creates and removes a temporary profile, Annotator, Admin and document, and lists that Annotator on the Default queue for the duration of the run (<code dir="auto">CHECK_EVENTS=1</code> adds a temporary EventBridge rule and SQS queue)</td><td><code dir="auto">make stacktest-review-queues STACK_NAME=…</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/run-stack-tests.md"><code dir="auto">run-stack-tests</code></a></td></tr><tr><td>ZAP DAST (also on the weekly probe schedule, while it is active)</td><td>that the deployed HTTP surface has no exploitable finding</td><td><code dir="auto">make stacktest-zap STACK_NAME=…</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/run-stack-tests.md"><code dir="auto">run-stack-tests</code></a></td></tr><tr><td>Tenant isolation (also on the weekly probe schedule, while it is active)</td><td>that a stack deployed with <code dir="auto">TenantIsolationMode=Strict</code> keeps two tenants apart: each tenant’s users read their own document and are refused the other’s, strict-mode ingest refuses an upload outside every tenant’s prefixes, and the generated per-tenant access points refuse a cross-tenant upload. Creates and removes throwaway profiles, tenants, Cognito users, two IAM roles and an access point stack</td><td><code dir="auto">make stacktest-tenancy</code> (self-deploys a Strict stack) · <code dir="auto">make verify-tenant-isolation STACK_NAME=…</code> (an existing Strict stack)</td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/run-stack-tests.md"><code dir="auto">run-stack-tests</code></a></td></tr><tr><td>Deploy variants (also on the weekly probe schedule, while it is active)</td><td>that each hosting/parameter combination actually creates and serves</td><td><code dir="auto">make stacktest-hosting-global</code> · <code dir="auto">make stacktest-waf</code> · <code dir="auto">make stacktest-hosting-private</code> (VPC) · <code dir="auto">make stacktest-jobsapi</code> (VPC) — list them with <code dir="auto">make stacktest-list</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/run-stack-tests.md"><code dir="auto">run-stack-tests</code></a></td></tr><tr><td>Template transforms</td><td>that a <strong>transformed</strong> template deploys and processes a real document — the only tier that can</td><td><code dir="auto">make transform-deploy-test-headless</code> · <code dir="auto">make transform-deploy-test-govcloud</code> · both: <code dir="auto">make transform-deploy-test-all</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/transform-deploy-test.md"><code dir="auto">transform-deploy-test</code></a></td></tr><tr><td>Seller Entitlement Service e2e</td><td>that the service deploys into a seller account, grants correctly, and <strong>refuses</strong> correctly</td><td><code dir="auto">make stacktest-seller</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/run-stack-tests.md"><code dir="auto">run-stack-tests</code></a></td></tr><tr><td>Terraform property parity</td><td>that a Terraform deployment of the release stores the same configuration as a CloudFormation deployment of it with the same parameters, every resource of the main and nested stacks read back through Cloud Control, beyond the explained differences in <code dir="auto">terraform/tools/parity_baseline.json</code>. Read-only; needs both deployments</td><td><code dir="auto">make terraform-parity CFN_STACK=… TF_STACK=…</code></td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/release-validation.md"><code dir="auto">release-validation</code></a> (tier I)</td></tr><tr><td>In-place upgrade (X→Y)</td><td>that an existing customer stack survives <code dir="auto">update-stack</code> without rollback <strong>and still works afterwards</strong></td><td><code dir="auto">make stacktest-upgrade</code> (pointer)</td><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/test-upgrade.md"><code dir="auto">test-upgrade</code></a></td></tr></tbody></table>
+<div class="sl-heading-wrapper level-h3"><h3 id="the-ux-review-and-recording-it">The UX review, and recording it</h3><a class="sl-anchor-link" href="#the-ux-review-and-recording-it"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “The UX review, and recording it”</span></a></div>
+<p><code dir="auto">make ux-test STACK_NAME=…</code> prepares a throwaway Cognito user and a session, then a
+person or the assistant drives the flows in <code dir="auto">scripts/ux_flows.yaml</code> in a real browser
+and reports functional pass/fail per flow plus ranked usability findings. It is
+deliberately not a script: a shell script can assert that a page returned 200, not
+that the page made sense.</p>
+<p>The review can also be <strong>recorded as a narrated, captioned video</strong>, so a finding can
+be shown to the team instead of re-demonstrated live:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">make</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">ux-record-deps</span><span style="--0:#D6DEEB;--1:#403F53">                                    </span><span style="--0:#919F9F;--1:#5F636F"># ffmpeg, ffprobe, boto3, Pillow</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">./scripts/ux_recorder.py</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">start</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--stack</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">&#x3C;STACK></span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--persona</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">Admin</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--url-contains</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">cloudfront</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">\</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">--say</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">We start on the Test Studio sets tab.</span><span style="--0:#D9F5DD;--1:#111111">"</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">./scripts/ux_recorder.py</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">mark</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">Open the annotation queue</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--say</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">We open the queue …</span><span style="--0:#D9F5DD;--1:#111111">"</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">./scripts/ux_recorder.py</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">stop</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--say</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">That ends the review.</span><span style="--0:#D9F5DD;--1:#111111">"</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C5E478;--1:#3B61B0">AWS_PROFILE</span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#ECC48D;--1:#3B61B0">default</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">./scripts/ux_recorder.py</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">render</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">--voice</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">Ruth</span><span style="--0:#D6DEEB;--1:#403F53">   </span><span style="--0:#919F9F;--1:#5F636F"># --dry-run first</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="make ux-record-deps                                    # ffmpeg, ffprobe, boto3, Pillow./scripts/ux_recorder.py start --stack <STACK> --persona Admin --url-contains cloudfront \    --say &#x22;We start on the Test Studio sets tab.&#x22;./scripts/ux_recorder.py mark &#x22;Open the annotation queue&#x22; --say &#x22;We open the queue …&#x22;./scripts/ux_recorder.py stop --say &#x22;That ends the review.&#x22;AWS_PROFILE=default ./scripts/ux_recorder.py render --voice Ruth   # --dry-run first"><div></div></button></div></figure></div>
+<p>The recorder attaches a second DevTools session to the tab being driven, captures
+frames only when the screen changes, and re-paces the result for a viewer: idle
+gaps clamped, paused stretches dropped, narration spoken by Amazon Polly, every
+click drawn on the frame that was on screen when it happened. Output — <code dir="auto">review.mp4</code>,
+<code dir="auto">review.srt</code>, <code dir="auto">segments.json</code>, <code dir="auto">review.md</code> — lands under gitignored
+<code dir="auto">scratch/ux-recordings/</code>, in a session directory that also holds the tab’s address
+and title and a click log (<code dir="auto">events.jsonl</code>, <code dir="auto">timeline.json</code>) that labels clicks with
+text from the page. <strong>A recording of a live stack shows real documents and
+nothing is redacted: never commit the session directory or attach any of it to a
+pull request.</strong> One exception is a finished product-demo video its author chooses
+to publish: the author uploads that <code dir="auto">demo.mp4</code>, and nothing else from the session, to
+get its asset URL for the demo videos page. The MR UX test’s mp4 of the CI review
+stack, which holds only shipped example data, is the other. What a click label can
+hold is set out under Privacy in
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/ux-test.md#privacy"><code dir="auto">ux-test</code></a>.
+Details:
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/scripts/README.md#ux-review-and-demo-recorder-ux_recorderpy"><code dir="auto">scripts/README.md</code></a>.</p>
+<p><strong>On a merge request the same review runs unattended.</strong> When a non-Draft MR to
+<code dir="auto">develop</code> changes <code dir="auto">src/ui/</code>, the advisory <code dir="auto">ai_ux_test</code> job tests the MR’s UI build in
+a confined headless browser against the long-lived review stack <code dir="auto">idp-ux-nightly</code>, and
+appends its findings and a narrated video to the automated code-review comment for
+that commit. It gates nothing. <code dir="auto">make ai-ux-test-local MR=&#x3C;iid></code> runs the same test in
+Docker as a dry run, and <code dir="auto">make ai-ux-browser</code> starts only the confined browser, with
+DevTools on <code dir="auto">127.0.0.1:9222</code>, for an interactive session on a machine with no local
+Chrome. Contract:
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/ux-test-ci.md"><code dir="auto">ux-test-ci</code></a>.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="first-time-user-stories">First-time-user stories</h3><a class="sl-anchor-link" href="#first-time-user-stories"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “First-time-user stories”</span></a></div>
+<p><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/scripts/ux_stories.toml"><code dir="auto">scripts/ux_stories.toml</code></a>
+holds stories that say only what a person wants, each with the personas it runs as and
+whether each persona’s role should be able to do it, be refused, or not be offered it
+at all. A model that knows the product only through this documentation attempts each
+story in a confined headless browser, searching and reading these pages through tools
+of its own and noting every hesitation and dead end as it goes. Every tool call is
+journalled, and the verdict — done, stuck, refused as the docs say, offered a control
+the docs say the role lacks, and so on — is computed from that journal and the
+persona’s expected access, never from the model’s prose, so one run of a story can be
+compared with the next. Each story is told to change nothing on the shared review
+stack, and a best-effort guard in front of the browser refuses the saves it
+recognises: a story whose task ends in a save stops at that step and says so.</p>
+<p><code dir="auto">make ai-ux-test-stories-local STORY=&#x3C;id></code> runs a story in Docker as a dry run
+(<code dir="auto">MR=&#x3C;iid></code> runs the stories that MR’s added CHANGELOG entries select, and
+<code dir="auto">INTERACTIVE=1</code> lets you watch it live), <code dir="auto">make ai-ux-test-stories-pair</code> starts the
+confined browser and prints the command for a Claude session you start to play the
+user, and <code dir="auto">make ai-ux-test-stories-list</code> and
+<code dir="auto">make ai-ux-test-stories-search Q="…"</code> are the authoring loop. In CI, the advisory
+<code dir="auto">ai_ux_test_stories</code> job runs the stories a non-Draft MR’s added CHANGELOG entries
+select and replies in the code-review thread, and every night the nightly set runs
+and feeds a digest of regressions; none of it gates anything. Procedure:
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/ux-test-stories.md"><code dir="auto">ux-test-stories</code></a>;
+unattended contract:
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/ux-test-stories-ci.md"><code dir="auto">ux-test-stories-ci</code></a>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="7-benchmarks">7. Benchmarks</h2><a class="sl-anchor-link" href="#7-benchmarks"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “7. Benchmarks”</span></a></div>
+<p><code dir="auto">make benchmark-release VERSION=… PREV=…</code> runs the release-vs-release A/B —
+accuracy, completeness, cost, latency and confidence calibration against the
+previous published release. The wider suite in <code dir="auto">benchmarks/</code> (a config × document-size
+matrix with exact ground truth) is what produces the published
+<a href="../benchmarking/config-guidance/">Configuration Guidance</a> and is the gate for any
+change that could move accuracy or cost.</p>
+<p>Start at the <a href="../benchmarking/index/">Benchmarking Guide</a>; read
+<code dir="auto">benchmarks/matrices/METHODOLOGY.md</code> before writing down a number, and the
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/run-benchmarks.md"><code dir="auto">run-benchmarks</code></a>
+procedure before running one.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="where-results-are-recorded">Where results are recorded</h2><a class="sl-anchor-link" href="#where-results-are-recorded"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Where results are recorded”</span></a></div>
+<p>A test that leaves no record cannot be cited later, so three of the layers above
+write one:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Record</th><th>What it holds</th></tr></thead><tbody><tr><td><a href="../release-validation/readme/">Release Validation Records</a></td><td>one file per release, never overwritten: every tier that needs a live stack, its verdict, and what it found</td></tr><tr><td><a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/tree/develop/security/test-results"><code dir="auto">security/test-results/&#x3C;version>/</code></a></td><td>redacted per-test snapshots of SRT, ZAP DAST and RBAC static + dynamic</td></tr><tr><td><a href="../benchmarking/releases/readme/">Release Benchmark Audit Trail</a></td><td>the release-vs-release A/B, with <code dir="auto">n</code> and spread on every claim</td></tr></tbody></table>
+<p>Everything else — raw logs, probe output, UX recordings — stays in gitignored
+<code dir="auto">scratch/</code>. Records are public-safe by construction: account ids, VPC/subnet/security-group
+ids, API hostnames, pool ids, stack physical ids and local paths are replaced with
+placeholders.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="running-the-whole-battery">Running the whole battery</h2><a class="sl-anchor-link" href="#running-the-whole-battery"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Running the whole battery”</span></a></div>
+<p>One release validation exercises every layer on this page in a fixed order, on real
+stacks, and writes the three records above. It is a two-day job, driven by the
+<a href="https://github.com/aws-solutions-library-samples/accelerated-intelligent-document-processing-on-aws/blob/develop/.claude/skills/release-validation.md"><code dir="auto">release-validation</code></a>
+procedure — the umbrella over every per-tier procedure linked here. The per-tier
+<code dir="auto">make</code> targets stay runnable on their own, which is how you validate a single change
+without validating a release.</p></div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"><a href="/accelerated-intelligent-document-processing-on-aws/languages/" rel="prev" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-jgq3vlii">Previous<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Languages</span></span></a><a href="/accelerated-intelligent-document-processing-on-aws/evaluation/" rel="next" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-jgq3vlii">Next<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">Evaluation Framework</span></span></a></div></footer></div></div></main></div></div></div></div></body></html>
