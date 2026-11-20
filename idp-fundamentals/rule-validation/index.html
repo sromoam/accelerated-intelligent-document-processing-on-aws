@@ -280,17 +280,16 @@ verification standards” is not. See
 your configuration fields such as <em>Monthly income</em> and <em>Application date</em>. The fact
 extraction model reads the extracted fields alongside the page text, and you can measure
 those fields against ground truth like any other field.</p>
-<p><strong>Keep the default engine, models and options, and move exact rules to Z3.</strong> The default
-fact extraction and orchestrator model is Claude Sonnet 4.6, with the three default
-recommendation options. Leave rules that need judgment on the language-model engine. Switch
-rules that are pure arithmetic or comparisons to <em>Symbolic (Z3)</em>, and declare a value that can
-hold a fraction, such as a ratio or an amount, as <code dir="auto">Real</code>.</p>
+<p><strong>Keep the default engine, models and options, and move exact rules to Z3.</strong> Leave rules
+that need judgment on the language-model engine, with the default models and the three
+default recommendation options. Switch rules that are pure arithmetic or comparisons to
+<em>Symbolic (Z3)</em>, and declare a value that can hold a fraction, such as a ratio or an amount,
+as <code dir="auto">Real</code>.</p>
 <p><strong>Give each policy class a Document Name Regex as soon as you have more than one.</strong> Without
 one, the accelerator cannot tell which policy classes apply, and it validates none of them.</p>
 <div class="sl-heading-wrapper level-h2"><h2 id="how-many-tokens-rule-validation-uses-and-what-drives-the-count">How many tokens rule validation uses, and what drives the count</h2><a class="sl-anchor-link" href="#how-many-tokens-rule-validation-uses-and-what-drives-the-count"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “How many tokens rule validation uses, and what drives the count”</span></a></div>
-<p>We have not measured rule validation tokens. The benchmark suite does not run rule
-validation, so no committed benchmark result reports its tokens. The accelerator records
-the tokens on every file it processes, so you can measure them on your own files (see
+<p>The accelerator records rule validation tokens on every file it processes, so you can
+measure them on your own files (see
 <a href="#how-to-measure-rule-validation-on-your-own-files">the next section</a>).</p>
 <p>What drives the count:</p>
 <ul>
