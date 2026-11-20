@@ -276,7 +276,7 @@ and the image size.</li>
 <li><strong>The extraction model.</strong> Models count tokens differently, especially for images, and models
 differ in how many tokens they spend reasoning.</li>
 </ul>
-<p>See <a href="../../benchmark-guidance/extraction/#when-is-agentic-extraction-worth-it">When is agentic extraction worth it?</a>
+<p>See <a href="../../benchmark-guidance/extraction/#agentic-or-single-pass-extraction">Agentic or single-pass extraction</a>
 for what each mode costs.</p>
 <div class="sl-heading-wrapper level-h2"><h2 id="measuring-accuracy">Measuring accuracy</h2><a class="sl-anchor-link" href="#measuring-accuracy"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “Measuring accuracy”</span></a></div>
 <p>Ground truth for this step is the correct value of every field and every row in a sample of
@@ -400,7 +400,7 @@ reports the rest. <code dir="auto">format: date</code> means ISO 8601 (YYYY-MM-D
 set <code dir="auto">extraction.coercion.date_order</code> to your documents’ convention. See
 <a href="../../extraction-and-confidence/#value-coercion-extractioncoercion">Value coercion</a>,
 <a href="../../extraction-and-confidence/#schema-validation-extractionvalidation">Schema validation</a> and
-<a href="../../benchmark-guidance/extraction/#do-schema-validation-and-value-coercion-improve-the-output">Do schema validation and value coercion improve the output?</a></p>
+<a href="../../benchmark-guidance/extraction/#schema-validation-and-value-coercion">Schema validation and value coercion</a></p>
 <p><strong>Add a few-shot example for a hard document class.</strong> A few-shot example is a sample document
 with its correct values, which the accelerator adds to the extraction prompt for that
 document class. Use one for the fields the model keeps getting wrong. Add them

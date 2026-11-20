@@ -164,7 +164,7 @@ names the scoring model. In integrated mode, the extraction model scores its own
 this setting is unused.</p>
 <p>To route review, what matters is how well a scoring model <strong>separates</strong> right values from
 wrong ones, more than how accurate its scores are on average. See
-<a href="../../benchmark-guidance/confidence-assessment/#which-scoring-model-should-i-use">Which scoring model should I use?</a></p>
+<a href="../../benchmark-guidance/confidence-assessment/#scoring-model">Scoring model</a></p>
 <p><strong>Escalation</strong> (<code dir="auto">extraction.confidence.escalation_enabled</code>, on by default) re-scores any rows
 the scoring model could not score, with a stronger model (<code dir="auto">escalation_model</code>). See
 <a href="../../extraction-and-confidence/#large-list-batching-list_batch_size">Large-list batching</a>.</p>
@@ -282,7 +282,7 @@ call. Off uses no tokens for confidence.</p>
 itself. See
 <a href="../../extraction-and-confidence/#0-choosing-a-configuration-start-here">Extraction &#x26; Confidence</a>
 for the trade-off between the modes, and
-<a href="../../benchmark-guidance/confidence-assessment/#separate-scoring-pass-or-integrated-into-extraction">Separate scoring pass or integrated into extraction?</a>
+<a href="../../benchmark-guidance/confidence-assessment/#separate-or-integrated-scoring">Separate or integrated scoring</a>
 for what confidence costs.</p>
 <p><strong>Class confidence</strong> adds tokens to every classification call: <em>Top-K</em> adds the ranked
 candidates to each answer.</p>
@@ -397,7 +397,7 @@ a change that fixes it:</p>
 <p>When your measurements show alerts in the wrong places, try these changes, and score each one against your test set.</p>
 <p><strong>Compare scoring models on your test set.</strong> Changing the scoring model changes only the
 scores. The extracted values stay the same, so the comparison isolates the scoring model. See
-<a href="../../benchmark-guidance/confidence-assessment/#which-scoring-model-should-i-use">Which scoring model should I use?</a></p>
+<a href="../../benchmark-guidance/confidence-assessment/#scoring-model">Scoring model</a></p>
 <p><strong>Set thresholds field by field from your own numbers.</strong> Look at each field’s AUROC and
 alert rate in Test Studio. Raise the threshold where wrong values still get through, and
 lower it where reviewers mostly confirm right values.</p>
